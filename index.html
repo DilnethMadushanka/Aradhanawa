@@ -7,7 +7,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@400..800&family=Noto+Sans+Sinhala:wght@400..800&family=Noto+Serif+Sinhala:wght@500..900&family=Pinyon+Script&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@400..800&family=Noto+Sans+Sinhala:wght@400..800&family=Noto+Serif+Sinhala:wght@500..900&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Pinyon+Script&display=swap">
 <style>
 /* Layout: an atelier table in daylight. Jasmine-ivory paper, champagne-gold hairlines and corner marks, deep jade ink.
    A deliberate single light look (the user asked for light colours), so every colour is set explicitly here. */
@@ -732,6 +732,86 @@ nav.top a{font-weight:600}
 .acct .wrap{padding-block:36px 64px;display:grid;gap:22px}
 @media (max-width:900px){.adm{grid-template-columns:minmax(0,1fr)}.adm .side{position:sticky;top:96px;z-index:5;height:auto;flex-direction:row;overflow-x:auto;padding:6px 8px;border-right:0;border-bottom:1px solid var(--line);scrollbar-width:none}.adm .side .who,.adm .side .sp{display:none}.adm .side a{white-space:nowrap;border-left:0;border-bottom:2px solid transparent;padding:10px 12px}.adm .side a[aria-current="page"]{border-bottom-color:var(--gold);background:none}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.two,.sform{grid-template-columns:minmax(0,1fr)}.adm .main{padding-top:22px}}
 @media (max-width:420px){.kpi b{font-size:28px}.tgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}}
+/* ================= LOTUS MANDALA THEME ================= */
+.site.lotus{--lx-wine:var(--c-ink);container-type:inline-size;font-family:"Cormorant Garamond","Noto Serif Sinhala",Georgia,serif;color:#4A3F38;position:relative;
+  background:var(--lx-l) left top/82px auto repeat-y,var(--lx-r) right top/82px auto repeat-y,
+  linear-gradient(118deg,rgba(255,255,255,0) 18%,rgba(255,255,255,.55) 30%,rgba(255,255,255,0) 42%,rgba(255,255,255,.4) 62%,rgba(255,255,255,0) 74%),
+  linear-gradient(165deg,#F8F3EA,#EEE4D3 48%,#F7F0E4);background-color:#F3ECDF}
+.site.lotus.locked > :not(.lx-cover){display:none!important}
+.site.lotus:not(.locked) > .lx-cover{display:none}
+.lx-cover,.lx-hero{position:relative;overflow:hidden;min-height:min(100svh,820px);display:grid;align-items:center;justify-items:center;text-align:center;padding:calc(min(100cqw,520px)*.5 + 6px) 26px 150px}
+.phone .lx-cover{min-height:100%;height:100%}
+.phone .site.lotus.locked{height:100%}
+.site.lotus.opening .lx-cover{animation:lxout .65s ease forwards}
+@keyframes lxout{to{opacity:0;transform:scale(1.04)}}
+.lx-mandala{position:absolute;top:0;left:50%;transform:translateX(-50%);width:min(100cqw,520px);height:auto;opacity:.9;pointer-events:none}
+.lx-in{position:relative;z-index:2;display:grid;justify-items:center;gap:14px;max-width:340px}
+.lx-eb{font-size:14px;letter-spacing:.42em;text-transform:uppercase;color:var(--c-gold);font-weight:600}
+.lx-rule{display:flex;align-items:center;gap:12px;color:var(--c-gold);font-size:11px;width:200px}
+.lx-rule i{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--c-gold))}.lx-rule i:last-child{transform:scaleX(-1)}
+.lx-names{font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:600;color:var(--lx-wine);font-size:62px;line-height:1.02;margin:6px 0;display:grid;letter-spacing:-.01em}
+.lx-names span{font-size:.55em;color:var(--c-gold);font-weight:500;margin:4px 0}
+.lx-names.one{display:block;font-size:44px}
+.lx-names.one span{font-size:1em;color:var(--lx-wine);opacity:.75}
+.lx-date{font-size:22px;letter-spacing:.04em;color:#4A3F38;margin:0}
+.lx-dear{font-style:italic;font-size:21px;color:var(--lx-wine);margin:2px 0 14px}
+.lx-open{display:inline-flex;align-items:center;gap:14px;border:2px solid var(--lx-wine);background:rgba(255,253,248,.35);color:var(--lx-wine);border-radius:999px;padding:15px 26px;font:700 14px "Cormorant Garamond",serif;letter-spacing:.26em;white-space:nowrap;text-transform:uppercase;cursor:pointer;animation:lxpulse 2.6s ease-in-out infinite}
+.lx-open svg{width:28px;height:18px}
+.lx-open:hover{background:var(--lx-wine);color:#FFF8EE}
+@keyframes lxpulse{50%{box-shadow:0 0 0 8px color-mix(in srgb,var(--lx-wine) 10%,transparent)}}
+.lx-sw{font-family:"Noto Serif Sinhala",serif;font-weight:700;font-size:24px;color:var(--c-gold);margin:6px 0 0}
+.lx-tag{font-size:15px;letter-spacing:.3em;text-transform:uppercase;line-height:2;color:#4A3F38;margin:0}
+.lx-down{border:0;background:none;display:grid;justify-items:center;gap:10px;color:var(--c-gold);cursor:pointer;margin-top:24px;font:600 13px "Cormorant Garamond",serif;letter-spacing:.34em;text-transform:uppercase}
+.lx-down span{width:46px;height:46px;border:1px solid var(--c-gold);border-radius:50%;display:grid;place-items:center;color:var(--lx-wine);animation:lxbob 2s ease-in-out infinite}
+.lx-down svg{width:20px;height:20px}
+@keyframes lxbob{50%{transform:translateY(6px)}}
+.lx-bq{position:absolute;bottom:-6px;width:50%;max-width:250px;height:auto;z-index:1;pointer-events:none}
+.lx-bq.l{left:-6%}.lx-bq.r{right:-6%;transform:scaleX(-1)}
+.lx-bq .sw1,.lx-bq .sw2{transform-box:fill-box;transform-origin:50% 100%;animation:lxsway 7s ease-in-out infinite alternate}
+.lx-bq .sw2{animation-duration:5.5s;animation-delay:-2s}
+@keyframes lxsway{from{transform:rotate(-1.6deg)}to{transform:rotate(1.8deg)}}
+.lx-dust{position:absolute;inset:0;pointer-events:none;z-index:1}
+.lx-dust i{position:absolute;width:5px;height:5px;border-radius:50%;background:radial-gradient(#E9CF92,transparent 70%);animation:lxdust 6s ease-in-out infinite;opacity:0}
+@keyframes lxdust{30%{opacity:.9}60%{opacity:.3}100%{opacity:0;transform:translateY(-30px)}}
+.lx-top{position:sticky;top:0;z-index:6;display:grid;place-items:center;padding:10px 0 8px;background:color-mix(in srgb,#F4EDE0 92%,transparent);border-bottom:1px solid color-mix(in srgb,var(--c-gold) 35%,transparent)}
+.lx-mono{width:68px;height:auto}
+
+.site.lotus .s-sec{background:rgba(255,253,248,.86);margin:22px 16px;border:1px solid color-mix(in srgb,var(--c-gold) 55%,transparent);border-radius:30px;outline:1px solid color-mix(in srgb,var(--c-gold) 30%,transparent);outline-offset:-10px;padding:40px 22px;box-shadow:0 18px 40px -26px rgba(90,60,30,.35)}
+.site.lotus .s-eb{font-family:"Cormorant Garamond",serif;font-size:14px;letter-spacing:.36em;font-weight:600;color:var(--c-gold)}
+.site.lotus .s-h{font-family:"Playfair Display",serif;color:var(--lx-wine);font-size:30px;font-weight:700}
+.site.lotus .s-p{font-size:18px;color:#4A3F38;max-width:30ch}
+.site.lotus .s-p b{color:var(--lx-wine)}
+.site.lotus .s-date b,.site.lotus .s-year,.site.lotus .s-ev .t,.site.lotus .s-step output{color:var(--lx-wine);font-family:"Cormorant Garamond",serif}
+.site.lotus .s-date span{font-size:17px;color:#4A3F38}
+.site.lotus .s-cd div,.site.lotus .s-ev,.site.lotus .s-row,.site.lotus .s-form{background:#FFFDF8}
+.site.lotus .s-cd b{color:var(--lx-wine);font-family:"Cormorant Garamond",serif;font-size:30px}
+.site.lotus .s-btn,.site.lotus .s-choice button[aria-pressed="true"],.site.lotus .s-row i{background:var(--lx-wine);color:#FFF8EE;border-color:var(--lx-wine)}
+.site.lotus .s-form,.site.lotus .s-ev,.site.lotus .s-row,.site.lotus .s-cd div{font-family:var(--f-body)}
+.lx-photo{margin:0 0 6px;width:100%;max-width:340px;aspect-ratio:4/3;border-radius:20px;overflow:hidden;border:1px solid color-mix(in srgb,var(--c-gold) 45%,transparent)}
+.lx-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.lx-ph{display:grid;place-items:center;background:linear-gradient(165deg,#F9F4EB,#EDE2CF);aspect-ratio:2/1}
+.lx-mini{width:80%;height:auto}
+.lx-heart{display:flex;align-items:center;gap:12px;color:var(--c-gold);width:160px}.lx-heart i{flex:1;height:1px;background:var(--c-gold);opacity:.6}
+.site.lotus .s-foot{color:#6E625A}
+.lx-fabs{position:sticky;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:7;display:flex;justify-content:space-between;padding:0 16px;margin-top:-60px;pointer-events:none}
+.lx-fab{pointer-events:auto;width:54px;height:54px;border-radius:50%;border:0;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--lx-wine) 75%,#fff),var(--lx-wine));color:#FFF8EE;display:grid;place-items:center;cursor:pointer;box-shadow:0 10px 24px -8px rgba(80,10,20,.55)}
+.lx-fab svg{width:22px;height:22px}
+.lx-fab .m-off,.lx-fab.on .m-on{display:block}.lx-fab .m-on,.lx-fab.on .m-off{display:none}
+.lx-fab[data-music].on{animation:lxring 1.8s ease-out infinite}
+@keyframes lxring{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--lx-wine) 45%,transparent),0 10px 24px -8px rgba(80,10,20,.55)}100%{box-shadow:0 0 0 14px transparent,0 10px 24px -8px rgba(80,10,20,.55)}}
+.lx-sheet{pointer-events:auto;position:absolute;left:16px;bottom:66px;background:#FFFDF8;border:1px solid color-mix(in srgb,var(--c-gold) 50%,transparent);border-radius:20px;padding:8px;display:grid;min-width:200px;box-shadow:0 20px 40px -18px rgba(60,30,10,.4)}
+.lx-sheet button{display:flex;align-items:center;gap:12px;border:0;background:none;padding:11px 12px;border-radius:12px;font:600 15px var(--f-body);color:var(--lx-wine);cursor:pointer;text-align:left}
+.lx-sheet button:hover{background:#F6EFE3}
+.lx-sheet svg{width:18px;height:18px;color:var(--c-gold)}
+.site.lotus .snav{display:none}
+@media (prefers-reduced-motion:reduce){.lx-bq g,.lx-dust i,.lx-open,.lx-down span,.lx-fab.on{animation:none!important}}
+/* card thumbnail */
+.card.L-lotus{background:var(--lx-l) left top/17cqw auto repeat-y,var(--lx-r) right top/17cqw auto repeat-y,linear-gradient(118deg,rgba(255,255,255,0) 18%,rgba(255,255,255,.55) 32%,rgba(255,255,255,0) 46%),linear-gradient(165deg,#F9F4EB,#EDE2CF 52%,#F7F0E4)}
+.card.L-lotus .frame,.card.L-lotus .corner{display:none}
+.card.L-lotus .art{padding:0 0 0;display:block}
+.card.L-lotus .art svg{width:100%;max-height:none;display:block}
+.card.L-lotus .names{font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:600;font-size:10cqw}
+.card.L-lotus .txt{padding:0 15cqw 12cqw;gap:1.6cqw}
 </style>
 </head><body>
 
@@ -745,6 +825,7 @@ const CONFIG = {
   STUDIO_WA: "94770000000",          // Aradhanawa studio WhatsApp number (replace with the real one)
   PRICE_PLUS: "Rs. 990",
   PRICE_CUSTOM: "Rs. 4,900",
+  MUSIC: "audio/jayamangala-gatha.mp3",   // background music for the Lotus Mandala design (put your MP3 here)
   // Base URL for share links. On a static host (Netlify, GitHub Pages, Vercel) the page itself is used.
   SITE: (location.protocol.startsWith("http") && !/claude|anthropic|usercontent/.test(location.hostname))
           ? location.origin + location.pathname : "https://aradhanawa.com/"
@@ -895,7 +976,109 @@ function premArt(type,t,ev){
   if(t.layout==="floral") return floralArt();
   if(t.layout==="mono") return monoArt(type,ev||TYPES[type].sample);
   if(t.layout==="confetti") return confettiArt();
+  if(t.layout==="lotus") return lxMandala("lx-cardm");
   return TYPES[type].art();
+}
+
+/* ================= LOTUS MANDALA THEME ================= */
+function lxPetal(len,wid,rot,fill,stroke){return `<path d="M0 0C${wid} ${-len*.35} ${wid*.72} ${-len*.84} 0 ${-len}C${-wid*.72} ${-len*.84} ${-wid} ${-len*.35} 0 0Z" transform="rotate(${rot})" fill="${fill}" stroke="${stroke}" stroke-width=".7"/>`}
+function lxLotus(x,y,s,tone){
+  const pink=tone==="p", a=pink?"#EFC9C6":"#F3EAD8", b=pink?"#F8DEDA":"#FCF7EC", c=pink?"#FCEDEA":"#FFFFFF", st="#C7A96B";
+  return `<g transform="translate(${x} ${y}) scale(${s})">${[-74,-38,38,74].map(r=>lxPetal(34,14,r,a,st)).join("")}${[-52,-20,20,52].map(r=>lxPetal(32,13,r,b,st)).join("")}${lxPetal(36,14,0,b,st)}${[-26,26].map(r=>lxPetal(25,12,r,c,st)).join("")}${lxPetal(22,11,0,c,st)}<ellipse cy="-7" rx="8" ry="3.2" fill="#D9B66B"/><path d="M-6-8l1-3M-2-9l0-3M2-9l0-3M6-8l-1-3" stroke="#B8924A" stroke-width=".8"/></g>`;
+}
+function lxBud(x,y,s,rot,pink){return `<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s})"><path d="M0 0C9-8 8-24 0-34C-8-24-9-8 0 0Z" fill="${pink?"#F2D3CF":"#E6E8D8"}" stroke="#A9B08E" stroke-width=".7"/><path d="M0 0C6-6 7-15 4-22M0 0C-6-6-7-15-4-22" fill="none" stroke="#9AA67F" stroke-width=".8"/><path d="M-5-2C-8-8-7-14-4-16L0-3ZM5-2C8-8 7-14 4-16L0-3Z" fill="#B9C2A0"/></g>`}
+function lxPad(x,y,s,rot){let v="";for(let i=0;i<9;i++){const a=(i/8-.5)*Math.PI*1.6;v+=`M0 0L${(Math.sin(a)*24).toFixed(1)} ${(-Math.cos(a)*10).toFixed(1)}`}return `<g transform="translate(${x} ${y}) rotate(${rot}) scale(${s})"><ellipse rx="26" ry="11" fill="#E4E6D4" stroke="#C7A96B" stroke-width=".7"/><path d="${v}" stroke="#C7A96B" stroke-width=".45" fill="none"/></g>`}
+function lxGyp(x,y,s){let o="",r=x*7+y;const R=()=>(r=(r*9301+49297)%233280)/233280;for(let i=0;i<14;i++){const dx=(R()-.5)*34,dy=-R()*40;o+=`<path d="M0 0Q${(dx/2).toFixed(1)} ${(dy*.6).toFixed(1)} ${dx.toFixed(1)} ${dy.toFixed(1)}" stroke="#C7A96B" stroke-width=".45" fill="none"/><circle cx="${dx.toFixed(1)}" cy="${dy.toFixed(1)}" r="${(1.2+R()*1.2).toFixed(1)}" fill="${i%3?"#FFFDF6":"#E8D5A5"}" stroke="#C7A96B" stroke-width=".4"/>`}return `<g transform="translate(${x} ${y}) scale(${s})">${o}</g>`}
+function lxStrip(){
+  const stem=(d)=>`<path d="${d}" stroke="#A9B08E" stroke-width="1.6" fill="none"/>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 560" width="120" height="560">
+  ${stem("M8 560C14 470 10 400 26 330")}${stem("M2 300C18 240 30 190 40 120")}${stem("M10 560C40 520 56 500 62 470")}${stem("M0 200C30 150 70 100 78 54")}${stem("M0 120C10 90 16 60 20 20")}
+  ${lxGyp(56,220,1)}${lxGyp(26,440,.9)}${lxGyp(70,330,.8)}${lxGyp(44,60,.85)}
+  ${lxPad(62,470,1,-14)}${lxBud(78,54,1,14,0)}${lxBud(20,20,.8,6,1)}
+  ${lxLotus(40,124,1.05,"w")}${lxLotus(26,334,.95,"p")}${lxBud(70,250,.9,18,0)}${lxLotus(48,548,1.15,"w")}</svg>`;
+}
+const lxUri = svgStr => `url("data:image/svg+xml,${encodeURIComponent(svgStr.replace(/\s+/g," "))}")`;
+function lxMandala(cls){
+  const ring=(n,fn)=>{let o="";for(let i=0;i<n;i++)o+=`<g transform="rotate(${(i*360/n).toFixed(2)})">${fn(i)}</g>`;return o};
+  let g=`<circle r="14"/><circle r="22"/>`+ring(12,()=>`<path d="M0-24C6-30 6-40 0-46C-6-40-6-30 0-24Z"/>`);
+  g+=`<circle r="50"/><circle r="54" stroke-dasharray="2 3"/>`+ring(36,()=>`<circle cy="-59" r="1.8"/>`);
+  g+=`<circle r="64"/>`+ring(16,()=>`<path d="M0-66C13-76 13-94 0-106C-13-94-13-76 0-66Z"/><circle cy="-84" r="4"/><circle cy="-84" r="1.4"/>`);
+  g+=`<circle r="112" stroke-dasharray="3 4"/><circle r="118"/>`+ring(24,()=>`<path d="M0-120C11-128 15-146 0-160C-15-146-11-128 0-120Z"/><path d="M0-128C5-134 6-142 0-149C-6-142-5-134 0-128Z"/>`);
+  g+=`<circle r="164"/>`+ring(48,()=>`<path d="M-9-166Q0-180 9-166"/>`)+ring(24,()=>`<path d="M0-168L7-188L0-202L-7-188Z"/><circle cy="-209" r="2.6"/>`);
+  return `<svg class="${cls||"lx-mandala"}" viewBox="-214 0 428 216" aria-hidden="true"><g fill="none" stroke="var(--c-gold)" stroke-width="1.25">${g}<animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="140s" repeatCount="indefinite"/></g></svg>`;
+}
+function lxMono(type,ev){
+  const [a,b]=initials(type,ev);
+  return `<svg class="lx-mono" viewBox="0 0 120 70" aria-hidden="true"><text x="${b?44:60}" y="${b?44:52}" text-anchor="middle" font-size="40" fill="var(--c-ink)" style="font-family:'Cormorant Garamond',serif;font-weight:600">${esc(a)}</text>${b?`<text x="74" y="62" text-anchor="middle" font-size="40" fill="var(--c-ink)" style="font-family:'Cormorant Garamond',serif;font-weight:600">${esc(b)}</text><path d="M60 64C58 46 60 26 66 8" stroke="var(--c-ink)" stroke-width="1" fill="none"/>${[0,1,2,3].map(i=>leafP(61+i*1.2,52-i*11,.55,-70-i*6,"var(--c-ink)",.85)+leafP(61+i*1.2,52-i*11,.5,-120+i*6,"var(--c-ink)",.6)).join("")}`:""}</svg>`;
+}
+const lxRule = () => `<div class="lx-rule" aria-hidden="true"><i></i><b>◆</b><i></i></div>`;
+function lxCSS(){
+  if(document.getElementById("lxcss")) return;
+  const st=lxStrip(), s=document.createElement("style"); s.id="lxcss";
+  s.textContent=`:root{--lx-l:${lxUri(st)};--lx-r:${lxUri(st.replace('<svg ','<svg ').replace(/(<svg[^>]*>)/,'$1<g transform="translate(120 0) scale(-1 1)">').replace('</svg>','</g></svg>'))}}`;
+  document.head.appendChild(s);
+}
+/* music */
+function lxAudio(){
+  let a=document.getElementById("lxAudio");
+  if(!a){ a=document.createElement("audio"); a.id="lxAudio"; a.loop=true; a.preload="none"; a.src=CONFIG.MUSIC||""; document.body.appendChild(a);
+    a.addEventListener("error",()=>{ document.querySelectorAll("[data-music]").forEach(b=>b.hidden=true) });
+    const st=()=>{ const on=!a.paused&&!a.muted; document.querySelectorAll("[data-music]").forEach(b=>{ b.classList.toggle("on",on); b.setAttribute("aria-pressed",String(!on)) }) };
+    a.addEventListener("play",st); a.addEventListener("pause",st); a.addEventListener("volumechange",st); }
+  return a;
+}
+function lxPlay(){ if(!CONFIG.MUSIC) return; const a=lxAudio(); if(a.getAttribute("src")!==CONFIG.MUSIC) a.src=CONFIG.MUSIC; a.volume=.7; a.play().catch(()=>{}) }
+function lxStop(){ const a=document.getElementById("lxAudio"); if(a) a.pause() }
+document.addEventListener("click",e=>{
+  const op=e.target.closest("[data-open]");
+  if(op){ const site=op.closest(".site"); site.classList.add("opening"); lxPlay();
+    setTimeout(()=>{ site.classList.remove("locked","opening"); const sc=site.closest(".screen"); (sc||window).scrollTo(0,0) },650); return }
+  const m=e.target.closest("[data-music]"); if(m){ const a=lxAudio(); if(a.paused){ a.muted=false; lxPlay() } else a.muted=!a.muted; return }
+  const mn=e.target.closest("[data-lxmenu]"); if(mn){ const p=mn.closest(".lx-fabs").querySelector(".lx-sheet"); p.hidden=!p.hidden; mn.setAttribute("aria-expanded",!p.hidden); return }
+  if(e.target.closest(".lx-sheet [data-go]")){ const p=e.target.closest(".lx-sheet"); p.hidden=true }
+});
+function lxBouquet(side){
+  return `<svg class="lx-bq ${side}" viewBox="0 0 150 220" aria-hidden="true"><g class="sw1">
+  <path d="M10 220C20 180 30 150 44 112" stroke="#A9B08E" stroke-width="1.6" fill="none"/><path d="M0 220C40 196 70 170 92 150" stroke="#A9B08E" stroke-width="1.6" fill="none"/><path d="M30 220C30 190 20 130 12 70" stroke="#A9B08E" stroke-width="1.4" fill="none"/>
+  ${lxGyp(70,170,1)}${lxGyp(30,120,.9)}${lxPad(96,206,1.1,-10)}${lxBud(12,70,1,-8,1)}</g><g class="sw2">${lxLotus(46,122,1.25,"w")}${lxLotus(98,166,1.05,"p")}</g></svg>`;
+}
+function lxSite(type, ev, lang, guest, prem, gallery, base){
+  const si=lang==="si", L=(e,s)=>si?s:e;
+  const names = (type==="wedding"||type==="homecoming") ? [ev.a||"Groom", ev.b||"Bride"] : [ev.title||TYPES[type].name];
+  const eyebrow = type==="wedding" ? L("The wedding of","විවාහ මංගල්‍යය") : type==="homecoming" ? L("The homecoming of","හෝම්කමිං උත්සවය") : (ev.a?esc(ev.a)+" "+L("invites you to","ආරාධනා කරයි"):L("You are invited to","ඔබට ආරාධනා"));
+  const D = fDate(ev.date, lang);
+  const dust = Array.from({length:10},(_,i)=>`<i style="left:${(i*37+11)%96}%;top:${(i*53+7)%90}%;animation-delay:${(i*.7).toFixed(1)}s"></i>`).join("");
+  const photo = gallery&&gallery[0] ? `<figure class="lx-photo">${gallery[0]}</figure>` : `<div class="lx-photo lx-ph">${lxMandala("lx-mini")}</div>`;
+  const nm2 = names.length>1 ? `${esc(names[0])} ${L("and","සහ")} ${esc(names[1])}` : esc(names[0]);
+  const fabs = `<div class="lx-fabs"><div class="lx-sheet" hidden>${base.sections.map(([k,ic,lb])=>`<button type="button" data-go="${base.id}-${k}">${ic}<span>${lb}</span></button>`).join("")}</div>
+    <button type="button" class="lx-fab" data-lxmenu aria-label="${L("Menu","මෙනුව")}" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 7h14M5 12h14M5 17h14"/></svg></button>
+    ${CONFIG.MUSIC?`<button type="button" class="lx-fab" data-music aria-pressed="false" aria-label="${L("Mute or unmute music","සංගීතය නවත්වන්න / වාදනය")}"><svg class="m-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg><svg class="m-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg></button>`:""}</div>`;
+  return `<div class="site lotus locked t-${type} ${si?"si":""}" style="${tplVars(prem)}" data-site="${base.id}">
+  <section class="lx-cover">${lxMandala()}${lxBouquet("l")}${lxBouquet("r")}<div class="lx-dust">${dust}</div>
+    <div class="lx-in"><span class="lx-eb">${eyebrow}</span>${lxRule()}
+    <h1 class="lx-names one">${names.map(esc).join(` <span>&amp;</span> `)}</h1>
+    ${D?`<p class="lx-date">${esc(D)}</p>`:""}
+    <p class="lx-dear">${guest?`${L("Dear","ආදරණීය")} ${esc(guest)}`:L("You are warmly invited","ඔබට සාදරයෙන් ආරාධනා")}</p>
+    <button type="button" class="lx-open" data-open><svg viewBox="0 0 32 20" aria-hidden="true"><circle cx="11" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="21" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="2"/></svg>${L("Open invitation","ආරාධනාව විවෘත කරන්න")}</button></div>
+  </section>
+  <header class="lx-top">${lxMono(type,ev)}</header>
+  <section class="lx-hero" id="${base.id}-home">${lxMandala()}${lxBouquet("l")}${lxBouquet("r")}<div class="lx-dust">${dust}</div>
+    <div class="lx-in"><span class="lx-eb">${eyebrow}</span>
+    <h2 class="lx-names">${names.map(esc).join(`<span>&amp;</span>`)}</h2>${lxRule()}
+    <p class="lx-sw">ස්වස්ති සිද්ධම්</p>
+    <p class="lx-tag">${L("With the blessings of our families, we begin our forever","දෙපාර්ශවයේ ආශීර්වාදය ඇතිව අපි නව ජීවිතයක් අරඹමු")}</p>
+    <button type="button" class="lx-down" data-go="${base.id}-details" aria-label="${L("Scroll down","පහළට")}"><small>${L("Scroll down","පහළට")}</small><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span></button></div>
+  </section>
+  <section class="s-sec lx-details" id="${base.id}-details">${photo}
+    <span class="s-eb">${type==="wedding"?L("Wedding details","විවාහ විස්තර"):L("Event details","උත්සව විස්තර")}</span>
+    <h2 class="s-h">${L("Together with their families","දෙපාර්ශවයේ දෙමාපියන් සමඟ")}</h2>
+    <div class="lx-heart" aria-hidden="true"><i></i>♥<i></i></div>
+    <p class="s-p">${type==="wedding"?L(`We joyfully invite you to celebrate the marriage of <b>${nm2}</b>.`,`<b>${nm2}</b> ගේ විවාහ මංගල්‍යයට ඔබට සාදරයෙන් ආරාධනා කරමු.`):L(`We joyfully invite you to celebrate with <b>${nm2}</b>.`,`<b>${nm2}</b> සමඟ සතුට බෙදාගන්න ඔබට ආරාධනා කරමු.`)}</p>
+    ${D?`<p class="lx-date">${esc(D)}</p>`:""}
+  </section>
+  ${base.rest}
+  ${fabs}
+</div>`;
 }
 
 const corner = c => `<svg class="corner %POS%" viewBox="0 0 42 42" aria-hidden="true"><path d="M4 38V14Q4 4 14 4H38" fill="none" stroke="${c}" stroke-width="1.4"/><path d="M10 30Q10 10 30 10" fill="none" stroke="${c}" stroke-width="1" opacity=".6"/><circle cx="10" cy="10" r="2.6" fill="${c}"/><path d="M16 16q6-2 8 4q-6 2-8-4z" fill="${c}" opacity=".8"/></svg>`;
@@ -984,6 +1167,7 @@ const MORE = {
     {n:"Kandyan Postcard", img:"kandyan-pattern", layout:"panel", bg:"#FFFCF6", gold:"#9C7534", soft:"#6B5E52", ink:"#3B0A12"}],
 };
 for(const k in MORE) PREMIUM[k].push(...MORE[k]);
+for(const k of ["wedding","homecoming","other"]) PREMIUM[k].push({n:"Lotus Mandala", layout:"lotus", site:"lotus", bg:"#F6F0E4", gold:"#B39256", soft:"#6E625A", ink:"#7A1F2B"});
 const IMG_DIR = "img/";
 const srcset = n => `${IMG_DIR}${n}-480.webp 480w, ${IMG_DIR}${n}-960.webp 960w`;
 const pic = (n, sizes, alt, pos, lazy=true) => `<img src="${IMG_DIR}${n}-960.webp" srcset="${srcset(n)}" sizes="${sizes}" alt="${esc(alt||"")}" ${lazy?'loading="lazy"':""} decoding="async" ${pos?`style="object-position:${pos}"`:""}>`;
@@ -1037,7 +1221,7 @@ const prettyPhone = p => { const d=String(p||"").replace(/\D/g,""); return d.len
 const b64 = s => btoa(unescape(encodeURIComponent(s))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
 const unb64 = s => decodeURIComponent(escape(atob(s.replace(/-/g,"+").replace(/_/g,"/"))));
 function inviteLink(guest){
-  const payload = {t:S.type, l:S.lang==="si"?"si":"en", e:cur(), g:guest||""};
+  const payload = {t:S.type, l:S.lang==="si"?"si":"en", e:cur(), g:guest||""}; const cp=curPrem(); if(cp&&cp.site) payload.d=cp.site;
   return CONFIG.SITE + "#i=" + b64(JSON.stringify(payload));
 }
 
@@ -1192,10 +1376,10 @@ async function copy(text, el){
 function modal(html){
   const L=document.getElementById("layer");
   L.innerHTML=`<div class="scrim" data-close><div class="modal" role="dialog" aria-modal="true">${html}</div></div>`;
-  L.querySelector(".scrim").addEventListener("click",e=>{ if(e.target.hasAttribute("data-close")||e.target.closest("[data-x]")) L.innerHTML="" });
+  L.querySelector(".scrim").addEventListener("click",e=>{ if(e.target.hasAttribute("data-close")||e.target.closest("[data-x]")){ L.innerHTML=""; lxStop() } });
   const f=L.querySelector("input,button,a"); f&&f.focus();
 }
-document.addEventListener("keydown",e=>{ if(e.key==="Escape") document.getElementById("layer").innerHTML="" });
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"){ document.getElementById("layer").innerHTML=""; lxStop() } });
 
 /* ================= RENDER APP ================= */
 function render(){
@@ -1529,7 +1713,7 @@ function siteHTML(type, ev, lang, guest, prem, gallery){
   sections.push(["loc",I.pin,L("Location","ස්ථානය")]);
   if(ev.rsvp) sections.push(["rsvp",I.mail,L("Reply","පිළිතුර")]);
   const mapHref = ev.map || (ev.venue?`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ev.venue)}`:"");
-  return `<div class="site t-${type} ${si?"si":""}" ${prem?`style="${tplVars(prem)}"`:""} data-site="${id}">
+  const html = `<div class="site t-${type} ${si?"si":""}" ${prem?`style="${tplVars(prem)}"`:""} data-site="${id}">
   <section class="s-hero" id="${id}-home">${cardHTML(type,ev,lang,guest,prem)}<span class="s-hint">${L("Scroll for details","විස්තර සඳහා පහළට")} ↓</span></section>
 
   <section class="s-sec" id="${id}-date">
@@ -1575,6 +1759,8 @@ function siteHTML(type, ev, lang, guest, prem, gallery){
   <footer class="s-foot">${L("Made with","නිර්මාණය")} <a href="${CONFIG.SITE.split("#")[0]}" target="_blank" rel="noopener">Aradhanawa.com</a></footer>
   <nav class="snav" aria-label="${L("Invitation sections","කොටස්")}">${sections.map(([k,ic,lb],i)=>`<button type="button" data-go="${id}-${k}" aria-label="${lb}" ${i===0?'aria-current="true"':""}>${ic}</button>`).join("")}</nav>
 </div>`;
+  if(prem&&prem.site==="lotus"){ lxCSS(); const a=html.indexOf(`<section class="s-sec" id="${id}-date">`), b=html.indexOf(`<nav class="snav"`); const secs=[...sections]; secs.splice(1,0,["details",I.eye,L("Details","විස්තර")]); return lxSite(type,ev,lang,guest,prem,gallery,{id,sections:secs,rest:html.slice(a,b)}) }
+  return html;
 }
 function rsvpText(f){
   const si=f.dataset.lang==="si", nm=(f.querySelector("[name=nm]").value||"").trim(), msg=(f.querySelector("[name=msg]").value||"").trim(), n=+f.dataset.n, ev=f.dataset.ev;
@@ -1642,7 +1828,7 @@ function rsvpBlock(type,ev,lang,guest){
 function renderGuest(p){
   const type=TYPES[p.t]?p.t:"other";
   document.title = (p.e.title || [p.e.a,p.e.b].filter(Boolean).join(" & ") || "Invitation") + " · Aradhanawa";
-  document.getElementById("app").innerHTML = `<main class="gwrap t-${type}">${siteHTML(type,p.e,p.l,p.g,null,[])}</main>`;
+  document.getElementById("app").innerHTML = `<main class="gwrap t-${type}">${siteHTML(type,p.e,p.l,p.g,p.d?(PREMIUM[type].find(x=>x.site===p.d)||null):null,[])}</main>`;
   document.body.style.background = getComputedStyle(document.querySelector(".gwrap")).backgroundColor;
   initSites();
 }
@@ -1864,6 +2050,7 @@ function renderAdmin(tab){
       <div class="af"><label for="s-wa">Studio WhatsApp</label><input id="s-wa" name="STUDIO_WA" value="${esc(CONFIG.STUDIO_WA)}"><small>International format, for example 94771234567</small></div>
       <div class="af"><label for="s-plus">Plus price</label><input id="s-plus" name="PRICE_PLUS" value="${esc(CONFIG.PRICE_PLUS)}"></div>
       <div class="af"><label for="s-custom">Custom design price</label><input id="s-custom" name="PRICE_CUSTOM" value="${esc(CONFIG.PRICE_CUSTOM)}"></div>
+      <div class="af" style="grid-column:1/-1"><label for="s-music">Background music (Lotus Mandala)</label><input id="s-music" name="MUSIC" value="${esc(CONFIG.MUSIC||"")}"><small>MP3 path or URL, for example audio/jayamangala-gatha.mp3. Leave empty for no music.</small></div>
     </div><div class="row" style="margin-top:18px"><button class="btn primary" type="submit">Save settings</button></div></form>
     <div class="box danger"><h2>Data</h2><p class="sub" style="margin:-4px 0 14px;color:var(--muted)">Everything here is saved in this browser only until a real database is connected.</p>
       <div class="row"><button class="btn" data-clearsample>Remove sample data</button></div></div>`;
@@ -1889,7 +2076,7 @@ function renderAdmin(tab){
     if(b.hasAttribute("data-clearsample")){ DB.setUsers(DB.users().filter(x=>!x.sample)); DB.setOrders(DB.orders().filter(x=>!x.sample)); toast("Sample data removed"); re() }
   });
   const sf=document.getElementById("sform");
-  if(sf) sf.onsubmit=e=>{ e.preventDefault(); const c={}; for(const k of ["FREE_GUESTS","STUDIO_WA","PRICE_PLUS","PRICE_CUSTOM"]){ const v=sf.elements[k].value.trim(); if(v) c[k]=k==="FREE_GUESTS"?Math.max(1,+v||5):k==="STUDIO_WA"?intlPhone(v):v } store.set("config",c); Object.assign(CONFIG,c); toast("Settings saved") };
+  if(sf) sf.onsubmit=e=>{ e.preventDefault(); const c={}; for(const k of ["FREE_GUESTS","STUDIO_WA","PRICE_PLUS","PRICE_CUSTOM","MUSIC"]){ const v=sf.elements[k].value.trim(); if(k==="MUSIC"){ c.MUSIC=v; const a=document.getElementById("lxAudio"); if(a) a.remove(); continue } if(v) c[k]=k==="FREE_GUESTS"?Math.max(1,+v||5):k==="STUDIO_WA"?intlPhone(v):v } store.set("config",c); Object.assign(CONFIG,c); toast("Settings saved") };
 }
 
 /* ---------- router ---------- */
@@ -1909,6 +2096,7 @@ document.addEventListener("click",e=>{
 
 (function boot(){
   try{ Object.assign(CONFIG, store.get("config",{})) }catch(e){}
+  lxCSS();
   seedDB().catch(()=>{}).finally(route);
 })();
 </script>

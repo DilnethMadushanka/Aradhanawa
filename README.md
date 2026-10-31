@@ -12,11 +12,3 @@ Wenas karanna one dewal (`CONFIG` in the script):
 - `PRICE_PLUS`, `PRICE_CUSTOM`, `FREE_GUESTS`
 
 Production ekata ilaga steps: login + database (Supabase/Firebase), short links (aradhanawa.com/i/xyz), RSVP list, PayHere payments, server-side 5-guest limit (danata browser eke witharai).
-
-## Deploy (Vercel)
-
-Static site, build step ekak naha.
-
-1. vercel.com > Add New > Project > `DilnethMadushanka/Aradhanawa` import karanna.
-2. Framework Preset: **Other**. Build Command saha Output Directory his thiyanna.
-3. Deploy. `main` branch ekata push karana hama welema auto deploy wenawa.

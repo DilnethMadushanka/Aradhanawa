@@ -5,7 +5,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@400..800&family=Noto+Sans+Sinhala:wght@400..800&family=Noto+Serif+Sinhala:wght@500..900&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Pinyon+Script&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@400..800&family=Noto+Sans+Sinhala:wght@400..800&family=Noto+Serif+Sinhala:wght@500..900&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Pinyon+Script&family=Cinzel+Decorative:wght@700;900&display=swap">
 <style>
 /* Layout: an atelier table in daylight. Jasmine-ivory paper, champagne-gold hairlines and corner marks, deep jade ink.
    A deliberate single light look (the user asked for light colours), so every colour is set explicitly here. */
@@ -1318,7 +1318,10 @@ button.lp-hghost{background:none;border:0;border-bottom:1.5px solid rgba(122,84,
 .lp-mj.sm:hover{transform:translateY(-2px)}
 @media (max-width:700px){.lp-mj.lg{--u:8.2px}.lp-mj.md{--u:7.6px}}
 @media (max-width:480px){.lp-nav .wm-t small{display:none}.lp-mj.sm{font-size:6.6px;margin-inline:11px 14px}.lp-mj.sm .mj-roll b{font-size:11px}.lp-mj.sm .mj-roll b::before,.lp-mj.sm .mj-roll b::after{margin:0 4px;font-size:6px}}
-@media (max-width:400px){.lp-nav .wm .wm-t{display:none}}
+.lp-nav .wm-t b{font:900 25px/1 "Cinzel Decorative",Georgia,serif;letter-spacing:.02em;background:linear-gradient(100deg,#6E4C14 0%,#B3852B 30%,#E9C25A 46%,#B3852B 62%,#6E4C14 100%) 0 0/250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:lpshine 9s linear infinite;padding-bottom:2px}
+.lp-nav .wm-t small{font:600 12px/1.2 "Noto Serif Sinhala",serif;color:#8A6420;letter-spacing:.03em;margin-top:3px}
+@media (max-width:960px){.lp-nav .wm-t b{font-size:22px}}
+@media (max-width:480px){.lp-nav .wm-t small{display:block;font-size:10.5px}}
 @media (prefers-reduced-motion:reduce){.lp-mj *,.lp-mj *::before{animation:none!important}}
 @media (prefers-reduced-motion:reduce){.js .lp .rv{opacity:1;transform:none;transition:none}.lp-hero .slot img{animation:none}.lp-nav{transition:none}}
 .lp ~ .ctabar{box-shadow:none}
@@ -1966,7 +1969,7 @@ function lpNav(){
     <a class="wm" href="#" aria-label="Aradhanawa home"><svg class="wm-ic" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18.5" fill="none" stroke="currentColor"/><g fill="#EBD29A" stroke="currentColor" stroke-width=".9">${Array.from({length:8},(_,i)=>`<path transform="rotate(${i*45} 20 20)" d="M20 17C17.5 13.5 18 9 20 6C22 9 22.5 13.5 20 17Z"/>`).join("")}</g><circle cx="20" cy="20" r="3" fill="currentColor"/></svg><span class="wm-t"><b>Aradhanawa</b><small>ආරාධනාව</small></span></a>
     <nav class="nv-links" aria-label="Main">${L.map(([k,n,h])=>`<a href="${h}" ${PG===k||(k==="designs"&&PG==="design")?'aria-current="page"':""}>${n}</a>`).join("")}</nav>
     <div class="nv-end">${u?`<a class="nv-acc" href="${u.role==="admin"?"#admin":"#account"}">${u.role==="admin"?"Admin":"My account"}</a><a class="nv-acc" href="#" data-logout>Log out</a>`:`<a class="nv-acc" href="#login">Log in</a><a class="nv-acc nv-reg" href="#register">Register</a>`}
-    ${lpNakath("sm")}<button type="button" class="nv-menu" aria-expanded="false" aria-controls="nvSheet" aria-label="Menu"><i></i><i></i><i></i></button></div></div>
+    <button type="button" class="nv-menu" aria-expanded="false" aria-controls="nvSheet" aria-label="Menu"><i></i><i></i><i></i></button></div></div>
     <div class="nv-band" aria-hidden="true"></div>
     <div class="nv-sheet" id="nvSheet" hidden><nav aria-label="Mobile">${L.map(([k,n,h])=>`<a href="${h}" ${PG===k?'aria-current="page"':""}>${n}</a>`).join("")}${u?`<a href="${u.role==="admin"?"#admin":"#account"}">${u.role==="admin"?"Admin":"My account"}</a><a href="#" data-logout>Log out</a>`:`<a href="#login">Log in</a><a href="#register">Register</a>`}</nav>${lpNakath("lg")}</div>
   </header>`;

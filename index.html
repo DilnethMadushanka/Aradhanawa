@@ -1055,6 +1055,23 @@ nav.top a{font-weight:600}
 .site.lotus .s-gal figure{border-radius:20px;border:6px solid #FFFDF8;outline:1px solid color-mix(in srgb,var(--c-gold) 55%,transparent);box-shadow:0 12px 24px -18px rgba(90,60,30,.6)}
 @media (max-width:380px){.lx-evc{grid-template-columns:minmax(0,1fr)}.lx-evc.flip .tx{order:0}.lx-evc .art{max-width:180px;justify-self:center}}
 
+/* ---- guest link on desktop: themed background fills the screen, content sits in a wider centred column ---- */
+@media (min-width:900px){
+  .gwrap .site.lotus{max-width:none;--gcol:min(680px,100% - 360px)}
+  .gwrap .site.lotus > :not(.lx-bgfx):not(.lx-top){width:var(--gcol);max-width:none;margin-left:auto;margin-right:auto;box-sizing:border-box}
+  .gwrap .site.lotus > .s-sec:not(.lx-plain){margin-block:28px}
+  .gwrap .site.lotus > .lx-fabs{width:min(100%,960px);padding:0 28px}
+  .gwrap .lx-bgfx .fl{top:-2%;bottom:auto;width:auto;height:104%;aspect-ratio:900/1612}
+  .gwrap .lx-bgfx .fl.l{left:-1%;right:auto}.gwrap .lx-bgfx .fl.r{right:-1%;left:auto}
+  .gwrap .lx-bgfx > img:first-child{filter:blur(3px) saturate(1.05)}
+  .gwrap .lx-bgfx::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 40% 70% at 50% 50%,color-mix(in srgb,var(--c-bg) 22%,transparent),transparent)}
+  .gwrap .site.lotus .lx-cover,.gwrap .site.lotus .lx-hero{min-height:100svh}
+  .gwrap .lx-names{font-size:76px}.gwrap .lx-names.one{font-size:56px}
+  .gwrap .site.lotus .s-h{font-size:36px}
+  .gwrap .site.lotus .s-p{font-size:20px;max-width:36ch}
+  .gwrap .lx-evs,.gwrap .lx-vc,.gwrap .site.lotus .lx-save,.gwrap .lx-map{max-width:560px}
+  .gwrap .site.lotus .s-gal{max-width:560px;grid-auto-rows:170px}
+}
 @media (prefers-reduced-motion:reduce){.lx-bq g,.lx-dust i,.lx-open,.lx-down span,.lx-fab.on{animation:none!important}}
 /* card thumbnail */
 .card.L-lotus{background:var(--lx-l) left top/17cqw auto repeat-y,var(--lx-r) right top/17cqw auto repeat-y,linear-gradient(118deg,rgba(255,255,255,0) 18%,rgba(255,255,255,.55) 32%,rgba(255,255,255,0) 46%),linear-gradient(165deg,#F9F4EB,#EDE2CF 52%,#F7F0E4)}

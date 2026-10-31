@@ -6,7 +6,7 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
-    function ADMIN_EMAILS() { return ["you@gmail.com"]; }
+    function ADMIN_EMAILS() { return ["raveeshaheshan26@gmail.com"]; }
 
     function signedIn() { return request.auth != null; }
     function email() { return signedIn() && request.auth.token.email != null ? request.auth.token.email.lower() : ""; }

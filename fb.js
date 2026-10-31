@@ -104,7 +104,8 @@ export async function init(cfg, hooks = {}) {
   FBX.signInGoogle = async () => {
     const p = new A.GoogleAuthProvider();
     p.setCustomParameters({ prompt: "select_account" });
-    try { return await A.signInWithPopup(auth, p) }
+    const prev = auth.currentUser && auth.currentUser.uid;
+    try { const r = await A.signInWithPopup(auth, p); if (prev && prev === r.user.uid) await FBX.refresh(); return r }
     catch (e) {
       if (["auth/popup-blocked", "auth/operation-not-supported-in-this-environment", "auth/cancelled-popup-request"].includes(e.code)) return A.signInWithRedirect(auth, p);
       throw e;
@@ -120,6 +121,14 @@ export async function init(cfg, hooks = {}) {
   };
   FBX.resetPassword = email => A.sendPasswordResetEmail(auth, email);
   FBX.signOut = () => A.signOut(auth);
+  FBX.sendVerify = () => A.sendEmailVerification(auth.currentUser);
+  FBX.refresh = async () => {
+    const u = auth.currentUser; if (!u) return null;
+    await u.reload(); await u.getIdToken(true);
+    FBX.user = auth.currentUser; FBX.profile = await loadProfile(FBX.user);
+    startListeners(FBX.user, FBX.profile.role === "admin"); changed("auth");
+    return FBX.profile;
+  };
   FBX.updateMe = async fields => {
     if (!FBX.user) throw new Error("Not signed in");
     const f = {}; for (const k of ["name", "phone"]) if (k in fields) f[k] = String(fields[k] || "").slice(0, 120);

@@ -1,7 +1,10 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="description" content="Aradhanawa - Sri Lankan digital invitations for weddings, homecomings, birthdays and dana, sent on WhatsApp in Sinhala, Singlish or English."><meta name="theme-color" content="#FFF3E3"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
-<title>Aradhanawa</title>
+<title>Aradhanawa · Digital Invitations Sri Lanka for WhatsApp</title>
+<link rel="canonical" href="https://www.aradhanawa.com/">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Aradhanawa"><meta property="og:title" content="Aradhanawa · Sri Lankan digital invitations"><meta property="og:description" content="Wedding, homecoming, birthday, party and dana invitations, sent on WhatsApp in Sinhala, Singlish or English."><meta property="og:url" content="https://www.aradhanawa.com/"><meta property="og:image" content="https://www.aradhanawa.com/img/card-flatlay-1600.webp"><meta property="og:locale" content="en_LK"><meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.aradhanawa.com/#org","name":"Aradhanawa","alternateName":"ආරාධනාව","url":"https://www.aradhanawa.com/","logo":"https://www.aradhanawa.com/img/card-flatlay-960.webp","contactPoint":{"@type":"ContactPoint","telephone":"+94764487857","contactType":"customer support","areaServed":"LK","availableLanguage":["en","si"]}},{"@type":"WebSite","@id":"https://www.aradhanawa.com/#site","name":"Aradhanawa","url":"https://www.aradhanawa.com/","inLanguage":["en","si"],"publisher":{"@id":"https://www.aradhanawa.com/#org"}}]}</script>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2566,7 +2569,7 @@ function render(){
     <div class="top"><div><b>Aradhanawa · ආරාධනාව</b><span>Digital invitations made in Sri Lanka, sent on WhatsApp.</span><span>We answer on WhatsApp the same day.</span></div><a href="#" data-top>Back to top</a></div>
     <span></span>
     <a class="big" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,"Hi Aradhanawa! I have a question about invitations.")}">+${CONFIG.STUDIO_WA.replace(/^(\d{2})(\d{2})(\d{3})(\d+)$/,"$1 $2 $3 $4")}</a>
-    <div class="meta"><nav aria-label="Footer"><a href="#login">Log in</a><a href="#register">Register</a><a href="#pricing">Pricing &amp; questions</a><a href="#designs">Designs</a><a href="#create">Create</a></nav><span>Designs drawn and photographed for Aradhanawa</span><span>Colombo, ${new Date().getFullYear()}</span></div>
+    <div class="meta"><nav aria-label="Footer"><a href="#login">Log in</a><a href="#register">Register</a><a href="#pricing">Pricing &amp; questions</a><a href="#designs">Designs</a><a href="#create">Create</a><a href="/wedding-invitations">Wedding invitations</a><a href="/homecoming-invitations">Homecoming</a><a href="/engagement-invitations">Engagement</a><a href="/birthday-invitations">Birthday</a><a href="/party-invitations">Party</a><a href="/dana-invitations">Dana</a></nav><span>Designs drawn and photographed for Aradhanawa</span><span>Colombo, ${new Date().getFullYear()}</span></div>
   </footer>
 `,
     feat:()=>`<section class="lp-ch lp-paper g lp-des lp-feat" id="featured" data-f="paper">
@@ -3371,6 +3374,7 @@ function route(){
   const [pg,sub,rest]=h.slice(1).split("/");
   if(PAGES[pg]){ PAGES[pg](sub,rest); return }
   if(pg==="make"){ location.replace("#create"); return }
+  if(pg==="create"&&sub&&TYPES[sub]){ S.type=sub; save(); location.replace("#create"); return }
   const want=SITE_PAGES[pg]?pg:"home", el0=document.querySelector(".lp-main");
   if(!el0||S.page!==want||document.body.dataset.pg!==want){ S.page=want; render(); }
   const el=want==="home"&&pg&&document.getElementById(pg); if(el) el.scrollIntoView({behavior:"smooth"}); else if(!pg||SITE_PAGES[pg]) window.scrollTo(0,0);

@@ -1,0 +1,96 @@
+/* Aradhanawa loading screen: ivory paper, a gold lotus that draws itself and blooms, then the whole veil lifts away.
+   Self-contained (all classes prefixed aw-ld) so it never touches the site or card styles. */
+#aw-loader{
+  position:fixed;inset:0;z-index:2147483000;display:grid;place-items:center;
+  background:
+    radial-gradient(60% 50% at 50% 42%,rgba(255,253,248,1) 0%,rgba(251,248,242,0) 70%),
+    radial-gradient(120% 90% at 50% 120%,#F2E7D3 0%,rgba(242,231,211,0) 60%),
+    #FBF8F2;
+  color:#1D2A24;
+  transition:opacity .8s cubic-bezier(.4,0,.2,1),visibility 0s linear .8s,transform .9s cubic-bezier(.4,0,.2,1);
+  /* safety net: if the script never runs, the veil still lifts by itself */
+  animation:aw-ld-failsafe .6s ease 9s forwards;
+}
+#aw-loader.aw-ld-done{opacity:0;visibility:hidden;transform:scale(1.04);pointer-events:none}
+html.aw-ld-lock,html.aw-ld-lock body{overflow:hidden}
+
+/* champagne-gold corner marks, like the site's paper frames */
+#aw-loader .aw-ld-frame{position:absolute;inset:clamp(14px,3vw,28px);pointer-events:none}
+#aw-loader .aw-ld-frame i{position:absolute;width:34px;height:34px;border:0 solid #C29A55;opacity:0;animation:aw-ld-fade .9s ease .2s forwards}
+#aw-loader .aw-ld-frame i:nth-child(1){top:0;left:0;border-top-width:1px;border-left-width:1px}
+#aw-loader .aw-ld-frame i:nth-child(2){top:0;right:0;border-top-width:1px;border-right-width:1px}
+#aw-loader .aw-ld-frame i:nth-child(3){bottom:0;left:0;border-bottom-width:1px;border-left-width:1px}
+#aw-loader .aw-ld-frame i:nth-child(4){bottom:0;right:0;border-bottom-width:1px;border-right-width:1px}
+
+#aw-loader .aw-ld-box{display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px}
+
+/* lotus */
+#aw-loader .aw-ld-lotus{width:clamp(120px,30vw,168px);height:auto;overflow:visible;filter:drop-shadow(0 10px 18px rgba(156,117,52,.18))}
+#aw-loader .aw-ld-glow{fill:url(#aw-ld-halo);opacity:0;transform-box:view-box;transform-origin:60px 50px;animation:aw-ld-halo 3.2s ease-in-out 1.2s infinite}
+#aw-loader .aw-ld-p{
+  fill:url(#aw-ld-gold);fill-opacity:0;stroke:#B08A47;stroke-width:1.1;stroke-linejoin:round;
+  stroke-dasharray:160;stroke-dashoffset:160;
+  transform-box:view-box;transform-origin:60px 64px;
+  animation:aw-ld-draw 1.3s cubic-bezier(.6,0,.3,1) forwards,aw-ld-fill .9s ease forwards;
+}
+#aw-loader .aw-ld-p.c{animation-delay:.15s,1.05s}
+#aw-loader .aw-ld-p.l1{animation-delay:.35s,1.15s;--r:-14deg}
+#aw-loader .aw-ld-p.r1{animation-delay:.35s,1.15s;--r:14deg}
+#aw-loader .aw-ld-p.l2{animation-delay:.55s,1.25s;--r:-22deg}
+#aw-loader .aw-ld-p.r2{animation-delay:.55s,1.25s;--r:22deg}
+#aw-loader .aw-ld-p.l1,#aw-loader .aw-ld-p.r1,#aw-loader .aw-ld-p.l2,#aw-loader .aw-ld-p.r2{
+  animation:aw-ld-draw 1.3s cubic-bezier(.6,0,.3,1) forwards,aw-ld-fill .9s ease forwards,aw-ld-bloom 1.6s cubic-bezier(.3,.7,.2,1) backwards;
+}
+#aw-loader .aw-ld-p.l1,#aw-loader .aw-ld-p.r1{animation-delay:.35s,1.15s,.35s}
+#aw-loader .aw-ld-p.l2,#aw-loader .aw-ld-p.r2{animation-delay:.55s,1.25s,.55s}
+#aw-loader .aw-ld-water{fill:none;stroke:#C29A55;stroke-width:1;stroke-linecap:round;stroke-dasharray:70;stroke-dashoffset:70;animation:aw-ld-draw 1.2s ease forwards}
+#aw-loader .aw-ld-water.b{animation-delay:.3s;opacity:.55}
+#aw-loader .aw-ld-dot{fill:#C29A55;opacity:0;animation:aw-ld-sparkle 2.4s ease-in-out infinite}
+#aw-loader .aw-ld-dot:nth-of-type(2){animation-delay:.8s}
+#aw-loader .aw-ld-dot:nth-of-type(3){animation-delay:1.6s}
+
+/* wordmark */
+#aw-loader .aw-ld-name{
+  margin:18px 0 0;font:700 clamp(26px,7vw,40px)/1 "Cinzel Decorative","Cormorant Garamond",Georgia,serif;
+  letter-spacing:.08em;text-indent:.08em;color:#9C7534;
+  background:linear-gradient(100deg,#8A6526 0%,#C29A55 35%,#F1DDAF 50%,#C29A55 65%,#8A6526 100%);
+  background-size:250% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  opacity:0;transform:translateY(8px);
+  animation:aw-ld-rise .9s cubic-bezier(.2,.7,.2,1) .7s forwards,aw-ld-sheen 3.6s ease-in-out 1.6s infinite;
+}
+#aw-loader .aw-ld-si{
+  margin-top:8px;font:500 15px/1.4 "Noto Serif Sinhala",serif;color:#66716B;letter-spacing:.04em;
+  opacity:0;animation:aw-ld-rise .9s cubic-bezier(.2,.7,.2,1) .95s forwards
+}
+#aw-loader .aw-ld-rule{display:flex;align-items:center;gap:10px;margin-top:18px;opacity:0;animation:aw-ld-rise .9s ease 1.1s forwards}
+#aw-loader .aw-ld-rule span{display:block;width:64px;height:1px;background:#E7DFD0;position:relative;overflow:hidden}
+#aw-loader .aw-ld-rule span::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,#C29A55,transparent);transform:translateX(-100%);animation:aw-ld-run 1.8s ease-in-out 1.3s infinite}
+#aw-loader .aw-ld-rule span:last-child::after{animation-direction:reverse}
+#aw-loader .aw-ld-rule b{width:5px;height:5px;background:#C29A55;transform:rotate(45deg)}
+#aw-loader .aw-ld-tag{
+  margin-top:14px;font:500 11px/1.4 "Inter Tight",system-ui,sans-serif;letter-spacing:.32em;text-indent:.32em;text-transform:uppercase;color:#8C8577;
+  opacity:0;animation:aw-ld-rise .9s ease 1.25s forwards
+}
+
+/* progress hairline at the bottom */
+#aw-loader .aw-ld-bar{position:absolute;left:50%;bottom:calc(clamp(14px,3vw,28px) + 26px + env(safe-area-inset-bottom,0px));width:min(220px,52vw);height:1px;background:#E7DFD0;transform:translateX(-50%);overflow:hidden}
+#aw-loader .aw-ld-bar i{position:absolute;inset:0;background:linear-gradient(90deg,#C29A55,#9C7534);transform-origin:left;transform:scaleX(0);animation:aw-ld-progress 3.2s cubic-bezier(.2,.6,.3,1) .3s forwards}
+#aw-loader.aw-ld-ready .aw-ld-bar i{animation:none;transform:scaleX(1);transition:transform .45s ease}
+
+@keyframes aw-ld-draw{to{stroke-dashoffset:0}}
+@keyframes aw-ld-fill{to{fill-opacity:1}}
+@keyframes aw-ld-bloom{from{transform:rotate(calc(var(--r) * -1)) scale(.6);opacity:0}to{transform:none;opacity:1}}
+@keyframes aw-ld-fade{to{opacity:1}}
+@keyframes aw-ld-rise{to{opacity:1;transform:none}}
+@keyframes aw-ld-sheen{0%,20%{background-position:100% 0}80%,100%{background-position:0 0}}
+@keyframes aw-ld-run{to{transform:translateX(100%)}}
+@keyframes aw-ld-halo{0%,100%{opacity:.35;transform:scale(.92)}50%{opacity:.8;transform:scale(1.06)}}
+@keyframes aw-ld-sparkle{0%,100%{opacity:0;transform:translateY(0)}50%{opacity:.9;transform:translateY(-6px)}}
+@keyframes aw-ld-progress{0%{transform:scaleX(0)}60%{transform:scaleX(.7)}100%{transform:scaleX(.88)}}
+@keyframes aw-ld-failsafe{to{opacity:0;visibility:hidden;pointer-events:none}}
+
+@media (prefers-reduced-motion:reduce){
+  #aw-loader,#aw-loader *{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important}
+  #aw-loader .aw-ld-glow,#aw-loader .aw-ld-dot{display:none}
+  #aw-loader{animation:aw-ld-failsafe .3s ease 6s forwards!important}
+}

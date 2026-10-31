@@ -1,13 +1,11 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="description" content="Aradhanawa: Sri Lankan digital invitations for weddings, homecomings, birthdays, parties and dana. Share on WhatsApp in Singlish, Sinhala or English.">
-<meta name="theme-color" content="#FBF8F2">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<html lang="en"><head><meta charset="utf-8"><meta name="description" content="Aradhanawa - Sri Lankan digital invitations for weddings, homecomings, birthdays and dana, sent on WhatsApp in Sinhala, Singlish or English."><meta name="theme-color" content="#1A0B10"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
 <title>Aradhanawa</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@400..800&family=Noto+Sans+Sinhala:wght@400..800&family=Noto+Serif+Sinhala:wght@500..900&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Pinyon+Script&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@400..800&family=Noto+Sans+Sinhala:wght@400..800&family=Noto+Serif+Sinhala:wght@500..900&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Pinyon+Script&display=swap">
 <style>
 /* Layout: an atelier table in daylight. Jasmine-ivory paper, champagne-gold hairlines and corner marks, deep jade ink.
    A deliberate single light look (the user asked for light colours), so every colour is set explicitly here. */
@@ -812,6 +810,236 @@ nav.top a{font-weight:600}
 .card.L-lotus .art svg{width:100%;max-height:none;display:block}
 .card.L-lotus .names{font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:600;font-size:10cqw}
 .card.L-lotus .txt{padding:0 15cqw 12cqw;gap:1.6cqw}
+/* ================= LANDING (taste-skill: sentence as layout) ================= */
+.lp{--l-bg:#1A0B10;--l-surface:#2A141B;--l-ink:#FFFFFF;--l-muted:#C9BBBF;--l-accent:#F0BE4C;--l-accent-ink:#1A0B10;
+  --l-paper:#FFFFFF;--l-paper-ink:#1A0B10;--l-paper-soft:#5E4F54;--l-tone:#F4F2F1;
+  --l-maroon:#6E1A2B;--l-betel:#24543A;--l-lotus:#F2D3D0;--l-deep:#5A3A08;
+  --s-small:clamp(.8125rem,.79rem + .1vw,.875rem);--s-body:clamp(1.0625rem,1rem + .25vw,1.1875rem);--s-lead:clamp(1.25rem,1.1rem + .7vw,1.625rem);--s-head:clamp(2rem,1.3rem + 3.2vw,4rem);
+  --m:clamp(16px,2.2vw,32px);
+  font-family:"Inter Tight","Noto Sans Sinhala",system-ui,sans-serif;font-size:var(--s-body);line-height:1.5;letter-spacing:-.005em;color:var(--l-paper-ink);background:var(--l-paper)}
+.lp h1,.lp h2,.lp h3{font-family:"Inter Tight","Noto Sans Sinhala",system-ui,sans-serif;font-weight:600;letter-spacing:-.04em;line-height:.95;margin:0;text-wrap:balance}
+.lp p{margin:0}
+.lp a{color:inherit}
+.lp .g{padding-inline:var(--m)}
+.lp .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.lp-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;padding:0 26px;border:0;border-radius:0;background:var(--l-accent);color:var(--l-accent-ink);font:600 var(--s-body)/1 "Inter Tight",sans-serif;letter-spacing:-.01em;text-decoration:none;cursor:pointer;transition:transform .15s,background .2s}
+.lp-btn:hover{background:#FFD36B}.lp-btn:active{transform:translateY(1px) scale(.98)}
+.lp .lp-btn{color:var(--l-accent-ink)}
+.lp .lp-btn.dark,.lp-nav[data-f="accent"] .lp-btn,.lp-hero .sup .lp-btn{color:var(--l-ink)}
+.lp-btn.dark{background:var(--l-bg);color:var(--l-ink)}.lp-btn.dark:hover{background:var(--l-maroon)}
+.lp-link{background:none;border:0;padding:0;font:inherit;color:inherit;text-decoration:underline;text-underline-offset:.2em;text-decoration-thickness:1px;cursor:pointer}
+.lp-link:hover{text-decoration-thickness:2px}
+
+/* nav: takes the ink of the chapter beneath it */
+.lp-nav{position:fixed;inset:0 0 auto;z-index:40;display:flex;align-items:center;gap:28px;padding:16px var(--m);background:var(--l-bg);color:var(--l-ink);transition:background .3s,color .3s}
+.lp-nav[data-f="paper"]{background:var(--l-paper);color:var(--l-paper-ink)}
+.lp-nav[data-f="accent"]{background:var(--l-accent);color:var(--l-accent-ink)}
+.lp-nav .wm{display:flex;align-items:baseline;gap:10px;text-decoration:none;font-weight:600;font-size:var(--s-lead);letter-spacing:-.03em}
+.lp-nav .wm span{font-family:"Noto Sans Sinhala",sans-serif;font-weight:600;font-size:var(--s-body);letter-spacing:0}
+.lp-nav nav{margin-left:auto;display:flex;gap:24px;align-items:center}
+.lp-nav nav a{text-decoration:none;font-size:var(--s-body)}
+.lp-nav nav a:hover{text-decoration:underline;text-underline-offset:.25em}
+.lp-nav .lp-btn{min-height:44px;padding:0 18px}
+.lp-nav[data-f="accent"] .lp-btn{background:var(--l-bg);color:var(--l-ink)}
+.lp-nav .menu{display:none}
+@media (max-width:860px){.lp-nav nav a:not(.keep){display:none}.lp-nav nav{gap:14px}.lp-nav .wm span{display:none}.lp-nav{gap:12px;padding-block:10px}.lp-nav .lp-btn{min-height:40px;padding:0 12px;font-size:15px}.lp-nav .wm{font-size:20px}}
+
+/* hero: two fields, headline across the seam */
+.lp-hero{position:relative;min-height:100svh;display:grid;align-content:center;background:var(--l-bg);overflow:hidden;--seam:50%}
+.lp-hero::before{content:"";position:absolute;left:0;right:0;bottom:0;top:var(--seam);background:var(--l-accent)}
+.lp-hero > *{position:relative}
+.lp-hero .h1w{position:relative;display:grid;justify-items:center;padding-inline:var(--m)}
+.lp-hero .hl{grid-area:1/1;font-size:clamp(72px,9.5vw,150px);line-height:.92;letter-spacing:-.045em;text-align:center;font-weight:700}
+.lp-hero .hl .ln{display:block;white-space:nowrap}
+.lp-hero .h1w{transform:translateY(-15%)}
+.lp-hero .hl.up{position:relative;z-index:2}.lp-hero .hl.dn{z-index:1}
+.lp-hero .hl.dn .ln::before{content:attr(data-t)}
+.lp-hero .hl.up{color:var(--l-accent);clip-path:inset(0 0 35% 0)}
+.lp-hero .hl.dn{color:var(--l-deep);clip-path:inset(65% 0 0 0)}
+.lp-hero .slot{display:inline-block;width:2.3em;height:.74em;vertical-align:baseline;margin-left:.12em;overflow:hidden;border-radius:.12em;position:relative;top:.02em}
+.lp-hero .slot img{width:100%;height:100%;object-fit:cover;object-position:50% 30%;display:block;animation:lpdrift 14s ease-in-out infinite alternate}
+@keyframes lpdrift{from{transform:scale(1.04) translate(0,0)}to{transform:scale(1.16) translate(-4%,3%)}}
+.lp-hero .sup{position:absolute;left:0;right:0;bottom:56px;display:grid;justify-items:center;gap:20px;padding-inline:var(--m);text-align:center;color:var(--l-accent-ink)}
+.lp-hero .sup p{font-size:var(--s-lead);line-height:1.35;max-width:36ch;font-weight:500;letter-spacing:-.015em}
+.lp-hero .sup .lp-btn{background:var(--l-bg);color:var(--l-ink)}
+.lp-hero .sup .lp-btn:hover{background:var(--l-maroon)}
+.lp-tail{height:0}
+@media (max-width:700px){.lp-hero{--seam:calc(50% + 4px)}.lp-hero .hl{font-size:13.2vw}.lp-hero .h1w{transform:translateY(-12%)}.lp-hero .hl.up{clip-path:inset(0 0 34% 0)}.lp-hero .hl.dn{clip-path:inset(66% 0 0 0)}.lp-hero .slot{width:1.55em}.lp-hero .sup{bottom:40px}.lp-hero .sup p{font-size:16px;max-width:28ch}.lp-tail{height:12svh}}
+
+/* chapters */
+.lp-ch{padding-block:clamp(96px,12vw,200px)}
+.lp-paper{background:var(--l-paper);color:var(--l-paper-ink)}
+.lp-dark{background:var(--l-bg);color:var(--l-ink)}
+.lp-accent{background:var(--l-accent);color:var(--l-accent-ink)}
+.lp-ch h2{font-size:var(--s-head)}
+
+/* showcase: headline you can type */
+.lp-try{padding-block:clamp(72px,8vw,120px)!important;display:grid;grid-template-columns:minmax(0,1fr);align-content:center;gap:48px}
+.lp-try .tryh{font-size:var(--s-lead);letter-spacing:-.02em;font-weight:600;margin-bottom:-32px}
+.lp-try .line{display:flex;align-items:center;gap:0;border-bottom:0}
+.lp-try input{flex:1;min-width:0;border:0;background:none;padding:0;font:600 clamp(48px,8vw,132px)/1.05 "Inter Tight","Noto Sans Sinhala",sans-serif;letter-spacing:-.045em;color:var(--l-paper-ink);caret-color:var(--l-maroon);outline:none}
+.lp-try input:focus-visible{box-shadow:0 .08em 0 0 var(--l-accent)}
+.lp-try .grid{display:grid;grid-template-columns:minmax(0,560px) minmax(0,1fr);gap:clamp(24px,5vw,80px);align-items:start}
+.lp-try .ans{display:grid;gap:16px;font-size:var(--s-body)}
+.lp-try .ans .kind{font-size:var(--s-lead);font-weight:600;letter-spacing:-.02em}
+.lp-try .ans .kind span{color:var(--l-paper-soft);font-weight:500}
+.lp-try .msg{background:#E7F7DE;color:#10261A;padding:16px 18px;white-space:pre-wrap;font-size:16px;line-height:1.5;max-height:300px;overflow:auto;border-radius:2px 14px 14px 14px}
+.lp-try .msg b{font-weight:700}
+.lp-try .cardwrap{justify-self:end;width:min(340px,100%)}
+.lp-try .ex{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;font-size:17px}
+.lp-try .ex button{background:none;border:0;padding:6px 0;font:inherit;color:var(--l-paper-ink);text-decoration:underline;text-underline-offset:.25em;cursor:pointer}
+.lp-try .ex button:hover{color:var(--l-maroon)}
+.lp-try .go{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+@media (max-width:820px){.lp-try input{font-size:11vw}.lp-try .grid{grid-template-columns:minmax(0,1fr)}.lp-try .cardwrap{justify-self:center;width:min(300px,86%)}.lp-try .ex{gap:10px}.lp-try .ex button{background:var(--l-tone);padding:0 14px;min-height:44px;text-decoration:none}}
+
+/* how: drag through the stages */
+.lp-how{display:grid;grid-template-columns:1fr 1fr;min-height:88svh;position:relative}
+.lp-how .cl{background:var(--l-bg);color:var(--l-ink);padding:clamp(96px,10vw,160px) var(--m) 170px}
+.lp-how .cl h2{font-size:clamp(40px,4.6vw,76px);max-width:13ch;transition:opacity .2s}
+.lp-how .fr{background:var(--l-tone);display:grid;place-items:center;padding:96px var(--m) 170px}
+.lp-how .frag{width:min(440px,100%);transition:opacity .2s}
+.lp-how .ctl{position:absolute;left:var(--m);right:var(--m);bottom:40px;display:grid;gap:14px}
+.lp-how input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:32px;background:none;margin:0;cursor:pointer}
+.lp-how .trk{position:relative;height:32px;display:grid;align-items:center}
+.lp-how .trk::before{content:"";position:absolute;left:0;right:0;top:12px;height:8px;background:#8A7C80}
+.lp-how .trk i{position:absolute;left:0;top:12px;height:8px;width:var(--p,0%);background:var(--l-accent);transition:width .2s}
+.lp-how input[type=range]{position:relative}
+.lp-how input[type=range]::-webkit-slider-runnable-track{height:8px;background:transparent}
+.lp-how input[type=range]::-moz-range-track{height:8px;background:transparent}
+.lp-how input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:32px;height:32px;margin-top:-12px;background:var(--l-accent);border:0;border-radius:0}
+.lp-how input[type=range]::-moz-range-thumb{width:32px;height:32px;background:var(--l-accent);border:0;border-radius:0}
+.lp-how .names{display:grid;grid-template-columns:repeat(4,1fr);font-size:16px}
+.lp-how .names button{background:none;border:0;padding:6px 0;text-align:left;font:inherit;color:#8A7C80;cursor:pointer}
+.lp-how .names button:nth-child(n+3){text-align:right}
+.lp-how .names button[aria-current="true"]{color:var(--l-paper-ink);font-weight:600}
+.lp-how .names button:nth-child(-n+2)[aria-current="true"]{color:var(--l-ink)}
+@media (max-width:820px){.lp-how{grid-template-columns:1fr}.lp-how .fr{order:2;min-height:46svh;padding:40px var(--m) 110px}.lp-how .ctl{position:static;background:var(--l-tone);padding:0 var(--m) 24px;order:3;margin-top:-90px}.lp-how .cl{padding:48px var(--m) 48px;order:1}.lp-how .cl h2{font-size:9vw}.lp-how .names{grid-template-columns:1fr 1fr;font-size:15px}.lp-how .names button,.lp-how .names button:nth-child(n+3){text-align:left;color:#6B5E62}.lp-how .names button:nth-child(-n+2)[aria-current="true"],.lp-how .names button[aria-current="true"]{color:var(--l-paper-ink)}.lp-how input[type=range]::-webkit-slider-thumb{width:40px;height:40px;margin-top:-16px}}
+/* product fragments (data-ui) */
+.fx{background:#fff;border-radius:14px;padding:18px;display:grid;gap:12px;font-size:15px;color:#1A0B10;box-shadow:0 1px 0 rgba(26,11,16,.06)}
+.fx .chips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.fx .chips span{border:1px solid #E4DCDD;border-radius:10px;padding:12px 10px;font-weight:600;display:grid;gap:2px}
+.fx .chips span small{font-family:"Noto Sans Sinhala",sans-serif;font-weight:400;color:#6B5E62;font-size:13px}
+.fx .chips span.on{border-color:#1A0B10;background:#1A0B10;color:#fff}.fx .chips span.on small{color:#D9CCD0}
+.fx label{display:grid;gap:4px;font-size:13px;color:#6B5E62}
+.fx .in{border:1px solid #E4DCDD;border-radius:8px;padding:10px 12px;font-size:15px;color:#1A0B10}
+.fx .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fx .bub{background:#E7F7DE;border-radius:2px 12px 12px 12px;padding:12px 14px;white-space:pre-wrap;line-height:1.45;font-size:14.5px}
+.fx .gr{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #EFE9EA}
+.fx .gr:last-child{border-bottom:0}
+.fx .gr b{flex:1;font-weight:600}.fx .gr small{color:#6B5E62}
+.fx .gr .s{background:#1F8A4C;color:#fff;border-radius:8px;padding:7px 12px;font-weight:600;font-size:13px}
+.fx .gr .s.done{background:#E7F7DE;color:#1F6B3B}
+.fx .meta{display:flex;justify-content:space-between;color:#6B5E62;font-size:13px}
+
+/* designs: tiles with label strips */
+.lp-des .head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:end;margin-bottom:48px}
+.lp-des .head p{font-size:var(--s-lead);max-width:34ch;line-height:1.35;margin-top:20px}
+.lp-des .flt{display:flex;flex-wrap:wrap;gap:8px 22px;justify-content:flex-end;max-width:520px}
+.lp-des .flt button{background:none;border:0;padding:6px 0;font:inherit;color:var(--l-paper-soft);cursor:pointer}
+.lp-des .flt button[aria-pressed="true"]{color:var(--l-paper-ink);font-weight:600;text-decoration:underline;text-underline-offset:.3em}
+.lp-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.lp-tile{display:grid;background:none;border:0;padding:0;text-align:left;cursor:pointer;font:inherit;color:inherit}
+.lp-tile .pv{background:var(--l-tone);padding:18px;display:grid;place-items:center;transition:background .2s}
+.lp-tile .pv .card{box-shadow:none;transition:transform .3s}
+.lp-tile:hover .pv .card{transform:translateY(-4px)}
+.lp-tile .strip{display:flex;justify-content:space-between;align-items:baseline;gap:10px;background:var(--l-bg);color:var(--l-ink);padding:14px 16px}
+.lp-tile .strip b{font-weight:600;font-size:17px;letter-spacing:-.01em}
+.lp-tile .strip span{font-size:var(--s-small);color:var(--l-muted);white-space:nowrap}
+.lp-tile .strip span.free{color:var(--l-accent)}
+.lp-des .more{margin-top:40px;display:flex;justify-content:center}
+@media (max-width:1000px){.lp-tiles{grid-template-columns:repeat(3,minmax(0,1fr))}.lp-des .head{grid-template-columns:minmax(0,1fr)}.lp-des .flt{justify-content:flex-start}}
+@media (max-width:700px){.lp-tiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.lp-tile .pv{padding:10px}.lp-tile .strip{display:grid;padding:10px 12px}.lp-tile .strip b{font-size:15px}.lp-des .head{grid-template-columns:1fr}.lp-des .flt{justify-content:flex-start}}
+
+/* features: sentences with switches */
+.lp-bands h2.sr{position:absolute}
+.lp-band{min-height:20vh;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center;padding:28px var(--m);background:var(--l-paper);color:var(--l-paper-soft);transition:background .35s,color .35s}
+.lp-band h3{font-size:clamp(30px,3.6vw,60px);letter-spacing:-.035em;line-height:1;font-weight:600}
+.lp-band .cq{font-size:17px;margin-top:14px;max-width:60ch;display:none}
+.lp-band.on{color:var(--fi,#fff);background:var(--fb)}
+.lp-band.on .cq{display:block}
+.lp-band .cq b{font-weight:600}
+.tg{width:2.2em;height:1.1em;font-size:clamp(30px,3.6vw,60px);border-radius:999px;border:0;background:#D8D1D2;position:relative;cursor:pointer;flex:none;padding:0;transition:background .25s}
+.tg::after{content:"";position:absolute;top:.12em;left:.12em;width:.86em;height:.86em;border-radius:50%;background:#fff;transition:transform .25s}
+.tg[aria-checked="true"]{background:var(--fi,#1A0B10)}
+.tg[aria-checked="true"]::after{transform:translateX(1.1em);background:var(--fb)}
+@media (max-width:700px){.lp-band{min-height:132px}.lp-band h3{font-size:6.4vw;max-width:15ch}.tg{font-size:26px}.lp-band .cq{font-size:15px}}
+
+/* editor chapter */
+.lp-make .intro{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,5vw,80px);align-items:end;margin-bottom:48px}
+.lp-make .intro p{font-size:var(--s-lead);line-height:1.35;max-width:34ch}
+@media (max-width:820px){.lp-make .intro{grid-template-columns:1fr}}
+
+/* pricing: one plan as a sentence */
+.lp-price{display:grid;grid-template-columns:minmax(0,1fr);align-content:center;gap:64px}
+.lp-price h2{font-size:clamp(48px,8.4vw,136px);line-height:.98;letter-spacing:-.045em}
+.lp-price .pb{background:var(--l-accent);color:var(--l-accent-ink);padding:0 .15em;display:inline-block;line-height:1}
+.lp-price .row{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,3fr) minmax(0,3fr);gap:24px;align-items:end}
+.lp-price .row p{font-size:20px;max-width:46ch;line-height:1.45}
+.lp-price .row .act{grid-column:3;display:grid;gap:14px;justify-items:end}
+.lp-price .pph{margin:0;grid-column:2;grid-row:1;display:grid;gap:10px;font-size:var(--s-small);color:var(--l-muted)}
+.lp-price .pph img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.lp-price .row{grid-template-columns:minmax(0,5fr) minmax(0,4fr) minmax(0,3fr)!important}
+.lp-strip{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:12px}
+.lp-strip figure{margin:0;display:grid;gap:10px;font-size:var(--s-small);color:var(--l-paper-soft)}
+.lp-strip img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block}
+@media (max-width:700px){.lp-strip{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:820px){.lp-price h2{font-size:8.1vw}.lp-price .row{grid-template-columns:minmax(0,1fr)!important}.lp-price .pph{grid-column:1;grid-row:auto}.lp-price .row p{font-size:17px}.lp-price .row .act{grid-column:1;justify-items:stretch}.lp-price .row .act .lp-link{justify-self:start}}
+
+/* faq: large questions, answers beside */
+.lp-faq .t{display:grid;row-gap:clamp(56px,6vw,88px)}
+.lp-faq .r{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;align-items:baseline}
+.lp-faq .r h2,.lp-faq .r h3{grid-column:1/7;font-size:clamp(26px,2.6vw,40px);font-weight:500;line-height:1.1;letter-spacing:-.025em}
+.lp-faq .r h2{color:var(--l-paper-soft)}
+.lp-faq .r p{grid-column:8/13;font-size:18px;line-height:1.55;max-width:40ch}
+@media (max-width:820px){.lp-faq .r{grid-template-columns:1fr;row-gap:12px}.lp-faq .r h2,.lp-faq .r h3{grid-column:1;font-size:24px}.lp-faq .r p{grid-column:1;font-size:17px}.lp-faq .t{row-gap:56px}}
+
+/* cta: question at both edges */
+.lp-cta{display:grid;grid-template-rows:auto 1fr auto;justify-items:center;text-align:center;padding:32px var(--m) 24px}
+.lp-cta h2{display:contents}
+.lp-cta h2 span{display:block;font-size:clamp(84px,11vw,168px);font-weight:600;line-height:1;letter-spacing:-.05em}
+.lp-cta .q1{grid-row:1}.lp-cta .q2{grid-row:3}.lp-cta .mid{grid-row:2}
+.lp-cta .mid{display:grid;justify-items:center;align-content:center;gap:16px;padding-block:clamp(40px,4vw,64px)}
+.lp-cta .ch{display:flex;align-items:center;gap:56px}
+.lp-cta .ch .lp-btn{width:240px;min-height:56px;font-size:18px}
+.lp-cta .ch .or{color:var(--l-muted);font-size:18px;color:var(--l-muted)}
+.lp-cta .mid p{font-size:16px;color:var(--l-muted)}
+@media (max-width:700px){.lp-cta h2 span{font-size:18vw}.lp-cta .ch{flex-direction:column;gap:12px;width:72%}.lp-cta .ch .lp-btn{width:100%}}
+
+/* footer: contact as the headline */
+.lp-foot{display:grid;grid-template-rows:auto clamp(96px,12vw,220px) auto auto;padding:40px var(--m) 28px;background:var(--l-accent);color:var(--l-accent-ink)}
+.lp-foot .top{display:flex;justify-content:space-between;gap:24px;font-size:15px}
+.lp-foot .top div{display:grid;gap:4px;max-width:52ch}
+.lp-foot .top b{font-weight:600}
+.lp-foot .big{font-size:clamp(48px,8.6vw,150px);font-weight:600;letter-spacing:-.045em;line-height:1;text-decoration:none;align-self:end;margin-bottom:40px;white-space:nowrap}
+.lp-foot .big:hover{text-decoration:underline;text-decoration-thickness:.04em;text-underline-offset:.08em}
+.lp-foot .meta{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;font-size:14px}
+.lp-foot .meta nav{display:flex;gap:18px;flex-wrap:wrap}
+.lp-foot .meta span:last-child{text-align:right}
+@media (max-width:700px){.lp-foot .top{flex-direction:column}.lp-foot .big{font-size:11.5vw}.lp-foot .meta{grid-template-columns:1fr;font-size:13px}.lp-foot .meta span:last-child{text-align:left}}
+
+/* entrances (content stays visible without script) */
+.js .lp .rv{opacity:0;transform:translateY(24px);transition:opacity .6s cubic-bezier(.2,.7,.2,1),transform .6s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0ms)}
+.js .lp .rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.js .lp .rv{opacity:1;transform:none;transition:none}.lp-hero .slot img{animation:none}.lp-nav{transition:none}}
+.lp ~ .ctabar{box-shadow:none}
+
+.lp-tiles:not(.all) .lp-tile:nth-child(n+13){display:none}
+.lp [id]{scroll-margin-top:76px}
+body:has(.lp){background:#fff}
+.lp ~ .ctabar{border-top:0;background:#1A0B10;color:#fff;font-family:"Inter Tight",sans-serif}
+.lp ~ .ctabar .p small{font-size:13px;letter-spacing:0;text-transform:none;color:#C9BBBF}
+.lp ~ .ctabar .p b{font-family:"Inter Tight",sans-serif;font-weight:600;color:#fff}
+.lp ~ .ctabar .btn{border-radius:0;background:#F0BE4C;border-color:#F0BE4C;color:#1A0B10;text-transform:none;letter-spacing:0;font-family:"Inter Tight",sans-serif;font-weight:600;box-shadow:none}
+.lp ~ .ctabar .wa-ic{border-radius:0;border:0;background:#2A141B;color:#fff}
+.lp #editor{font-family:"Inter Tight","Noto Sans Sinhala",sans-serif}
+.lp #editor h2{font-size:26px;letter-spacing:-.025em;line-height:1.1;font-weight:600}
+.lp #editor .type b,.lp #editor .tpl .nm,.lp #editor .glist .who b{font-family:inherit;font-weight:600}
+.lp #editor .eyebrow{display:none}
+.lp #editor .panel{box-shadow:none;border:0;background:var(--l-tone);border-radius:0}
+.lp #editor .panel::before,.lp #editor .panel::after{display:none}
+.lp #editor .stage .table{background:var(--l-tone);border:0;box-shadow:none}
+.lp #editor .sample,.lp #editor .linkbtn,.lp #editor .hint,.lp #editor .btn,.lp #editor .sub,.lp #editor .pnote{font-size:14px}
+.lp #editor .btn{text-transform:none;letter-spacing:0;border-radius:0;font-family:"Inter Tight",sans-serif;font-weight:600}
 </style>
 </head><body>
 
@@ -1382,75 +1610,110 @@ function modal(html){
 document.addEventListener("keydown",e=>{ if(e.key==="Escape"){ document.getElementById("layer").innerHTML=""; lxStop() } });
 
 /* ================= RENDER APP ================= */
+function lpNav(){
+  const u=me();
+  return `<header class="lp-nav" data-f="dark"><a class="wm" href="#">Aradhanawa<span>ආරාධනාව</span></a>
+    <nav aria-label="Main"><a href="#designs">Designs</a><a href="#how">How it works</a><a href="#pricing">Pricing</a>
+    ${u?`<a class="keep" href="${u.role==="admin"?"#admin":"#account"}">${u.role==="admin"?"Admin":"My account"}</a><a class="keep" href="#" data-logout>Log out</a>`:`<a class="keep" href="#login">Log in</a><a href="#register">Register</a>`}
+    <a class="lp-btn keep" href="#make" data-start>Make an invitation</a></nav></header>`;
+}
+const LP_EX = ["Kasun & Tharushi","Senuli turns 5","Perera family dana","Batch reunion party"];
+function lpParse(t){
+  t=String(t||"").trim(); let m;
+  if((m=t.match(/^(.+?)\s*(?:&|\+|and|saha|සහ)\s*(.+)$/i))) return {type:"wedding",ev:{a:m[1].trim(),b:m[2].trim()}};
+  if((m=t.match(/^(.+?)\s+turns?\s+(\d{1,3})/i))) return {type:"birthday",ev:{a:m[1].trim(),age:m[2]}};
+  if((m=t.match(/^(.*?)\s*(?:dana|daana|දානය|pinkama)/i))){ const h=(m[1]||"").trim().replace(/^the\s+/i,""); return {type:"dana",ev:{a:h?"The "+h.replace(/^./,c=>c.toUpperCase()):"",title:"Sanghika Dana"}} }
+  if(/party|reunion|night|bash|get.?together/i.test(t)) return {type:"party",ev:{title:t.replace(/^./,c=>c.toUpperCase()),a:""}};
+  if(/homecoming/i.test(t)) return {type:"homecoming",ev:{a:"Kasun",b:"Tharushi"}};
+  return {type:"other",ev:{title:t||"Engagement Ceremony"}};
+}
+function lpTry(){
+  const inp=document.getElementById("tryIn"); if(!inp) return;
+  const r=lpParse(inp.value), T=TYPES[r.type], ev={...T.sample,...r.ev};
+  const lang=S.lang==="si"?"si":S.lang;
+  document.getElementById("tryKind").innerHTML=`${T.name} <span>· ${esc(T.si)}</span>`;
+  document.getElementById("tryMsg").innerHTML=waHTML(waMessage(r.type,ev,lang,"Nimal Uncle","https://aradhanawa.com/…"));
+  document.getElementById("tryCard").innerHTML=cardHTML(r.type,ev,lang==="si"?"si":"en","Nimal Uncle",null);
+  inp.dataset.type=r.type; inp._ev=r.ev;
+}
+const LP_STAGES=[
+  ["Pick","First, pick the function."],
+  ["Fill","Then add names and nekath."],
+  ["Write","Next, the message is written."],
+  ["Send","Last, send every guest a link."]];
+function lpFrag(i){
+  const ev=TYPES.wedding.sample;
+  if(i===0) return `<div class="fx" data-ui><div class="chips">${Object.entries(TYPES).map(([k,t])=>`<span class="${k==="wedding"?"on":""}">${t.name}<small>${t.si}</small></span>`).join("")}</div><div class="meta"><span>Free design: Rathu Ran</span><span>+ 11 more</span></div></div>`;
+  if(i===1) return `<div class="fx" data-ui><div class="two"><label>Groom<span class="in">${esc(ev.a)}</span></label><label>Bride<span class="in">${esc(ev.b)}</span></label></div><div class="two"><label>Poruwa nekath<span class="in">9.41 AM</span></label><label>Reception<span class="in">11.30 AM</span></label></div><label>Venue<span class="in">${esc(ev.venue)}</span></label></div>`;
+  if(i===2) return `<div class="fx" data-ui><div class="bub">${waHTML(waMessage("wedding",ev,"sl","Nimal Uncle","aradhanawa.com/…").split("\n").slice(0,9).join("\n"))}</div><div class="meta"><span>Singlish · සිංහල · English</span><span>Copy</span></div></div>`;
+  return `<div class="fx" data-ui>${[["Nimal Uncle","077 111 2233",1],["Ruwani","071 222 3344",1],["Saman Aiya","075 333 4455",0],["Chamari Akka","070 444 5566",0]].map(([n,p,d])=>`<div class="gr"><b>${n}</b><small>${p}</small><span class="s ${d?"done":""}">${d?"Sent":"Send"}</span></div>`).join("")}<div class="meta"><span>4 of 5 free links used</span><span>Dear Nimal Uncle,</span></div></div>`;
+}
+const LP_BANDS=[
+  {h:"Put every guest's name on the card",fb:"var(--l-maroon)",fi:"#fff",on:1,c:()=>`Nimal Uncle opens a card that begins <b>Dear Nimal Uncle</b>. The first ${CONFIG.FREE_GUESTS} personal links are free.`},
+  {h:"Count down to your nekath minute",fb:"var(--l-accent)",fi:"#1A0B10",on:1,c:()=>`<b data-t="${TYPES.wedding.sample.date}T09:41"><span data-u="d">0</span> days, <span data-u="h">0</span> hours and <span data-u="m">0</span> minutes</b> until the 9.41 AM poruwa on the sample card.`},
+  {h:"Write the whole invitation in Sinhala",fb:"var(--l-betel)",fi:"#fff",c:()=>`<b lang="si">ඔබට සාදරයෙන් ආරාධනා කරමු.</b> The card, the website and the WhatsApp message change together. Singlish and English too.`},
+  {h:"Take guests straight to the venue",fb:"var(--l-lotus)",fi:"#1A0B10",c:()=>`One tap opens Google Maps for ${esc(TYPES.wedding.sample.venue)}, one more adds the day to their calendar.`},
+  {h:"Play the Jayamangala gatha as it opens",fb:"var(--l-bg)",fi:"#fff",music:1,c:()=>`Playing now. The Lotus Mandala design starts the gatha when a guest taps Open, and every guest can mute it.`}];
+
 function render(){
   const T=TYPES[S.type], ev=cur();
-  document.getElementById("app").innerHTML = `
-  ${headerHTML()}
+  document.documentElement.classList.add("js");
+  document.getElementById("app").innerHTML = `<div class="lp">
+  ${lpNav()}
+  <section class="lp-hero" data-f="dark" id="create">
+    <div class="h1w">
+      <h1 class="hl up"><span class="ln">Send your<span class="slot">${pic("poruwa-couple","(max-width:700px) 120px, 360px","invitation, shown as a bride and groom on a decorated poruwa",null,false)}</span></span><span class="ln">on WhatsApp</span></h1>
+      <div class="hl dn" aria-hidden="true"><span class="ln" data-t="Send your"><span class="slot"></span></span><span class="ln" data-t="on WhatsApp"></span></div>
+    </div>
+    <div class="sup"><p>Wedding, homecoming, birthday and dana invitations in Sinhala, Singlish or English. Free for your first five guests.</p><a class="lp-btn" href="#make" data-start>Make an invitation</a></div>
+  </section>
+  <div class="lp-tail" data-f="accent" aria-hidden="true"></div>
 
-  <section class="hero" id="create" style="--pat:url('${IMG_DIR}kandyan-pattern-960.webp')">
-    <span class="wm" aria-hidden="true">ආරාධනාව</span>
-    <div class="wrap in">
-      <div>
-        <span class="eyebrow">Digital invitations · Made in Sri Lanka</span>
-        <h1>Invitations with a <em>Sri Lankan</em> heart.</h1>
-        <p class="lede">More than a card. Every invitation is a little website with a live countdown, your photos, the map and a reply button, sent on WhatsApp in Singlish, සිංහල or English.</p>
-        <div class="cta"><button class="btn gold" data-start>Start free →</button><a class="btn" href="#designs">Browse designs</a></div>
-        <div class="facts"><div><b>Rs. 0</b><span>to start</span></div><div><b>6</b><span>kinds of functions</span></div><div><b>3</b><span>languages</span></div><div><b>5</b><span>free guest links</span></div></div>
-      </div>
-      <div class="stagewrap">
-        <span class="glow"></span>
-        <div class="backcard" aria-hidden="true">${cardHTML("birthday",TYPES.birthday.sample,"en","",PREMIUM.birthday[0])}</div>
-        <div id="heroPhone"></div>
-        <div class="chip c1"><i>✓</i><span><b>Nimal Uncle replied</b><small>Coming · 3 people</small></span></div>
-        <div class="chip c2"><i>💍</i><span><b>Poruwa nekath</b><small>9.41 AM, set on every card</small></span></div>
-        <div class="chip c3"><i>${"✉"}</i><span><b>WhatsApp message ready</b><small>Singlish · සිංහල · English</small></span></div>
-      </div>
+  <section class="lp-ch lp-paper g lp-try" data-f="paper" id="try">
+    <h2 class="tryh rv"><label for="tryIn">Try it with your names</label></h2>
+    <div class="line rv" data-ui><input id="tryIn" value="Kasun &amp; Tharushi" autocomplete="off" spellcheck="false" aria-describedby="tryHelp"></div>
+    <div class="grid">
+      <div class="ans rv" style="--d:80ms"><p class="kind" id="tryKind"></p><div class="msg" id="tryMsg" data-ui aria-live="polite"></div>
+        <div class="go"><button class="lp-btn dark" id="tryGo">Make this invitation</button><span id="tryHelp">Type two names, or try one of these:</span></div>
+        <div class="ex">${LP_EX.map(x=>`<button type="button" data-ex="${esc(x)}">${esc(x)}</button>`).join("")}</div></div>
+      <div class="cardwrap rv" style="--d:160ms" id="tryCard" data-ui></div>
     </div>
   </section>
 
-  <section class="band" style="border-top:0"><div class="wrap">
-    <div class="shead"><span class="eyebrow">How it works</span><h2>From blank page to <em>sent</em> in minutes.</h2></div>
-    <div class="steps">
-      <div class="step"><h3>Pick your function</h3><p>Wedding, homecoming, birthday, party, almsgiving or any other function. Each one comes with a free Sri Lankan design.</p></div>
-      <div class="step"><h3>Add your details</h3><p>Names, nekath time, venue, map and photos. The card and the invitation website update as you type.</p></div>
-      <div class="step"><h3>Send on WhatsApp</h3><p>Every guest gets a personal link with their name on it, and a message already written in their language.</p></div>
-    </div>
-  </div></section>
+  <section class="lp-how" id="how" data-f="dark">
+    <div class="cl"><h2 id="howH">${LP_STAGES[0][1]}</h2></div>
+    <div class="fr"><div class="frag" id="howF">${lpFrag(0)}</div></div>
+    <div class="ctl"><div class="trk" style="--p:0%"><i></i><input type="range" min="0" max="3" step="1" value="0" id="howR" aria-label="How it works, stage" aria-valuetext="${LP_STAGES[0][0]}"></div>
+      <div class="names">${LP_STAGES.map(([n],i)=>`<button type="button" data-st="${i}" aria-current="${i===0}">${n}</button>`).join("")}</div></div>
+  </section>
 
-  <section class="band" id="designs"><div class="wrap">
-    <div class="shead"><span class="eyebrow">Designs</span><h2>A design for every <em>celebration</em>.</h2><p>Poruwa, Kandyan gold, Galle Fort, tea country, Vesak lanterns and more. Tap any design to start with it.</p></div>
-    <div class="dfilter" role="group" aria-label="Filter designs">${[["all","All"],...Object.entries(TYPES).map(([k,t])=>[k,t.name])].map(([k,n])=>`<button data-df="${k}" aria-pressed="${k==="all"}">${n}</button>`).join("")}</div>
-    <div class="drow" id="drow">${designItems()}</div>
-  </div></section>
+  <section class="lp-ch lp-paper g lp-des" id="designs" data-f="paper">
+    <div class="head"><div><h2 class="rv">${(designItems().match(/data-pick=/g)||[]).length} designs to start from</h2><p class="rv" style="--d:80ms">Poruwa, Kandyan gold, Galle Fort, tea country, Vesak lanterns and lotus. Pick one to start with it.</p></div>
+      <div class="flt rv" role="group" aria-label="Show designs for">${[["all","All"],...Object.entries(TYPES).map(([k,t])=>[k,t.name])].map(([k,n])=>`<button type="button" data-df="${k}" aria-pressed="${k==="all"}">${n}</button>`).join("")}</div></div>
+    <div class="lp-strip">${[["tea-bungalow","Tea country","Hill-country tea bungalow at dusk, used in the Tea Country and Emerald Arch designs","50% 60%"],["galle-fort","Galle Fort","Galle Fort lighthouse at sunset, used in the Galle Fort Sunset and Fort Postcard designs","50% 70%"],["vesak-lanterns","Vesak lanterns","Vesak lanterns glowing at night, used in the Vesak Lanterns and Lantern Arch designs","50% 40%"]].map(([n,c,alt,pos],i)=>`<figure class="rv" style="--d:${i*80}ms">${pic(n,"(max-width:700px) 92vw, 33vw",alt,pos)}<figcaption>${c}</figcaption></figure>`).join("")}</div>
+    <div class="lp-tiles" id="drow">${designItems()}</div>
+    <div class="more"><button class="lp-btn dark" id="dmore">Show all designs</button></div>
+  </section>
 
-  <section class="band"><div class="wrap">
-    <div class="shead"><span class="eyebrow">Features</span><h2>Everything a printed card <em>can't</em> do.</h2><p>Built for Sri Lankan functions, from the first WhatsApp to the last thank-you.</p></div>
-    <div class="bento">
-      <div class="tile t-a"><h3>Know who's coming</h3><p>Guests reply from the invitation. Names, head counts and wishes arrive in your WhatsApp. With Plus they collect in one list.</p>
-        <div class="inbox"><span class="example">Example</span><div class="stats"><div><b>15</b><small>Coming</small></div><div><b>2</b><small>Can't come</small></div><div><b>8</b><small>Waiting</small></div></div>
-        <div class="r"><b>Nimal Uncle</b><span>3 people · "Suba pathum!"</span><span class="st y">Coming</span></div>
-        <div class="r"><b>Ruwani</b><span>2 people</span><span class="st y">Coming</span></div>
-        <div class="r"><b>Saman Aiya</b><span>Sorry, in Dubai that week</span><span class="st n">Can't come</span></div>
-        <div class="r"><b>Chamari Akka</b><span>Link opened</span><span class="st p">Waiting</span></div></div></div>
-      <div class="tile t-b"><h3>Live countdown</h3><p>Ticks down to your nekath time.</p><div class="mini-cd" data-t="${TYPES.wedding.sample.date}T09:41"><div><b data-u="d">0</b><small>days</small></div><div><b data-u="h">0</b><small>hrs</small></div><div><b data-u="m">0</b><small>min</small></div><div><b data-u="s">0</b><small>sec</small></div></div></div>
-      <div class="tile t-c"><h3>Every guest by name</h3><p>Personal links put each name on the card.</p><div class="dear">Dear Nimal Uncle,</div></div>
-      <div class="tile t-d"><h3>Their language</h3><p>Messages written for you, three ways.</p><div class="langs"><span>Oyata adarayen arayum karanawa 🙏</span><span>ඔබට සාදරයෙන් ආරාධනා කරමු 🙏</span><span>You're warmly invited 🙏</span></div></div>
-      <div class="tile t-e"><h3>Map and calendar</h3><p>One tap to Google Maps and to the guest's calendar.</p><div class="mapmini"><svg viewBox="0 0 300 110" aria-hidden="true"><path d="M0 30H300M0 85H300M60 0V110M210 0V110M0 66L300 40" stroke="var(--line)" stroke-width="6" fill="none"/><path d="M-10 100Q120 70 310 92" stroke="var(--brass)" stroke-width="10" opacity=".18" fill="none"/><g transform="translate(150 52)"><circle r="20" fill="var(--accent)" opacity=".15"/><path d="M0 8s-12-10-12-19a12 12 0 0 1 24 0c0 9-12 19-12 19z" fill="var(--accent)"/><circle cy="-12" r="4" fill="var(--surface)"/></g></svg></div></div>
-    </div>
-  </div></section>
+  <section class="lp-bands" id="features" data-f="paper">
+    ${LP_BANDS.map((b,i)=>`<div class="lp-band ${b.on?"on":""}" style="--fb:${b.fb};--fi:${b.fi}">
+      <div>${i===0?`<h2 style="font-size:inherit;letter-spacing:inherit"><span class="sr">What it does: </span></h2>`:""}<h3>${b.h}</h3><p class="cq">${b.c()}</p></div>
+      <button type="button" class="tg" role="switch" aria-checked="${!!b.on}" aria-label="${b.h}" data-band="${i}" ${b.music?"data-bandmusic":""} data-ui></button></div>`).join("")}
+  </section>
 
-  <div class="wrap editor-head"><div class="shead"><span class="eyebrow">Create</span><h2>Make yours <em>now</em>. It's free.</h2><p>Everything below saves in this browser, so you can come back and finish later.</p></div></div>
-
+  <section class="lp-ch lp-paper lp-make" id="make" data-f="paper">
+    <div class="g intro"><h2 class="rv">Make yours now. It's free.</h2><p class="rv" style="--d:80ms">Everything below saves in this browser, so you can stop and finish later. Guests need nothing but WhatsApp.</p></div>
+    <div>
   <div class="wrap bench" id="editor" style="padding-top:0">
     <div class="col">
       <section class="panel" aria-labelledby="h-type">
         <div class="phead"><div><span class="eyebrow">Step 1</span><h2 id="h-type">What are you celebrating?</h2></div></div>
-        <div class="types">${Object.entries(TYPES).map(([k,t])=>`<button class="type" data-type="${k}" aria-pressed="${k===S.type}"><b>${t.name}</b><small>${t.si}</small></button>`).join("")}</div>
+        <div class="types" data-ui>${Object.entries(TYPES).map(([k,t])=>`<button class="type" data-type="${k}" aria-pressed="${k===S.type}"><b>${t.name}</b><small>${t.si}</small></button>`).join("")}</div>
       </section>
 
       <section class="panel" aria-labelledby="h-tpl">
         <div class="phead"><div><span class="eyebrow">Step 2</span><h2 id="h-tpl">Choose a design</h2><p class="sub">The first design is free. Tap a premium design to preview it with your details. Our team customises it with your photos and colours.</p></div></div>
-        <div class="tpls">
+        <div class="tpls" data-ui>
           <button class="tpl" data-tpl="0" aria-pressed="${!S.tpl[S.type]}"><div class="sw t-${S.type}" style="background:var(--c-bg)">${T.art()}</div><div class="nm">${T.tpl}<span class="pill free">Free</span></div></button>
           ${PREMIUM[S.type].map((t,i)=>`<button class="tpl locked" data-tpl="${i+1}" ${tplOff().includes(S.type+":"+(i+1))?"hidden":""} aria-pressed="${S.tpl[S.type]===i+1}"><span class="lock">${I.lock} ${CONFIG.PRICE_CUSTOM}</span><div class="sw t-${S.type}" style="${tplVars(t)}background:${t.bg}">${t.img?pic(t.img,"160px",t.n,t.pos):premArt(S.type,t,ev)}</div><div class="nm">${esc(t.n)}<span class="pill pro">Custom</span></div></button>`).join("")}
         </div>
@@ -1459,12 +1722,12 @@ function render(){
       <section class="panel" aria-labelledby="h-det">
         <div class="phead"><div><span class="eyebrow">Step 3</span><h2 id="h-det">Event details</h2></div></div>
         ${!S.edited[S.type]?`<div class="sample"><span>These are sample details. Replace them with yours.</span><button class="linkbtn" id="clearSample">Clear all fields</button></div>`:""}
-        <form class="form" id="evform" autocomplete="off">
+        <form class="form" id="evform" autocomplete="off" data-ui>
           ${T.fields.map(f=>{const d=FIELD[f]; const lbl=(T.labels&&T.labels[f])||d.label; const id=`f-${S.type}-${f}`;
             return `<div class="fld ${d.full?"full":""}"><label for="${id}">${lbl}</label>${d.area?`<textarea id="${id}" name="${f}" rows="2">${esc(ev[f])}</textarea>`:`<input id="${id}" name="${f}" type="${d.type||"text"}" value="${esc(ev[f])}" ${d.ph?`placeholder="${d.ph}"`:""} ${f==="rsvp"?'inputmode="tel"':""}>`}</div>`}).join("")}
         </form>
         ${S.type!=="dana"?`<div class="photos"><label class="fld"><span style="font-size:13px;font-weight:600">Gallery photos</span></label><span class="hint">These appear in the gallery section of your invitation. Up to 6. Until you add yours, sample images are shown in the preview.</span>
-          <div class="pgrid">${((S.photos[S.type])||[]).map((src,i)=>`<div class="ph"><img src="${src}" alt="Gallery photo ${i+1}"><button type="button" data-pdel="${i}" aria-label="Remove photo ${i+1}">×</button></div>`).join("")}
+          <div class="pgrid" data-ui>${((S.photos[S.type])||[]).map((src,i)=>`<div class="ph"><img src="${src}" alt="Gallery photo ${i+1}"><button type="button" data-pdel="${i}" aria-label="Remove photo ${i+1}">×</button></div>`).join("")}
           ${((S.photos[S.type])||[]).length<6?`<label class="padd" for="pfile">+ Add photos</label>`:""}</div>
           <input type="file" id="pfile" accept="image/*" multiple hidden></div>`:""}
       </section>
@@ -1474,7 +1737,7 @@ function render(){
           <div><span class="eyebrow">Step 4</span><h2 id="h-wa">WhatsApp message</h2><p class="sub">Written for you from the details above. It updates as you type.</p></div>
           <div class="seg" role="group" aria-label="Message language">${[["sl","Singlish"],["si","සිංහල"],["en","English"]].map(([k,n])=>`<button data-lang="${k}" aria-pressed="${S.lang===k}">${n}</button>`).join("")}</div>
         </div>
-        <div class="wa-box"><div class="bubble" id="bubble"></div></div>
+        <div class="wa-box" data-ui><div class="bubble" id="bubble"></div></div>
         <div class="row" style="margin-top:12px">
           <button class="btn" id="copyMsg">${I.copy} Copy message</button>
           <a class="btn wa" id="sendAll" target="_blank" rel="noopener">${I.wa} Open in WhatsApp</a>
@@ -1486,12 +1749,12 @@ function render(){
           <div><span class="eyebrow">Step 5</span><h2 id="h-g">Send to guests</h2><p class="sub">Each guest gets a personal link with their name on the card.</p></div>
           <div class="meter" aria-label="${S.guests.length} of ${CONFIG.FREE_GUESTS} free guests used"><span class="bar">${Array.from({length:CONFIG.FREE_GUESTS},(_,i)=>`<i class="${i<S.guests.length?"on":""}"></i>`).join("")}</span><span style="font-variant-numeric:tabular-nums">${S.guests.length} / ${CONFIG.FREE_GUESTS} free</span></div>
         </div>
-        <form class="gadd" id="gadd">
+        <form class="gadd" id="gadd" data-ui>
           <input id="g-name" placeholder="Guest name, e.g. Saman Aiya" aria-label="Guest name" required>
           <input id="g-phone" placeholder="07X XXX XXXX" inputmode="tel" aria-label="Guest WhatsApp number">
           <button class="btn primary" type="submit">Add guest</button>
         </form>
-        <ul class="glist">${S.guests.length?S.guests.map((g,i)=>`<li>
+        <ul class="glist" data-ui>${S.guests.length?S.guests.map((g,i)=>`<li>
           <div class="who"><b>${esc(g.name)}</b><span>${g.phone?prettyPhone(g.phone):"No number. Copy the link instead."}</span></div>
           <div class="acts">
             <button class="iconbtn" data-gprev="${i}" title="Preview ${esc(g.name)}'s card" aria-label="Preview ${esc(g.name)}'s card">${I.eye}</button>
@@ -1503,7 +1766,7 @@ function render(){
     </div>
 
     <aside class="stage" aria-label="Live preview">
-      <div class="table" id="cardSlot"></div>
+      <div class="table" id="cardSlot" data-ui></div>
       <div id="premBar" hidden><p class="pnote">Premium preview. Guest links use the free design until your custom design is ready.</p><div class="row" style="margin-top:8px"><button class="btn primary" id="reqPrem">Request this design · ${CONFIG.PRICE_CUSTOM}</button></div></div>
       <div class="row">
         <button class="btn" id="preview">${I.eye} Preview as guest</button>
@@ -1511,82 +1774,65 @@ function render(){
       </div>
     </aside>
   </div>
+    </div>
+  </section>
 
-  <section class="band" id="compare"><div class="wrap compare">
-    <div>
-      <span class="eyebrow">Printed cards vs Aradhanawa</span>
-      <h2 style="font-size:clamp(26px,3.4vw,36px);font-weight:800;margin-top:4px">The printer's bill, or a link that does more.</h2>
-      <p class="lead" style="color:var(--muted);margin:10px 0 0;max-width:52ch">A printed order for 200 guests adds up fast, and it can't be changed once it's printed. An Aradhanawa invitation can be edited any time, tells you who is coming, and takes guests straight to the venue on Google Maps.</p>
-      <figure class="hero-img"><img src="${IMG_DIR}card-flatlay-960.webp" srcset="${IMG_DIR}card-flatlay-480.webp 480w, ${IMG_DIR}card-flatlay-960.webp 960w, ${IMG_DIR}card-flatlay-1600.webp 1600w" sizes="(max-width:860px) 92vw, 600px" alt="Maroon and gold Sri Lankan wedding card with jasmine, betel leaves and a brass pahana" loading="lazy"></figure>
-    </div>
-    <div class="receipt" aria-label="Cost comparison">
-      <h3>Printed cards</h3><p class="sub">Typical estimate · 200 guests</p>
-      <dl>
-        <div><dt>Cards, 200 × Rs. 150</dt><dd>30,000</dd></div>
-        <div><dt>Card design</dt><dd>5,000</dd></div>
-        <div><dt>Courier and hand delivery</dt><dd>3,500</dd></div>
-        <div><dt>Reprint after list changes</dt><dd>6,000</dd></div>
-        <div class="tot"><dt>Total</dt><dd><s>Rs. 44,500</s></dd></div>
-        <div class="na"><dt>Who is coming?</dt><dd>can't tell</dd></div>
-        <div class="na"><dt>Change after printing</dt><dd>not possible</dd></div>
-      </dl>
-      <hr>
-      <p class="ours">Aradhanawa</p>
-      <dl style="border-top:0;margin-top:6px;padding-top:6px">
-        <div><dt>One design + 5 guests</dt><dd>Free</dd></div>
-        <div><dt>Plus: unlimited guests</dt><dd>${CONFIG.PRICE_PLUS.replace("Rs. ","")}</dd></div>
-        <div><dt>Custom design (optional)</dt><dd>${CONFIG.PRICE_CUSTOM.replace("Rs. ","")}</dd></div>
-      </dl>
-      <div class="save"><div class="stamp">Free to start<b>Rs. 0</b></div><div class="keep">You keep about<b>Rs. 38,610</b></div></div>
-      <p class="fine">Printed prices are typical Colombo estimates. Your printer's quote will differ.</p>
-    </div>
+  <section class="lp-ch lp-dark g lp-price" id="pricing" data-f="dark">
+    <h2>Free for five guests, <span class="pb">${CONFIG.PRICE_PLUS}</span> for everyone.</h2>
+    <div class="row"><p style="--d:80ms">One design and ${CONFIG.FREE_GUESTS} personal links cost nothing. Plus covers one event: unlimited guests, a list of who is coming and no Aradhanawa name on the card. A printed order for 200 guests usually runs past Rs. 40,000.</p>
+      <figure class="pph" style="--d:80ms">${pic("card-flatlay","(max-width:820px) 92vw, 30vw","A printed maroon and gold wedding card with jasmine, betel leaves and a brass pahana","50% 50%")}<figcaption>The printed way: card, envelope and courier, for every guest.</figcaption></figure>
+      <div class="act" style="--d:160ms"><button class="lp-btn" data-upgrade="plus">Get Plus</button><button class="lp-link" data-upgrade="custom">Or a custom design, ${CONFIG.PRICE_CUSTOM}</button></div></div>
+  </section>
+
+  <section class="lp-ch lp-paper g lp-faq" id="faq" data-f="paper"><div class="t">
+    <div class="r"><h2>Questions</h2></div>
+    ${[["Is it really free?",`Yes. Every function has one free design, and you can send personal links to ${CONFIG.FREE_GUESTS} guests with the message written for you. You pay only for more guests (${CONFIG.PRICE_PLUS} per event) or a custom design.`],
+      ["Can each guest's name be on the card?","Yes. Add a guest and their link opens with Dear Nimal Uncle, or their own name, on the card."],
+      ["Can I write it in Sinhala?","Yes. Switch to සිංහල and the card, the invitation website and the WhatsApp message all change. Singlish and English work too."],
+      ["How do guests reply?","The invitation has a reply form: name, yes or no, how many people and a wish. It arrives in your WhatsApp, already written."],
+      ["Can I add the poruwa nekath and the reception?","Yes. Weddings have their own fields for the poruwa nekath and the reception, and both show on the card and in the schedule."],
+      ["Do guests need to install anything?","No. The link opens in the phone's browser straight from WhatsApp."]].map(([q,a],i)=>`<div class="r"><h3>${q}</h3><p>${a}</p></div>`).join("")}
   </div></section>
 
-  <section class="band" id="pricing"><div class="wrap">
-    <span class="eyebrow">Pricing</span>
-    <h2>Start free. Pay only when you want more.</h2>
-    <p class="lead">Every function gets one beautiful design for free. Upgrade when your guest list grows or when you want something made just for you.</p>
-    <div class="plans">
-      <div class="plan"><h3>Free</h3><div class="price">Rs. 0</div><ul>
-        <li>1 design for each event type</li><li>Personal links for up to 5 guests</li><li>WhatsApp message in Singlish, සිංහල and English</li><li>Map, calendar and RSVP buttons</li></ul>
-        <a class="btn" href="#create">Create an invitation</a></div>
-      <div class="plan hl"><h3>Aradhanawa Plus</h3><div class="price">${CONFIG.PRICE_PLUS} <small>per event</small></div><ul>
-        <li>Unlimited guests and links</li><li>RSVP list: who is coming, how many</li><li>No Aradhanawa branding on the card</li><li>Reminder message a day before</li></ul>
-        <button class="btn primary" data-upgrade="plus">Get Plus</button></div>
-      <div class="plan"><h3>Custom design</h3><div class="price">${CONFIG.PRICE_CUSTOM} <small>one time</small></div><ul>
-        <li>Our designer customises a premium template</li><li>Your photos, colours and wording</li><li>Poruwa, Kandyan, Galle Fort or tea country themes</li><li>2 rounds of changes, ready in 48 hours</li></ul>
-        <button class="btn" data-upgrade="custom">Request a custom design</button></div>
-    </div>
-    <p class="note" style="margin-top:12px">Prices are suggestions for launch. Payments are not connected yet: the buttons open a WhatsApp chat with the Aradhanawa team.</p>
-  </div></section>
+  <section class="lp-dark lp-cta" data-f="dark">
+    <h2><span class="q1">Whose day</span><span class="q2">is next?</span></h2>
+    <div class="mid"><div class="ch"><button class="lp-btn" data-ctapick="wedding">A wedding</button><span class="or">or</span><button class="lp-btn" data-ctapick="">Another function</button></div><p>Both open the editor. Nothing to install, nothing to pay until you need more.</p></div>
+  </section>
 
-  <section class="band" id="faq"><div class="wrap">
-    <span class="eyebrow">FAQ</span>
-    <h2>Questions, answered</h2>
-    <p class="lead">Short answers to what families usually ask before sending.</p>
-    <div class="faq">
-      <details><summary>Is it really free?</summary><p>Yes. Every event type has one free design, and you can send personal links to 5 guests with the WhatsApp message written for you. You pay only for more guests (${CONFIG.PRICE_PLUS} per event) or a custom design.</p></details>
-      <details><summary>Can each guest's name be on the invitation?</summary><p>Yes. Add a guest in Step 5 and their personal link opens with "Dear Nimal Uncle" (or their name) on the card.</p></details>
-      <details><summary>Can I write it in Sinhala?</summary><p>Yes. Switch the language to සිංහල and the card, the invitation website and the WhatsApp message all change. Singlish and English work too.</p></details>
-      <details><summary>How do guests reply?</summary><p>The invitation has a reply form. Guests enter their name, say yes or no, choose how many people are coming and add a wish. It arrives in your WhatsApp, already written.</p></details>
-      <details><summary>Can I add the Poruwa nekath time and the reception?</summary><p>Yes. Weddings have separate fields for the Poruwa ceremony nekath and the reception, and both show on the card and in the schedule.</p></details>
-      <details><summary>Can I add our photos?</summary><p>Yes. Add up to 6 photos in Step 3 and they appear in the gallery section. Almsgiving invitations leave the gallery out.</p></details>
-      <details><summary>Do guests need to install anything?</summary><p>No. The link opens in the phone's browser straight from WhatsApp.</p></details>
-    </div>
-  </div></section>
-
-  <section class="band" id="prompts"><div class="wrap">
-    <span class="eyebrow">For the design team</span>
-    <h2>AI image prompts</h2>
-    <p class="lead">The cards above use hand-drawn vector art. Use these prompts in Midjourney, DALL·E, Ideogram or Gemini to make photo-quality artwork for premium templates and the landing page.</p>
-    <div class="prompts">${PROMPTS.map((p,i)=>`<div class="prompt">${p.img?`<figure class="gen">${pic(p.img,"(max-width:760px) 92vw, 560px",p.t)}</figure>`:""}<header><h3>${p.t}</h3><button class="btn sm" data-prompt="${i}">${I.copy} Copy</button></header><p id="pr-${i}">${esc(p.p)}</p><span class="use">Use for: ${p.u}</span></div>`).join("")}</div>
-    <p class="note" style="margin-top:14px">Add to every prompt: <code>no text, no letters, no watermark, no logos</code>. Generate wedding and premium art at 4:5 or 9:16 for cards and 16:9 for the website hero.</p>
-  </div></section>
-
-  <footer class="foot"><div class="wrap">ආරාධනාව · Aradhanawa.com · Made in Sri Lanka for every celebration.</div></footer>
-  <div class="ctabar"><div class="p"><small>Start with</small><b>Free · 5 guests</b></div><a class="wa-ic" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,"Hi Aradhanawa! I have a question about invitations.")}" aria-label="Chat with Aradhanawa on WhatsApp">${I.wa}</a><button class="btn primary" data-start>Start free →</button></div>`;
-  document.body.classList.add("has-bar");
-  bind(); refreshLive();
+  <footer class="lp-foot" data-f="accent">
+    <div class="top"><div><b>Aradhanawa · ආරාධනාව</b><span>Digital invitations made in Sri Lanka, sent on WhatsApp.</span><span>We answer on WhatsApp the same day.</span></div><a href="#create">Back to top</a></div>
+    <span></span>
+    <a class="big" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,"Hi Aradhanawa! I have a question about invitations.")}">+${CONFIG.STUDIO_WA.replace(/^(\d{2})(\d{2})(\d{3})(\d+)$/,"$1 $2 $3 $4")}</a>
+    <div class="meta"><nav aria-label="Footer"><a href="#login">Log in</a><a href="#register">Register</a><a href="#faq">Questions</a></nav><span>Designs drawn and photographed for Aradhanawa</span><span>Colombo, ${new Date().getFullYear()}</span></div>
+  </footer>
+  </div>`;
+  document.body.classList.remove("has-bar");
+  bind(); refreshLive(); lpBind();
+}
+function lpBind(){
+  const $=s=>document.querySelector(s);
+  const inp=$("#tryIn"); lpTry(); inp.addEventListener("input",lpTry);
+  document.querySelectorAll("[data-ex]").forEach(b=>b.onclick=()=>{ inp.value=b.dataset.ex; lpTry(); inp.focus() });
+  $("#tryGo").onclick=()=>{ const t=inp.dataset.type; S.type=t; S.ev[t]={...TYPES[t].sample,...S.ev[t],...inp._ev}; S.edited[t]=true; S.tpl[t]=0; save(); render(); document.getElementById("make").scrollIntoView({behavior:"smooth"}) };
+  const R=$("#howR"), set=i=>{ i=+i; R.value=i; R.setAttribute("aria-valuetext",LP_STAGES[i][0]); R.parentElement.style.setProperty("--p",(i/3*100)+"%");
+    const H=$("#howH"), F=$("#howF"); H.style.opacity=F.style.opacity=0; setTimeout(()=>{ H.textContent=LP_STAGES[i][1]; F.innerHTML=lpFrag(i); H.style.opacity=F.style.opacity=1 },200);
+    document.querySelectorAll("[data-st]").forEach(b=>b.setAttribute("aria-current",String(+b.dataset.st===i))) };
+  R.addEventListener("input",()=>set(R.value)); document.querySelectorAll("[data-st]").forEach(b=>b.onclick=()=>set(b.dataset.st));
+  document.querySelectorAll("[data-band]").forEach(t=>t.onclick=()=>{ const on=t.getAttribute("aria-checked")!=="true"; t.setAttribute("aria-checked",on); t.closest(".lp-band").classList.toggle("on",on);
+    if(t.hasAttribute("data-bandmusic")){ if(on) lxPlay(); else lxStop() } });
+  document.querySelectorAll("[data-ctapick]").forEach(b=>b.onclick=()=>{ if(b.dataset.ctapick){ S.type=b.dataset.ctapick; save(); render() } document.getElementById("make").scrollIntoView({behavior:"smooth"}) });
+  const dm=$("#dmore"); if(dm) dm.onclick=()=>{ document.getElementById("drow").classList.add("all"); dm.remove() };
+  // chapter ink for the fixed nav
+  const nav=$(".lp-nav"), chs=[...document.querySelectorAll(".lp [data-f]")].filter(x=>x!==nav);
+  const onScroll=()=>{ const y=nav.offsetHeight/2; let f="dark"; for(const c of chs){ const r=c.getBoundingClientRect(); if(r.top<=y&&r.bottom>y){ f=c.dataset.f; break } } if(nav.dataset.f!==f) nav.dataset.f=f };
+  window.removeEventListener("scroll",window._lpS||(()=>{})); window._lpS=onScroll; addEventListener("scroll",onScroll,{passive:true}); onScroll();
+  // entrances
+  const els=document.querySelectorAll(".lp .rv");
+  if(!("IntersectionObserver" in window)){ els.forEach(e=>e.classList.add("in")); return }
+  const sweep=()=>{ const lim=innerHeight*1.15; document.querySelectorAll(".lp .rv:not(.in)").forEach(e=>{ if(e.getBoundingClientRect().top<lim) e.classList.add("in") }) };
+  window.removeEventListener("scroll",window._lpR||(()=>{})); window._lpR=sweep; addEventListener("scroll",sweep,{passive:true}); sweep();
+  const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target) } }),{rootMargin:"0px 0px 15% 0px"});
+  els.forEach(e=>io.observe(e));
 }
 
 const curPrem = () => { const i=S.tpl[S.type]; return i ? PREMIUM[S.type][i-1] || null : null };
@@ -1629,9 +1875,9 @@ function bind(){
   $$("[data-tpl]").forEach(b=>b.onclick=()=>{ S.tpl[S.type]=+b.dataset.tpl; save(); $$("[data-tpl]").forEach(x=>x.setAttribute("aria-pressed",x===b)); refreshLive(); if(matchMedia("(max-width:920px)").matches) document.getElementById("cardSlot").scrollIntoView({behavior:"smooth",block:"center"}) });
   $("#reqPrem").onclick=()=>{ const p=curPrem(); p&&customReq(p.n) };
   $$("[data-upgrade]").forEach(b=>b.onclick=()=>b.dataset.upgrade==="plus"?upsell(true):customReq(""));
-  $$("[data-df]").forEach(b=>b.onclick=()=>{ $$("[data-df]").forEach(x=>x.setAttribute("aria-pressed",x===b)); $("#drow").innerHTML=designItems(b.dataset.df); $("#drow").scrollLeft=0 });
-  $("#drow").addEventListener("click",e=>{ const d=e.target.closest("[data-pick]"); if(!d) return; const [k,i]=d.dataset.pick.split(":"); S.type=k; S.tpl[k]=+i; save(); render(); requestAnimationFrame(()=>document.getElementById("editor").scrollIntoView({block:"start"})) });
-  $$("[data-start]").forEach(b=>b.onclick=()=>document.getElementById("editor").scrollIntoView({behavior:"smooth",block:"start"}));
+  $$("[data-df]").forEach(b=>b.onclick=()=>{ $$("[data-df]").forEach(x=>x.setAttribute("aria-pressed",x===b)); $("#drow").innerHTML=designItems(b.dataset.df); $("#drow").classList.toggle("all",b.dataset.df!=="all"); const dm=$("#dmore"); if(dm) dm.hidden=b.dataset.df!=="all" });
+  $("#drow").addEventListener("click",e=>{ const d=e.target.closest("[data-pick]"); if(!d) return; const [k,i]=d.dataset.pick.split(":"); S.type=k; S.tpl[k]=+i; save(); render(); requestAnimationFrame(()=>document.getElementById("make").scrollIntoView({block:"start"})) });
+  $$("[data-start]").forEach(b=>b.onclick=e=>{ e.preventDefault(); document.getElementById("make").scrollIntoView({behavior:"smooth",block:"start"}) });
   $$("[data-demo]").forEach(b=>b.onclick=()=>guestPreview(""));
   $$("[data-pdel]").forEach(b=>b.onclick=()=>{ S.photos[S.type].splice(+b.dataset.pdel,1); save(); render() });
   const pf=$("#pfile"); pf&&(pf.onchange=async()=>{
@@ -1639,7 +1885,6 @@ function bind(){
     for(const file of [...pf.files].slice(0,6-list.length)){ try{ list.push(await shrink(file)) }catch(e){ toast("That file could not be read as an image.") } }
     save(); render(); toast("Photos added to your gallery");
   });
-  $$("[data-prompt]").forEach(b=>b.onclick=()=>copy(PROMPTS[+b.dataset.prompt].p, document.getElementById("pr-"+b.dataset.prompt)));
 }
 function shrink(file){ return new Promise((res,rej)=>{
   const r=new FileReader(); r.onerror=rej; r.onload=()=>{ const im=new Image(); im.onerror=rej; im.onload=()=>{
@@ -1650,8 +1895,8 @@ function designItems(filter){
   for(const [k,T] of Object.entries(TYPES)){
     if(filter&&filter!=="all"&&filter!==k) continue;
     const ev=T.sample;
-    out.push(`<button class="ditem" data-pick="${k}:0"><div class="dphone">${cardHTML(k,ev,"en","",null)}</div><div class="meta"><span><b>${T.tpl}</b><small>${T.name}</small></span><span class="pill free">Free</span></div></button>`);
-    PREMIUM[k].forEach((t,i)=>{ if(!t.img&&!t.layout) return; if(tplOff().includes(k+":"+(i+1))) return; out.push(`<button class="ditem" data-pick="${k}:${i+1}"><div class="dphone">${cardHTML(k,ev,"en","",{...t,_noribbon:1})}</div><div class="meta"><span><b>${esc(t.n)}</b><small>${T.name}</small></span><span class="pill pro">Custom</span></div></button>`) });
+    out.push(`<button class="lp-tile" data-pick="${k}:0"><div class="pv" data-ui>${cardHTML(k,ev,"en","",null)}</div><div class="strip"><b>${T.tpl}</b><span class="free">${T.name} · Free</span></div></button>`);
+    PREMIUM[k].forEach((t,i)=>{ if(!t.img&&!t.layout) return; if(tplOff().includes(k+":"+(i+1))) return; out.push(`<button class="lp-tile" data-pick="${k}:${i+1}"><div class="pv" data-ui>${cardHTML(k,ev,"en","",{...t,_noribbon:1})}</div><div class="strip"><b>${esc(t.n)}</b><span>${T.name} · ${CONFIG.PRICE_CUSTOM}</span></div></button>`) });
   }
   return out.join("");
 }
@@ -1995,7 +2240,7 @@ const rs = n => "Rs. "+n.toLocaleString("en-LK");
 function renderAdmin(tab){
   const u=me();
   if(!u||u.role!=="admin"){ store.set("next","#admin"+(tab?"/"+tab:"")); location.replace("#login"); if(u) toast("That page is for admins only"); return }
-  const TABS=[["overview",AI.chart,"Overview"],["users",AI.users,"Users"],["orders",AI.bag,"Orders"],["templates",AI.grid,"Templates"],["settings",AI.gear,"Settings"]];
+  const TABS=[["overview",AI.chart,"Overview"],["users",AI.users,"Users"],["orders",AI.bag,"Orders"],["templates",AI.grid,"Templates"],["prompts",AI.grid,"Image prompts"],["settings",AI.gear,"Settings"]];
   tab = TABS.some(t=>t[0]===tab) ? tab : "overview";
   const users=DB.users(), orders=DB.orders(), off=tplOff();
   const open=orders.filter(o=>o.status==="New"||o.status==="In progress");
@@ -2043,6 +2288,10 @@ function renderAdmin(tab){
       ${PREMIUM[k].map((t,i)=>{ const key=k+":"+(i+1), on=!off.includes(key); return `<div class="titem" data-off="${on?0:1}">${cardHTML(k,T.sample,"en","",{...t,_noribbon:1})}<div class="trow"><span><b>${esc(t.n)}</b><small>Custom · ${CONFIG.PRICE_CUSTOM}</small></span><input type="checkbox" class="sw-t" data-tog="${key}" ${on?"checked":""} aria-label="Show ${esc(t.n)}"></div></div>` }).join("")}
     </div></section>`).join("")}`;
   }
+  if(tab==="prompts"){
+    body=`<div class="mh"><div><span class="eyebrow">Admin</span><h1>Image prompts</h1><p>Use these in Midjourney, DALL·E, Ideogram or Gemini for premium templates and the site. Add: no text, no letters, no watermark.</p></div></div>
+    <div class="two" style="grid-template-columns:repeat(auto-fill,minmax(300px,1fr))">${PROMPTS.map((p,i)=>`<div class="box">${p.img?`<figure style="margin:0 0 12px">${pic(p.img,"320px",p.t)}</figure>`:""}<div class="bh"><h2>${esc(p.t)}</h2><button class="btn sm" data-prompt="${i}">${I.copy} Copy</button></div><p id="pr-${i}" style="margin:0 0 8px">${esc(p.p)}</p><small style="color:var(--muted)">Use for: ${esc(p.u)}</small></div>`).join("")}</div>`;
+  }
   if(tab==="settings"){
     body=`<div class="mh"><div><span class="eyebrow">Admin</span><h1>Settings</h1><p>Prices, limits and the studio WhatsApp number used across the site.</p></div></div>
     <form class="box" id="sform"><h2>Plans and contact</h2><div class="sform">
@@ -2073,6 +2322,7 @@ function renderAdmin(tab){
     if(b.dataset.udel){ const x=DB.users().find(y=>y.id===b.dataset.udel); if(!x) return;
       modal(`<span class="eyebrow">Delete user</span><h3>Delete ${esc(x.name)}?</h3><p>This removes the account from this browser. Their orders stay in the list.</p><div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><button class="btn primary" id="cdel">Delete</button></div>`);
       document.getElementById("cdel").onclick=()=>{ DB.setUsers(DB.users().filter(y=>y.id!==x.id)); document.getElementById("layer").innerHTML=""; toast("User deleted"); re() } }
+    if(b.dataset.prompt){ copy(PROMPTS[+b.dataset.prompt].p, document.getElementById("pr-"+b.dataset.prompt)) }
     if(b.hasAttribute("data-clearsample")){ DB.setUsers(DB.users().filter(x=>!x.sample)); DB.setOrders(DB.orders().filter(x=>!x.sample)); toast("Sample data removed"); re() }
   });
   const sf=document.getElementById("sform");

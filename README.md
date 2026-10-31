@@ -11,4 +11,6 @@ Wenas karanna one dewal (`CONFIG` in the script):
 - `STUDIO_WA`: Aradhanawa team WhatsApp number (94764487857)
 - `PRICE_PLUS`, `PRICE_CUSTOM`, `FREE_GUESTS`
 
-Production ekata ilaga steps: login + database (Supabase/Firebase), short links (aradhanawa.com/i/xyz), RSVP list, PayHere payments, server-side 5-guest limit (danata browser eke witharai).
+Login + database: Firebase (Google login, Firestore). Setup steps: `FIREBASE_SETUP.md`. Files: `firebase-config.js` (config + admin emails), `fb.js` (Auth + Firestore), `firestore.rules`.
+
+Production ekata ilaga steps: short links (aradhanawa.com/i/xyz), PayHere payments, server-side 5-guest limit (danata browser eke witharai).

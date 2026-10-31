@@ -1,0 +1,78 @@
+rules_version = '2';
+// Aradhanawa Firestore rules.
+// Paste into Firebase console → Firestore Database → Rules → Publish.
+// Put your own Google email(s) in ADMIN_EMAILS (same as adminEmails in firebase-config.js).
+// More admins can be added later from the dashboard (Admin → Settings → Admins).
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function ADMIN_EMAILS() { return ["you@gmail.com"]; }
+
+    function signedIn() { return request.auth != null; }
+    function email() { return signedIn() && request.auth.token.email != null ? request.auth.token.email.lower() : ""; }
+    function isAdmin() {
+      return signedIn() && request.auth.token.email_verified == true
+        && (email() in ADMIN_EMAILS() || exists(/databases/$(database)/documents/admins/$(email())));
+    }
+    function isStr(v, max) { return v is string && v.size() <= max; }
+
+    // Public site settings: prices, studio WhatsApp, hidden templates.
+    match /settings/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Who can open the admin dashboard.
+    match /admins/{em} {
+      allow read: if isAdmin() || (signedIn() && email() == em);
+      allow write: if isAdmin();
+    }
+
+    // User profiles. Users can't make themselves Plus or admin.
+    match /users/{uid} {
+      allow read: if isAdmin() || (signedIn() && request.auth.uid == uid);
+      allow create: if signedIn() && request.auth.uid == uid
+        && request.resource.data.plan == "Free"
+        && request.resource.data.keys().hasOnly(["name", "email", "phone", "plan", "created", "lastLogin", "photo"])
+        && isStr(request.resource.data.name, 120) && isStr(request.resource.data.phone, 40);
+      allow update: if isAdmin() || (signedIn() && request.auth.uid == uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(["name", "phone", "lastLogin", "photo"])
+        && isStr(request.resource.data.name, 120) && isStr(request.resource.data.phone, 40));
+      allow delete: if isAdmin();
+    }
+
+    // Custom design / Plus requests. Visitors may request without an account.
+    match /orders/{id} {
+      allow read: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
+      allow create: if request.resource.data.status == "New"
+        && (request.resource.data.uid == null || (signedIn() && request.resource.data.uid == request.auth.uid))
+        && request.resource.data.keys().hasOnly(["kind", "design", "type", "name", "email", "phone", "amount", "status", "created", "uid"])
+        && request.resource.data.kind in ["custom", "plus"]
+        && isStr(request.resource.data.design, 120) && isStr(request.resource.data.name, 160)
+        && isStr(request.resource.data.email, 160) && isStr(request.resource.data.phone, 40);
+      allow update, delete: if isAdmin();
+    }
+
+    // Each signed-in user's invitation per function type (doc id = uid_type). No photos are stored here.
+    match /invitations/{id} {
+      allow read: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
+      allow create, update: if signedIn() && request.resource.data.uid == request.auth.uid
+        && id == request.auth.uid + "_" + request.resource.data.type
+        && request.resource.data.guests.size() <= 500;
+      allow delete: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
+    }
+
+    // Guest replies from the invitation website. Guests don't sign in.
+    match /rsvps/{id} {
+      allow read: if isAdmin() || (signedIn() && resource.data.ownerUid == request.auth.uid);
+      allow create: if request.resource.data.keys().hasOnly(["inviteId", "ownerUid", "type", "event", "guest", "name", "coming", "count", "msg", "created"])
+        && isStr(request.resource.data.ownerUid, 128) && request.resource.data.ownerUid.size() > 0
+        && isStr(request.resource.data.name, 120) && request.resource.data.name.size() > 0
+        && isStr(request.resource.data.msg, 1000)
+        && request.resource.data.coming is bool
+        && request.resource.data.count is int && request.resource.data.count >= 0 && request.resource.data.count <= 20;
+      allow update: if false;
+      allow delete: if isAdmin() || (signedIn() && resource.data.ownerUid == request.auth.uid);
+    }
+  }
+}

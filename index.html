@@ -1252,8 +1252,13 @@ function lxAudio(){
     a.addEventListener("play",st); a.addEventListener("pause",st); a.addEventListener("volumechange",st); }
   return a;
 }
-function lxPlay(){ if(!CONFIG.MUSIC) return; const a=lxAudio(); if(a.getAttribute("src")!==CONFIG.MUSIC) a.src=CONFIG.MUSIC; a.volume=.7; a.play().catch(()=>{}) }
-function lxStop(){ const a=document.getElementById("lxAudio"); if(a) a.pause() }
+function lxPlay(){ if(!CONFIG.MUSIC) return Promise.reject(); const a=lxAudio(); if(a.getAttribute("src")!==CONFIG.MUSIC) a.src=CONFIG.MUSIC; a.volume=.7; const r=a.play(); r.catch(()=>{}); return r }
+/* browsers only allow sound after the guest touches the page: try at once, else start on the first tap, key or click anywhere */
+const LX_EV=["pointerdown","touchend","keydown","click"];
+function lxDisarm(){ LX_EV.forEach(t=>document.removeEventListener(t,lxKick,true)) }
+function lxKick(e){ if(e&&e.target&&e.target.closest&&e.target.closest("[data-music]")) { lxDisarm(); return } lxDisarm(); lxPlay() }
+function lxArm(){ if(!CONFIG.MUSIC||!document.querySelector(".site.lotus")) return; lxDisarm(); lxPlay().catch(()=>{ LX_EV.forEach(t=>document.addEventListener(t,lxKick,{capture:true,passive:true})) }) }
+function lxStop(){ lxDisarm(); const a=document.getElementById("lxAudio"); if(a) a.pause() }
 document.addEventListener("click",e=>{
   const op=e.target.closest("[data-open]");
   if(op){ const site=op.closest(".site"); site.classList.add("opening"); lxPlay();
@@ -1922,7 +1927,7 @@ function customReq(name){
 }
 function guestPreview(guest){
   const lang=S.lang==="si"?"si":"en";
-  modal(`${phoneHTML(siteHTML(S.type,cur(),lang,guest,curPrem(),galleryFor(S.type)))}<button class="btn" data-x>Close preview</button>`);
+  modal(`${phoneHTML(siteHTML(S.type,cur(),lang,guest,curPrem(),galleryFor(S.type)))}<button class="btn" data-x>Close preview</button>`); lxArm();
   const m=document.querySelector(".modal"); m.classList.add("phonebox"); initSites(m);
 }
 
@@ -2070,7 +2075,7 @@ function rsvpBlock(type,ev,lang,guest){
 function renderGuest(p){
   const type=TYPES[p.t]?p.t:"other";
   document.title = (p.e.title || [p.e.a,p.e.b].filter(Boolean).join(" & ") || "Invitation") + " · Aradhanawa";
-  document.getElementById("app").innerHTML = `<main class="gwrap t-${type}">${siteHTML(type,p.e,p.l,p.g,p.d?(PREMIUM[type].find(x=>x.site===p.d)||null):null,[])}</main>`;
+  document.getElementById("app").innerHTML = `<main class="gwrap t-${type}">${siteHTML(type,p.e,p.l,p.g,p.d?(PREMIUM[type].find(x=>x.site===p.d)||null):null,[])}</main>`; lxArm();
   document.body.style.background = getComputedStyle(document.querySelector(".gwrap")).backgroundColor;
   initSites();
 }

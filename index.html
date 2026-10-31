@@ -1950,6 +1950,10 @@ const TH_DESIGN = {
   maroon:{n:"Kandyan Maroon", img:"th-maroon-card", mode:"bg", veil:"rgba(40,6,14,.2)", site:"maroon", bg:"#4A0E1C", gold:"#E2B65A", soft:"#EBCBA5", ink:"#FFF1DC", wine:"#6E1426"}
 };
 [["wedding","blush"],["homecoming","sage"],["homecoming","blush"],["birthday","balloons"],["birthday","glam"],["party","lanterns"],["party","glam"],["other","blush"],["other","maroon"]].forEach(([k,t])=>PREMIUM[k].push({...TH_DESIGN[t]}));
+/* For now the site only offers the animated themed designs. Older designs stay in the code but are not listed. */
+for(const k in PREMIUM) PREMIUM[k]=PREMIUM[k].filter(t=>LX_TH[t.site]);
+const hasTh = k => PREMIUM[k].length>0;
+const tplOf = k => S.tpl[k] || (hasTh(k)?1:0);
 const IMG_DIR = "img/";
 const srcset = n => `${IMG_DIR}${n}-480.webp 480w, ${IMG_DIR}${n}-960.webp 960w`;
 const pic = (n, sizes, alt, pos, lazy=true) => `<img src="${IMG_DIR}${n}-960.webp" srcset="${srcset(n)}" sizes="${sizes}" alt="${esc(alt||"")}" ${lazy?'loading="lazy"':""} decoding="async" ${pos?`style="object-position:${pos}"`:""}>`;
@@ -2166,7 +2170,7 @@ document.addEventListener("keydown",e=>{ if(e.key==="Escape"){ document.getEleme
 
 /* ================= RENDER APP ================= */
 const LP_PH={
-  designs:["Card templates","All our <em>invitation cards</em>","Free designs for every function, and custom designs our team draws with your photos and colours. Tap a card to see it up close."],
+  designs:["Card templates","All our <em>invitation cards</em>","Animated designs for every function: silk, flowers, balloons and lanterns that move as guests scroll. Tap a card to see it up close."],
   create:["Invitation maker","Make your <em>invitation</em>","Pick the function and a card, fill in the details, then send every guest their own link on WhatsApp. Everything saves in this browser."],
   pricing:["Pricing","Simple, <em>honest</em> prices","Start free. Pay only when you need more guests or a design made just for you."]};
 function lpOrn(){ return `<div class="lp-orn" aria-hidden="true"><i></i><svg viewBox="0 0 40 40"><g fill="#EBD29A" fill-opacity=".6" stroke="currentColor" stroke-width="1">${Array.from({length:8},(_,i)=>`<path transform="rotate(${i*45} 20 20)" d="M20 18C17 14 17.5 9 20 5C22.5 9 23 14 20 18Z"/>`).join("")}<circle cx="20" cy="20" r="3.5" fill="currentColor"/></g></svg><i></i></div>` }
@@ -2181,7 +2185,7 @@ function lpNakath(size,o={}){
 function lpDetail(){
   const k=TYPES[S.dt]?S.dt:"wedding", i=+S.di||0, T=TYPES[k], t=i?PREMIUM[k][i-1]:null, ev=T.sample;
   if(i&&!t) return `<section class="lp-phead"><h1>Design not found</h1><p><a class="lp-hghost" href="#designs">Back to all designs</a></p></section>`;
-  const name=t?t.n:T.tpl, all=[[0,null],...PREMIUM[k].map((x,j)=>[j+1,x]).filter(([j,x])=>(x.img||x.layout)&&!tplOff().includes(k+":"+j))];
+  const name=t?t.n:T.tpl, all=[...(hasTh(k)?[]:[[0,null]]),...PREMIUM[k].map((x,j)=>[j+1,x]).filter(([j,x])=>(x.img||x.layout)&&!tplOff().includes(k+":"+j))];
   const pos=all.findIndex(([j])=>j===i), prev=all[(pos-1+all.length)%all.length][0], next=all[(pos+1)%all.length][0];
   return `<section class="lp-detail" data-f="paper">
     <nav class="dt-crumb" aria-label="Breadcrumb"><a href="#designs">Designs</a><span>/</span><a href="#designs" data-dfgo="${k}">${T.name}</a><span>/</span><b>${esc(name)}</b></nav>
@@ -2276,9 +2280,8 @@ function render(){
   </section>
 `,
     des:()=>`<section class="lp-ch lp-paper g lp-des" id="designs" data-f="paper">
-    <div class="head"><div><h2 class="rv">${(designItems().match(/data-pick=/g)||[]).length} designs to start from</h2><p class="rv" style="--d:80ms">Poruwa, Kandyan gold, Galle Fort, tea country, Vesak lanterns and lotus. Pick one to start with it.</p></div>
+    <div class="head"><div><h2 class="rv">${(designItems().match(/data-pick=/g)||[]).length} designs to start from</h2><p class="rv" style="--d:80ms">Lotus, roses, jasmine, balloons, lanterns and Kandyan gold, all animated. Pick one to start with it.</p></div>
       <div class="flt rv" role="group" aria-label="Show designs for">${[["all","All"],...Object.entries(TYPES).map(([k,t])=>[k,t.name])].map(([k,n])=>`<button type="button" data-df="${k}" aria-pressed="${k==="all"}">${n}</button>`).join("")}</div></div>
-    <div class="lp-strip">${[["tea-bungalow","Tea country","Hill-country tea bungalow at dusk, used in the Tea Country and Emerald Arch designs","50% 60%"],["galle-fort","Galle Fort","Galle Fort lighthouse at sunset, used in the Galle Fort Sunset and Fort Postcard designs","50% 70%"],["vesak-lanterns","Vesak lanterns","Vesak lanterns glowing at night, used in the Vesak Lanterns and Lantern Arch designs","50% 40%"]].map(([n,c,alt,pos],i)=>`<figure class="rv" style="--d:${i*80}ms">${pic(n,"(max-width:700px) 92vw, 33vw",alt,pos)}<figcaption>${c}</figcaption></figure>`).join("")}</div>
     <div class="lp-tiles all" id="drow">${designItems()}</div>
     
   </section>
@@ -2300,10 +2303,10 @@ function render(){
       </section>
 
       <section class="panel" aria-labelledby="h-tpl">
-        <div class="phead"><div><span class="eyebrow">Step 2</span><h2 id="h-tpl">Choose a design</h2><p class="sub">The first design is free. Tap a premium design to preview it with your details. Our team customises it with your photos and colours.</p></div></div>
+        <div class="phead"><div><span class="eyebrow">Step 2</span><h2 id="h-tpl">Choose a design</h2><p class="sub">Tap a design to preview it with your details. Our team customises it with your photos and colours.</p></div></div>
         <div class="tpls" data-ui>
-          <button class="tpl" data-tpl="0" aria-pressed="${!S.tpl[S.type]}"><div class="sw t-${S.type}" style="background:var(--c-bg)">${T.art()}</div><div class="nm">${T.tpl}<span class="pill free">Free</span></div></button>
-          ${PREMIUM[S.type].map((t,i)=>`<button class="tpl locked" data-tpl="${i+1}" ${tplOff().includes(S.type+":"+(i+1))?"hidden":""} aria-pressed="${S.tpl[S.type]===i+1}"><span class="lock">${I.lock} ${CONFIG.PRICE_CUSTOM}</span><div class="sw t-${S.type}" style="${tplVars(t)}background:${t.bg}">${t.img?pic(t.img,"160px",t.n,t.pos):premArt(S.type,t,ev)}</div><div class="nm">${esc(t.n)}<span class="pill pro">Custom</span></div></button>`).join("")}
+          <button class="tpl" data-tpl="0" ${hasTh(S.type)?"hidden":""} aria-pressed="${!tplOf(S.type)}"><div class="sw t-${S.type}" style="background:var(--c-bg)">${T.art()}</div><div class="nm">${T.tpl}<span class="pill free">Free</span></div></button>
+          ${PREMIUM[S.type].map((t,i)=>`<button class="tpl locked" data-tpl="${i+1}" ${tplOff().includes(S.type+":"+(i+1))?"hidden":""} aria-pressed="${tplOf(S.type)===i+1}"><span class="lock">${I.lock} ${CONFIG.PRICE_CUSTOM}</span><div class="sw t-${S.type}" style="${tplVars(t)}background:${t.bg}">${t.img?pic(t.img,"160px",t.n,t.pos):premArt(S.type,t,ev)}</div><div class="nm">${esc(t.n)}<span class="pill pro">Custom</span></div></button>`).join("")}
         </div>
       </section>
 
@@ -2414,7 +2417,7 @@ function lpBind(){
   const $=s=>document.querySelector(s);
   const inp=$("#tryIn"); if(inp){ lpTry(); inp.addEventListener("input",lpTry);
   document.querySelectorAll("[data-ex]").forEach(b=>b.onclick=()=>{ inp.value=b.dataset.ex; lpTry(); inp.focus() });
-  $("#tryGo").onclick=()=>{ const t=inp.dataset.type; S.type=t; S.ev[t]={...TYPES[t].sample,...S.ev[t],...inp._ev}; S.edited[t]=true; S.tpl[t]=0; save(); location.hash="#create" }; }
+  $("#tryGo").onclick=()=>{ const t=inp.dataset.type; S.type=t; S.ev[t]={...TYPES[t].sample,...S.ev[t],...inp._ev}; S.edited[t]=true; S.tpl[t]=hasTh(t)?1:0; save(); location.hash="#create" }; }
   const R=$("#howR"); const set=i=>{ i=+i; R.value=i; R.setAttribute("aria-valuetext",LP_STAGES[i][0]); R.parentElement.style.setProperty("--p",(i/3*100)+"%");
     const H=$("#howH"), F=$("#howF"); H.style.opacity=F.style.opacity=0; setTimeout(()=>{ H.textContent=LP_STAGES[i][1]; F.innerHTML=lpFrag(i); H.style.opacity=F.style.opacity=1 },200);
     document.querySelectorAll("[data-st]").forEach(b=>b.setAttribute("aria-current",String(+b.dataset.st===i))) };
@@ -2436,7 +2439,7 @@ function lpBind(){
   els.forEach(e=>io.observe(e));
 }
 
-const curPrem = () => { const i=S.tpl[S.type]; return i ? PREMIUM[S.type][i-1] || null : null };
+const curPrem = () => { const i=tplOf(S.type); return i ? PREMIUM[S.type][i-1] || PREMIUM[S.type][0] || null : null };
 function refreshLive(){
   if(!document.getElementById("cardSlot")) return;
   const ev=cur(), lang=S.lang;
@@ -2502,7 +2505,7 @@ function designItems(filter){
   for(const [k,T] of Object.entries(TYPES)){
     if(filter&&filter!=="all"&&filter!=="feat"&&filter!==k) continue;
     const ev=T.sample;
-    out.push(`<button class="lp-tile" data-pick="${k}:0"><div class="pv" data-ui>${cardHTML(k,ev,"en","",null)}</div><div class="strip"><b>${T.tpl}</b><span class="free">${T.name} · Free</span></div></button>`);
+    if(!hasTh(k)) out.push(`<button class="lp-tile" data-pick="${k}:0"><div class="pv" data-ui>${cardHTML(k,ev,"en","",null)}</div><div class="strip"><b>${T.tpl}</b><span class="free">${T.name} · Free</span></div></button>`);
     PREMIUM[k].forEach((t,i)=>{ if(!t.img&&!t.layout) return; if(tplOff().includes(k+":"+(i+1))) return; out.push(`<button class="lp-tile" data-pick="${k}:${i+1}"><div class="pv" data-ui>${cardHTML(k,ev,"en","",{...t,_noribbon:1})}</div><div class="strip"><b>${esc(t.n)}</b><span>${T.name} · ${CONFIG.PRICE_CUSTOM}</span></div></button>`) });
   }
   if(filter==="feat"){ const pickN=(k,n)=>out.filter(x=>x.includes(`data-pick="${k}:`)).slice(0,n); return [...pickN("wedding",4),...pickN("birthday",1),...pickN("homecoming",1),...pickN("dana",1),...pickN("party",1)].join("") }
@@ -2807,7 +2810,7 @@ function fbSyncInvite(){
   fbInvT=setTimeout(()=>{
     const ev=S.ev[type]||{}, e={};
     for(const k in ev){ const v=ev[k]; if((typeof v==="string"&&v.length<2000)||typeof v==="number"||typeof v==="boolean") e[k]=v }
-    FBX.saveInvite({type,lang:S.lang,tpl:S.tpl[type]??0,title:ev.title||"",names:[ev.a,ev.b].filter(Boolean).join(" & "),date:ev.date||"",venue:ev.venue||"",ev:e,
+    FBX.saveInvite({type,lang:S.lang,tpl:tplOf(type),title:ev.title||"",names:[ev.a,ev.b].filter(Boolean).join(" & "),date:ev.date||"",venue:ev.venue||"",ev:e,
       guests:S.guests.slice(0,500).map(g=>({name:String(g.name||"").slice(0,80)}))}).catch(er=>console.warn("[fb] invite",er));
   },1500);
 }

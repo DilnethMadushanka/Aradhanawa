@@ -2161,7 +2161,7 @@ const prettyPhone = p => { const d=String(p||"").replace(/\D/g,""); return d.len
 const b64 = s => btoa(unescape(encodeURIComponent(s))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
 const unb64 = s => decodeURIComponent(escape(atob(s.replace(/-/g,"+").replace(/_/g,"/"))));
 function inviteLink(guest){
-  const payload = {t:S.type, l:S.lang==="si"?"si":"en", e:cur(), g:guest||""}; const cp=curPrem(); if(cp&&cp.site) payload.d=cp.site; if(FB_ON()&&window.FBX&&FBX.user) payload.o=FBX.user.uid;
+  const payload = {t:S.type, l:S.lang==="si"?"si":"en", e:cur(), g:guest||""}; const cp=curPrem(); if(cp&&cp.site&&ownsDesign(S.type,cp)) payload.d=cp.site; if(FB_ON()&&window.FBX&&FBX.user) payload.o=FBX.user.uid;
   return CONFIG.SITE + "#i=" + b64(JSON.stringify(payload));
 }
 
@@ -2478,7 +2478,7 @@ function render(){
         <div class="phead"><div><span class="eyebrow">Step 2</span><h2 id="h-tpl">Choose a design</h2><p class="sub">Tap a design to preview it with your details. Our team customises it with your photos and colours.</p></div></div>
         <div class="tpls" data-ui>
           <button class="tpl" data-tpl="0" ${hasTh(S.type)?"hidden":""} aria-pressed="${!tplOf(S.type)}"><div class="sw t-${S.type}" style="background:var(--c-bg)">${T.art()}</div><div class="nm">${T.tpl}<span class="pill free">Free</span></div></button>
-          ${PREMIUM[S.type].map((t,i)=>`<button class="tpl locked" data-tpl="${i+1}" ${tplOff().includes(S.type+":"+(i+1))?"hidden":""} aria-pressed="${tplOf(S.type)===i+1}"><span class="lock">${I.lock} ${CONFIG.PRICE_CUSTOM}</span><div class="sw t-${S.type}" style="${tplVars(t)}background:${t.bg}">${t.img?pic(t.img,"160px",t.n,t.pos):premArt(S.type,t,ev)}</div><div class="nm">${esc(t.n)}<span class="pill pro">Custom</span></div></button>`).join("")}
+          ${PREMIUM[S.type].map((t,i)=>{ const own=ownsDesign(S.type,t); return `<button class="tpl ${own?"owned":"locked"}" data-tpl="${i+1}" ${tplOff().includes(S.type+":"+(i+1))&&!own?"hidden":""} aria-pressed="${tplOf(S.type)===i+1}">${own?"":`<span class="lock">${I.lock} ${CONFIG.PRICE_CUSTOM}</span>`}<div class="sw t-${S.type}" style="${tplVars(t)}background:${t.bg}">${t.img?pic(t.img,"160px",t.n,t.pos):premArt(S.type,t,ev)}</div><div class="nm">${esc(t.n)}${own?`<span class="pill free">Yours</span>`:`<span class="pill pro">Custom</span>`}</div></button>` }).join("")}
         </div>
       </section>
 
@@ -2530,7 +2530,7 @@ function render(){
 
     <aside class="stage" aria-label="Live preview">
       <div class="table" id="cardSlot" data-ui></div>
-      <div id="premBar" hidden><p class="pnote">Premium preview. Guest links use the free design until your custom design is ready.</p><div class="row" style="margin-top:8px"><button class="btn primary" id="reqPrem">Request this design · ${CONFIG.PRICE_CUSTOM}</button></div></div>
+      <p class="pnote" id="premOwn" hidden>Your purchased design. Guest links use this design.</p><div id="premBar" hidden><p class="pnote">Premium preview. Guest links use the free design until your custom design is ready.</p><div class="row" style="margin-top:8px"><button class="btn primary" id="reqPrem">Request this design · ${CONFIG.PRICE_CUSTOM}</button></div></div>
       <div class="row">
         <button class="btn" id="preview">${I.eye} Preview as guest</button>
         <button class="btn" id="copyLink">${I.link} Copy invite link</button>
@@ -2611,13 +2611,24 @@ function lpBind(){
   els.forEach(e=>io.observe(e));
 }
 
+/* A premium design is unlocked once the signed-in user's custom order for it is marked Done (staff see all). */
+function ownsDesign(type,t){
+  const u=me(); if(!u||!t) return false;
+  if(u.role==="admin") return true;
+  const n=String(t.n||"").trim().toLowerCase(), em=String(u.email||"").toLowerCase();
+  return DB.orders().some(o=>o.kind==="custom" && o.status==="Done" && o.type===type
+    && String(o.design||"").trim().toLowerCase()===n
+    && ((FB_ON()&&o.uid===u.id) || (!!em&&String(o.email||"").toLowerCase()===em)));
+}
 const curPrem = () => { const i=tplOf(S.type); return i ? PREMIUM[S.type][i-1] || PREMIUM[S.type][0] || null : null };
 function refreshLive(){
   if(!document.getElementById("cardSlot")) return;
   const ev=cur(), lang=S.lang;
   const prem = curPrem();
   document.getElementById("cardSlot").innerHTML = cardHTML(S.type, ev, lang==="si"?"si":"en", "", prem);
-  document.getElementById("premBar").hidden = !prem;
+  const own = !!prem && ownsDesign(S.type, prem);
+  document.getElementById("premBar").hidden = !prem || own;
+  document.getElementById("premOwn").hidden = !own;
   const hp=document.getElementById("heroPhone");
   if(hp){ const sc=hp.querySelector(".screen"), top=sc?sc.scrollTop:0; hp.innerHTML=phoneHTML(siteHTML(S.type,ev,lang==="si"?"si":"en","",prem,galleryFor(S.type))); hp.querySelector(".screen").scrollTop=top; initSites(hp) }
   const msg = waMessage(S.type, ev, lang, "", inviteLink(""));
@@ -3380,6 +3391,7 @@ function fbChanged(why){
   const h=location.hash||"", pg=h.slice(1).split("/")[0];
   if(h.startsWith("#i=")) return;
   if(why==="auth"){ fbSyncGalleries(); if(["login","register","admin","account"].includes(pg)) route(); else render(); return }
+  if(why==="orders"&&S.page==="create"){ const a=document.activeElement; if(!(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))){ const y=scrollY; render(); scrollTo(0,y) } return }
   if(pg!=="admin"&&pg!=="account") return;
   const a=document.activeElement; if(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&a.closest(".adm,.acct")){ fbDirty=true; return }
   clearTimeout(fbT); fbT=setTimeout(route,120);

@@ -1557,7 +1557,9 @@ const CONFIG = {
   STUDIO_WA: "94764487857",          // Aradhanawa studio WhatsApp number
   PRICE_PLUS: "Rs. 990",
   PRICE_CUSTOM: "Rs. 4,900",
-  MUSIC: "audio/jayamangala-gatha.mp3",   // background music for the Lotus Mandala design (put your MP3 here)
+  MUSIC: "audio/jayamangala-gatha.mp3",   // wedding background music (put your MP3 here)
+  // background music for the other functions. Empty means no music for that function.
+  MUSIC_HOMECOMING: "audio/homecoming.mp3", MUSIC_BIRTHDAY: "audio/birthday.mp3", MUSIC_PARTY: "", MUSIC_DANA: "", MUSIC_OTHER: "",
   // Base URL for share links. On a static host (Netlify, GitHub Pages, Vercel) the page itself is used.
   SITE: (location.protocol.startsWith("http") && !/claude|anthropic|usercontent/.test(location.hostname))
           ? location.origin + location.pathname : "https://aradhanawa.com/"
@@ -1771,20 +1773,26 @@ function lpMedal(){
   const pet=(n,r1,r2,w)=>Array.from({length:n},(_,i)=>`<path transform="rotate(${i*360/n} 50 50)" d="M50 ${50-r1}C${50-w} ${50-r1-(r2-r1)*.45} ${50-w*.6} ${50-r2+4} 50 ${50-r2}C${50+w*.6} ${50-r2+4} ${50+w} ${50-r1-(r2-r1)*.45} 50 ${50-r1}Z"/>`).join("");
   return `<svg class="lp-medal" viewBox="0 0 100 100" aria-hidden="true"><g class="rot" fill="#EBD29A" fill-opacity=".6" stroke="currentColor" stroke-width="1"><circle cx="50" cy="50" r="47" fill="none"/><circle cx="50" cy="50" r="43" fill="none" stroke-dasharray="1.5 3"/>${pet(16,26,41,6)}${pet(8,12,27,8)}<circle cx="50" cy="50" r="11" fill="#EBD29A" fill-opacity=".9"/><circle cx="50" cy="50" r="5" fill="currentColor"/></g></svg>`;
 }
+const MUSIC_KEY={wedding:"MUSIC",homecoming:"MUSIC_HOMECOMING",birthday:"MUSIC_BIRTHDAY",party:"MUSIC_PARTY",dana:"MUSIC_DANA",other:"MUSIC_OTHER"};
+/* credit lines that a track's free licence asks for, shown in the invitation footer */
+const MUSIC_CREDIT={"audio/homecoming.mp3":"“Until We Meet Again” by Arthur Vyncke"};
+const musicFor = type => CONFIG[MUSIC_KEY[type]||"MUSIC"]||"";
+/* the music of the invitation on screen: the preview layer first, then the guest page */
+function lxSrc(){ const s=document.querySelector("#layer .site")||document.querySelector(".gwrap .site"); const m=s&&s.className.match(/\bt-(\w+)/); return musicFor(m?m[1]:"wedding") }
 function lxAudio(){
   let a=document.getElementById("lxAudio");
-  if(!a){ a=document.createElement("audio"); a.id="lxAudio"; a.loop=true; a.preload="none"; a.src=CONFIG.MUSIC||""; document.body.appendChild(a);
+  if(!a){ a=document.createElement("audio"); a.id="lxAudio"; a.loop=true; a.preload="none"; a.src=lxSrc(); document.body.appendChild(a);
     a.addEventListener("error",()=>{ document.querySelectorAll("[data-music]").forEach(b=>b.hidden=true) });
     const st=()=>{ const on=!a.paused&&!a.muted; document.querySelectorAll("[data-music]").forEach(b=>{ b.classList.toggle("on",on); b.setAttribute("aria-pressed",String(!on)) }) };
     a.addEventListener("play",st); a.addEventListener("pause",st); a.addEventListener("volumechange",st); }
   return a;
 }
-function lxPlay(){ if(!CONFIG.MUSIC) return Promise.reject(); const a=lxAudio(); if(a.getAttribute("src")!==CONFIG.MUSIC) a.src=CONFIG.MUSIC; a.volume=.7; const r=a.play(); r.catch(()=>{}); return r }
+function lxPlay(){ const src=lxSrc(); if(!src) return Promise.reject(); const a=lxAudio(); if(a.getAttribute("src")!==src) a.src=src; a.volume=.7; const r=a.play(); r.catch(()=>{}); return r }
 /* browsers only allow sound after the guest touches the page: try at once, else start on the first tap, key or click anywhere */
 const LX_EV=["pointerdown","touchend","keydown","click"];
 function lxDisarm(){ LX_EV.forEach(t=>document.removeEventListener(t,lxKick,true)) }
 function lxKick(e){ if(e&&e.target&&e.target.closest&&e.target.closest("[data-music]")) { lxDisarm(); return } lxDisarm(); lxPlay() }
-function lxArm(){ if(!CONFIG.MUSIC||!document.querySelector(".site [data-music]")) return; lxDisarm(); lxPlay().catch(()=>{ LX_EV.forEach(t=>document.addEventListener(t,lxKick,{capture:true,passive:true})) }) }
+function lxArm(){ if(!lxSrc()||!document.querySelector(".site [data-music]")) return; lxDisarm(); lxPlay().catch(()=>{ LX_EV.forEach(t=>document.addEventListener(t,lxKick,{capture:true,passive:true})) }) }
 function lxStop(){ lxDisarm(); const a=document.getElementById("lxAudio"); if(a) a.pause() }
 document.addEventListener("click",e=>{
   const op=e.target.closest("[data-open]");
@@ -1817,7 +1825,7 @@ function lxSite(type, ev, lang, guest, prem, gallery, base){
   const nm2 = names.length>1 ? `${esc(names[0])} ${L("and","සහ")} ${esc(names[1])}` : esc(names[0]);
   const fabs = `<div class="lx-fabs"><div class="lx-sheet" hidden>${base.sections.map(([k,ic,lb])=>`<button type="button" data-go="${base.id}-${k}">${ic}<span>${lb}</span></button>`).join("")}</div>
     <button type="button" class="lx-fab" data-lxmenu aria-label="${L("Menu","මෙනුව")}" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 7h14M5 12h14M5 17h14"/></svg></button>
-    ${CONFIG.MUSIC?`<button type="button" class="lx-fab" data-music aria-pressed="false" aria-label="${L("Mute or unmute music","සංගීතය නවත්වන්න / වාදනය")}"><svg class="m-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg><svg class="m-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg></button>`:""}</div>`;
+    ${musicFor(type)?`<button type="button" class="lx-fab" data-music aria-pressed="false" aria-label="${L("Mute or unmute music","සංගීතය නවත්වන්න / වාදනය")}"><svg class="m-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg><svg class="m-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg></button>`:""}</div>`;
   const petals = Array.from({length:TH.fx==="confetti"||TH.fx==="gold"?14:10},(_,i)=>`<i style="left:${(i*41+7)%94}%;--d:${(11+i%4*3)}s;--w:${(i%3-1)*40}px;animation-delay:-${(i*2.3).toFixed(1)}s;--s:${(.7+(i%3)*.2).toFixed(1)}"></i>`).join("");
   return `<div class="site lotus th-${prem.site} mo-${TH.mo} fx-${TH.fx} ${TH.dark?"th-dark":""} ${TH.glow?"th-glow":""} locked t-${type} ${si?"si":""}" style="${tplVars(prem)}--lx-wine:${prem.wine||prem.ink}" data-site="${base.id}">
   <div class="lx-bgfx" aria-hidden="true"><img src="${TH.bg}" alt=""><img class="fl l" src="${TH.l}" alt=""><img class="fl r" src="${TH.r}" alt=""><div class="lx-petals">${petals}</div></div>
@@ -1910,7 +1918,7 @@ function lxRest(type,ev,lang,base){
   ${gal.replace('class="s-sec"','class="s-sec lx-plain"').replace(/<h2 class="s-h">[^<]*<\/h2>/,`<h2 class="s-h">${L("Our gallery","අපගේ ඡායාරූප")}</h2>`)}
   ${vs.length?`<section class="s-sec lx-plain" id="${id}-loc"><span class="s-eb">${L("The setting","උත්සව ස්ථානය")}</span><h2 class="s-h">${type==="wedding"?L("Wedding venue","මංගල ස්ථානය"):L("Venue","ස්ථානය")}</h2>${heart}${venues}</section>`:""}
   ${rsvp.replace('class="s-sec"','class="s-sec lx-plain lx-rsvp"').replace('<span class="s-eb">RSVP</span>',`<span class="s-eb">${L("Kindly reply","කරුණාකර දන්වන්න")}</span>`).replace(L("Joyfully yes","සතුටින් එනවා"),L("Joyfully accept","සතුටින් එනවා")).replace(L("Sorry, can't","එන්න බැහැ"),L("Regretfully decline","කණගාටුයි, එන්න බැහැ")).replace(/(<form class="s-form")/,`<p class="s-p">${L("We joyfully await your presence. Please let us know if you will be joining us.","ඔබගේ පැමිණීම සතුටින් බලාපොරොත්තු වෙමු.")}</p>$1`)}
-  <footer class="s-foot">${L("Made with","නිර්මාණය")} <a href="${CONFIG.SITE.split("#")[0]}" target="_blank" rel="noopener">Aradhanawa.com</a></footer>`;
+  <footer class="s-foot">${L("Made with","නිර්මාණය")} <a href="${CONFIG.SITE.split("#")[0]}" target="_blank" rel="noopener">Aradhanawa.com</a>${MUSIC_CREDIT[musicFor(type)]?`<br><small>${L("Music","සංගීතය")}: ${MUSIC_CREDIT[musicFor(type)]}</small>`:""}</footer>`;
 }
 
 const corner = c => `<svg class="corner %POS%" viewBox="0 0 42 42" aria-hidden="true"><path d="M4 38V14Q4 4 14 4H38" fill="none" stroke="${c}" stroke-width="1.4"/><path d="M10 30Q10 10 30 10" fill="none" stroke="${c}" stroke-width="1" opacity=".6"/><circle cx="10" cy="10" r="2.6" fill="${c}"/><path d="M16 16q6-2 8 4q-6 2-8-4z" fill="${c}" opacity=".8"/></svg>`;
@@ -2684,7 +2692,7 @@ function siteHTML(type, ev, lang, guest, prem, gallery){
   </section>`:""}
 
   <footer class="s-foot">${L("Made with","නිර්මාණය")} <a href="${CONFIG.SITE.split("#")[0]}" target="_blank" rel="noopener">Aradhanawa.com</a></footer>
-  <nav class="snav" aria-label="${L("Invitation sections","කොටස්")}">${sections.map(([k,ic,lb],i)=>`<button type="button" data-go="${id}-${k}" aria-label="${lb}" ${i===0?'aria-current="true"':""}>${ic}</button>`).join("")}${type==="wedding"&&CONFIG.MUSIC?`<button type="button" class="s-mus" data-music aria-pressed="true" aria-label="${L("Play or mute music","සංගීතය වාදනය / නවත්වන්න")}"><svg class="m-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg><svg class="m-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg></button>`:""}</nav>
+  <nav class="snav" aria-label="${L("Invitation sections","කොටස්")}">${sections.map(([k,ic,lb],i)=>`<button type="button" data-go="${id}-${k}" aria-label="${lb}" ${i===0?'aria-current="true"':""}>${ic}</button>`).join("")}${musicFor(type)?`<button type="button" class="s-mus" data-music aria-pressed="true" aria-label="${L("Play or mute music","සංගීතය වාදනය / නවත්වන්න")}"><svg class="m-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg><svg class="m-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg></button>`:""}</nav>
 </div>`;
   if(prem&&LX_TH[prem.site]){ lxCSS(); const a=html.indexOf(`<section class="s-sec" id="${id}-date">`), b=html.indexOf(`<nav class="snav"`); const secs=[...sections]; secs.splice(1,0,["details",I.eye,L("Details","විස්තර")]); return lxSite(type,ev,lang,guest,prem,gallery,{id,th:prem.site,sections:secs,rest:html.slice(a,b)}) }
   return html;
@@ -3160,7 +3168,8 @@ function renderAdmin(tab,arg){
       <div class="af"><label for="s-wa">Studio WhatsApp</label><input id="s-wa" name="STUDIO_WA" value="${esc(CONFIG.STUDIO_WA)}"><small>International format, for example 94771234567</small></div>
       <div class="af"><label for="s-plus">Plus price</label><input id="s-plus" name="PRICE_PLUS" value="${esc(CONFIG.PRICE_PLUS)}"></div>
       <div class="af"><label for="s-custom">Custom design price</label><input id="s-custom" name="PRICE_CUSTOM" value="${esc(CONFIG.PRICE_CUSTOM)}"></div>
-      <div class="af" style="grid-column:1/-1"><label for="s-music">Background music (Lotus Mandala)</label><input id="s-music" name="MUSIC" value="${esc(CONFIG.MUSIC||"")}"><small>MP3 path or URL, for example audio/jayamangala-gatha.mp3. Leave empty for no music.</small></div>
+      ${Object.entries(MUSIC_KEY).map(([t,k])=>`<div class="af"><label for="s-${k}">Music: ${esc(TYPES[t].name)}</label><input id="s-${k}" name="${k}" value="${esc(CONFIG[k]||"")}"></div>`).join("")}
+      <div class="af" style="grid-column:1/-1"><small>Background music for each function: an MP3 path or URL, for example audio/jayamangala-gatha.mp3. Leave empty for no music.</small></div>
     </div><div class="row" style="margin-top:18px"><button class="btn primary" type="submit">Save settings</button></div></form>
     ${fb?`<div class="box"><h2>Admins</h2><p class="sub" style="margin:-4px 0 14px;color:var(--muted)">These Google accounts can open this dashboard. Owners listed in firebase-config.js and firestore.rules can't be removed here.</p>
       <div class="tblwrap"><table class="tbl"><tbody>
@@ -3203,7 +3212,7 @@ function renderAdmin(tab,arg){
     if(b.hasAttribute("data-clearsample")){ DB.setUsers(DB.users().filter(x=>!x.sample)); DB.setOrders(DB.orders().filter(x=>!x.sample)); toast("Sample data removed"); re() }
   });
   const sf=document.getElementById("sform");
-  if(sf) sf.onsubmit=e=>{ e.preventDefault(); const c={}; for(const k of ["FREE_GUESTS","STUDIO_WA","PRICE_PLUS","PRICE_CUSTOM","MUSIC"]){ const v=sf.elements[k].value.trim(); if(k==="MUSIC"){ c.MUSIC=v; const a=document.getElementById("lxAudio"); if(a) a.remove(); continue } if(v) c[k]=k==="FREE_GUESTS"?Math.max(1,+v||5):k==="STUDIO_WA"?intlPhone(v):v } store.set("config",c); Object.assign(CONFIG,c);
+  if(sf) sf.onsubmit=e=>{ e.preventDefault(); const c={}; for(const k of ["FREE_GUESTS","STUDIO_WA","PRICE_PLUS","PRICE_CUSTOM",...Object.values(MUSIC_KEY)]){ const v=sf.elements[k].value.trim(); if(k.startsWith("MUSIC")){ c[k]=v; const a=document.getElementById("lxAudio"); if(a) a.remove(); continue } if(v) c[k]=k==="FREE_GUESTS"?Math.max(1,+v||5):k==="STUDIO_WA"?intlPhone(v):v } store.set("config",c); Object.assign(CONFIG,c);
     if(fb){ if(fbNeed()) FBX.saveSettings(c).then(()=>toast("Settings saved for every visitor"),fbFail) } else toast("Settings saved") };
   const af2=document.getElementById("aform2");
   if(af2) af2.onsubmit=e=>{ e.preventDefault(); const em=af2.elements.em.value.trim().toLowerCase(); if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) return toast("Enter a valid email"); if(fbNeed()) FBX.setAdmin(em,true).then(()=>toast(`${em} added. They log in with Google to open the dashboard.`),fbFail) };

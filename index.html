@@ -927,6 +927,49 @@ nav.top a{font-weight:600}
 .lx-hero .lx-names.lx-rv{transform:scale(.94);letter-spacing:.06em;transition-property:opacity,transform,filter,letter-spacing;transition-duration:1.6s}
 .lx-hero .lx-names.lx-rv.in{transform:none;letter-spacing:-.01em}
 @media (prefers-reduced-motion:reduce){.lx-bgfx *,.lx-heart{animation:none!important}.lx-petals{display:none}.lx-rv,.lx-rv *{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}}
+
+/* ---- themed sites: motion of side art, particles, dark themes ---- */
+.site.lotus:not(.th-lotus):not(.th-maroon) :is(.lx-cover,.lx-hero) > .lx-mandala{display:none}
+.site.lotus:not(.th-lotus):not(.th-maroon) :is(.lx-cover,.lx-hero){padding-top:110px}
+.th-dark{background:var(--c-bg)!important}
+.mo-bob .lx-bgfx .fl.l{transform-origin:50% 50%;animation:lxbobL 6.5s ease-in-out infinite alternate}
+.mo-bob .lx-bgfx .fl.r{transform-origin:50% 50%;animation:lxbobR 7.5s ease-in-out infinite alternate;animation-delay:-2s}
+@keyframes lxbobL{0%{transform:translate3d(0,6px,0) rotate(-.3deg)}100%{transform:translate3d(0,-12px,0) rotate(.4deg)}}
+@keyframes lxbobR{0%{transform:translate3d(0,-8px,0) rotate(.3deg)}100%{transform:translate3d(0,10px,0) rotate(-.4deg)}}
+.mo-swing .lx-bgfx .fl.l{transform-origin:20% 0%;animation:lxswL 5.5s ease-in-out infinite alternate}
+.mo-swing .lx-bgfx .fl.r{transform-origin:80% 0%;animation:lxswR 6.2s ease-in-out infinite alternate;animation-delay:-2.5s}
+@keyframes lxswL{from{transform:rotate(-.7deg)}to{transform:rotate(.7deg)}}
+@keyframes lxswR{from{transform:rotate(.7deg)}to{transform:rotate(-.7deg)}}
+.th-glow .lx-bgfx .fl{filter:brightness(1) saturate(1)}
+.th-glow .lx-bgfx .fl.l{animation:lxswL 5.5s ease-in-out infinite alternate,lxglow 2.4s ease-in-out infinite alternate}
+.th-glow .lx-bgfx .fl.r{animation:lxswR 6.2s ease-in-out infinite alternate,lxglow 3.1s ease-in-out infinite alternate}
+@keyframes lxglow{from{filter:brightness(.94) saturate(1)}to{filter:brightness(1.16) saturate(1.15)}}
+/* particles */
+.fx-rose .lx-petals i{background:linear-gradient(135deg,#F9D3D6,#E39AA5)}
+.fx-jasmine .lx-petals i{background:linear-gradient(135deg,#FFFFFF,#E8EEDF);border-radius:50% 50% 50% 0}
+.fx-confetti .lx-petals i,.fx-gold .lx-petals i{border-radius:2px;width:calc(7px * var(--s));height:calc(12px * var(--s));animation-name:lxconf}
+.fx-confetti .lx-petals i:nth-child(4n){background:#BFE8D6}.fx-confetti .lx-petals i:nth-child(4n+1){background:#F8C8B4}.fx-confetti .lx-petals i:nth-child(4n+2){background:#D9C6EE}.fx-confetti .lx-petals i:nth-child(4n+3){background:#F7E1A0}
+.fx-gold .lx-petals i{background:linear-gradient(135deg,#FCE7A8,#C9993F);box-shadow:0 0 6px rgba(255,215,130,.6)}
+.fx-gold .lx-petals i:nth-child(3n){border-radius:50%;width:5px;height:5px}
+@keyframes lxconf{0%{opacity:0;transform:translate3d(0,0,0) rotateX(0) rotate(0)}8%{opacity:.95}50%{transform:translate3d(var(--w),55vh,0) rotateX(540deg) rotate(120deg)}100%{opacity:0;transform:translate3d(calc(var(--w) * -1),112vh,0) rotateX(1080deg) rotate(260deg)}}
+.fx-spark .lx-petals i,.fx-ember .lx-petals i{top:auto;bottom:-4%;width:calc(5px * var(--s));height:calc(5px * var(--s));border-radius:50%;box-shadow:none;animation-name:lxrise}
+.fx-spark .lx-petals i{background:radial-gradient(#FFF6C8,#FFC85A 45%,transparent 70%)}
+.fx-ember .lx-petals i{background:radial-gradient(#FFE7A8,#E2A33A 45%,transparent 70%)}
+@keyframes lxrise{0%{opacity:0;transform:translate3d(0,0,0) scale(.6)}15%{opacity:1}50%{transform:translate3d(var(--w),-50vh,0) scale(1.2)}70%{opacity:.4}85%{opacity:1}100%{opacity:0;transform:translate3d(calc(var(--w) * -.5),-105vh,0) scale(.8)}}
+/* dark themes: text that sits on the background (not in ivory cards) turns light */
+.th-dark .lx-cover .lx-names,.th-dark .lx-hero .lx-names{color:var(--c-ink);text-shadow:0 2px 18px rgba(0,0,0,.35)}
+.th-dark .lx-cover .lx-names span,.th-dark .lx-hero .lx-names span{color:var(--c-gold)}
+.th-dark .lx-cover .lx-date,.th-dark .lx-cover .lx-dear,.th-dark .lx-hero .lx-tag{color:var(--c-ink)}
+.th-dark .lx-open{border-color:var(--c-gold);color:var(--c-ink);background:rgba(0,0,0,.28)}
+.th-dark .lx-open:hover{background:var(--c-gold);color:#1B1206}
+.th-dark .lx-down span{color:var(--c-ink)}
+.th-dark .lx-plain > .s-h,.th-dark .lx-plain > .s-p,.th-dark .lx-plain > .s-p b{color:var(--c-ink)}
+.th-dark .lx-ghost{color:var(--c-ink);border-color:var(--c-gold);background:rgba(0,0,0,.25)}
+.th-dark .s-foot,.th-dark .s-foot a{color:var(--c-soft)}
+.th-dark .lx-cover::before,.th-dark .lx-hero::before{content:"";position:absolute;inset:18% 12%;background:radial-gradient(closest-side,rgba(0,0,0,.35),transparent);pointer-events:none}
+.th-dark .lx-in{z-index:2}
+.site.lotus .lx-in .lx-eb{letter-spacing:.3em;text-wrap:balance;max-width:100%}
+.th-dark :is(.s-sec:not(.lx-plain),.lx-evc,.lx-vc,.lx-save,.s-form,.lx-cd,.lx-top,.lx-sheet){--c-ink:var(--lx-wine);--c-soft:#6E625A}
 /* ---- Ivory Lotus additions ---- */
 .lx-parents{display:grid;gap:18px;margin:4px 0}
 .lx-parents div{display:grid;gap:6px}
@@ -1689,18 +1732,26 @@ function lxBouquet(side){
 }
 function lxSite(type, ev, lang, guest, prem, gallery, base){
   const si=lang==="si", L=(e,s)=>si?s:e;
-  const names = (type==="wedding"||type==="homecoming") ? [ev.a||"Groom", ev.b||"Bride"] : [ev.title||TYPES[type].name];
-  const eyebrow = type==="wedding" ? L("The wedding of","විවාහ මංගල්‍යය") : type==="homecoming" ? L("The homecoming of","හෝම්කමිං උත්සවය") : (ev.a?esc(ev.a)+" "+L("invites you to","ආරාධනා කරයි"):L("You are invited to","ඔබට ආරාධනා"));
+  const TH = LX_TH[prem.site]||LX_TH.lotus, couple=(type==="wedding"||type==="homecoming");
+  const names = couple ? [ev.a||"Groom", ev.b||"Bride"] : type==="birthday" ? [ev.a||L("Birthday","උපන්දිනය")] : [ev.title||TYPES[type].name];
+  const eyebrow = type==="wedding" ? L("The wedding of","විවාහ මංගල්‍යය") : type==="homecoming" ? L("The homecoming of","හෝම්කමිං උත්සවය") : type==="birthday" ? (ev.age?L(`Turning ${esc(ev.age)}`,`වයස ${esc(ev.age)} සපිරේ`):L("Birthday celebration","උපන්දින සාදය")) : (ev.a?esc(ev.a)+" "+L("invites you to","ආරාධනා කරයි"):L("You are invited to","ඔබට ආරාධනා"));
+  const TX = ({wedding:[L("Together with their families","දෙපාර්ශවයේ දෙමාපියන් සමඟ"),L("With the blessings of our families, we begin our forever","දෙපාර්ශවයේ ආශීර්වාදය ඇතිව අපි නව ජීවිතයක් අරඹමු"),L("Wedding details","විවාහ විස්තර")],
+    homecoming:[L("Welcome home","නිවසට සාදරයෙන්"),L("A new home, a new beginning, celebrated with you","නව නිවසක, නව ආරම්භයක් ඔබ සමඟ")],
+    birthday:[L("Let's celebrate","අපි සමරමු"),L("Cake, laughter and the people we love","කේක්, සිනහව සහ අපේ ආදරණීයයන්")],
+    party:[L("You're invited","ඔබට ආරාධනා"),L("An evening of good friends, music and memories","මිතුරන්, සංගීතය සහ මතකයන් පිරි සැන්දෑවක්")],
+    dana:[L("With blessings","ආශීර්වාද සහිතව"),L("May the merit bring peace to all","මෙම පින සැමට සාමය ගෙනේවා")],
+    other:[L("You are cordially invited","ඔබට සාදරයෙන් ආරාධනා"),L("Please join us for a special day","විශේෂ දිනයකට අප සමඟ එක්වන්න")]})[type]||[];
   const D = fDate(ev.date, lang);
   const dust = Array.from({length:10},(_,i)=>`<i style="left:${(i*37+11)%96}%;top:${(i*53+7)%90}%;animation-delay:${(i*.7).toFixed(1)}s"></i>`).join("");
-  const photo = ev.hero ? `<figure class="lx-photo lx-art"><img src="img/${esc(ev.hero)}-960.webp" srcset="img/${esc(ev.hero)}-480.webp 480w, img/${esc(ev.hero)}-960.webp 960w" sizes="340px" alt=""></figure>` : gallery&&gallery[0] ? `<figure class="lx-photo">${gallery[0]}</figure>` : `<div class="lx-photo lx-ph">${lxMandala("lx-mini")}</div>`;
+  const hero = ev.hero||TH.hero;
+  const photo = gallery&&gallery[0]&&!ev.hero ? `<figure class="lx-photo">${gallery[0]}</figure>` : `<figure class="lx-photo lx-art"><img src="img/${esc(hero)}-960.webp" srcset="img/${esc(hero)}-480.webp 480w, img/${esc(hero)}-960.webp 960w" sizes="340px" alt=""></figure>`;
   const nm2 = names.length>1 ? `${esc(names[0])} ${L("and","සහ")} ${esc(names[1])}` : esc(names[0]);
   const fabs = `<div class="lx-fabs"><div class="lx-sheet" hidden>${base.sections.map(([k,ic,lb])=>`<button type="button" data-go="${base.id}-${k}">${ic}<span>${lb}</span></button>`).join("")}</div>
     <button type="button" class="lx-fab" data-lxmenu aria-label="${L("Menu","මෙනුව")}" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 7h14M5 12h14M5 17h14"/></svg></button>
     ${CONFIG.MUSIC?`<button type="button" class="lx-fab" data-music aria-pressed="false" aria-label="${L("Mute or unmute music","සංගීතය නවත්වන්න / වාදනය")}"><svg class="m-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg><svg class="m-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg></button>`:""}</div>`;
-  const petals = Array.from({length:9},(_,i)=>`<i style="left:${(i*41+7)%94}%;--d:${(11+i%4*3)}s;--w:${(i%3-1)*40}px;animation-delay:-${(i*2.3).toFixed(1)}s;--s:${(.7+(i%3)*.2).toFixed(1)}"></i>`).join("");
-  return `<div class="site lotus locked t-${type} ${si?"si":""}" style="${tplVars(prem)}" data-site="${base.id}">
-  <div class="lx-bgfx" aria-hidden="true"><img src="img/ivory-silk-900.webp" alt=""><img class="fl l" src="img/ivory-lotus-l.webp" alt=""><img class="fl r" src="img/ivory-lotus-r.webp" alt=""><div class="lx-petals">${petals}</div></div>
+  const petals = Array.from({length:TH.fx==="confetti"||TH.fx==="gold"?14:10},(_,i)=>`<i style="left:${(i*41+7)%94}%;--d:${(11+i%4*3)}s;--w:${(i%3-1)*40}px;animation-delay:-${(i*2.3).toFixed(1)}s;--s:${(.7+(i%3)*.2).toFixed(1)}"></i>`).join("");
+  return `<div class="site lotus th-${prem.site} mo-${TH.mo} fx-${TH.fx} ${TH.dark?"th-dark":""} ${TH.glow?"th-glow":""} locked t-${type} ${si?"si":""}" style="${tplVars(prem)}--lx-wine:${prem.wine||prem.ink}" data-site="${base.id}">
+  <div class="lx-bgfx" aria-hidden="true"><img src="${TH.bg}" alt=""><img class="fl l" src="${TH.l}" alt=""><img class="fl r" src="${TH.r}" alt=""><div class="lx-petals">${petals}</div></div>
   <section class="lx-cover">${lxMandala()}${lxBouquet("l")}${lxBouquet("r")}<div class="lx-dust">${dust}</div>
     <div class="lx-in"><span class="lx-eb">${eyebrow}</span>${lxRule()}
     <h1 class="lx-names one">${names.map(esc).join(` <span>&amp;</span> `)}</h1>
@@ -1712,13 +1763,13 @@ function lxSite(type, ev, lang, guest, prem, gallery, base){
   <section class="lx-hero" id="${base.id}-home">${lxMandala()}${lxBouquet("l")}${lxBouquet("r")}<div class="lx-dust">${dust}</div>
     <div class="lx-in"><span class="lx-eb">${eyebrow}</span>
     <h2 class="lx-names">${names.map(esc).join(`<span>&amp;</span>`)}</h2>${lxRule()}
-    <p class="lx-sw">ස්වස්ති සිද්ධම්</p>
-    <p class="lx-tag">${L("With the blessings of our families, we begin our forever","දෙපාර්ශවයේ ආශීර්වාදය ඇතිව අපි නව ජීවිතයක් අරඹමු")}</p>
+    ${type==="wedding"||type==="homecoming"||type==="dana"?`<p class="lx-sw">ස්වස්ති සිද්ධම්</p>`:""}
+    <p class="lx-tag">${TX[1]}</p>
     <button type="button" class="lx-down" data-go="${base.id}-details" aria-label="${L("Scroll down","පහළට")}"><small>${L("Scroll down","පහළට")}</small><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg></span></button></div>
   </section>
   <section class="s-sec lx-details" id="${base.id}-details">${photo}
     <span class="s-eb">${type==="wedding"?L("Wedding details","විවාහ විස්තර"):L("Event details","උත්සව විස්තර")}</span>
-    <h2 class="s-h">${L("Together with their families","දෙපාර්ශවයේ දෙමාපියන් සමඟ")}</h2>
+    <h2 class="s-h">${TX[0]}</h2>
     <div class="lx-heart" aria-hidden="true"><i></i>♥<i></i></div>
     ${(ev.pb||ev.pg)?`<div class="lx-parents">${ev.pb?`<div><span class="s-eb">${L("Parents of the bride","මනාලියගේ දෙමාපියන්")}</span><b>${esc(ev.pb)}</b></div>`:""}${ev.pg?`<div><span class="s-eb">${L("Parents of the groom","මනාලයාගේ දෙමාපියන්")}</span><b>${esc(ev.pg)}</b></div>`:""}</div>
     <p class="s-p">${type==="wedding"?L(`request the honour of your presence at the marriage of <b>${nm2}</b>.`,`<b>${nm2}</b> ගේ විවාහ මංගල්‍යයට ඔබගේ පැමිණීම ගෞරවයෙන් ඉල්ලා සිටිමු.`):L(`invite you to celebrate with <b>${nm2}</b>.`,`<b>${nm2}</b> සමඟ සතුට බෙදාගන්න ඔබට ආරාධනා කරමු.`)}</p>`:`<p class="s-p">${type==="wedding"?L(`We joyfully invite you to celebrate the marriage of <b>${nm2}</b>.`,`<b>${nm2}</b> ගේ විවාහ මංගල්‍යයට ඔබට සාදරයෙන් ආරාධනා කරමු.`):L(`We joyfully invite you to celebrate with <b>${nm2}</b>.`,`<b>${nm2}</b> සමඟ සතුට බෙදාගන්න ඔබට ආරාධනා කරමු.`)}</p>`}
@@ -1749,8 +1800,8 @@ function lxEmblem(k){
     event:`<path d="M60 96c-10-14-10-34 0-52 10 18 10 38 0 52z"/><path d="M60 96c-20-6-30-22-30-40 16 4 26 18 30 40zM60 96c20-6 30-22 30-40-16 4-26 18-30 40z"/><path d="M60 96c-26 2-42-8-48-22 18-4 34 4 48 22zM60 96c26 2 42-8 48-22-18-4-34 4-48 22z"/><path d="M30 106h60"/>`};
   return `<svg class="lx-emb" viewBox="0 0 120 112" aria-hidden="true"><g ${g}>${A[k]||A.event}</g></svg>`;
 }
-function lxVenueArt(church){
-  if(!church) return `<img class="lx-vimg" src="img/venue-lineart-900.webp" alt="" loading="lazy">`;
+function lxVenueArt(church,src){
+  if(!church) return `<img class="lx-vimg" src="${src||"img/venue-lineart-900.webp"}" alt="" loading="lazy">`;
   const g=`fill="none" stroke="var(--c-gold)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"`;
   const palm=x=>`<path d="M${x} 150c2-18 2-34-2-48"/><path d="M${x-2} 102c-10-6-20-4-26 2M${x-2} 102c10-8 20-8 26-2M${x-2} 102c-6-10-16-14-24-12M${x-2} 102c6-12 16-14 24-10M${x-2} 102c-2 8-8 14-14 16M${x-2} 102c4 8 10 14 16 16"/>`;
   const body = church
@@ -1775,7 +1826,7 @@ function lxRest(type,ev,lang,base){
   if(!vs.length&&ev.venue) vs.push({v:ev.venue,n:[],church:false});
   const href=v=>(v===ev.venue&&ev.map)?ev.map:`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(v)}`;
   const venues=vs.map(v=>{ const parts=v.v.split(","), nm=parts[0].trim(), addr=parts.slice(1).join(",").trim();
-    return `<div class="lx-vc">${lxVenueArt(v.church)}${v.n.length?`<span class="s-eb">${v.n.map(esc).join(" &amp; ")}</span>`:""}<h3>${esc(nm)}</h3>${addr?`<p class="s-p">${esc(addr)}</p>`:""}</div>
+    return `<div class="lx-vc">${lxVenueArt(v.church,(LX_TH[base.th]||LX_TH.lotus).venue)}${v.n.length?`<span class="s-eb">${v.n.map(esc).join(" &amp; ")}</span>`:""}<h3>${esc(nm)}</h3>${addr?`<p class="s-p">${esc(addr)}</p>`:""}</div>
     <div class="lx-map"><iframe title="${esc(L("Map of ","සිතියම: ")+nm)}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=${encodeURIComponent(v.v)}&z=15&output=embed"></iframe></div>
     <a class="lx-ghost" target="_blank" rel="noopener" href="${esc(href(v.v))}">${I.pin} ${L("View on map","සිතියමෙන් බලන්න")}</a>`}).join("");
   return `<section class="s-sec lx-plain" id="${id}-date">${heart}
@@ -1882,6 +1933,23 @@ const MORE = {
 };
 for(const k in MORE) PREMIUM[k].push(...MORE[k]);
 for(const k of ["wedding","homecoming","other"]) PREMIUM[k].push({n:"Lotus Mandala", layout:"lotus", site:"lotus", bg:"#F6F0E4", gold:"#B39256", soft:"#6E625A", ink:"#7A1F2B"});
+/* Animated themed sites (silk / velvet / night backgrounds with moving side art). mo = how the side art moves, fx = falling or rising particles */
+const LX_TH = {
+  lotus:{bg:"img/ivory-silk-900.webp", l:"img/ivory-lotus-l.webp", r:"img/ivory-lotus-r.webp", hero:"ivory-couple", venue:"img/venue-lineart-900.webp", mo:"sway", fx:"petal"},
+  sage:{p:"th-sage", mo:"sway", fx:"jasmine"}, blush:{p:"th-blush", mo:"sway", fx:"rose"},
+  balloons:{p:"th-balloons", mo:"bob", fx:"confetti"}, glam:{p:"th-glam", mo:"bob", fx:"gold", dark:1},
+  lanterns:{p:"th-lanterns", mo:"swing", fx:"spark", dark:1, glow:1}, maroon:{p:"th-maroon", mo:"swing", fx:"ember", dark:1, glow:1}
+};
+for(const k in LX_TH){ const t=LX_TH[k]; if(t.p) Object.assign(t,{bg:`img/${t.p}-bg.webp`, l:`img/${t.p}-l.webp`, r:`img/${t.p}-r.webp`, hero:`${t.p}-hero`, venue:`img/${t.p}-venue.webp`}) }
+const TH_DESIGN = {
+  sage:{n:"Sage Jasmine", img:"th-sage-card", mode:"bg", veil:"rgba(255,255,255,0)", site:"sage", bg:"#EEF2EA", gold:"#A8873C", soft:"#5F6E5A", ink:"#2F5A3A"},
+  blush:{n:"Blush Rose", img:"th-blush-card", mode:"bg", veil:"rgba(255,255,255,0)", site:"blush", bg:"#F8ECEB", gold:"#B58A5A", soft:"#7C6260", ink:"#8C3B4F"},
+  balloons:{n:"Pastel Balloons", img:"th-balloons-card", mode:"bg", veil:"rgba(255,255,255,0)", site:"balloons", bg:"#FCF6EE", gold:"#D49A5B", soft:"#7B6A80", ink:"#6A4A8C"},
+  glam:{n:"Midnight Gold", img:"th-glam-card", mode:"bg", veil:"rgba(8,14,40,.25)", site:"glam", bg:"#13204A", gold:"#E3C27A", soft:"#D9DDF0", ink:"#FFF6E2", wine:"#1B2A5A"},
+  lanterns:{n:"Lantern Night", img:"th-lanterns-card", mode:"bg", veil:"rgba(12,8,40,.2)", site:"lanterns", bg:"#1E1848", gold:"#F2B54A", soft:"#DCD6F5", ink:"#FFF4DE", wine:"#3A2A7A"},
+  maroon:{n:"Kandyan Maroon", img:"th-maroon-card", mode:"bg", veil:"rgba(40,6,14,.2)", site:"maroon", bg:"#4A0E1C", gold:"#E2B65A", soft:"#EBCBA5", ink:"#FFF1DC", wine:"#6E1426"}
+};
+[["wedding","blush"],["homecoming","sage"],["homecoming","blush"],["birthday","balloons"],["birthday","glam"],["party","lanterns"],["party","glam"],["other","blush"],["other","maroon"]].forEach(([k,t])=>PREMIUM[k].push({...TH_DESIGN[t]}));
 const IMG_DIR = "img/";
 const srcset = n => `${IMG_DIR}${n}-480.webp 480w, ${IMG_DIR}${n}-960.webp 960w`;
 const pic = (n, sizes, alt, pos, lazy=true) => `<img src="${IMG_DIR}${n}-960.webp" srcset="${srcset(n)}" sizes="${sizes}" alt="${esc(alt||"")}" ${lazy?'loading="lazy"':""} decoding="async" ${pos?`style="object-position:${pos}"`:""}>`;
@@ -2545,7 +2613,7 @@ function siteHTML(type, ev, lang, guest, prem, gallery){
   <footer class="s-foot">${L("Made with","නිර්මාණය")} <a href="${CONFIG.SITE.split("#")[0]}" target="_blank" rel="noopener">Aradhanawa.com</a></footer>
   <nav class="snav" aria-label="${L("Invitation sections","කොටස්")}">${sections.map(([k,ic,lb],i)=>`<button type="button" data-go="${id}-${k}" aria-label="${lb}" ${i===0?'aria-current="true"':""}>${ic}</button>`).join("")}${type==="wedding"&&CONFIG.MUSIC?`<button type="button" class="s-mus" data-music aria-pressed="true" aria-label="${L("Play or mute music","සංගීතය වාදනය / නවත්වන්න")}"><svg class="m-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg><svg class="m-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg></button>`:""}</nav>
 </div>`;
-  if(prem&&prem.site==="lotus"){ lxCSS(); const a=html.indexOf(`<section class="s-sec" id="${id}-date">`), b=html.indexOf(`<nav class="snav"`); const secs=[...sections]; secs.splice(1,0,["details",I.eye,L("Details","විස්තර")]); return lxSite(type,ev,lang,guest,prem,gallery,{id,sections:secs,rest:html.slice(a,b)}) }
+  if(prem&&LX_TH[prem.site]){ lxCSS(); const a=html.indexOf(`<section class="s-sec" id="${id}-date">`), b=html.indexOf(`<nav class="snav"`); const secs=[...sections]; secs.splice(1,0,["details",I.eye,L("Details","විස්තර")]); return lxSite(type,ev,lang,guest,prem,gallery,{id,th:prem.site,sections:secs,rest:html.slice(a,b)}) }
   return html;
 }
 function rsvpText(f){

@@ -1042,6 +1042,32 @@ nav.top a{font-weight:600}
 /* entrances (content stays visible without script) */
 .js .lp .rv{opacity:0;transform:translateY(24px);transition:opacity .6s cubic-bezier(.2,.7,.2,1),transform .6s cubic-bezier(.2,.7,.2,1);transition-delay:var(--d,0ms)}
 .js .lp .rv.in{opacity:1;transform:none}
+
+/* hero v3: one headline in flow, ornate button */
+.lp-hero{align-content:center;justify-items:center;padding:150px var(--m) 130px}
+.lp-hero .h1w{transform:none;margin-top:clamp(60px,8vw,110px)}
+.lp-hero .hl{font-size:clamp(46px,7.2vw,118px);line-height:1;letter-spacing:-.04em;color:var(--l-ink);clip-path:none}
+.lp-hero .hl .ln{white-space:normal}
+.lp-hero .hl em{font-family:"Cormorant Garamond",Georgia,serif;font-style:italic;font-weight:600;letter-spacing:-.01em;font-size:1.12em;color:#7A5410}
+.lp-hero .hl .g{background:linear-gradient(100deg,#9A6E1C 0%,#C9993A 30%,#F2D27A 45%,#C9993A 60%,#9A6E1C 100%) 0 0/260% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:lpshine 7s linear infinite;padding-bottom:.06em}
+.lp-hero .sup{position:static;margin-top:clamp(22px,3vw,36px);gap:26px}
+.lp-hero .acts{display:flex;flex-wrap:wrap;gap:14px 22px;align-items:center;justify-content:center}
+.lp-hbtn{position:relative;display:inline-flex;align-items:center;gap:14px;padding:10px 14px 10px 10px;border-radius:999px;text-decoration:none;color:#2A1E12;background:linear-gradient(180deg,#F1D082 0%,#D7A847 55%,#C1912F 100%);box-shadow:0 0 0 1px #A67A1F,0 0 0 5px #FFF3E3,0 0 0 6px rgba(166,122,31,.55),0 18px 34px -14px rgba(122,84,16,.8),inset 0 1px 0 rgba(255,255,255,.6);overflow:hidden;transition:transform .2s,box-shadow .2s;isolation:isolate}
+.lp-hbtn::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.65) 50%,transparent 65%);transform:translateX(-120%);animation:lpsweep 4.5s ease-in-out 1.6s infinite;z-index:-1}
+.lp-hbtn .ic{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:#2A1E12;color:#F2D27A;flex:none}
+.lp-hbtn .ic svg{width:24px;height:24px}
+.lp-hbtn .tx{display:grid;text-align:left;font:700 clamp(17px,1.4vw,20px)/1.15 "Inter Tight",sans-serif;letter-spacing:-.015em}
+.lp-hbtn .tx small{font-size:12.5px;font-weight:500;letter-spacing:0;opacity:.75;margin-top:3px}
+.lp-hbtn .ar{font-size:22px;padding:0 8px 0 6px;transition:transform .2s}
+.lp-hbtn:hover{transform:translateY(-2px)}.lp-hbtn:hover .ar{transform:translateX(4px)}
+.lp-hbtn:active{transform:translateY(0) scale(.98)}
+.lp-hbtn:focus-visible{outline:2px solid #2A1E12;outline-offset:8px}
+.lp-hghost{font-weight:600;color:#7A5410;text-decoration:none;border-bottom:1.5px solid rgba(122,84,16,.45);padding-bottom:2px}
+.lp-hghost:hover{border-color:#7A5410}
+.lp .lp-hbtn{color:#2A1E12}.lp .lp-hghost{color:#7A5410}
+@keyframes lpsweep{0%{transform:translateX(-120%)}35%,100%{transform:translateX(120%)}}
+@media (max-width:700px){.lp-hero{padding:130px 18px 110px}.lp-hero .hl{font-size:clamp(40px,12vw,56px)}.lp-hero .h1w{margin-top:70px}.lp-hero .acts{flex-direction:column}}
+@media (prefers-reduced-motion:reduce){.lp-hbtn::after,.lp-hero .hl .g{animation:none}}
 @media (prefers-reduced-motion:reduce){.js .lp .rv{opacity:1;transform:none;transition:none}.lp-hero .slot img{animation:none}.lp-nav{transition:none}}
 .lp ~ .ctabar{box-shadow:none}
 
@@ -1703,10 +1729,11 @@ function render(){
   ${lpNav()}
   <section class="lp-hero" data-f="dark" id="create">${lpFrame()}
     <div class="h1w">${lpMedal()}
-      <h1 class="hl up"><span class="ln">Send your<span class="slot">${pic("poruwa-couple","(max-width:700px) 120px, 360px","invitation, shown as a bride and groom on a decorated poruwa",null,false)}</span></span><span class="ln">on WhatsApp</span></h1>
-      <div class="hl dn" aria-hidden="true"><span class="ln" data-t="Send your"><span class="slot"></span></span><span class="ln" data-t="on WhatsApp"></span></div>
+      <h1 class="hl"><span class="ln">Send your <em>invitation</em></span><span class="ln g">on WhatsApp</span></h1>
     </div>
-    <div class="sup"><p>Wedding, homecoming, birthday and dana invitations in Sinhala, Singlish or English. Free for your first five guests.</p><a class="lp-btn" href="#make" data-start>Make an invitation</a></div>
+    <div class="sup"><p>Wedding, homecoming, birthday and dana invitations in Sinhala, Singlish or English. Free for your first five guests.</p>
+      <div class="acts"><a class="lp-hbtn" href="#make" data-start><span class="ic">${I.wa}</span><span class="tx">Make an invitation<small>Free · ready in 5 minutes</small></span><span class="ar" aria-hidden="true">→</span></a>
+      <a class="lp-hghost" href="#designs">See the designs</a></div></div>
   </section>
   <div class="lp-tail" data-f="accent" aria-hidden="true"></div>
 

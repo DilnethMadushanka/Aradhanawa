@@ -1307,16 +1307,18 @@ button.lp-hghost{background:none;border:0;border-bottom:1.5px solid rgba(122,84,
 @keyframes mjshine{0%,30%{left:-40%}70%,100%{left:120%}}
 @keyframes mjtas{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
 /* small (nav) version: just the red scroll */
-.lp-mj.sm{width:auto;height:auto;font-size:10px;filter:drop-shadow(0 .3em .4em rgba(80,30,10,.3));margin-inline:16px}
-.lp-mj.sm .mj-roll{position:relative;inset:auto;display:block;height:3.6em;padding:0 1.6em;border-radius:1.8em}
+.lp-mj.sm{width:auto;height:auto;font-size:7.5px;filter:drop-shadow(0 .3em .5em rgba(80,30,10,.3));margin-inline:13px}
+.lp-mj.sm .mj-roll{position:relative;inset:auto;display:block;height:3.6em;padding:0 1.5em;border-radius:1.8em}
+.lp-mj.sm .mj-roll b::before,.lp-mj.sm .mj-roll b::after{content:"◆";font-size:7px;color:#F2D27A;vertical-align:2px;margin:0 6px}
 .lp-mj.sm .mj-roll::before{top:.35em;left:.9em;right:.9em;height:.3em}.lp-mj.sm .mj-roll::after{bottom:.35em;left:.9em;right:.9em;height:.3em}
-.lp-mj.sm .mj-roll b{position:relative;z-index:1;display:block;font:800 13.5px/3.6em "Noto Sans Sinhala",sans-serif;color:#FFE9A8;white-space:nowrap;text-shadow:0 1px 0 rgba(80,0,0,.6)}
+.lp-mj.sm .mj-roll b{position:relative;z-index:1;display:flex;align-items:center;height:100%;padding-bottom:1px;font:700 12px/1 "Noto Sans Sinhala",sans-serif;letter-spacing:.01em;color:#FFE9A8;white-space:nowrap;text-shadow:0 1px 0 rgba(80,0,0,.6)}
 .lp-mj.sm .cap{top:-.35em;width:1.8em;height:4.3em;border-radius:.6em}
 .lp-mj.sm .cap::after{top:.9em;width:1em;height:2.5em}
 .lp-mj.sm .cap.l{left:-1.3em}.lp-mj.sm .cap.l::after{left:-.7em}.lp-mj.sm .cap.r{right:-1.3em}.lp-mj.sm .cap.r::after{right:-.7em}
 .lp-mj.sm:hover{transform:translateY(-2px)}
 @media (max-width:700px){.lp-mj.lg{--u:8.2px}.lp-mj.md{--u:7.6px}}
-@media (max-width:420px){.lp-nav .wm .wm-t{display:none}.lp-mj.sm{font-size:8.5px;margin-inline:12px 18px}.lp-mj.sm .mj-roll b{font-size:12px}}
+@media (max-width:480px){.lp-nav .wm-t small{display:none}.lp-mj.sm{font-size:6.6px;margin-inline:11px 14px}.lp-mj.sm .mj-roll b{font-size:11px}.lp-mj.sm .mj-roll b::before,.lp-mj.sm .mj-roll b::after{margin:0 4px;font-size:6px}}
+@media (max-width:400px){.lp-nav .wm .wm-t{display:none}}
 @media (prefers-reduced-motion:reduce){.lp-mj *,.lp-mj *::before{animation:none!important}}
 @media (prefers-reduced-motion:reduce){.js .lp .rv{opacity:1;transform:none;transition:none}.lp-hero .slot img{animation:none}.lp-nav{transition:none}}
 .lp ~ .ctabar{box-shadow:none}

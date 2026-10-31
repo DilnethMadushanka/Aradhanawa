@@ -1541,7 +1541,7 @@ const CONFIG = {
   PRICE_CUSTOM: "Rs. 4,900",
   MUSIC: "audio/jayamangala-gatha.mp3",   // wedding background music (put your MP3 here)
   // background music for the other functions. Empty means no music for that function.
-  MUSIC_HOMECOMING: "", MUSIC_BIRTHDAY: "", MUSIC_PARTY: "", MUSIC_DANA: "", MUSIC_OTHER: "",
+  MUSIC_HOMECOMING: "audio/homecoming.mp3", MUSIC_BIRTHDAY: "audio/birthday.mp3", MUSIC_PARTY: "", MUSIC_DANA: "", MUSIC_OTHER: "",
   // Base URL for share links. On a static host (Netlify, GitHub Pages, Vercel) the page itself is used.
   SITE: (location.protocol.startsWith("http") && !/claude|anthropic|usercontent/.test(location.hostname))
           ? location.origin + location.pathname : "https://aradhanawa.com/"
@@ -1756,6 +1756,8 @@ function lpMedal(){
   return `<svg class="lp-medal" viewBox="0 0 100 100" aria-hidden="true"><g class="rot" fill="#EBD29A" fill-opacity=".6" stroke="currentColor" stroke-width="1"><circle cx="50" cy="50" r="47" fill="none"/><circle cx="50" cy="50" r="43" fill="none" stroke-dasharray="1.5 3"/>${pet(16,26,41,6)}${pet(8,12,27,8)}<circle cx="50" cy="50" r="11" fill="#EBD29A" fill-opacity=".9"/><circle cx="50" cy="50" r="5" fill="currentColor"/></g></svg>`;
 }
 const MUSIC_KEY={wedding:"MUSIC",homecoming:"MUSIC_HOMECOMING",birthday:"MUSIC_BIRTHDAY",party:"MUSIC_PARTY",dana:"MUSIC_DANA",other:"MUSIC_OTHER"};
+/* credit lines that a track's free licence asks for, shown in the invitation footer */
+const MUSIC_CREDIT={"audio/homecoming.mp3":"“Until We Meet Again” by Arthur Vyncke"};
 const musicFor = type => CONFIG[MUSIC_KEY[type]||"MUSIC"]||"";
 /* the music of the invitation on screen: the preview layer first, then the guest page */
 function lxSrc(){ const s=document.querySelector("#layer .site")||document.querySelector(".gwrap .site"); const m=s&&s.className.match(/\bt-(\w+)/); return musicFor(m?m[1]:"wedding") }
@@ -1898,7 +1900,7 @@ function lxRest(type,ev,lang,base){
   ${gal.replace('class="s-sec"','class="s-sec lx-plain"').replace(/<h2 class="s-h">[^<]*<\/h2>/,`<h2 class="s-h">${L("Our gallery","අපගේ ඡායාරූප")}</h2>`)}
   ${vs.length?`<section class="s-sec lx-plain" id="${id}-loc"><span class="s-eb">${L("The setting","උත්සව ස්ථානය")}</span><h2 class="s-h">${type==="wedding"?L("Wedding venue","මංගල ස්ථානය"):L("Venue","ස්ථානය")}</h2>${heart}${venues}</section>`:""}
   ${rsvp.replace('class="s-sec"','class="s-sec lx-plain lx-rsvp"').replace('<span class="s-eb">RSVP</span>',`<span class="s-eb">${L("Kindly reply","කරුණාකර දන්වන්න")}</span>`).replace(L("Joyfully yes","සතුටින් එනවා"),L("Joyfully accept","සතුටින් එනවා")).replace(L("Sorry, can't","එන්න බැහැ"),L("Regretfully decline","කණගාටුයි, එන්න බැහැ")).replace(/(<form class="s-form")/,`<p class="s-p">${L("We joyfully await your presence. Please let us know if you will be joining us.","ඔබගේ පැමිණීම සතුටින් බලාපොරොත්තු වෙමු.")}</p>$1`)}
-  <footer class="s-foot">${L("Made with","නිර්මාණය")} <a href="${CONFIG.SITE.split("#")[0]}" target="_blank" rel="noopener">Aradhanawa.com</a></footer>`;
+  <footer class="s-foot">${L("Made with","නිර්මාණය")} <a href="${CONFIG.SITE.split("#")[0]}" target="_blank" rel="noopener">Aradhanawa.com</a>${MUSIC_CREDIT[musicFor(type)]?`<br><small>${L("Music","සංගීතය")}: ${MUSIC_CREDIT[musicFor(type)]}</small>`:""}</footer>`;
 }
 
 const corner = c => `<svg class="corner %POS%" viewBox="0 0 42 42" aria-hidden="true"><path d="M4 38V14Q4 4 14 4H38" fill="none" stroke="${c}" stroke-width="1.4"/><path d="M10 30Q10 10 30 10" fill="none" stroke="${c}" stroke-width="1" opacity=".6"/><circle cx="10" cy="10" r="2.6" fill="${c}"/><path d="M16 16q6-2 8 4q-6 2-8-4z" fill="${c}" opacity=".8"/></svg>`;

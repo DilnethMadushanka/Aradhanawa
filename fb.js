@@ -20,7 +20,10 @@ export async function init(cfg, hooks = {}) {
     import(`${CDN}/firebase-auth.js`),
     import(`${CDN}/firebase-firestore.js`),
   ]);
-  const app = initializeApp(cfg.config);
+  // Phones (Safari, Chrome) block the Google redirect when it runs on firebaseapp.com, a different site.
+  // vercel.json proxies /__/auth/* from our own domain, so sign-in stays on aradhanawa.com.
+  const own = /(^|\.)aradhanawa\.com$|\.vercel\.app$/.test(location.hostname);
+  const app = initializeApp(own && cfg.ownAuthDomain !== false ? { ...cfg.config, authDomain: location.host } : cfg.config);
   const auth = A.getAuth(app);
   const db = F.getFirestore(app);
   const adminEmails = (cfg.adminEmails || []).map(e => String(e).toLowerCase().trim()).filter(Boolean);
@@ -105,9 +108,10 @@ export async function init(cfg, hooks = {}) {
     const p = new A.GoogleAuthProvider();
     p.setCustomParameters({ prompt: "select_account" });
     const prev = auth.currentUser && auth.currentUser.uid;
+    if (/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)) return A.signInWithRedirect(auth, p);
     try { const r = await A.signInWithPopup(auth, p); if (prev && prev === r.user.uid) await FBX.refresh(); return r }
     catch (e) {
-      if (["auth/popup-blocked", "auth/operation-not-supported-in-this-environment", "auth/cancelled-popup-request"].includes(e.code)) return A.signInWithRedirect(auth, p);
+      if (["auth/popup-blocked", "auth/operation-not-supported-in-this-environment"].includes(e.code)) return A.signInWithRedirect(auth, p);
       throw e;
     }
   };

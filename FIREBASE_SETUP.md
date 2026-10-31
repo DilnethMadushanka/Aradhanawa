@@ -26,6 +26,14 @@ Me keys public wenna puluwan (Firebase web config). Data arakshawa karanne rules
 - `aradhanawa.com` (saha `www.aradhanawa.com`)
 - Vercel domain eka (e.g. `aradhanawa.vercel.app`)
 
+### Phone eke Google login ekata (one)
+Google login eka aradhanawa.com eke athule wenna (`/__/auth/*` Vercel eken proxy wenawa), Google Cloud eke redirect URI add karanna one:
+**console.cloud.google.com** → project `aradhanawa-e52be` → **APIs & Services → Credentials** → **Web client (auto created by Google Service)** →
+- *Authorized JavaScript origins*: `https://aradhanawa.com`, `https://www.aradhanawa.com`
+- *Authorized redirect URIs*: `https://aradhanawa.com/__/auth/handler`, `https://www.aradhanawa.com/__/auth/handler`
+
+Save karanna (apply wenna minute 5k witra yanna puluwan).
+
 ## 4. Database eka hadanna
 **Build → Firestore Database → Create database** → location `asia-south1` (Mumbai, Lanka ekata langa) → **Production mode**.
 

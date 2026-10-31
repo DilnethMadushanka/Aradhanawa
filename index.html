@@ -1357,6 +1357,7 @@ body:has(.lp){background:#fff}
 <div id="layer"></div>
 
 <script src="firebase-config.js"></script>
+<script>/* aradhanawa.com/admin → dashboard */ if(/^\/admin\/?$/.test(location.pathname)) history.replaceState(null,"","/#admin"+(location.hash.startsWith("#/")?location.hash.slice(1):""));</script>
 <script>
 /* ================= CONFIG ================= */
 const CONFIG = {

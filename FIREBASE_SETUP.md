@@ -45,6 +45,7 @@ Me keys public wenna puluwan (Firebase web config). Data arakshawa karanne rules
 | `admins/{email}` | Dashboard ekata yanna puluwan aya | Admin |
 | `orders` | Custom design / Plus requests | User ta thamange, admin ta okkoma |
 | `invitations/{uid_type}` | Log wela edit karana invitation (photos nathuwa) | Owner + admin |
+| `galleries/{uid_type}` | Create page eke add karana gallery photos (guest link eke pennanna) | Hamotama read, owner witharak write |
 | `rsvps` | Guest la "Send reply" obapu replies | Owner + admin |
 | `settings/site` | Prices, WhatsApp number, hide karapu templates | Hamotama read, admin witharak write |
 

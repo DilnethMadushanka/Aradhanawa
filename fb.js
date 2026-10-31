@@ -8,6 +8,7 @@
  *   admins/{email}         email, added, by           (who may open the admin dashboard)
  *   orders/{id}            kind, design, type, name, email, phone, amount, status, created, uid
  *   invitations/{uid_type} uid, ownerName, ownerEmail, type, lang, tpl, title, names, date, venue, ev, guests, guestCount, updated
+ *   galleries/{uid_type}   uid, type, photos [data:image/jpeg URLs], updated   (public read: guest links show these)
  *   rsvps/{id}             inviteId, ownerUid, type, event, guest, name, coming, count, msg, created
  *   settings/site          config {FREE_GUESTS, STUDIO_WA, PRICE_PLUS, PRICE_CUSTOM, MUSIC}, tplOff []
  */
@@ -162,6 +163,12 @@ export async function init(cfg, hooks = {}) {
       title: inv.title || "", names: inv.names || "", date: inv.date || "", venue: inv.venue || "",
       ev: inv.ev || {}, guests: inv.guests || [], guestCount: (inv.guests || []).length,
       updated: now() }, { merge: true });
+  };
+  // Gallery photos for the guest link. Kept apart from invitations so guests can read them without seeing the guest list.
+  FBX.saveGallery = (type, photos) => {
+    if (!FBX.user) return Promise.resolve();
+    const u = FBX.user, ref = F.doc(db, "galleries", `${u.uid}_${type}`);
+    return photos.length ? F.setDoc(ref, { uid: u.uid, type, photos, updated: now() }) : F.deleteDoc(ref);
   };
   FBX.deleteInvite = id => F.deleteDoc(F.doc(db, "invitations", id));
   FBX.addRsvp = r => F.addDoc(F.collection(db, "rsvps"), {

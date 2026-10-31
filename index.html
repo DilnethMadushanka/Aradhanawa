@@ -1,0 +1,1915 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="description" content="Aradhanawa: Sri Lankan digital invitations for weddings, homecomings, birthdays, parties and dana. Share on WhatsApp in Singlish, Sinhala or English.">
+<meta name="theme-color" content="#FBF8F2">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
+<title>Aradhanawa</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@400..800&family=Noto+Sans+Sinhala:wght@400..800&family=Noto+Serif+Sinhala:wght@500..900&family=Pinyon+Script&display=swap">
+<style>
+/* Layout: an atelier table in daylight. Jasmine-ivory paper, champagne-gold hairlines and corner marks, deep jade ink.
+   A deliberate single light look (the user asked for light colours), so every colour is set explicitly here. */
+:root{
+  --paper:#FBF8F2; --surface:#FFFFFF; --sunk:#F4EFE6; --blush:#F6E9E2; --mist:#E9F0EB;
+  --ink:#1D2A24; --muted:#66716B; --line:#E7DFD0; --line-2:#D9CDB6;
+  --accent:#9C7534; --gold:#C29A55; --accent-ink:#FFFFFF; --brass:#9C7534; --leaf:#2F7A57; --jade:#2F6B57;
+  --wa:#1F8A4C;
+  --f-display:"Bodoni Moda","Noto Serif Sinhala",Georgia,serif;
+  --f-body:"Hanken Grotesk","Noto Sans Sinhala",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-script:"Pinyon Script","Bodoni Moda",cursive;
+  --r:2px;
+  --h-bg:#F7F1E6; --h-bg2:#FFFDF8; --h-ink:#1D2A24; --h-soft:#5D6A63; --h-gold:#9C7534;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.5}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.1}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+a{color:var(--accent)}
+
+/* header */
+header.top{border-bottom:1px solid var(--line);background:var(--surface)}
+header.top .wrap{display:flex;align-items:center;gap:20px;padding-block:14px;flex-wrap:wrap}
+.logo{display:flex;align-items:baseline;gap:10px;text-decoration:none;color:var(--ink)}
+.logo b{font-family:var(--f-display);font-size:28px;font-weight:800;color:var(--accent);letter-spacing:.2px}
+.logo span{font-size:13px;color:var(--muted)}
+nav.top{margin-left:auto;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;max-width:100%}
+nav.top::-webkit-scrollbar{display:none}
+@media (max-width:600px){header.top .wrap{flex-wrap:nowrap;gap:10px}.logo span{display:none}nav.top a{padding:7px 9px;font-size:13.5px;white-space:nowrap}}
+nav.top a{padding:7px 12px;border-radius:999px;text-decoration:none;color:var(--muted);font-weight:500;font-size:14px}
+nav.top a:hover{background:var(--sunk);color:var(--ink)}
+
+.intro{padding-block:32px 8px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:28px;align-items:center}
+.intro .copy{display:grid;gap:6px;min-width:0}
+.hero-img{margin:0;border-radius:16px;overflow:hidden;aspect-ratio:16/10;background:var(--sunk);max-width:100%}
+.hero-img img{width:100%;height:100%;object-fit:cover;display:block}
+@media (max-width:820px){.intro{grid-template-columns:minmax(0,1fr);gap:26px}}
+.intro h1{font-size:clamp(30px,4.4vw,46px);font-weight:800}
+.intro h1 em{font-style:normal;color:var(--accent)}
+.intro p{margin:0;color:var(--muted);max-width:62ch}
+
+/* main grid */
+.bench{display:grid;grid-template-columns:minmax(0,1fr) 420px;gap:28px;padding-block:20px 40px;align-items:start}
+@media (max-width:920px){.bench{grid-template-columns:minmax(0,1fr)}}
+.col{display:grid;grid-template-columns:minmax(0,1fr);gap:22px;min-width:0}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
+.panel h2{font-size:22px;font-weight:700}
+.panel .sub{color:var(--muted);font-size:13.5px;margin:4px 0 0}
+.phead{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.eyebrow{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--brass);font-weight:700}
+
+/* event types */
+.types{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
+.type{border:1px solid var(--line);background:var(--paper);border-radius:var(--r);padding:12px;text-align:left;cursor:pointer;display:grid;gap:2px;transition:border-color .15s,background .15s}
+.type:hover{border-color:var(--brass)}
+.type[aria-pressed="true"]{border-color:var(--accent);background:var(--surface);box-shadow:inset 0 0 0 1px var(--accent)}
+.type b{font-weight:600;font-size:14.5px}
+.type small{font-family:"Noto Sans Sinhala",var(--f-body);color:var(--muted);font-size:12px}
+
+/* templates */
+.tpls{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+@media (max-width:420px){.tpls{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tpl .sw img{width:100%;height:100%;object-fit:cover;display:block}
+.tpl{min-width:0;grid-template-columns:minmax(0,1fr);position:relative;border:1px solid var(--line);border-radius:var(--r);padding:8px;background:var(--paper);cursor:pointer;text-align:left;display:grid;gap:8px}
+.tpl[aria-pressed="true"]{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.tpl .sw{aspect-ratio:4/3;border-radius:6px;overflow:hidden;display:grid;place-items:center}
+.tpl .sw svg{width:86%;height:auto}
+.tpl .nm{display:flex;justify-content:space-between;gap:6px;font-size:13px;font-weight:600;align-items:center}
+.pill{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:999px;white-space:nowrap}
+.pill.free{background:color-mix(in srgb,var(--leaf) 16%,transparent);color:var(--leaf)}
+.pill.pro{background:color-mix(in srgb,var(--brass) 18%,transparent);color:var(--brass)}
+.tpl.locked .sw{filter:saturate(.75)}
+.tpl.locked .lock{position:absolute;top:14px;right:14px;z-index:1;background:rgba(20,10,12,.72);color:#fff;border-radius:999px;font-size:11px;padding:3px 8px;font-weight:600}
+
+/* form */
+.form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:560px){.form{grid-template-columns:minmax(0,1fr)}}
+.fld{display:grid;gap:5px;min-width:0}
+.fld.full{grid-column:1/-1}
+.fld label{font-size:13px;font-weight:600}
+.fld .hint{font-size:12px;color:var(--muted)}
+.fld input,.fld textarea,.fld select{width:100%;border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:10px 12px;min-width:0}
+.fld input:focus,.fld textarea:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 18%,transparent)}
+.sample{font-size:12.5px;color:var(--muted);background:var(--sunk);border-radius:8px;padding:8px 12px;display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:14px;flex-wrap:wrap}
+.linkbtn{background:none;border:0;color:var(--accent);font-weight:600;cursor:pointer;padding:0;font-size:12.5px}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:9px 16px;font-weight:600;font-size:14px;cursor:pointer;text-decoration:none;color:var(--ink);white-space:nowrap}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.wa{background:var(--wa);border-color:var(--wa);color:#fff}
+.btn.sm{padding:6px 12px;font-size:13px}
+.btn svg{width:16px;height:16px;flex:none}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+/* segmented */
+.seg{display:inline-flex;background:var(--sunk);border-radius:999px;padding:3px}
+.seg button{border:0;background:none;padding:6px 14px;border-radius:999px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+
+/* whatsapp */
+.wa-box{background:#E9DDD2;background:color-mix(in srgb,var(--leaf) 9%,var(--sunk));border-radius:12px;padding:16px}
+.bubble{overflow-wrap:anywhere;background:var(--surface);border-radius:10px 10px 10px 2px;padding:12px 14px;white-space:pre-wrap;font-size:14px;max-height:360px;overflow:auto;border:1px solid var(--line);font-family:var(--f-body)}
+.bubble b{font-weight:700}
+
+/* guests */
+.meter{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)}
+.meter .bar{display:flex;gap:3px}
+.meter .bar i{width:18px;height:6px;border-radius:3px;background:var(--line)}
+.meter .bar i.on{background:var(--leaf)}
+.gadd{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) auto;gap:8px;margin-bottom:12px}
+@media (max-width:560px){.gadd{grid-template-columns:minmax(0,1fr)}}
+.gadd input{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:9px 12px;min-width:0}
+.glist{display:grid;gap:8px;list-style:none;margin:0;padding:0}
+.glist li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.glist .who{min-width:0}
+.glist .who b{display:block;font-weight:600}
+.glist .who span{font-size:12.5px;color:var(--muted);overflow-wrap:anywhere}
+.glist .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.iconbtn{border:1px solid var(--line);background:var(--surface);border-radius:999px;width:32px;height:32px;display:grid;place-items:center;cursor:pointer;color:var(--muted)}
+.iconbtn svg{width:15px;height:15px}
+.empty{color:var(--muted);font-size:13.5px;border:1px dashed var(--line);border-radius:10px;padding:14px;text-align:center}
+
+/* stage (preview) */
+.stage{position:sticky;top:16px;display:grid;gap:14px}
+.table{background:var(--sunk);border-radius:16px;padding:22px;display:grid;place-items:center;border:1px solid var(--line)}
+.stage .row{justify-content:center}
+
+/* pricing */
+section.band{padding-block:40px;border-top:1px solid var(--line)}
+section.band > .wrap > h2{font-size:clamp(26px,3.4vw,36px);font-weight:800}
+section.band > .wrap > p.lead{color:var(--muted);margin:6px 0 22px;max-width:62ch}
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:860px){.plans{grid-template-columns:minmax(0,1fr)}}
+.plan{border:1px solid var(--line);background:var(--surface);border-radius:14px;padding:22px;display:grid;gap:12px;align-content:start}
+.plan.hl{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.plan h3{font-size:22px}
+.price{font-family:var(--f-display);font-size:34px;font-weight:800;font-variant-numeric:tabular-nums}
+.price small{font-family:var(--f-body);font-size:13px;color:var(--muted);font-weight:500}
+.plan ul{margin:0;padding-left:18px;display:grid;gap:6px;color:var(--muted);font-size:14px}
+.note{font-size:12.5px;color:var(--muted)}
+
+/* prompts */
+.prompts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (max-width:760px){.prompts{grid-template-columns:minmax(0,1fr)}}
+.prompt{border:1px solid var(--line);background:var(--surface);border-radius:12px;padding:16px;display:grid;gap:8px;min-width:0}
+.prompt header{display:flex;justify-content:space-between;gap:10px;align-items:center}
+.prompt h3{font-size:18px}
+.prompt .gen{margin:0;border-radius:8px;overflow:hidden;aspect-ratio:16/9;background:var(--sunk)}
+.prompt .gen img{width:100%;height:100%;object-fit:cover;display:block}
+.prompt p{margin:0;font-size:13.5px;color:var(--ink);overflow-wrap:anywhere}
+.prompt .use{font-size:12px;color:var(--muted)}
+.prompt code{font-size:12px;color:var(--muted);overflow-wrap:anywhere}
+
+footer.foot{border-top:1px solid var(--line);padding-block:22px;color:var(--muted);font-size:13px}
+
+/* modal */
+.scrim{position:fixed;inset:0;background:rgba(15,8,10,.6);display:grid;place-items:center;z-index:50;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));overflow:auto}
+.modal{background:var(--surface);border-radius:16px;max-width:460px;width:100%;padding:22px;display:grid;gap:12px;border:1px solid var(--line)}
+.modal h3{font-size:24px}
+.modal p{margin:0;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-size:14px;font-weight:600;z-index:60;box-shadow:0 6px 20px rgba(0,0,0,.2)}
+
+
+/* ===== HERO (cinematic) ===== */
+.hero{position:relative;overflow:hidden;background:radial-gradient(120% 90% at 78% 30%,var(--h-bg2) 0%,var(--h-bg) 62%);color:var(--h-ink);isolation:isolate}
+.hero::before{content:"";position:absolute;inset:0;background:var(--pat) center/720px auto repeat;opacity:.10;z-index:-1}
+.hero::after{content:"";position:absolute;inset:auto 0 0;height:120px;background:linear-gradient(to bottom,transparent,color-mix(in srgb,var(--h-bg) 70%,transparent));z-index:-1}
+.hero .wm{position:absolute;left:-2vw;bottom:-4.5vw;font-family:"Noto Sans Sinhala",var(--f-display);font-weight:600;font-size:clamp(90px,19vw,260px);line-height:1;color:var(--h-gold);opacity:.07;z-index:-1;white-space:nowrap;pointer-events:none}
+.hero .in{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:40px;align-items:center;padding-block:56px 72px}
+@media (max-width:860px){.hero .in{grid-template-columns:minmax(0,1fr);padding-block:36px 48px;gap:40px}}
+.hero .eyebrow{color:var(--h-gold)}
+.hero h1{font-size:clamp(40px,6vw,76px);font-weight:800;line-height:1.02;letter-spacing:-.01em;margin-top:10px;color:var(--h-ink)}
+.hero h1 em{font-style:normal;color:var(--h-gold);display:inline-block;position:relative}
+.hero h1 em::after{content:"";position:absolute;left:2%;right:2%;bottom:.06em;height:.08em;background:linear-gradient(90deg,transparent,var(--h-gold),transparent);opacity:.7}
+.hero p.lede{margin:18px 0 0;color:var(--h-soft);font-size:17px;max-width:46ch;line-height:1.6}
+.hero .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+.hero .btn{border-color:color-mix(in srgb,var(--h-ink) 30%,transparent);background:transparent;color:var(--h-ink);padding:12px 20px;font-size:15px}
+.hero .btn:hover{border-color:var(--h-ink)}
+.hero .btn.gold{background:var(--h-gold);border-color:var(--h-gold);color:var(--h-bg);box-shadow:0 10px 30px -10px color-mix(in srgb,var(--h-gold) 70%,transparent)}
+.hero .facts{display:grid;grid-template-columns:repeat(4,auto);justify-content:start;gap:12px 28px;margin-top:34px;padding-top:22px;border-top:1px solid color-mix(in srgb,var(--h-gold) 25%,transparent)}
+.hero .facts div{display:grid;gap:2px}
+.hero .facts b{font-family:var(--f-display);font-size:30px;font-weight:800;color:var(--h-ink);line-height:1}
+.hero .facts span{font-size:12.5px;color:var(--h-soft);letter-spacing:.04em}
+.hero .stagewrap{position:relative;display:grid;place-items:center;min-height:560px}
+#heroPhone{width:330px;max-width:100%;position:relative;z-index:1}
+.hero .glow{position:absolute;width:70%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--h-gold) 30%,transparent),transparent 65%);z-index:0}
+.hero .backcard{position:absolute;width:230px;left:2%;top:10%;transform:rotate(-11deg);z-index:0;opacity:.95}
+.hero .backcard .card{box-shadow:0 30px 50px -20px rgba(0,0,0,.6)}
+.hero .phone{z-index:1;transform:perspective(1400px) rotateY(-9deg) rotateX(3deg) rotate(1.5deg);box-shadow:0 0 0 1px #4a3a3e,-30px 50px 80px -30px rgba(0,0,0,.75)}
+.chip{position:absolute;z-index:2;display:flex;align-items:center;gap:10px;background:color-mix(in srgb,#fff 92%,transparent);color:#2B1A1E;border-radius:14px;padding:10px 14px;font-size:13px;box-shadow:0 18px 40px -16px rgba(0,0,0,.55);max-width:240px}
+.chip i{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;flex:none;font-style:normal;font-size:16px}
+.chip b{display:block;font-size:13.5px}
+.chip small{color:#7B6A6C;font-size:12px}
+.chip.c1{top:16%;right:-2%}.chip.c1 i{background:#E5F4EA;color:#1F8A4C}
+.chip.c2{bottom:20%;left:-4%}.chip.c2 i{background:#FBEFD5;color:#A87A22}
+.chip.c3{top:47%;right:-6%}.chip.c3 i{background:#FBE3E7;color:#8A1C2C}
+@media (prefers-reduced-motion:no-preference){
+  .chip{animation:float 6s ease-in-out infinite}.chip.c2{animation-delay:-2s}.chip.c3{animation-delay:-4s}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+}
+@media (max-width:860px){
+  .hero .facts{gap:10px 18px}.hero .facts b{font-size:24px}.hero .facts span{font-size:11.5px}
+  .hero .stagewrap{min-height:0;padding-block:10px 20px}
+  .hero .phone{transform:none}
+  .hero .backcard{width:150px;left:-6%;top:6%}
+  .chip{padding:8px 10px;font-size:12px;max-width:200px}.chip i{width:26px;height:26px;font-size:13px}
+  .chip.c1{right:-2%;top:8%}.chip.c2{left:-2%;bottom:24%}.chip.c3{display:none}
+}
+/* section heads */
+.shead{display:grid;gap:8px;margin-bottom:26px;max-width:640px}
+.shead h2{font-size:clamp(28px,4vw,44px);font-weight:800;line-height:1.08}
+.shead h2 em{font-style:normal;color:var(--accent)}
+.shead p{margin:0;color:var(--muted);font-size:16px}
+.shead.center{margin-inline:auto;text-align:center;justify-items:center}
+/* how it works */
+.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;counter-reset:st}
+@media (max-width:760px){.steps{grid-template-columns:minmax(0,1fr)}}
+.step{border-top:2px solid var(--line);padding-top:16px;display:grid;gap:6px;counter-increment:st}
+.step::before{content:counter(st,decimal-leading-zero);font-family:var(--f-display);font-size:34px;font-weight:800;color:var(--accent);line-height:1}
+.step:first-child{border-top-color:var(--accent)}
+.step h3{font-size:21px}
+.step p{margin:0;color:var(--muted);font-size:14.5px}
+/* designs gallery */
+.dfilter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.dfilter button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 14px;font-size:13.5px;font-weight:600;color:var(--muted);cursor:pointer}
+.dfilter button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.drow{display:grid;grid-auto-flow:column;grid-auto-columns:clamp(190px,46vw,236px);gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px 2px 18px;scrollbar-width:thin}
+.ditem{scroll-snap-align:start;display:grid;gap:10px;text-align:left;background:none;border:0;padding:0;cursor:pointer;color:inherit}
+.ditem .dphone{border-radius:28px;background:#141012;padding:7px;box-shadow:0 18px 36px -22px rgba(40,10,15,.6);transition:transform .25s}
+.ditem:hover .dphone{transform:translateY(-4px)}
+.ditem .dphone .card{border-radius:22px;max-width:none;box-shadow:none}
+.ditem .meta{display:flex;justify-content:space-between;align-items:center;gap:8px;padding-inline:4px}
+.ditem .meta b{font-family:var(--f-display);font-size:19px;display:block;line-height:1.1}
+.ditem .meta small{color:var(--muted);font-size:12.5px}
+/* bento */
+.bento{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:22px;display:grid;gap:10px;align-content:start;min-width:0;overflow:hidden}
+.tile h3{font-size:22px}.tile p{margin:0;color:var(--muted);font-size:14.5px}
+.t-a{grid-column:span 4}.t-b{grid-column:span 2}.t-c{grid-column:span 2}.t-d{grid-column:span 2}.t-e{grid-column:span 2}
+@media (max-width:900px){.bento{grid-template-columns:minmax(0,1fr)}.t-a,.t-b,.t-c,.t-d,.t-e{grid-column:auto}}
+.inbox{display:grid;gap:8px;margin-top:6px}
+.inbox .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.inbox .stats div{background:var(--sunk);border-radius:12px;padding:10px 12px}
+.inbox .stats b{font-family:var(--f-display);font-size:26px;display:block;line-height:1}
+.inbox .stats small{font-size:11.5px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.inbox .r{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:12px;align-items:center;border-top:1px solid var(--line);padding-top:8px;font-size:13.5px}
+.inbox .r span{color:var(--muted);font-size:12.5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.st{font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px;white-space:nowrap}
+.st.y{background:color-mix(in srgb,var(--leaf) 16%,transparent);color:var(--leaf)}.st.n{background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent)}.st.p{background:color-mix(in srgb,var(--brass) 18%,transparent);color:var(--brass)}
+.mini-cd{display:flex;gap:6px;margin-top:4px}
+.mini-cd div{flex:1;background:var(--sunk);border-radius:10px;padding:8px 4px;text-align:center}
+.mini-cd b{font-family:var(--f-display);font-size:24px;display:block;line-height:1;font-variant-numeric:tabular-nums}
+.mini-cd small{font-size:10.5px;color:var(--muted)}
+.dear{font-family:var(--f-script);font-size:40px;color:var(--accent);line-height:1.1;margin-top:4px}
+.langs{display:grid;gap:6px;margin-top:4px}
+.langs span{background:var(--sunk);border-radius:12px 12px 12px 3px;padding:8px 12px;font-size:13.5px;justify-self:start}
+.langs span:nth-child(2){font-family:"Noto Sans Sinhala",var(--f-body)}
+.mapmini{border-radius:14px;overflow:hidden;background:var(--sunk);margin-top:4px}
+.mapmini svg{display:block;width:100%;height:auto}
+.example{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.editor-head{padding-top:44px}
+
+/* ===== invitation site: what guests open ===== */
+.site{background-color:var(--c-bg);color:var(--c-ink);position:relative;font-family:var(--f-body);
+  background-image:radial-gradient(circle at 12% 6%,color-mix(in srgb,var(--c-gold) 10%,transparent) 0 110px,transparent 111px),radial-gradient(circle at 92% 38%,color-mix(in srgb,var(--c-gold) 7%,transparent) 0 90px,transparent 91px),radial-gradient(circle at 8% 78%,color-mix(in srgb,var(--c-gold) 7%,transparent) 0 80px,transparent 81px)}
+.site .s-hero{padding:18px 16px 12px;display:grid;justify-items:center;gap:12px}
+.site .s-hero .card{box-shadow:0 14px 30px -18px rgba(0,0,0,.6)}
+.site .s-hint{font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--c-soft)}
+.site .s-sec{padding:40px 22px;display:grid;gap:14px;justify-items:center;text-align:center;border-top:1px solid color-mix(in srgb,var(--c-gold) 22%,transparent)}
+.site .s-eb{font-size:10.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--c-gold);font-weight:700}
+.site .s-h{font-family:var(--f-display);font-size:28px;font-weight:700;color:var(--c-ink);line-height:1.15;margin:0}
+.site.si .s-h,.site.si .s-p,.site.si .s-form,.site.si .s-cd small{font-family:"Noto Sans Sinhala",var(--f-body)}
+.site .s-orn{width:110px;height:auto;display:block}
+.site .s-p{margin:0;color:var(--c-soft);max-width:34ch;line-height:1.6;font-size:15px}
+.site .s-date{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;width:100%;max-width:320px}
+.site .s-date span{border-block:1px solid color-mix(in srgb,var(--c-gold) 60%,transparent);padding:6px 0;font-size:14px;color:var(--c-ink)}
+.site .s-date b{font-family:var(--f-display);font-size:56px;line-height:1;color:var(--c-gold);font-weight:800}
+.site .s-year{font-family:var(--f-display);letter-spacing:.3em;font-size:18px;color:var(--c-gold)}
+.site .s-cd{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;width:100%;max-width:340px}
+.site .s-cd div{border:1px solid color-mix(in srgb,var(--c-gold) 45%,transparent);background:color-mix(in srgb,var(--c-ink) 6%,transparent);border-radius:14px;padding:12px 2px;display:grid;gap:2px}
+.site .s-cd b{font-family:var(--f-display);font-size:26px;font-weight:800;color:var(--c-ink);font-variant-numeric:tabular-nums;line-height:1.1}
+.site .s-cd small{font-size:10.5px;color:var(--c-soft);letter-spacing:.06em}
+.site .s-evs{display:grid;gap:10px;width:100%;max-width:360px}
+.site .s-ev{border:1px solid color-mix(in srgb,var(--c-gold) 40%,transparent);border-radius:16px;padding:16px;display:grid;gap:3px;background:color-mix(in srgb,var(--c-ink) 5%,transparent)}
+.site .s-ev .t{font-family:var(--f-display);font-size:26px;font-weight:800;color:var(--c-gold);line-height:1.1}
+.site .s-ev .n{font-weight:700;color:var(--c-ink)}
+.site .s-ev .w{font-size:13.5px;color:var(--c-soft)}
+.site .s-row{display:flex;align-items:center;gap:12px;text-align:left;border:1px solid color-mix(in srgb,var(--c-gold) 40%,transparent);border-radius:16px;padding:12px 14px;width:100%;max-width:360px;color:var(--c-ink);text-decoration:none;background:color-mix(in srgb,var(--c-ink) 4%,transparent)}
+.site .s-row i{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--c-gold);color:var(--c-bg);flex:none}
+.site .s-row i svg{width:18px;height:18px}
+.site .s-row span{min-width:0;flex:1}
+.site .s-row b{display:block;font-size:15px}
+.site .s-row small{color:var(--c-soft);font-size:12.5px}
+.site .s-gal{display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:120px;gap:8px;width:100%;max-width:360px}
+.site .s-gal figure{margin:0;border-radius:12px;overflow:hidden;border:1px solid color-mix(in srgb,var(--c-gold) 40%,transparent)}
+.site .s-gal figure:nth-child(3n+1){border-radius:999px 999px 12px 12px;grid-row:span 2}
+.site .s-gal img{width:100%;height:100%;object-fit:cover;display:block}
+.site .s-map{width:100%;max-width:360px;border-radius:16px;overflow:hidden;border:1px solid color-mix(in srgb,var(--c-gold) 40%,transparent)}
+.site .s-map svg{display:block;width:100%;height:auto}
+.site .s-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--c-gold);color:var(--c-bg);border:0;border-radius:999px;padding:14px 22px;font-weight:700;font-size:15px;text-decoration:none;cursor:pointer;width:100%;max-width:360px;font-family:inherit}
+.site .s-btn svg{width:18px;height:18px}
+.site .s-btn.off{opacity:.45;pointer-events:none}
+.site .s-form{width:100%;max-width:360px;display:grid;gap:16px;text-align:left;background:color-mix(in srgb,var(--c-ink) 6%,transparent);border:1px solid color-mix(in srgb,var(--c-gold) 35%,transparent);border-radius:150px 150px 18px 18px;padding:54px 18px 20px}
+.site .s-form label,.site .s-form .lbl{font-size:13px;font-weight:600;color:var(--c-ink);display:grid;gap:6px}
+.site .s-form input,.site .s-form textarea{width:100%;border:1px solid color-mix(in srgb,var(--c-gold) 45%,transparent);background:transparent;color:var(--c-ink);border-radius:12px;padding:11px 12px;font:inherit;font-size:15px;font-weight:400}
+.site .s-form input::placeholder,.site .s-form textarea::placeholder{color:var(--c-soft);opacity:.75}
+.site .s-choice{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.site .s-choice button{border:1px solid color-mix(in srgb,var(--c-gold) 45%,transparent);background:transparent;color:var(--c-ink);border-radius:12px;padding:12px 8px;font:inherit;font-size:14px;cursor:pointer}
+.site .s-choice button[aria-pressed="true"]{background:var(--c-gold);color:var(--c-bg);border-color:var(--c-gold);font-weight:700}
+.site .s-step{display:flex;align-items:center;justify-content:center;gap:22px}
+.site .s-step button{width:44px;height:44px;border-radius:50%;border:1px solid color-mix(in srgb,var(--c-gold) 55%,transparent);background:transparent;color:var(--c-ink);font-size:20px;cursor:pointer;font-family:inherit}
+.site .s-step output{font-family:var(--f-display);font-size:34px;font-weight:800;min-width:2ch;text-align:center;color:var(--c-gold)}
+.site .s-foot{padding:26px 22px 100px;text-align:center;font-size:12.5px;color:var(--c-soft)}
+.site .s-foot a{color:var(--c-gold)}
+.site .snav{position:sticky;bottom:calc(14px + env(safe-area-inset-bottom,0px));margin:-80px auto 18px;width:max-content;display:flex;gap:4px;padding:6px;border-radius:999px;background:var(--c-ink);box-shadow:0 10px 30px -10px rgba(0,0,0,.55);z-index:5}
+.site .snav button{width:42px;height:42px;border-radius:50%;border:0;background:transparent;color:var(--c-bg);display:grid;place-items:center;cursor:pointer}
+.site .snav button svg{width:19px;height:19px}
+.site .snav button[aria-current="true"]{background:var(--c-gold)}
+/* phone frame */
+.phone{position:relative;width:min(330px,100%);height:min(680px,calc(100vh - 140px));min-height:520px;border-radius:46px;background:#141012;padding:11px;box-shadow:0 0 0 1px #3a3034,0 30px 60px -25px rgba(40,10,15,.6);margin-inline:auto}
+.phone .screen{height:100%;border-radius:36px;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;overscroll-behavior:contain}
+.phone .screen::-webkit-scrollbar{display:none}
+.phone .island{position:absolute;top:19px;left:50%;transform:translateX(-50%);width:92px;height:25px;border-radius:20px;background:#141012;z-index:6}
+.phone .site .s-hero{padding-top:46px}
+.phone .site .snav{bottom:14px}
+.modal.phonebox{background:transparent;border:0;padding:0;max-width:380px;justify-items:center}
+.modal.phonebox .btn{background:var(--surface)}
+/* compare receipt */
+.compare{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,400px);gap:36px;align-items:start}
+@media (max-width:860px){.compare{grid-template-columns:minmax(0,1fr)}}
+.compare .hero-img{aspect-ratio:16/10;margin-top:18px}
+.receipt{--paper-c:#FFFDF7;--paper-ink:#2B1A1E;--paper-mute:#7B6A6C;--paper-red:#A3152F;background:var(--paper-c);color:var(--paper-ink);padding:26px 22px 40px;font-variant-numeric:tabular-nums;box-shadow:0 22px 40px -26px rgba(40,10,15,.45);position:relative;border-radius:4px 4px 0 0;
+  -webkit-mask:radial-gradient(circle 9px at 50% 100%,transparent 96%,#000) 0 0/22px 100% repeat-x;mask:radial-gradient(circle 9px at 50% 100%,transparent 96%,#000) 0 0/22px 100% repeat-x}
+.receipt h3{font-family:var(--f-body);font-size:13px;letter-spacing:.32em;text-transform:uppercase;text-align:center;font-weight:600}
+.receipt .sub{text-align:center;font-size:12.5px;color:var(--paper-mute);margin:4px 0 0}
+.receipt dl{margin:16px 0 0;padding:14px 0 0;border-top:1px dashed #D8CCC4;display:grid;gap:9px}
+.receipt dl div{display:flex;justify-content:space-between;gap:12px;font-size:14px}
+.receipt dl dd{margin:0;white-space:nowrap}
+.receipt .tot{border-top:1px dashed #D8CCC4;padding-top:12px;font-weight:700}
+.receipt .tot dd s{color:var(--paper-red);text-decoration-thickness:2px}
+.receipt .na dt,.receipt .na dd{color:var(--paper-mute)}
+.receipt hr{border:0;border-top:2px solid var(--paper-ink);margin:18px 0}
+.receipt .ours{text-align:center;font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--paper-red);font-weight:700}
+.receipt .save{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-top:14px}
+.receipt .stamp{border:2px solid var(--paper-red);color:var(--paper-red);border-radius:10px;padding:5px 12px;transform:rotate(-8deg);font-weight:800;letter-spacing:.12em;font-size:12px;text-transform:uppercase;line-height:1.2;text-align:center}
+.receipt .stamp b{display:block;font-size:17px;letter-spacing:.02em}
+.receipt .keep{text-align:right;color:var(--paper-red);font-weight:700;font-size:14px}
+.receipt .keep b{display:block;font-family:var(--f-display);font-size:30px;color:var(--paper-ink)}
+.receipt .fine{text-align:center;font-size:11.5px;color:var(--paper-mute);margin:18px 0 0}
+/* faq */
+.faq{display:grid;gap:10px;max-width:760px}
+.faq details{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:2px 18px}
+.faq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:12px;align-items:center;padding:14px 0;font-weight:600;font-size:15.5px}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";flex:none;width:30px;height:30px;border-radius:50%;background:var(--sunk);display:grid;place-items:center;font-size:18px;color:var(--muted)}
+.faq details[open] summary::after{content:"–"}
+.faq p{margin:0 0 16px;color:var(--muted)}
+/* photos */
+.photos{margin-top:18px;display:grid;gap:8px}
+.photos .hint{font-size:12.5px;color:var(--muted)}
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:8px}
+.pgrid .ph{position:relative;aspect-ratio:1;border-radius:8px;overflow:hidden;border:1px solid var(--line)}
+.pgrid .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.pgrid .ph button{position:absolute;top:4px;right:4px;width:24px;height:24px;border-radius:50%;border:0;background:rgba(20,10,12,.7);color:#fff;cursor:pointer;font-size:14px;line-height:1}
+.pgrid .padd{aspect-ratio:1;border:1px dashed var(--line);border-radius:8px;display:grid;place-items:center;text-align:center;font-size:12.5px;color:var(--muted);cursor:pointer;padding:6px}
+.pgrid .padd:hover{border-color:var(--accent);color:var(--accent)}
+/* mobile sticky bar */
+.ctabar{display:none}
+@media (max-width:720px){
+  .ctabar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:40;align-items:center;gap:10px;background:var(--surface);border-top:1px solid var(--line);padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));box-shadow:0 -10px 24px -18px rgba(0,0,0,.3)}
+  body.has-bar{padding-bottom:78px}
+  .toast{bottom:calc(88px + env(safe-area-inset-bottom,0px))}
+}
+.ctabar .p{display:grid;line-height:1.15;margin-right:auto;min-width:0}
+.ctabar .p small{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.ctabar .p b{font-family:var(--f-display);font-size:19px}
+.ctabar .wa-ic{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line);color:var(--wa);flex:none}
+.ctabar .wa-ic svg{width:22px;height:22px}
+/* guest page */
+.gwrap{min-height:100vh;background:var(--c-bg)}
+.gwrap .site{max-width:480px;margin:0 auto;min-height:100vh}
+.guest{min-height:100%;display:grid;place-items:center;padding-block:28px;gap:18px}
+.guest .rsvp{display:grid;gap:10px;width:100%;max-width:380px}
+.guest .rsvp .row{justify-content:center}
+.guest .made{font-size:12.5px;color:var(--muted);text-align:center}
+
+/* ============ INVITATION CARD ============ */
+.card{--c-bg:#5E1224;--c-ink:#F8EBD6;--c-gold:#D4A84A;--c-soft:#E9C9A0;
+  width:100%;max-width:380px;aspect-ratio:5/7.2;position:relative;border-radius:6px;overflow:hidden;
+  background:var(--c-bg);color:var(--c-ink);box-shadow:0 1px 0 rgba(0,0,0,.05),0 18px 40px -18px rgba(40,10,15,.45);
+  display:grid;grid-template-rows:auto 1fr;text-align:center;container-type:inline-size}
+.card .frame{position:absolute;inset:10px;border:1px solid var(--c-gold);border-radius:3px;pointer-events:none;opacity:.85}
+.card .frame::after{content:"";position:absolute;inset:4px;border:1px solid var(--c-gold);opacity:.45;border-radius:2px}
+.card .corner{position:absolute;width:42px;height:42px;pointer-events:none}
+.card .corner.tl{top:6px;left:6px}.card .corner.tr{top:6px;right:6px;transform:scaleX(-1)}
+.card .corner.bl{bottom:6px;left:6px;transform:scaleY(-1)}.card .corner.br{bottom:6px;right:6px;transform:scale(-1,-1)}
+.card .art{padding:26px 26px 0;display:grid;place-items:center}
+.card .art svg{width:100%;height:auto;max-height:38cqw;display:block}
+.card .txt{padding:2px 30px 44px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.8cqw}
+.card .seal{font-family:"Noto Sans Sinhala",var(--f-display);font-size:3.3cqw;letter-spacing:.14em;color:var(--c-gold);text-transform:uppercase}
+.card .dear{font-family:var(--f-display);font-size:4.2cqw;color:var(--c-soft);font-style:italic}
+.card .eb{font-size:3.1cqw;letter-spacing:.16em;text-transform:uppercase;color:var(--c-soft);font-weight:600;line-height:1.35}
+.card .names{font-family:var(--f-script);font-size:10.4cqw;line-height:1.05;color:var(--c-ink);font-weight:400}
+.card .names .amp{display:block;font-family:var(--f-display);font-size:5cqw;color:var(--c-gold);margin:.5cqw 0}
+.card .big{font-family:var(--f-display);font-weight:800;font-size:9.6cqw;line-height:1.02;color:var(--c-ink)}
+.card .age{font-family:var(--f-display);font-weight:800;font-size:20cqw;line-height:.9;color:var(--c-gold)}
+.card .line{font-family:var(--f-display);font-size:4.4cqw;line-height:1.3;color:var(--c-soft);max-width:30ch}
+.card .rule{width:30%;height:1px;background:var(--c-gold);opacity:.7;margin:.8cqw 0}
+.card .dets{display:grid;gap:1cqw;font-size:3.6cqw;line-height:1.35}
+.card .dets b{font-weight:700;color:var(--c-ink)}
+.card .dets .k{font-size:2.7cqw;letter-spacing:.14em;text-transform:uppercase;color:var(--c-gold);font-weight:700;display:block}
+.card .dgrid{display:grid;grid-template-columns:1fr 1fr;gap:2cqw 5cqw}
+.card .cd{font-size:3cqw;color:var(--c-gold);letter-spacing:.1em;text-transform:uppercase;font-weight:700}
+.card .brand{position:absolute;bottom:13px;left:0;right:0;font-size:2.4cqw;letter-spacing:.14em;color:var(--c-soft);opacity:.65}
+.card.si .eb,.card.si .line,.card.si .dets{font-family:"Noto Sans Sinhala",var(--f-display);letter-spacing:0}
+.card.si .eb{text-transform:none;font-size:3.4cqw}
+
+/* photo templates */
+.card.photo-top .art{padding:0;position:relative;aspect-ratio:2/1;display:block;overflow:hidden}
+.card.photo-top .art img{width:100%;height:100%;object-fit:cover;display:block}
+.card.photo-top .art::after{content:"";position:absolute;inset:auto 0 0;height:40%;background:linear-gradient(to bottom,transparent,var(--c-bg))}
+.card.photo-top{grid-template-rows:auto 1fr}
+.card.photo-top .txt{padding-top:0;gap:1.5cqw}
+.card.photo-bg .art{position:absolute;inset:0;padding:0;display:block}
+.card.photo-bg .art img{width:100%;height:100%;object-fit:cover;display:block}
+.card.photo-bg .art::after{content:"";position:absolute;inset:0;background:var(--c-veil)}
+.card.photo-bg .txt{position:relative;grid-row:1/-1;justify-content:var(--c-justify,center)}
+.card .ribbon{position:absolute;top:18px;left:-34px;transform:rotate(-45deg);background:var(--c-gold);color:var(--c-bg);font-size:2.5cqw;font-weight:800;letter-spacing:.1em;padding:3px 40px;z-index:2;text-transform:uppercase}
+.stage .pnote{font-size:13px;color:var(--muted);text-align:center;margin:0}
+/* palettes per template */
+.t-wedding{--c-bg:#FBF6EC;--c-ink:#4A1420;--c-gold:#B08A45;--c-soft:#7A5A4A}
+.t-homecoming{--c-bg:#F0F5EF;--c-ink:#1F3B33;--c-gold:#B07F3E;--c-soft:#4F6A60}
+.t-birthday{--c-bg:#FBEFC9;--c-ink:#5A1A16;--c-gold:#D9573A;--c-soft:#8A4A2B}
+.t-party{--c-bg:#16193F;--c-ink:#FFFFFF;--c-gold:#F6C64F;--c-soft:#BFC4F2}
+.t-dana{--c-bg:#FCF8EF;--c-ink:#3A2410;--c-gold:#C7701D;--c-soft:#7C5A36}
+.t-other{--c-bg:#F7F3EA;--c-ink:#1D3A31;--c-gold:#A9864A;--c-soft:#5E6E66}
+.t-dana .names,.t-birthday .names{color:var(--c-ink)}
+
+@media (prefers-reduced-motion:no-preference){
+  .card .flame{transform-origin:50% 100%;animation:fl 1.6s ease-in-out infinite alternate}
+  @keyframes fl{from{transform:scale(1,1)}to{transform:scale(.92,1.08)}}
+  .card .sway{transform-box:fill-box;transform-origin:50% 0;animation:sw 3.2s ease-in-out infinite alternate}
+  @keyframes sw{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}
+}
+
+/* ================= REDESIGN: light atelier ================= */
+body{font-size:15.5px;letter-spacing:.005em}
+h1,h2,h3{font-family:var(--f-display);font-weight:500;letter-spacing:-.01em}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.eyebrow{color:var(--accent);letter-spacing:.24em;font-size:11px;font-weight:600}
+/* header */
+header.top{background:color-mix(in srgb,var(--paper) 92%,transparent);border-bottom:1px solid var(--line);position:sticky;top:env(safe-area-inset-top,0px);z-index:30}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:31;background:var(--paper)}
+.logo b{font-family:"Noto Serif Sinhala",var(--f-display);font-weight:700;color:var(--ink);font-size:24px}
+.logo span{font-family:var(--f-display);font-style:italic;color:var(--accent);font-size:14px}
+nav.top a{border-radius:0;color:var(--muted);font-size:13px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;padding:8px 12px}
+nav.top a:hover{background:none;color:var(--ink);box-shadow:inset 0 -1px 0 var(--gold)}
+/* buttons */
+.btn{border-radius:var(--r);text-transform:uppercase;letter-spacing:.14em;font-size:12px;font-weight:600;padding:13px 22px;border:1px solid var(--line-2);background:var(--surface);color:var(--ink);transition:background .2s,border-color .2s,color .2s}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.btn.primary:hover{background:var(--jade);border-color:var(--jade)}
+.btn.wa{background:var(--wa);border-color:var(--wa);color:#fff}
+.btn.sm{padding:9px 14px;font-size:11px}
+.iconbtn{border-radius:var(--r);border-color:var(--line)}
+.linkbtn{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+/* framed boxes: hairline + champagne corner marks */
+.panel,.plan,.tile,.prompt,.table,.faq details{border-radius:var(--r);border:1px solid var(--line);background:var(--surface);position:relative;box-shadow:0 1px 0 rgba(29,42,36,.02),0 20px 40px -32px rgba(29,42,36,.25)}
+.panel::before,.panel::after,.plan::before,.plan::after,.tile::before,.tile::after{content:"";position:absolute;width:14px;height:14px;border:1.5px solid var(--gold);pointer-events:none}
+.panel::before,.plan::before,.tile::before{top:-1px;left:-1px;border-right:0;border-bottom:0}
+.panel::after,.plan::after,.tile::after{bottom:-1px;right:-1px;border-left:0;border-top:0}
+.panel{padding:28px}
+.panel h2{font-size:26px}
+.panel .sub{font-size:14px}
+.phead{margin-bottom:20px}
+/* event types */
+.type{border-radius:var(--r);background:var(--paper);border-color:var(--line);padding:14px 14px 12px;position:relative}
+.type b{font-family:var(--f-display);font-size:18px;font-weight:500}
+.type small{font-family:"Noto Serif Sinhala",var(--f-body)}
+.type:hover{border-color:var(--gold)}
+.type[aria-pressed="true"]{background:var(--surface);border-color:var(--ink);box-shadow:none}
+.type[aria-pressed="true"]::after{content:"";position:absolute;top:12px;right:12px;width:7px;height:7px;border-radius:50%;background:var(--gold)}
+/* templates */
+.tpl{border-radius:var(--r);background:var(--paper);padding:6px}
+.tpl .sw{border-radius:0}
+.tpl[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.tpl .nm{font-family:var(--f-display);font-size:15px;font-weight:500;padding:2px 4px 4px}
+.tpl.locked .lock{border-radius:var(--r);background:rgba(29,42,36,.78);letter-spacing:.04em}
+.pill{border-radius:var(--r);letter-spacing:.14em;font-size:10px;padding:3px 7px}
+.pill.free{background:var(--mist);color:var(--jade)}
+.pill.pro{background:#F5ECDC;color:var(--accent)}
+/* inputs: editorial underline */
+.fld label{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.fld input,.fld textarea,.fld select,.gadd input{border:0;border-bottom:1px solid var(--line-2);border-radius:0;background:transparent;padding:10px 2px;font-size:16px;color:var(--ink)}
+.fld input:focus,.fld textarea:focus,.gadd input:focus{box-shadow:none;border-bottom-color:var(--gold);outline:none}
+.sample{border-radius:var(--r);background:var(--blush);color:#6B4F45}
+/* segmented */
+.seg{border-radius:var(--r);background:var(--sunk);padding:3px}
+.seg button{border-radius:var(--r);letter-spacing:.06em}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper);box-shadow:none}
+/* whatsapp box */
+.wa-box{background:#EEE8DC;border-radius:var(--r);background-image:radial-gradient(rgba(29,42,36,.05) 1px,transparent 1px);background-size:14px 14px}
+.bubble{border-radius:2px 14px 14px 14px;border:0;box-shadow:0 1px 1px rgba(0,0,0,.06)}
+/* guests */
+.glist li{border-radius:var(--r);border-color:var(--line)}
+.glist .who b{font-family:var(--f-display);font-size:17px;font-weight:500}
+.meter .bar i{border-radius:0;height:4px}
+.meter .bar i.on{background:var(--gold)}
+.empty{border-radius:var(--r)}
+/* stage */
+.table{background:linear-gradient(180deg,var(--sunk),var(--paper));padding:26px}
+/* section heads */
+.shead h2{font-weight:500;font-size:clamp(32px,4.4vw,52px);line-height:1.04}
+.shead h2 em,.hero h1 em{font-style:italic;color:var(--accent)}
+.shead p{font-size:16.5px}
+section.band{border-top:1px solid var(--line);padding-block:72px}
+@media (max-width:720px){section.band{padding-block:52px}}
+/* hero: light */
+.hero{background:radial-gradient(70% 90% at 82% 30%,var(--mist) 0%,transparent 60%),radial-gradient(60% 70% at 8% 100%,var(--blush) 0%,transparent 70%),var(--h-bg);color:var(--h-ink);border-bottom:1px solid var(--line)}
+.hero::before{opacity:.05}
+.hero::after{display:none}
+.hero .wm{color:var(--gold);opacity:.12;font-family:"Noto Serif Sinhala",var(--f-display);font-weight:500}
+.hero h1{font-weight:500;font-size:clamp(42px,5vw,72px);line-height:1;color:var(--h-ink)}
+.hero h1 em::after{display:none}
+.hero p.lede{color:var(--h-soft)}
+.hero .btn{border-color:var(--line-2);color:var(--ink);background:var(--surface)}
+.hero .btn:hover{border-color:var(--ink)}
+.hero .btn.gold{background:var(--ink);border-color:var(--ink);color:var(--paper);box-shadow:0 14px 30px -14px rgba(29,42,36,.5)}
+.hero .facts{border-top-color:var(--line-2)}
+.hero .facts b{font-weight:500;color:var(--ink)}
+.hero .facts span{color:var(--muted)}
+.hero .glow{background:radial-gradient(circle,rgba(194,154,85,.28),transparent 65%)}
+.hero .phone{box-shadow:0 0 0 1px #2a2a2a,-30px 50px 80px -34px rgba(29,42,36,.55)}
+.chip{border-radius:var(--r);background:#fff;color:var(--ink);border:1px solid var(--line);box-shadow:0 18px 40px -20px rgba(29,42,36,.35)}
+.chip small{color:var(--muted)}
+.chip i{border-radius:0}
+/* steps */
+.step{border-top:1px solid var(--line-2)}
+.step:first-child{border-top-color:var(--gold)}
+.step::before{font-weight:400;font-style:italic;color:var(--gold);font-size:44px}
+.step h3{font-weight:500;font-size:24px}
+/* designs */
+.dfilter button{border-radius:var(--r);text-transform:uppercase;letter-spacing:.1em;font-size:11px;padding:9px 14px}
+.dfilter button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+.ditem .dphone{border-radius:30px}
+.ditem .meta b{font-weight:500}
+/* bento */
+.tile{padding:26px}
+.tile h3{font-weight:500;font-size:24px}
+.inbox .stats div,.mini-cd div,.langs span,.mapmini{border-radius:var(--r);background:var(--paper);border:1px solid var(--line)}
+.inbox .stats b,.mini-cd b{font-weight:500}
+.st{border-radius:var(--r);letter-spacing:.06em}
+.st.y{background:var(--mist);color:var(--jade)}.st.n{background:var(--blush);color:#A0453A}.st.p{background:#F5ECDC;color:var(--accent)}
+.dear{color:var(--accent)}
+.langs span{border-radius:2px 12px 12px 12px}
+/* compare + pricing */
+.receipt{box-shadow:0 30px 50px -34px rgba(29,42,36,.45);outline:1px solid var(--line)}
+.plan{padding:28px}
+.plan h3{font-weight:500;font-size:26px}
+.plan.hl{border-color:var(--ink);box-shadow:inset 0 3px 0 var(--gold),0 24px 50px -30px rgba(29,42,36,.35)}
+.price{font-weight:500}
+.hero-img{border-radius:var(--r)}
+/* faq */
+.faq{gap:0;border-top:1px solid var(--line-2)}
+.faq details{border:0;border-bottom:1px solid var(--line-2);border-radius:0;background:transparent;box-shadow:none;padding:2px 0}
+.faq summary{font-family:var(--f-display);font-weight:500;font-size:20px;padding:20px 0}
+.faq summary::after{border-radius:0;background:transparent;border:1px solid var(--line-2);color:var(--accent)}
+/* prompts */
+.prompt{padding:18px}
+.prompt h3{font-weight:500}
+.prompt .gen{border-radius:0}
+/* photos */
+.pgrid .ph,.pgrid .padd{border-radius:var(--r)}
+/* modal, toast, sticky bar */
+.modal{border-radius:var(--r)}
+.toast{border-radius:var(--r);background:var(--ink);color:var(--paper);letter-spacing:.04em}
+.ctabar{background:color-mix(in srgb,var(--paper) 96%,transparent)}
+.ctabar .p b{font-weight:500}
+.ctabar .wa-ic{border-radius:var(--r)}
+footer.foot{font-family:var(--f-display);font-style:italic}
+/* cards keep their own palettes; just tune type weight for Bodoni */
+.card .big{font-weight:600}
+.card .age{font-weight:600}
+.site .s-h{font-weight:500}
+/* ================= BOLD TYPE ================= */
+:root{--f-display:"Playfair Display","Noto Serif Sinhala",Georgia,serif;--f-body:"Plus Jakarta Sans","Noto Sans Sinhala",system-ui,-apple-system,"Segoe UI",sans-serif}
+body{font-weight:500}
+h1,h2,h3{font-weight:800;letter-spacing:-.015em}
+.hero h1{font-weight:900;font-size:clamp(44px,5.6vw,80px);line-height:.98;letter-spacing:-.025em}
+.hero h1 em,.shead h2 em{font-weight:800}
+.shead h2{font-weight:800}
+.step h3,.tile h3,.plan h3,.type b,.tpl .nm,.glist .who b,.ditem .meta b,.prompt h3,.faq summary{font-weight:700}
+.price,.hero .facts b,.inbox .stats b,.mini-cd b,.ctabar .p b{font-weight:800}
+.step::before{font-weight:700}
+.btn{font-weight:700;letter-spacing:.1em}
+nav.top a{font-weight:600}
+.eyebrow{font-weight:700}
+.logo b{font-weight:800}
+.panel h2{font-weight:800}
+.card .big,.card .age{font-weight:800}
+.site .s-h{font-weight:800}
+
+/* ================= NEW TEMPLATE LAYOUTS ================= */
+.card.L-arch .art{padding:8cqw 0 0;display:grid;place-items:center}
+.card.L-arch .art img{width:38cqw;aspect-ratio:1/1.05;object-fit:cover;border-radius:999px 999px 0 0;outline:1px solid var(--c-gold);outline-offset:1.4cqw;display:block}
+.card.L-arch .txt{padding-top:3.5cqw;gap:1.2cqw}
+.card.L-arch .names{font-size:8.4cqw}
+.card.L-panel .art{position:absolute;inset:0;padding:0;display:block}
+.card.L-panel .art img{width:100%;height:100%;object-fit:cover;display:block}
+.card.L-panel .frame,.card.L-panel .corner{display:none}
+.card.L-panel .txt{position:relative;grid-row:1/-1;margin:11cqw 8cqw 13cqw;padding:6cqw 5cqw;background:color-mix(in srgb,var(--c-bg) 93%,transparent);outline:1px solid var(--c-gold);outline-offset:-2.2cqw;gap:1.4cqw}
+.card.L-panel .names{font-size:9.4cqw}
+.card.L-panel .brand{color:#fff;opacity:.85}
+.card.L-floral .art svg,.card.L-confetti .art svg{max-height:36cqw}
+.card.L-mono .art{padding-top:7cqw}.card.L-mono .art svg{max-height:29cqw}.card.L-mono .txt{gap:1.5cqw}
+.card.L-mono .frame{inset:14px}
+.card.L-floral .art{padding:4cqw 3cqw 0}
+.card.L-confetti .frame,.card.L-confetti .corner{display:none}
+.card.L-confetti .art{padding:5cqw 4cqw 0}
+
+/* ================= HEADER AUTH ================= */
+.auth{display:flex;align-items:center;gap:6px;flex:none}
+.auth .lnk{font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);text-decoration:none;padding:9px 10px;background:none;border:0;cursor:pointer}
+.auth .lnk:hover{color:var(--accent)}
+.auth .btn{padding:10px 16px}
+@media (max-width:760px){header.top .wrap{flex-wrap:wrap;row-gap:2px;padding-block:10px 4px}.auth{margin-left:auto}nav.top{order:3;width:calc(100% + 16px);margin:0 -8px;max-width:none}nav.top a{padding:8px 10px;font-size:12px}}
+
+/* ================= AUTH PAGES ================= */
+.apage{min-height:calc(100vh - 66px);display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);background:var(--paper)}
+.apage .aside{position:relative;overflow:hidden;background:#2A0D14;color:#FFF7EA;display:flex;align-items:flex-end;padding:clamp(24px,4vw,56px)}
+.apage .aside img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.apage .aside::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(28,10,14,.9),rgba(28,10,14,.15) 65%)}
+.apage .aside .q{position:relative;z-index:1;max-width:32ch;display:grid;gap:10px}
+.apage .aside .q b{font-family:var(--f-display);font-size:clamp(28px,3.2vw,46px);font-weight:800;line-height:1.04;letter-spacing:-.02em}
+.apage .aside .q span{opacity:.88;font-size:15px}
+.apage .aside .q .eyebrow{color:#F0CF8E}
+.apage .formside{display:grid;place-items:center;padding:clamp(28px,5vw,64px) 16px}
+.aform{width:100%;max-width:410px;display:grid;gap:16px}
+.aform h1{font-size:clamp(36px,4vw,50px);margin-top:6px}
+.aform h1 em{font-style:italic;color:var(--accent)}
+.aform .sub{color:var(--muted);margin:-6px 0 4px}
+.af{display:grid;gap:6px}
+.af label{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.af input{width:100%;border:1px solid var(--line-2);background:var(--surface);padding:13px 14px;border-radius:var(--r);font-size:15px}
+.af input:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px color-mix(in srgb,var(--gold) 28%,transparent)}
+.af input[aria-invalid="true"]{border-color:#B3261E}
+.af .pw{position:relative}
+.af .pw input{padding-right:70px}
+.af .pw button{position:absolute;right:6px;top:50%;transform:translateY(-50%);border:0;background:none;color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;cursor:pointer;padding:8px}
+.aform .err{color:#B3261E;font-size:13.5px;font-weight:600;margin:0;min-height:1.2em}
+.aform .btn.primary{width:100%;padding:15px}
+.aform .alt{text-align:center;color:var(--muted);font-size:14px;margin:0}
+.aform .alt a,.aform .lk{font-weight:700;color:var(--accent);background:none;border:0;cursor:pointer;font-size:13.5px;padding:0}
+.aform .hint{font-size:12.5px;color:var(--muted);background:var(--sunk);padding:10px 12px;border-left:2px solid var(--gold);margin:0}
+.aform .chk{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--muted);cursor:pointer}
+.aform .chk input{accent-color:var(--jade);margin-top:3px}
+.aform .split{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.meter{height:4px;background:var(--line);overflow:hidden;margin-top:4px}.meter i{display:block;height:100%;width:0;background:#B3261E;transition:width .2s,background .2s}
+@media (max-width:820px){.apage{grid-template-columns:minmax(0,1fr)}.apage .aside{min-height:190px}.apage .aside .q span:last-child{display:none}}
+
+/* ================= ACCOUNT + ADMIN ================= */
+.adm{display:grid;grid-template-columns:236px minmax(0,1fr);min-height:calc(100vh - 66px);background:var(--paper)}
+.adm .side{border-right:1px solid var(--line);background:var(--surface);padding:24px 14px;display:flex;flex-direction:column;gap:2px;position:sticky;top:66px;height:calc(100vh - 66px);overflow:auto}
+.adm .side .who{padding:0 12px 18px;border-bottom:1px solid var(--line);margin-bottom:10px}
+.adm .side .who b{display:block;font-family:var(--f-display);font-size:19px;font-weight:800}
+.adm .side .who small{color:var(--muted);font-size:12.5px}
+.adm .side a{display:flex;gap:12px;align-items:center;padding:11px 12px;text-decoration:none;color:var(--muted);font-weight:600;font-size:14px;border-left:2px solid transparent}
+.adm .side a svg{width:18px;height:18px;flex:none}
+.adm .side a:hover{color:var(--ink)}
+.adm .side a[aria-current="page"]{color:var(--ink);background:var(--sunk);border-left-color:var(--gold)}
+.adm .side .sp{flex:1}
+.adm .main{padding:32px clamp(16px,3vw,40px) 64px;min-width:0;display:grid;gap:22px;align-content:start}
+.mh{display:flex;justify-content:space-between;align-items:flex-end;gap:14px;flex-wrap:wrap}
+.mh h1{font-size:clamp(32px,3.6vw,46px)}
+.mh p{margin:4px 0 0;color:var(--muted)}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.kpi{background:var(--surface);border:1px solid var(--line);padding:18px;display:grid;gap:4px;position:relative}
+.kpi::before{content:"";position:absolute;left:0;top:0;width:28px;height:2px;background:var(--gold)}
+.kpi small{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.kpi b{font-family:var(--f-display);font-size:34px;font-weight:800;line-height:1.05;font-variant-numeric:tabular-nums}
+.kpi span{font-size:13px;color:var(--muted)}
+.box{background:var(--surface);border:1px solid var(--line);padding:20px;min-width:0}
+.box h2{font-size:21px;margin-bottom:12px}
+.box .bh{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.box .bh h2{margin:0}
+.tblwrap{overflow-x:auto;margin:0 -4px}
+.tbl{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th{text-align:left;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:10px 10px;border-bottom:1px solid var(--line-2);white-space:nowrap}
+.tbl td{padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:middle;white-space:nowrap}
+.tbl td b{font-weight:700}
+.tbl td small{display:block;color:var(--muted);font-size:12.5px}
+.tbl td.empty{text-align:center;color:var(--muted);padding:28px}
+.tbl .acts{display:flex;gap:6px;justify-content:flex-end;flex-wrap:nowrap}
+.tbl select{border:1px solid var(--line-2);background:var(--surface);padding:7px 8px;border-radius:var(--r);font-size:13px;font-weight:600}
+.badge{display:inline-block;padding:3px 9px;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;background:var(--sunk);color:var(--muted);white-space:nowrap}
+.badge.ok{background:#E2F1E7;color:#1E6A42}.badge.warn{background:#FBEFD7;color:#865610}.badge.new{background:#F7E3E1;color:#9A2B2B}.badge.gold{background:#F3E8D2;color:#7E5C22}
+.two{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:18px}
+.tbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.tbar input,.tbar select{border:1px solid var(--line-2);padding:10px 12px;background:var(--surface);border-radius:var(--r);font-size:14px}
+.tbar input{min-width:0;flex:1 1 220px}
+.tsec h2{font-size:22px;margin:6px 0 12px;display:flex;gap:10px;align-items:baseline}
+.tsec h2 small{font-family:var(--f-body);font-size:13px;color:var(--muted);font-weight:500}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:16px}
+.titem{background:var(--surface);border:1px solid var(--line);padding:10px;display:grid;gap:10px;align-content:start}
+.titem .card{max-width:none;box-shadow:none}
+.titem[data-off="1"] .card{opacity:.35;filter:grayscale(.6)}
+.titem .trow{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.titem .trow b{font-family:var(--f-display);font-size:15.5px;font-weight:700;line-height:1.15}
+.titem .trow small{display:block;color:var(--muted);font-size:12px}
+.sw-t{appearance:none;-webkit-appearance:none;width:40px;height:23px;border-radius:999px;background:var(--line-2);position:relative;cursor:pointer;transition:background .2s;flex:none;margin:0}
+.sw-t::after{content:"";position:absolute;top:3px;left:3px;width:17px;height:17px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+.sw-t:checked{background:var(--leaf)}.sw-t:checked::after{transform:translateX(17px)}
+.sw-t:disabled{opacity:.5;cursor:not-allowed}
+.sform{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.sform .af small{color:var(--muted);font-size:12.5px}
+.danger{border-color:#EBC9C4}
+.danger h2{color:#9A2B2B}
+.acct .wrap{padding-block:36px 64px;display:grid;gap:22px}
+@media (max-width:900px){.adm{grid-template-columns:minmax(0,1fr)}.adm .side{position:sticky;top:96px;z-index:5;height:auto;flex-direction:row;overflow-x:auto;padding:6px 8px;border-right:0;border-bottom:1px solid var(--line);scrollbar-width:none}.adm .side .who,.adm .side .sp{display:none}.adm .side a{white-space:nowrap;border-left:0;border-bottom:2px solid transparent;padding:10px 12px}.adm .side a[aria-current="page"]{border-bottom-color:var(--gold);background:none}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.two,.sform{grid-template-columns:minmax(0,1fr)}.adm .main{padding-top:22px}}
+@media (max-width:420px){.kpi b{font-size:28px}.tgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}}
+</style>
+</head><body>
+
+<div id="app"></div>
+<div id="layer"></div>
+
+<script>
+/* ================= CONFIG ================= */
+const CONFIG = {
+  FREE_GUESTS: 5,
+  STUDIO_WA: "94770000000",          // Aradhanawa studio WhatsApp number (replace with the real one)
+  PRICE_PLUS: "Rs. 990",
+  PRICE_CUSTOM: "Rs. 4,900",
+  // Base URL for share links. On a static host (Netlify, GitHub Pages, Vercel) the page itself is used.
+  SITE: (location.protocol.startsWith("http") && !/claude|anthropic|usercontent/.test(location.hostname))
+          ? location.origin + location.pathname : "https://aradhanawa.com/"
+};
+
+/* ================= SVG ART ================= */
+const svg = (vb, inner) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${inner}</svg>`;
+
+function lotus(x,y,s,c1,c2){return `<g transform="translate(${x} ${y}) scale(${s})">
+<path d="M0 0C-28-4-46-16-52-30C-34-28-14-16 0 0Z" fill="${c1}" opacity=".8"/>
+<path d="M0 0C28-4 46-16 52-30C34-28 14-16 0 0Z" fill="${c1}" opacity=".8"/>
+<path d="M0 0C-20-12-30-30-28-46C-14-38-4-20 0 0Z" fill="${c2}"/>
+<path d="M0 0C20-12 30-30 28-46C14-38 4-20 0 0Z" fill="${c2}"/>
+<path d="M0 0C-10-20-10-40 0-56C10-40 10-20 0 0Z" fill="${c1}"/>
+<path d="M-40 2Q0 12 40 2" stroke="${c2}" stroke-width="2" fill="none"/></g>`}
+
+function polMal(x,y,c,pot){return `<g transform="translate(${x} ${y})">
+${Array.from({length:15},(_,i)=>{const a=(-75+i*150/14)*Math.PI/180, L=34+((i*7)%3)*6, ex=Math.sin(a)*L, ey=-Math.cos(a)*L;return `<path d="M0 -14Q${ex*.3} ${-14+ey*.6} ${ex} ${-14+ey}" stroke="${c}" stroke-width="1.3" fill="none"/><circle cx="${ex}" cy="${-14+ey}" r="1.6" fill="${c}"/>`}).join("")}
+<path d="M-12 -14H12L10 -8Q18 4 0 10Q-18 4 -10 -8Z" fill="${pot}"/><path d="M-9 10H9V13H-9Z" fill="${pot}"/></g>`}
+function lamp(x,y,c){return `<g transform="translate(${x} ${y})"><path class="flame" d="M6-30c-3-4-1-8 0-11c1 3 3 7 0 11z" fill="#F29A1E"/><path d="M-9-28Q0-18 9-28Z" fill="${c}"/><rect x="-1.5" y="-24" width="3" height="20" fill="${c}"/><path d="M-8 0H8L5-4H-5Z" fill="${c}"/></g>`}
+function poruwa(g,soft){return `
+<path d="M160 6l3 8h-6z" fill="${g}"/><circle cx="160" cy="16" r="3" fill="${g}"/>
+<path d="M124 38Q160 12 196 38L204 44Q160 26 116 44Z" fill="${g}"/>
+<path d="M118 44H202V48H118Z" fill="${g}" opacity=".7"/>
+<path d="M96 60Q160 30 224 60L240 70Q160 44 80 70Z" fill="${g}"/>
+<path d="M90 70H230V75H90Z" fill="${g}" opacity=".7"/>
+${[100,128,192,220].map((x,i)=>`<rect x="${x-3}" y="75" width="6" height="45" fill="${g}" opacity="${i%3?".75":"1"}"/><rect x="${x-5}" y="75" width="10" height="4" fill="${g}"/><rect x="${x-5}" y="116" width="10" height="4" fill="${g}"/>`).join("")}
+<path d="M100 80Q114 96 128 80M128 80Q160 104 192 80M192 80Q206 96 220 80" stroke="${soft}" stroke-width="1.6" stroke-dasharray="1 3" stroke-linecap="round" fill="none"/>
+${[114,160,206].map(x=>`<path d="M${x} ${x===160?92:88}v10" stroke="${soft}" stroke-width="1.4" stroke-dasharray="1 3" stroke-linecap="round"/>`).join("")}
+<path d="M84 120H236V127H84Z" fill="${g}"/><path d="M74 127H246V134H74Z" fill="${g}" opacity=".8"/><path d="M64 134H256V141H64Z" fill="${g}" opacity=".6"/>
+<path d="M132 120h56" stroke="${soft}" stroke-width="2"/>`}
+function weddingArt(){
+  const g="var(--c-gold)", s="var(--c-soft)";
+  return svg("0 0 320 150",`
+  ${poruwa(g,s)}
+  ${polMal(38,140,s,g)}${polMal(282,140,s,g)}
+  ${lamp(70,141,g)}${lamp(250,141,g)}
+  <path d="M10 141H310" stroke="${g}" stroke-width="1" opacity=".5"/>`)
+}
+function palm(x,y,s,c){return `<g transform="translate(${x} ${y}) scale(${s})">
+<path d="M0 0Q6-50 2-96" stroke="${c}" stroke-width="6" fill="none" stroke-linecap="round"/>
+<path d="M2-96Q-30-110-56-90Q-30-100 2-96ZM2-96Q30-116 58-96Q30-104 2-96ZM2-96Q-14-128-40-130Q-18-118 2-96ZM2-96Q20-130 46-128Q22-118 2-96ZM2-96Q-40-90-50-64Q-34-86 2-96ZM2-96Q40-90 50-62Q34-86 2-96Z" fill="${c}"/>
+<circle cx="-2" cy="-92" r="4" fill="${c}"/><circle cx="6" cy="-90" r="4" fill="${c}"/></g>`}
+function homecomingArt(){
+  const g="var(--c-gold)", s="var(--c-soft)";
+  return svg("0 0 320 150",`
+  <circle cx="160" cy="58" r="44" fill="${g}" opacity=".9"/>
+  <path d="M0 136Q80 124 160 132T320 128V150H0Z" fill="${s}" opacity=".22"/>
+  ${palm(40,140,.95,s)}${palm(284,142,.8,s)}
+  <g transform="translate(160 0)">
+    <path d="M-86 92L0 54L86 92Z" fill="#B5502F"/>
+    ${[-60,-40,-20,0,20,40,60].map(x=>`<path d="M${x*.95} ${92-Math.max(0,38-Math.abs(x)*.44)}L${x} 92" stroke="#8E3A20" stroke-width="1"/>`).join("")}
+    <path d="M-92 92H92V97H-92Z" fill="${g}"/>
+    <path d="M-76 97H76V128H-76Z" fill="#FFFDF8" stroke="var(--c-gold)" stroke-width="1"/>
+    ${[-64,-32,32,64].map(x=>`<rect x="${x-3}" y="97" width="6" height="31" fill="${g}"/>`).join("")}
+    <path d="M-12 128V108Q0 98 12 108V128Z" fill="#0b302b"/>
+    <path d="M-50 104h12v14h-12zM38 104h12v14h-12z" fill="#0b302b"/>
+    <path d="M-86 128H86V134H-86Z" fill="${g}" opacity=".8"/>
+    ${lamp(-20,128,g)}${lamp(20,128,g)}
+    <path d="M-60 97Q-30 110 0 97Q30 110 60 97" stroke="${s}" stroke-width="1.4" stroke-dasharray="1 3" stroke-linecap="round" fill="none"/>
+  </g>`)
+}
+function balloon(x,y,c,r){return `<g class="sway" style="animation-delay:${(x%7)/7}s"><ellipse cx="${x}" cy="${y}" rx="${r}" ry="${r*1.18}" fill="${c}"/><path d="M${x-r*.35} ${y-r*.5}q${r*.2}-${r*.35} ${r*.5}-${r*.4}" stroke="#fff" stroke-width="2" opacity=".55" fill="none"/><path d="M${x} ${y+r*1.18}l-3 5h6z" fill="${c}"/><path d="M${x} ${y+r*1.18+5}q-6 20 4 40" stroke="var(--c-soft)" fill="none" stroke-width="1"/></g>`}
+function birthdayArt(){
+  return svg("0 0 320 160",`
+  ${balloon(48,40,"#E5533A",20)}${balloon(86,28,"#2F8F6B",16)}${balloon(268,36,"#F2A93B",20)}${balloon(232,24,"#5B6CD6",14)}
+  <g transform="translate(160 0)">
+    <rect x="-62" y="96" width="124" height="44" rx="6" fill="#D9573A"/>
+    <path d="M-62 104q10 10 20 0t21 0t21 0t21 0t21 0t20 0" stroke="#FFF4DA" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <rect x="-44" y="62" width="88" height="36" rx="6" fill="#F7D9A6"/>
+    <path d="M-44 70q8 8 15 0t15 0t14 0t15 0t15 0t14 0" stroke="#fff" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <g fill="#5A1A16">${[-26,-9,9,26].map(x=>`<rect x="${x-2}" y="44" width="4" height="18" rx="1" fill="${["#2F8F6B","#5B6CD6","#E5533A","#2F8F6B"][Math.abs(x)%4]}"/><path class="flame" d="M${x} 32c-4 5-4 9 0 11c4-2 4-6 0-11z" fill="#F2A93B"/>`).join("")}</g>
+    <path d="M-80 140H80" stroke="#8A4A2B" stroke-width="2"/>
+  </g>
+  ${[[30,110],[290,100],[120,20],[200,14],[300,140],[16,150]].map(([x,y],i)=>`<rect x="${x}" y="${y}" width="6" height="3" rx="1" transform="rotate(${i*37} ${x} ${y})" fill="${["#E5533A","#2F8F6B","#5B6CD6","#F2A93B"][i%4]}"/>`).join("")}`)
+}
+function lantern(x,y,c,s,d){return `<g transform="translate(${x} ${y}) scale(${s})"><g class="sway" style="animation-delay:${d}s">
+<line x1="0" y1="-22" x2="0" y2="-14" stroke="var(--c-soft)" stroke-width="1"/>
+<circle cx="0" cy="0" r="22" fill="${c}" opacity=".18"/>
+<path d="M0-14L15 0L0 14L-15 0Z" fill="${c}"/><path d="M0-14L0 14M-15 0H15" stroke="#fff" stroke-width=".8" opacity=".5"/>
+<path d="M-15 0L-9-9M15 0L9-9M-15 0L-9 9M15 0L9 9" stroke="#fff" stroke-width=".6" opacity=".35"/>
+<path d="M-8 8Q-12 26-10 42M-3 12Q-4 30-2 48M3 12Q4 30 2 48M8 8Q12 26 10 42" stroke="${c}" stroke-width="1.4" fill="none"/></g></g>`}
+function partyArt(){
+  const cs=["#F6C64F","#F27E6B","#6FD3C2","#B98CF2","#F6C64F"];
+  return svg("0 0 320 160",`
+  <path d="M0 18Q80 58 160 34T320 22" stroke="var(--c-soft)" stroke-width="1" fill="none" opacity=".6"/>
+  ${[[38,40,0],[100,44,1],[160,36,2],[222,32,3],[284,24,4]].map(([x,y,i])=>lantern(x,y+14,cs[i],i===2?1.5:1.1,i*.35)).join("")}
+  ${Array.from({length:18},(_,i)=>`<circle cx="${(i*53)%320}" cy="${118+((i*29)%40)}" r="${1+(i%3)*.6}" fill="#fff" opacity="${.3+(i%4)*.15}"/>`).join("")}
+  <path d="M60 150Q160 120 260 150" stroke="var(--c-gold)" stroke-width="1" fill="none" opacity=".6"/>`)
+}
+function pahana(){return `
+<circle cx="0" cy="-40" r="34" fill="var(--c-gold)" opacity=".08"/><circle cx="0" cy="-40" r="20" fill="var(--c-gold)" opacity=".12"/>
+<path class="flame" d="M0-30C-7-40-3-52 0-62C3-52 7-40 0-30Z" fill="#F29A1E"/>
+<path d="M0-33C-3-38-1-44 0-48C1-44 3-38 0-33Z" fill="#FFE28A"/>
+<path d="M-46-24Q0 10 46-24Q30-18 0-18T-46-24Z" fill="var(--c-gold)"/>
+<path d="M-46-24H46" stroke="var(--c-gold)" stroke-width="3" stroke-linecap="round"/>
+<rect x="-6" y="-12" width="12" height="40" fill="var(--c-gold)"/>
+<ellipse cx="0" cy="4" rx="14" ry="4" fill="var(--c-gold)"/>
+<path d="M-34 40L34 40L24 28H-24Z" fill="var(--c-gold)"/>`}
+function danaArt(){
+  return svg("0 0 320 150",`
+  ${lotus(70,128,.75,"var(--c-gold)","#E9A86A")}${lotus(250,128,.75,"var(--c-gold)","#E9A86A")}
+  <g transform="translate(160 100)">${pahana()}</g>
+  <path d="M30 134H290" stroke="var(--c-gold)" stroke-width="1" opacity=".5"/>
+  ${[110,210].map(x=>`<circle cx="${x}" cy="120" r="3" fill="var(--c-gold)" opacity=".7"/>`).join("")}`)
+}
+function otherArt(){
+  const g="var(--c-gold)";
+  return svg("0 0 320 150",`
+  <path d="M40 140V60Q40 18 160 14Q280 18 280 60V140" fill="none" stroke="${g}" stroke-width="2"/>
+  <path d="M56 140V66Q56 32 160 28Q264 32 264 66V140" fill="none" stroke="${g}" stroke-width="1" opacity=".5"/>
+  ${Array.from({length:9},(_,i)=>{const x=72+i*22;return `<path d="M${x} 40q4 14 0 26q-4-12 0-26z" fill="${i%2?g:"var(--c-soft)"}" opacity=".9"/>`}).join("")}
+  ${lotus(160,128,.95,g,"var(--c-soft)")}
+  <circle cx="160" cy="62" r="5" fill="${g}"/>`)
+}
+/* ---- extra template art ---- */
+function flower(x,y,r,c,c2,rot=0){let p="";for(let i=0;i<5;i++)p+=`<ellipse cx="0" cy="${-r*.52}" rx="${r*.4}" ry="${r*.58}" fill="${c}" transform="rotate(${i*72+rot})"/>`;return `<g transform="translate(${x} ${y})">${p}<circle r="${r*.3}" fill="${c2}"/><circle r="${r*.12}" fill="${c}" opacity=".6"/></g>`}
+function leafP(x,y,s,rot,c,o=1){return `<path d="M0 0Q${7*s} ${-7*s} ${17*s} 0Q${7*s} ${7*s} 0 0Z" transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${rot.toFixed(0)})" fill="${c}" opacity="${o}"/>`}
+function floralArt(){
+  const P0=[18,22],P1=[150,128],P2=[282,22],B=t=>[(1-t)**2*P0[0]+2*(1-t)*t*P1[0]+t*t*P2[0],(1-t)**2*P0[1]+2*(1-t)*t*P1[1]+t*t*P2[1]];
+  const D=t=>Math.atan2(2*(1-t)*(P1[1]-P0[1])+2*t*(P2[1]-P1[1]),2*(1-t)*(P1[0]-P0[0])+2*t*(P2[0]-P1[0]))*180/Math.PI;
+  let lv="";for(let t=.03,i=0;t<.98;t+=.055,i++){const [x,y]=B(t),a=D(t);lv+=leafP(x,y,1.05,a+(i%2?-38:38),i%2?"#7F9A78":"#A7BC9E",.95)}
+  const fl=[[.13,9],[.3,6],[.5,13],[.7,6],[.87,9]].map(([t,r],i)=>{const [x,y]=B(t);return flower(x,y,r,i%2?"#F2D4CC":"var(--c-gold)",i%2?"var(--c-gold)":"#FBE9C8",i*17)}).join("");
+  const buds=[.22,.4,.6,.78].map(t=>{const [x,y]=B(t);return `<circle cx="${x.toFixed(1)}" cy="${(y-6).toFixed(1)}" r="2.6" fill="var(--c-gold)" opacity=".7"/>`}).join("");
+  return svg("0 0 300 132",`<path d="M${P0}Q${P1} ${P2}" fill="none" stroke="#8FA888" stroke-width="1.3"/>${lv}${buds}${fl}`);
+}
+function initials(type,ev){
+  const f=s=>String(s||"").trim().charAt(0).toUpperCase();
+  if(type==="wedding"||type==="homecoming") return [f(ev.a)||"A",f(ev.b)||"B"];
+  const w=String(ev.title||ev.a||"A").split(/\s+/).filter(x=>/^[A-Za-z]/.test(x));
+  return [f(w[0])||"A", w[1]?f(w[1]):""];
+}
+function monoArt(type,ev){
+  const [x,y]=initials(type,ev);
+  const sprig=(dx,flip)=>`<g transform="translate(${dx} 62) scale(${flip} 1)">${[0,1,2,3].map(i=>leafP(-4-i*9,-6+i*1,.62,200+i*8,"var(--c-gold)",.75)+leafP(-4-i*9,6-i*1,.62,160-i*8,"var(--c-gold)",.55)).join("")}</g>`;
+  return svg("0 0 240 124",`<circle cx="120" cy="62" r="52" fill="none" stroke="var(--c-gold)" stroke-width="1.2"/><circle cx="120" cy="62" r="46" fill="none" stroke="var(--c-gold)" stroke-width=".6" opacity=".6"/>${sprig(62,1)}${sprig(178,-1)}
+  <text x="120" y="${y?76:80}" text-anchor="middle" style="font-family:var(--f-display);font-weight:700;font-style:italic" font-size="${y?40:52}" fill="var(--c-ink)">${esc(x)}${y?`<tspan fill="var(--c-gold)" font-size="24" dy="-4"> &amp; </tspan><tspan dy="4">${esc(y)}</tspan>`:""}</text>
+  <circle cx="120" cy="10" r="2.4" fill="var(--c-gold)"/><circle cx="120" cy="114" r="2.4" fill="var(--c-gold)"/>`);
+}
+function confettiArt(){
+  const C=["#F2994A","#EB5757","#2D9CDB","#27AE60","#9B51E0","#F2C94C"];let s=7,r=()=>(s=(s*9301+49297)%233280)/233280,out="";
+  for(let i=0;i<46;i++){const x=(r()*290+5).toFixed(0),y=(r()*96+6).toFixed(0),c=C[i%6],a=(r()*180).toFixed(0);out+=i%3?`<rect x="${x}" y="${y}" width="7" height="3.4" rx="1" fill="${c}" transform="rotate(${a} ${x} ${y})"/>`:`<circle cx="${x}" cy="${y}" r="${(2+r()*2).toFixed(1)}" fill="${c}"/>`}
+  const st=(x,c)=>`<path d="M${x} 0q-10 18 4 34t-4 34" fill="none" stroke="${c}" stroke-width="2.2" stroke-linecap="round"/>`;
+  return svg("0 0 300 110",`${st(26,"#EB5757")}${st(272,"#2D9CDB")}${st(58,"#F2C94C")}${st(240,"#27AE60")}${out}`);
+}
+function premArt(type,t,ev){
+  if(t.img) return pic(t.img,"(max-width:440px) 92vw, 380px",t.n,t.pos);
+  if(t.layout==="floral") return floralArt();
+  if(t.layout==="mono") return monoArt(type,ev||TYPES[type].sample);
+  if(t.layout==="confetti") return confettiArt();
+  return TYPES[type].art();
+}
+
+const corner = c => `<svg class="corner %POS%" viewBox="0 0 42 42" aria-hidden="true"><path d="M4 38V14Q4 4 14 4H38" fill="none" stroke="${c}" stroke-width="1.4"/><path d="M10 30Q10 10 30 10" fill="none" stroke="${c}" stroke-width="1" opacity=".6"/><circle cx="10" cy="10" r="2.6" fill="${c}"/><path d="M16 16q6-2 8 4q-6 2-8-4z" fill="${c}" opacity=".8"/></svg>`;
+
+/* ================= EVENT TYPES ================= */
+const days = n => { const d=new Date(); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10) };
+const TYPES = {
+  wedding:{ name:"Wedding", si:"විවාහ මංගල්‍යය", tpl:"Rathu Ran", art:weddingArt,
+    fields:["a","b","date","nekath","time","venue","map","rsvp","rsvpBy","note"],
+    labels:{a:"Groom's name",b:"Bride's name",nekath:"Poruwa ceremony (nekath time)",time:"Reception starts"},
+    sample:{a:"Kasun",b:"Tharushi",date:days(58),nekath:"09:41",time:"11:30",venue:"Cinnamon Grand, Colombo 03",map:"",rsvp:"0771234567",note:""}},
+  homecoming:{ name:"Homecoming", si:"හෝම්කමිං", tpl:"Pol Atu", art:homecomingArt,
+    fields:["a","b","date","time","venue","map","rsvp","rsvpBy","note"],
+    labels:{a:"Groom's name",b:"Bride's name"},
+    sample:{a:"Kasun",b:"Tharushi",date:days(61),time:"18:30",venue:"Hotel Topaz, Kandy",map:"",rsvp:"0771234567",note:""}},
+  birthday:{ name:"Birthday", si:"උපන්දිනය", tpl:"Kiribath", art:birthdayArt,
+    fields:["a","age","date","time","venue","map","rsvp","rsvpBy","note"],
+    labels:{a:"Birthday star's name",age:"Turning (age)"},
+    sample:{a:"Senuli",age:"5",date:days(14),time:"16:00",venue:"Our home, 24 Temple Road, Maharagama",map:"",rsvp:"0712345678",note:"Kiribath, cake and games for the kids"}},
+  party:{ name:"Party", si:"සාදය", tpl:"Vesak Night", art:partyArt,
+    fields:["title","a","date","time","venue","map","dress","rsvp","rsvpBy","note"],
+    labels:{title:"Party name",a:"Hosted by"},
+    sample:{title:"Batch Reunion 2026",a:"Royal College 2010 Batch",date:days(21),time:"19:00",venue:"Mount Lavinia Hotel",map:"",dress:"Smart casual",rsvp:"0761234567",note:"DJ and dinner buffet"}},
+  dana:{ name:"Almsgiving", si:"දානය", tpl:"Pahana", art:danaArt,
+    fields:["title","a","b","date","time","venue","map","rsvp","rsvpBy","note"],
+    labels:{title:"Dana / pinkama name",a:"Hosted by (family)",b:"In memory of (optional)"},
+    sample:{title:"Sanghika Dana",a:"The Perera family",b:"",date:days(9),time:"10:30",venue:"Sri Sudarshanaramaya, Nugegoda",map:"",rsvp:"0701234567",note:""}},
+  other:{ name:"Other function", si:"වෙනත් උත්සව", tpl:"Liyawela", art:otherArt,
+    fields:["title","a","date","time","venue","map","rsvp","rsvpBy","note"],
+    labels:{title:"Function name",a:"Hosted by"},
+    sample:{title:"Engagement Ceremony",a:"The Silva family",date:days(30),time:"17:00",venue:"Galadari Hotel, Colombo",map:"",rsvp:"0771234567",note:""}},
+};
+const FIELD = {
+  a:{label:"Name"}, b:{label:"Second name"}, title:{label:"Event name"}, age:{label:"Age",type:"number"},
+  date:{label:"Date",type:"date"}, time:{label:"Time",type:"time"}, nekath:{label:"Nekath time",type:"time"},
+  venue:{label:"Venue",full:true}, map:{label:"Google Maps link (optional)",full:true,ph:"https://maps.app.goo.gl/…"},
+  rsvp:{label:"RSVP WhatsApp number",ph:"07X XXX XXXX"}, rsvpBy:{label:"Reply by (optional)",type:"date"}, dress:{label:"Dress code"},
+  note:{label:"Extra note (optional)",full:true,area:true}
+};
+// Premium (custom) designs. img = file name in img/ (480w + 960w WebP). mode: top = photo header, bg = full photo background.
+const PREMIUM = {
+  wedding:[
+    {n:"Poruwa Royal", img:"poruwa-couple", mode:"top", pos:"50% 38%", bg:"#4E0F1E", gold:"#E2B65A", soft:"#EBCBA5", ink:"#FBEFD9"},
+    {n:"Kandyan Gold", img:"kandyan-pattern", mode:"bg", veil:"rgba(46,8,14,.80)", bg:"#3B0A12", gold:"#E2B65A", soft:"#EBCBA5", ink:"#FFF3DE"},
+    {n:"Galle Fort Sunset", img:"galle-fort", mode:"bg", pos:"50% 78%", veil:"linear-gradient(to bottom,rgba(40,24,52,.15),rgba(40,24,52,.35) 35%,rgba(30,16,40,.86) 62%)", justify:"flex-end", bg:"#2C1F3A", gold:"#F6B98A", soft:"#F2D9E4", ink:"#FFFFFF"}],
+  homecoming:[
+    {n:"Tea Country", img:"tea-bungalow", mode:"top", pos:"50% 62%", bg:"#1E3B2A", gold:"#E8C77A", soft:"#C9DFB0", ink:"#FFF8EA"},
+    {n:"Bentota Beach", bg:"#0E3D5B", gold:"#F5D7A1", soft:"#F5D7A1", ink:"#FFFFFF"}],
+  birthday:[
+    {n:"Kiribath Table", img:"birthday-table", mode:"top", pos:"50% 50%", bg:"#FBE7B0", gold:"#C8471F", soft:"#7A3E1D", ink:"#4A1410"},
+    {n:"Tuk-tuk Ride", img:"tuktuk", mode:"top", pos:"50% 64%", bg:"#0F5B5A", gold:"#F6B23D", soft:"#BDE7E0", ink:"#FFFFFF"}],
+  party:[
+    {n:"Vesak Lanterns", img:"vesak-lanterns", mode:"bg", veil:"linear-gradient(to bottom,rgba(16,18,52,.25),rgba(16,18,52,.82) 46%)", justify:"flex-end", bg:"#16193F", gold:"#F6C64F", soft:"#D9DCFF", ink:"#FFFFFF"},
+    {n:"Colombo Streets", img:"tuktuk", mode:"top", pos:"50% 30%", bg:"#13314A", gold:"#F6B23D", soft:"#CFE6F2", ink:"#FFFFFF"}],
+  dana:[
+    {n:"Bodhi Leaf", bg:"#F4F1E6", gold:"#3F6B3A", soft:"#5B5A3A", ink:"#2E2A1A"},
+    {n:"Dagaba White", bg:"#EFF2F4", gold:"#8B6D3A", soft:"#5B5F66", ink:"#2A2C30"}],
+  other:[
+    {n:"Perahera Night", img:"perahera", mode:"top", pos:"45% 40%", bg:"#3A0A10", gold:"#F0B64C", soft:"#EBCBA5", ink:"#FFF3DE"},
+    {n:"Kandyan Gold", img:"kandyan-pattern", mode:"bg", veil:"rgba(46,8,14,.80)", bg:"#3B0A12", gold:"#E2B65A", soft:"#EBCBA5", ink:"#FFF3DE"}],
+};
+/* ---- new template designs (light, layout-driven) ---- */
+const MORE = {
+  wedding:[
+    {n:"Ivory Arch", img:"poruwa-couple", layout:"arch", pos:"50% 30%", bg:"#FBF7EF", gold:"#A8823C", soft:"#7C6B58", ink:"#3B2A1E"},
+    {n:"Blush Garden", layout:"floral", bg:"#FCF1EC", gold:"#C07A6B", soft:"#8C6B62", ink:"#4B2B2A"},
+    {n:"Noir Monogram", layout:"mono", bg:"#141414", gold:"#D9B96E", soft:"#CFC6B2", ink:"#F8F2E4"},
+    {n:"Fort Postcard", img:"galle-fort", layout:"panel", pos:"50% 60%", bg:"#FFFDF8", gold:"#9C7534", soft:"#6B5E52", ink:"#2E241C"}],
+  homecoming:[
+    {n:"Emerald Arch", img:"tea-bungalow", layout:"arch", pos:"50% 60%", bg:"#F1F5EF", gold:"#8C6B2F", soft:"#4F6A5A", ink:"#1F3B30"},
+    {n:"Ivory Monogram", layout:"mono", bg:"#FAF6EE", gold:"#A8823C", soft:"#6E6457", ink:"#2A2620"},
+    {n:"Rose Garden", layout:"floral", bg:"#FBF3F1", gold:"#B9706A", soft:"#7D605B", ink:"#3E2423"}],
+  birthday:[
+    {n:"Confetti Pop", layout:"confetti", bg:"#FFF7EC", gold:"#E4572E", soft:"#6B4E3D", ink:"#2D1B12"},
+    {n:"Party Postcard", img:"birthday-table", layout:"panel", pos:"50% 50%", bg:"#FFFBF2", gold:"#D0532A", soft:"#6E4A35", ink:"#3A1C10"}],
+  party:[
+    {n:"Gold Monogram", layout:"mono", bg:"#0E1630", gold:"#E9C46A", soft:"#C9D3F0", ink:"#FFFFFF"},
+    {n:"Lantern Arch", img:"vesak-lanterns", layout:"arch", pos:"50% 30%", bg:"#FBF6EA", gold:"#B07A1E", soft:"#5D5A6E", ink:"#1E1F3A"},
+    {n:"Confetti Night", layout:"confetti", bg:"#1A1440", gold:"#F2C94C", soft:"#D8D2FF", ink:"#FFFFFF"}],
+  dana:[
+    {n:"Lotus Garden", layout:"floral", bg:"#F6F7F0", gold:"#B98A9C", soft:"#5D624F", ink:"#2F3324"},
+    {n:"Sandalwood", layout:"mono", bg:"#F7F1E6", gold:"#8B6D3A", soft:"#6B604E", ink:"#2E2618"}],
+  other:[
+    {n:"Engagement Florals", layout:"floral", bg:"#FBF3EE", gold:"#B07D62", soft:"#7A6458", ink:"#3B2620"},
+    {n:"Perahera Arch", img:"perahera", layout:"arch", pos:"45% 40%", bg:"#FBF6EC", gold:"#9C6B2A", soft:"#6A5A48", ink:"#2E2014"},
+    {n:"Kandyan Postcard", img:"kandyan-pattern", layout:"panel", bg:"#FFFCF6", gold:"#9C7534", soft:"#6B5E52", ink:"#3B0A12"}],
+};
+for(const k in MORE) PREMIUM[k].push(...MORE[k]);
+const IMG_DIR = "img/";
+const srcset = n => `${IMG_DIR}${n}-480.webp 480w, ${IMG_DIR}${n}-960.webp 960w`;
+const pic = (n, sizes, alt, pos, lazy=true) => `<img src="${IMG_DIR}${n}-960.webp" srcset="${srcset(n)}" sizes="${sizes}" alt="${esc(alt||"")}" ${lazy?'loading="lazy"':""} decoding="async" ${pos?`style="object-position:${pos}"`:""}>`;
+const tplVars = t => `--c-bg:${t.bg};--c-gold:${t.gold};--c-soft:${t.soft};--c-ink:${t.ink};${t.veil?`--c-veil:${t.veil};`:""}${t.justify?`--c-justify:${t.justify};`:""}`;
+
+
+/* ================= STATE ================= */
+const store = {
+  get(k,d){try{const v=localStorage.getItem("aradhana:"+k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){try{localStorage.setItem("aradhana:"+k,JSON.stringify(v))}catch(e){}}
+};
+const S = {
+  type: store.get("type","wedding"),
+  lang: store.get("lang","sl"),  // sl = Singlish, si = Sinhala, en = English
+  ev: store.get("ev",{}),
+  edited: store.get("edited",{}),
+  tpl: store.get("tpl",{}),
+  photos: store.get("photos",{}),
+  guests: store.get("guests",[{name:"Nimal Uncle",phone:"0771112233"},{name:"Ruwani",phone:"0712223344"}]),
+};
+for(const k in TYPES) if(!S.ev[k]) S.ev[k] = {...TYPES[k].sample};
+const save = () => { store.set("type",S.type); store.set("lang",S.lang); store.set("ev",S.ev); store.set("edited",S.edited); store.set("guests",S.guests); store.set("tpl",S.tpl); try{localStorage.setItem("aradhana:photos",JSON.stringify(S.photos))}catch(e){ toast("Photo storage is full in this browser. Remove a photo or use smaller ones.") } };
+const cur = () => S.ev[S.type];
+
+/* ================= FORMATTERS ================= */
+const esc = s => String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function fDate(d,lang){
+  if(!d) return "";
+  const dt=new Date(d+"T00:00:00"); if(isNaN(dt)) return d;
+  try{ return dt.toLocaleDateString(lang==="si"?"si-LK":"en-GB",{weekday:"long",day:"numeric",month:"long",year:"numeric"}) }catch(e){ return d }
+}
+function fTime(t,lang){
+  if(!t) return "";
+  let [h,m]=t.split(":").map(Number); if(isNaN(h)) return t;
+  const am=h<12; const h12=((h+11)%12)+1; const mm=String(m||0).padStart(2,"0");
+  if(lang==="si") return `${am?"පෙ.ව.":"ප.ව."} ${h12}.${mm}`;
+  return `${h12}.${mm} ${am?"AM":"PM"}`;
+}
+function countdown(d,lang){
+  if(!d) return "";
+  const t=new Date(d+"T00:00:00"), n=new Date(); n.setHours(0,0,0,0);
+  const x=Math.round((t-n)/864e5);
+  if(x<0) return "";
+  if(x===0) return lang==="si"?"අද දිනයි":"Today";
+  return lang==="si"?`තව දින ${x}යි`:`In ${x} day${x>1?"s":""}`;
+}
+const intlPhone = p => { let d=String(p||"").replace(/\D/g,""); if(d.startsWith("0")) d="94"+d.slice(1); else if(d.length===9) d="94"+d; return d };
+const prettyPhone = p => { const d=String(p||"").replace(/\D/g,""); return d.length===10?`${d.slice(0,3)} ${d.slice(3,6)} ${d.slice(6)}`:p };
+
+/* ================= SHARE LINK ================= */
+const b64 = s => btoa(unescape(encodeURIComponent(s))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+const unb64 = s => decodeURIComponent(escape(atob(s.replace(/-/g,"+").replace(/_/g,"/"))));
+function inviteLink(guest){
+  const payload = {t:S.type, l:S.lang==="si"?"si":"en", e:cur(), g:guest||""};
+  return CONFIG.SITE + "#i=" + b64(JSON.stringify(payload));
+}
+
+/* ================= CARD ================= */
+function cardHTML(type, ev, lang, guest, prem){
+  const T=TYPES[type], si=lang==="si";
+  const L=(en,s)=>si?s:en;
+  const D=fDate(ev.date,lang), cd=countdown(ev.date,lang);
+  let head="", body="";
+  const det=(k,v)=>v?`<div><span class="k">${k}</span>${esc(v)}</div>`:"";
+  const venue = ev.venue?`<div><span class="k">${L("Venue","ස්ථානය")}</span><b>${esc(ev.venue)}</b></div>`:"";
+  switch(type){
+    case "wedding":
+      head=`<div class="eb">${L("Together with their families","දෙපාර්ශවයේ දෙමාපියන්ගේ ආශීර්වාදය ඇතිව")}</div>
+      <div class="names">${esc(ev.a||"Groom")}<span class="amp">&amp;</span>${esc(ev.b||"Bride")}</div>
+      <div class="line">${L("request the pleasure of your company at their wedding","ඔවුන්ගේ විවාහ මංගල්‍යයට ඔබට සාදරයෙන් ආරාධනා කරති")}</div>`;
+      body=`<div class="rule"></div><div class="dets"><b>${esc(D)}</b>
+      <div class="dgrid">${det(L("Poruwa","පෝරුව"),fTime(ev.nekath,lang))}${det(L("Reception","සාදය"),fTime(ev.time,lang))}</div>${venue}</div>`;break;
+    case "homecoming":
+      head=`<div class="eb">${L("Homecoming celebration","හෝම්කමිං උත්සවය")}</div>
+      <div class="names">${esc(ev.a||"Groom")}<span class="amp">&amp;</span>${esc(ev.b||"Bride")}</div>
+      <div class="line">${L("warmly invite you to celebrate their homecoming","ඔවුන්ගේ ගෙදර ඒමේ උත්සවයට ඔබට ආදරයෙන් ආරාධනා කරති")}</div>`;
+      body=`<div class="rule"></div><div class="dets"><b>${esc(D)}</b>${det(L("Time","වේලාව"),fTime(ev.time,lang))}${venue}</div>`;break;
+    case "birthday":
+      head=`<div class="eb">${L("Let's celebrate","අපි එකට සමරමු")}</div>
+      <div class="big">${esc(ev.a||"Name")}</div>
+      ${ev.age?`<div class="line">${L("is turning","ගේ")}</div><div class="age">${esc(ev.age)}</div><div class="line">${L("", "වන උපන්දිනය")}</div>`:""}`;
+      body=`<div class="dets"><b>${esc(D)}</b>${det(L("Time","වේලාව"),fTime(ev.time,lang))}${venue}</div>`;break;
+    case "party":
+      head=`<div class="eb">${esc(ev.a||"")}${ev.a?`<br>`:""}${L("invites you to","ඔබට ආරාධනා කරයි")}</div>
+      <div class="big">${esc(ev.title||"Party")}</div>`;
+      body=`<div class="rule"></div><div class="dets"><b>${esc(D)}</b>
+      <div class="dgrid">${det(L("Time","වේලාව"),fTime(ev.time,lang))}${det(L("Dress code","ඇඳුම"),ev.dress)}</div>${venue}</div>`;break;
+    case "dana":
+      head=`<div class="eb">${L("With devotion, you are invited to a","ශ්‍රද්ධාවෙන් යුතුව ඔබට ආරාධනා කරමු")}</div>
+      <div class="big">${esc(ev.title||"Dana")}</div>
+      ${ev.b?`<div class="line">${L("in loving memory of","පින්වත්")} <b>${esc(ev.b)}</b>${L(""," සිහිකොට")}</div>`:""}
+      <div class="line">${L("offered by","පවත්වනු ලබන්නේ")} ${esc(ev.a||"")}</div>`;
+      body=`<div class="rule"></div><div class="dets"><b>${esc(D)}</b>${det(L("Time","වේලාව"),fTime(ev.time,lang))}${venue}</div>`;break;
+    default:
+      head=`<div class="eb">${esc(ev.a||"")}${ev.a?`<br>`:""}${L("warmly invites you to","සාදරයෙන් ආරාධනා කරයි")}</div>
+      <div class="big">${esc(ev.title||"Function")}</div>`;
+      body=`<div class="rule"></div><div class="dets"><b>${esc(D)}</b>${det(L("Time","වේලාව"),fTime(ev.time,lang))}${venue}</div>`;
+  }
+  const c="var(--c-gold)";
+  const pc = prem ? `${prem.img&&prem.mode?`photo-${prem.mode}`:""} ${prem.layout?`L-${prem.layout}`:""}` : "";
+  return `<article class="card t-${type} ${si?"si":""} ${pc}" aria-label="Invitation preview" ${prem?`style="${tplVars(prem)}"`:""}>
+    ${prem&&!prem._noribbon?`<div class="ribbon">Preview</div>`:""}
+    <div class="frame"></div>${["tl","tr","bl","br"].map(p=>corner(c).replace("%POS%",p)).join("")}
+    <div class="art">${prem?premArt(type,prem,ev):T.art()}</div>
+    <div class="txt">
+      ${guest?`<div class="dear">${L("Dear","ආදරණීය")} ${esc(guest)},</div>`:`<div class="seal">ආරාධනා</div>`}
+      ${head}${body}
+      ${cd?`<div class="cd">${cd}</div>`:""}
+    </div>
+    <div class="brand">ARADHANAWA.COM</div>
+  </article>`;
+}
+
+/* ================= WHATSAPP MESSAGE ================= */
+function waMessage(type, ev, lang, guest, link){
+  const D=fDate(ev.date,lang==="si"?"si":"en"), T=fTime(ev.time,lang==="si"?"si":"en"), N=fTime(ev.nekath,lang==="si"?"si":"en");
+  const lines=a=>a.filter(x=>x!==null&&x!==false&&x!==undefined).join("\n");
+  const opt=(cond,txt)=>cond?txt:null;
+  const g=guest;
+  const greet={en:g?`Dear ${g},`:"Dear family and friends,", si:g?`ආදරණීය ${g},`:"ආදරණීය ඥාතී මිතුරනි,", sl:g?`Ayubowan ${g}! 🙏`:"Ayubowan! 🙏"}[lang];
+  const where={en:"📍 Venue",si:"📍 ස්ථානය",sl:"📍 Thana"}[lang];
+  const when={en:"📅 Date",si:"📅 දිනය",sl:"📅 Dawasa"}[lang];
+  const time={en:"⏰ Time",si:"⏰ වේලාව",sl:"⏰ Welawa"}[lang];
+  const common = [
+    opt(ev.venue,`${where}: ${ev.venue}`),
+    opt(ev.map,`🗺️ ${ev.map}`),
+  ];
+  const tail = [
+    "",
+    opt(ev.note,`📝 ${ev.note}`),
+    {en:`💌 Your invitation: ${link}`,si:`💌 ආරාධනා පත්‍රය: ${link}`,sl:`💌 Invitation eka balanna: ${link}`}[lang],
+    opt(ev.rsvp,{en:`✅ Kindly RSVP: ${prettyPhone(ev.rsvp)}`,si:`✅ පැමිණීම දන්වන්න: ${prettyPhone(ev.rsvp)}`,sl:`✅ Enawada kiyala kiyanna: ${prettyPhone(ev.rsvp)}`}[lang]),
+  ];
+  let top=[], mid=[], close="";
+  switch(type){
+    case "wedding":
+      top={en:["🌸 *Wedding Invitation* 🌸","",greet,"",`Together with our families, we warmly invite you to celebrate the wedding of *${ev.a}* & *${ev.b}*.`],
+           si:["🌸 *මංගල ආරාධනය* 🌸","",greet,"",`*${ev.a}* සහ *${ev.b}* ගේ විවාහ මංගල්‍යයට ඔබට සාදරයෙන් ආරාධනා කරමු.`],
+           sl:["🌸 *Magul Arathanaya* 🌸","",greet,"",`*${ev.a}* saha *${ev.b}* ge magul utsawayata oyata adarayen arayum karanawa.`]}[lang];
+      mid=[`${when}: ${D}`, opt(N,{en:`💍 Poruwa ceremony: ${N}`,si:`💍 පෝරුව චාරිත්‍රය (නැකත): ${N}`,sl:`💍 Poruwa nekatha: ${N}`}[lang]),
+           opt(T,{en:`🍽️ Reception: ${T}`,si:`🍽️ සාදය: ${T}`,sl:`🍽️ Reception eka: ${T}`}[lang])];
+      close={en:"Your presence and blessings would mean the world to us. 🙏",si:"ඔබගේ පැමිණීම හා ආශීර්වාදය අපට මහත් සතුටකි. 🙏",sl:"Oyage pamineema saha ashirwadaya apita loku santhoshayak. 🙏"}[lang];break;
+    case "homecoming":
+      top={en:["🏡 *Homecoming Celebration* 🏡","",greet,"",`*${ev.a}* & *${ev.b}* warmly invite you to celebrate their homecoming.`],
+           si:["🏡 *හෝම්කමිං උත්සවය* 🏡","",greet,"",`*${ev.a}* සහ *${ev.b}* ගේ ගෙදර ඒමේ උත්සවයට ඔබට ආදරයෙන් ආරාධනා කරමු.`],
+           sl:["🏡 *Homecoming Arathanaya* 🏡","",greet,"",`*${ev.a}* saha *${ev.b}* ge homecoming ekata oyata adarayen arayum karanawa.`]}[lang];
+      mid=[`${when}: ${D}`,opt(T,`${time}: ${T}`)];
+      close={en:"We can't wait to celebrate with you! 💛",si:"ඔබ සමඟ සතුට බෙදාගැනීමට අපි බලාපොරොත්තුවෙන්! 💛",sl:"Oyath ekka celebrate karanna api balaporoththuwen! 💛"}[lang];break;
+    case "birthday":
+      top={en:["🎂 *Birthday Party!* 🎉","",greet,"",`*${ev.a}* is turning *${ev.age}*! Come celebrate with us.`],
+           si:["🎂 *උපන්දින සාදය* 🎉","",greet,"",`*${ev.a}* ගේ *${ev.age}* වන උපන්දිනය සැමරීමට ඔබටත් ආදරයෙන් ආරාධනා!`],
+           sl:["🎂 *Birthday Party!* 🎉","",greet,"",`Ape *${ev.a}* ge *${ev.age}* weni upandinaya celebrate karanna oyath enna!`]}[lang];
+      mid=[`${when}: ${D}`,opt(T,`${time}: ${T}`)];
+      close={en:"See you there! 🎈",si:"ඔබව එහිදී හමුවෙමු! 🎈",sl:"Anivaryen enna ona! 🎈"}[lang];break;
+    case "party":
+      top={en:["🎉 *You're invited!* 🎉","",greet,"",`${ev.a} invites you to *${ev.title}*.`],
+           si:["🎉 *සාදයට ආරාධනා* 🎉","",greet,"",`${ev.a} විසින් සංවිධානය කරන *${ev.title}* සඳහා ඔබට ආරාධනා කරමු.`],
+           sl:["🎉 *Party Time!* 🎉","",greet,"",`${ev.a} organize karana *${ev.title}* ekata oyath enna ona!`]}[lang];
+      mid=[`${when}: ${D}`,opt(T,`${time}: ${T}`),opt(ev.dress,{en:`👔 Dress code: ${ev.dress}`,si:`👔 ඇඳුම: ${ev.dress}`,sl:`👔 Dress code: ${ev.dress}`}[lang])];
+      close={en:"Let's make it a night to remember! ✨",si:"අමතක නොවන රාත්‍රියක් කරමු! ✨",sl:"Patta night ekak karamu! ✨"}[lang];break;
+    case "dana":
+      top={en:["🪔 *Almsgiving Invitation* 🪔","",greet,"",`${ev.a} respectfully invites you to the *${ev.title}*${ev.b?` in loving memory of *${ev.b}*`:""}.`],
+           si:["🪔 *දාන ආරාධනය* 🪔","",greet,"",`${ev.b?`පින්වත් *${ev.b}* සිහිකොට `:""}${ev.a} විසින් පවත්වනු ලබන *${ev.title}* සඳහා ඔබට ගෞරවයෙන් ආරාධනා කරමු.`],
+           sl:["🪔 *Dana Arathanaya* 🪔","",greet,"",`${ev.b?`Apen ven wu *${ev.b}* wenuwen `:""}${ev.a} pawathwana *${ev.title}* ekata oyata gauravayen arayum karanawa.`]}[lang];
+      mid=[`${when}: ${D}`,opt(T,`${time}: ${T}`)];
+      close={en:"May the blessings of the Triple Gem be with you. 🙏",si:"තෙරුවන් සරණයි! 🙏",sl:"Theruwan saranai! 🙏"}[lang];break;
+    default:
+      top={en:["✨ *Invitation* ✨","",greet,"",`${ev.a} warmly invites you to *${ev.title}*.`],
+           si:["✨ *ආරාධනයයි* ✨","",greet,"",`${ev.a} විසින් සංවිධානය කරන *${ev.title}* සඳහා ඔබට සාදරයෙන් ආරාධනා කරමු.`],
+           sl:["✨ *Arathanayak* ✨","",greet,"",`${ev.a} sanvidhanaya karana *${ev.title}* ekata oyata adarayen arayum karanawa.`]}[lang];
+      mid=[`${when}: ${D}`,opt(T,`${time}: ${T}`)];
+      close={en:"We look forward to seeing you. 🙏",si:"ඔබගේ පැමිණීම බලාපොරොත්තු වෙමු. 🙏",sl:"Oyawa balaporoththuwen innawa. 🙏"}[lang];
+  }
+  return lines([...top,"",...mid,...common,"",close,...tail]).replace(/\n{3,}/g,"\n\n").trim();
+}
+const waHTML = s => esc(s).replace(/\*([^*\n]+)\*/g,"<b>$1</b>");
+const waLink = (phone,text) => `https://wa.me/${phone?intlPhone(phone):""}?text=${encodeURIComponent(text)}`;
+
+/* ================= UI HELPERS ================= */
+const I = {
+  home:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>`,
+  cal:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>`,
+  img:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>`,
+  pin:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>`,
+  mail:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>`,
+  send:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>`,
+  play:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 4l13 8-13 8z"/></svg>`,
+  copy:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>`,
+  wa:`<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3a.4.4 0 0 0 0-.4l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.1 5.1 0 0 0 1.1 2.7 11.7 11.7 0 0 0 4.5 4c1.7.7 2.3.8 3.1.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .2-1.2c-.1-.1-.3-.2-.5-.3z"/></svg>`,
+  x:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>`,
+  eye:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>`,
+  link:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>`,
+  lock:`<svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2.4" style="vertical-align:-1px"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>`,
+};
+function toast(msg){
+  const t=document.createElement("div"); t.className="toast"; t.setAttribute("role","status"); t.textContent=msg;
+  document.body.appendChild(t); setTimeout(()=>t.remove(),2200);
+}
+async function copy(text, el){
+  try{ await navigator.clipboard.writeText(text); toast("Copied"); }
+  catch(e){
+    if(el){ const r=document.createRange(); r.selectNodeContents(el); const s=getSelection(); s.removeAllRanges(); s.addRange(r); toast("Selected. Press Ctrl+C / long-press to copy"); }
+    else toast("Copy blocked here. Select the text manually.");
+  }
+}
+function modal(html){
+  const L=document.getElementById("layer");
+  L.innerHTML=`<div class="scrim" data-close><div class="modal" role="dialog" aria-modal="true">${html}</div></div>`;
+  L.querySelector(".scrim").addEventListener("click",e=>{ if(e.target.hasAttribute("data-close")||e.target.closest("[data-x]")) L.innerHTML="" });
+  const f=L.querySelector("input,button,a"); f&&f.focus();
+}
+document.addEventListener("keydown",e=>{ if(e.key==="Escape") document.getElementById("layer").innerHTML="" });
+
+/* ================= RENDER APP ================= */
+function render(){
+  const T=TYPES[S.type], ev=cur();
+  document.getElementById("app").innerHTML = `
+  ${headerHTML()}
+
+  <section class="hero" id="create" style="--pat:url('${IMG_DIR}kandyan-pattern-960.webp')">
+    <span class="wm" aria-hidden="true">ආරාධනාව</span>
+    <div class="wrap in">
+      <div>
+        <span class="eyebrow">Digital invitations · Made in Sri Lanka</span>
+        <h1>Invitations with a <em>Sri Lankan</em> heart.</h1>
+        <p class="lede">More than a card. Every invitation is a little website with a live countdown, your photos, the map and a reply button, sent on WhatsApp in Singlish, සිංහල or English.</p>
+        <div class="cta"><button class="btn gold" data-start>Start free →</button><a class="btn" href="#designs">Browse designs</a></div>
+        <div class="facts"><div><b>Rs. 0</b><span>to start</span></div><div><b>6</b><span>kinds of functions</span></div><div><b>3</b><span>languages</span></div><div><b>5</b><span>free guest links</span></div></div>
+      </div>
+      <div class="stagewrap">
+        <span class="glow"></span>
+        <div class="backcard" aria-hidden="true">${cardHTML("birthday",TYPES.birthday.sample,"en","",PREMIUM.birthday[0])}</div>
+        <div id="heroPhone"></div>
+        <div class="chip c1"><i>✓</i><span><b>Nimal Uncle replied</b><small>Coming · 3 people</small></span></div>
+        <div class="chip c2"><i>💍</i><span><b>Poruwa nekath</b><small>9.41 AM, set on every card</small></span></div>
+        <div class="chip c3"><i>${"✉"}</i><span><b>WhatsApp message ready</b><small>Singlish · සිංහල · English</small></span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" style="border-top:0"><div class="wrap">
+    <div class="shead"><span class="eyebrow">How it works</span><h2>From blank page to <em>sent</em> in minutes.</h2></div>
+    <div class="steps">
+      <div class="step"><h3>Pick your function</h3><p>Wedding, homecoming, birthday, party, almsgiving or any other function. Each one comes with a free Sri Lankan design.</p></div>
+      <div class="step"><h3>Add your details</h3><p>Names, nekath time, venue, map and photos. The card and the invitation website update as you type.</p></div>
+      <div class="step"><h3>Send on WhatsApp</h3><p>Every guest gets a personal link with their name on it, and a message already written in their language.</p></div>
+    </div>
+  </div></section>
+
+  <section class="band" id="designs"><div class="wrap">
+    <div class="shead"><span class="eyebrow">Designs</span><h2>A design for every <em>celebration</em>.</h2><p>Poruwa, Kandyan gold, Galle Fort, tea country, Vesak lanterns and more. Tap any design to start with it.</p></div>
+    <div class="dfilter" role="group" aria-label="Filter designs">${[["all","All"],...Object.entries(TYPES).map(([k,t])=>[k,t.name])].map(([k,n])=>`<button data-df="${k}" aria-pressed="${k==="all"}">${n}</button>`).join("")}</div>
+    <div class="drow" id="drow">${designItems()}</div>
+  </div></section>
+
+  <section class="band"><div class="wrap">
+    <div class="shead"><span class="eyebrow">Features</span><h2>Everything a printed card <em>can't</em> do.</h2><p>Built for Sri Lankan functions, from the first WhatsApp to the last thank-you.</p></div>
+    <div class="bento">
+      <div class="tile t-a"><h3>Know who's coming</h3><p>Guests reply from the invitation. Names, head counts and wishes arrive in your WhatsApp. With Plus they collect in one list.</p>
+        <div class="inbox"><span class="example">Example</span><div class="stats"><div><b>15</b><small>Coming</small></div><div><b>2</b><small>Can't come</small></div><div><b>8</b><small>Waiting</small></div></div>
+        <div class="r"><b>Nimal Uncle</b><span>3 people · "Suba pathum!"</span><span class="st y">Coming</span></div>
+        <div class="r"><b>Ruwani</b><span>2 people</span><span class="st y">Coming</span></div>
+        <div class="r"><b>Saman Aiya</b><span>Sorry, in Dubai that week</span><span class="st n">Can't come</span></div>
+        <div class="r"><b>Chamari Akka</b><span>Link opened</span><span class="st p">Waiting</span></div></div></div>
+      <div class="tile t-b"><h3>Live countdown</h3><p>Ticks down to your nekath time.</p><div class="mini-cd" data-t="${TYPES.wedding.sample.date}T09:41"><div><b data-u="d">0</b><small>days</small></div><div><b data-u="h">0</b><small>hrs</small></div><div><b data-u="m">0</b><small>min</small></div><div><b data-u="s">0</b><small>sec</small></div></div></div>
+      <div class="tile t-c"><h3>Every guest by name</h3><p>Personal links put each name on the card.</p><div class="dear">Dear Nimal Uncle,</div></div>
+      <div class="tile t-d"><h3>Their language</h3><p>Messages written for you, three ways.</p><div class="langs"><span>Oyata adarayen arayum karanawa 🙏</span><span>ඔබට සාදරයෙන් ආරාධනා කරමු 🙏</span><span>You're warmly invited 🙏</span></div></div>
+      <div class="tile t-e"><h3>Map and calendar</h3><p>One tap to Google Maps and to the guest's calendar.</p><div class="mapmini"><svg viewBox="0 0 300 110" aria-hidden="true"><path d="M0 30H300M0 85H300M60 0V110M210 0V110M0 66L300 40" stroke="var(--line)" stroke-width="6" fill="none"/><path d="M-10 100Q120 70 310 92" stroke="var(--brass)" stroke-width="10" opacity=".18" fill="none"/><g transform="translate(150 52)"><circle r="20" fill="var(--accent)" opacity=".15"/><path d="M0 8s-12-10-12-19a12 12 0 0 1 24 0c0 9-12 19-12 19z" fill="var(--accent)"/><circle cy="-12" r="4" fill="var(--surface)"/></g></svg></div></div>
+    </div>
+  </div></section>
+
+  <div class="wrap editor-head"><div class="shead"><span class="eyebrow">Create</span><h2>Make yours <em>now</em>. It's free.</h2><p>Everything below saves in this browser, so you can come back and finish later.</p></div></div>
+
+  <div class="wrap bench" id="editor" style="padding-top:0">
+    <div class="col">
+      <section class="panel" aria-labelledby="h-type">
+        <div class="phead"><div><span class="eyebrow">Step 1</span><h2 id="h-type">What are you celebrating?</h2></div></div>
+        <div class="types">${Object.entries(TYPES).map(([k,t])=>`<button class="type" data-type="${k}" aria-pressed="${k===S.type}"><b>${t.name}</b><small>${t.si}</small></button>`).join("")}</div>
+      </section>
+
+      <section class="panel" aria-labelledby="h-tpl">
+        <div class="phead"><div><span class="eyebrow">Step 2</span><h2 id="h-tpl">Choose a design</h2><p class="sub">The first design is free. Tap a premium design to preview it with your details. Our team customises it with your photos and colours.</p></div></div>
+        <div class="tpls">
+          <button class="tpl" data-tpl="0" aria-pressed="${!S.tpl[S.type]}"><div class="sw t-${S.type}" style="background:var(--c-bg)">${T.art()}</div><div class="nm">${T.tpl}<span class="pill free">Free</span></div></button>
+          ${PREMIUM[S.type].map((t,i)=>`<button class="tpl locked" data-tpl="${i+1}" ${tplOff().includes(S.type+":"+(i+1))?"hidden":""} aria-pressed="${S.tpl[S.type]===i+1}"><span class="lock">${I.lock} ${CONFIG.PRICE_CUSTOM}</span><div class="sw t-${S.type}" style="${tplVars(t)}background:${t.bg}">${t.img?pic(t.img,"160px",t.n,t.pos):premArt(S.type,t,ev)}</div><div class="nm">${esc(t.n)}<span class="pill pro">Custom</span></div></button>`).join("")}
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="h-det">
+        <div class="phead"><div><span class="eyebrow">Step 3</span><h2 id="h-det">Event details</h2></div></div>
+        ${!S.edited[S.type]?`<div class="sample"><span>These are sample details. Replace them with yours.</span><button class="linkbtn" id="clearSample">Clear all fields</button></div>`:""}
+        <form class="form" id="evform" autocomplete="off">
+          ${T.fields.map(f=>{const d=FIELD[f]; const lbl=(T.labels&&T.labels[f])||d.label; const id=`f-${S.type}-${f}`;
+            return `<div class="fld ${d.full?"full":""}"><label for="${id}">${lbl}</label>${d.area?`<textarea id="${id}" name="${f}" rows="2">${esc(ev[f])}</textarea>`:`<input id="${id}" name="${f}" type="${d.type||"text"}" value="${esc(ev[f])}" ${d.ph?`placeholder="${d.ph}"`:""} ${f==="rsvp"?'inputmode="tel"':""}>`}</div>`}).join("")}
+        </form>
+        ${S.type!=="dana"?`<div class="photos"><label class="fld"><span style="font-size:13px;font-weight:600">Gallery photos</span></label><span class="hint">These appear in the gallery section of your invitation. Up to 6. Until you add yours, sample images are shown in the preview.</span>
+          <div class="pgrid">${((S.photos[S.type])||[]).map((src,i)=>`<div class="ph"><img src="${src}" alt="Gallery photo ${i+1}"><button type="button" data-pdel="${i}" aria-label="Remove photo ${i+1}">×</button></div>`).join("")}
+          ${((S.photos[S.type])||[]).length<6?`<label class="padd" for="pfile">+ Add photos</label>`:""}</div>
+          <input type="file" id="pfile" accept="image/*" multiple hidden></div>`:""}
+      </section>
+
+      <section class="panel" aria-labelledby="h-wa">
+        <div class="phead">
+          <div><span class="eyebrow">Step 4</span><h2 id="h-wa">WhatsApp message</h2><p class="sub">Written for you from the details above. It updates as you type.</p></div>
+          <div class="seg" role="group" aria-label="Message language">${[["sl","Singlish"],["si","සිංහල"],["en","English"]].map(([k,n])=>`<button data-lang="${k}" aria-pressed="${S.lang===k}">${n}</button>`).join("")}</div>
+        </div>
+        <div class="wa-box"><div class="bubble" id="bubble"></div></div>
+        <div class="row" style="margin-top:12px">
+          <button class="btn" id="copyMsg">${I.copy} Copy message</button>
+          <a class="btn wa" id="sendAll" target="_blank" rel="noopener">${I.wa} Open in WhatsApp</a>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="h-g">
+        <div class="phead">
+          <div><span class="eyebrow">Step 5</span><h2 id="h-g">Send to guests</h2><p class="sub">Each guest gets a personal link with their name on the card.</p></div>
+          <div class="meter" aria-label="${S.guests.length} of ${CONFIG.FREE_GUESTS} free guests used"><span class="bar">${Array.from({length:CONFIG.FREE_GUESTS},(_,i)=>`<i class="${i<S.guests.length?"on":""}"></i>`).join("")}</span><span style="font-variant-numeric:tabular-nums">${S.guests.length} / ${CONFIG.FREE_GUESTS} free</span></div>
+        </div>
+        <form class="gadd" id="gadd">
+          <input id="g-name" placeholder="Guest name, e.g. Saman Aiya" aria-label="Guest name" required>
+          <input id="g-phone" placeholder="07X XXX XXXX" inputmode="tel" aria-label="Guest WhatsApp number">
+          <button class="btn primary" type="submit">Add guest</button>
+        </form>
+        <ul class="glist">${S.guests.length?S.guests.map((g,i)=>`<li>
+          <div class="who"><b>${esc(g.name)}</b><span>${g.phone?prettyPhone(g.phone):"No number. Copy the link instead."}</span></div>
+          <div class="acts">
+            <button class="iconbtn" data-gprev="${i}" title="Preview ${esc(g.name)}'s card" aria-label="Preview ${esc(g.name)}'s card">${I.eye}</button>
+            <button class="iconbtn" data-glink="${i}" title="Copy personal link" aria-label="Copy ${esc(g.name)}'s link">${I.link}</button>
+            <a class="btn wa sm" target="_blank" rel="noopener" href="${waLink(g.phone,waMessage(S.type,ev,S.lang,g.name,inviteLink(g.name)))}">${I.wa} Send</a>
+            <button class="iconbtn" data-gdel="${i}" title="Remove" aria-label="Remove ${esc(g.name)}">${I.x}</button>
+          </div></li>`).join(""):`<li class="empty" style="display:block">No guests yet. Add someone above to get their personal link.</li>`}</ul>
+      </section>
+    </div>
+
+    <aside class="stage" aria-label="Live preview">
+      <div class="table" id="cardSlot"></div>
+      <div id="premBar" hidden><p class="pnote">Premium preview. Guest links use the free design until your custom design is ready.</p><div class="row" style="margin-top:8px"><button class="btn primary" id="reqPrem">Request this design · ${CONFIG.PRICE_CUSTOM}</button></div></div>
+      <div class="row">
+        <button class="btn" id="preview">${I.eye} Preview as guest</button>
+        <button class="btn" id="copyLink">${I.link} Copy invite link</button>
+      </div>
+    </aside>
+  </div>
+
+  <section class="band" id="compare"><div class="wrap compare">
+    <div>
+      <span class="eyebrow">Printed cards vs Aradhanawa</span>
+      <h2 style="font-size:clamp(26px,3.4vw,36px);font-weight:800;margin-top:4px">The printer's bill, or a link that does more.</h2>
+      <p class="lead" style="color:var(--muted);margin:10px 0 0;max-width:52ch">A printed order for 200 guests adds up fast, and it can't be changed once it's printed. An Aradhanawa invitation can be edited any time, tells you who is coming, and takes guests straight to the venue on Google Maps.</p>
+      <figure class="hero-img"><img src="${IMG_DIR}card-flatlay-960.webp" srcset="${IMG_DIR}card-flatlay-480.webp 480w, ${IMG_DIR}card-flatlay-960.webp 960w, ${IMG_DIR}card-flatlay-1600.webp 1600w" sizes="(max-width:860px) 92vw, 600px" alt="Maroon and gold Sri Lankan wedding card with jasmine, betel leaves and a brass pahana" loading="lazy"></figure>
+    </div>
+    <div class="receipt" aria-label="Cost comparison">
+      <h3>Printed cards</h3><p class="sub">Typical estimate · 200 guests</p>
+      <dl>
+        <div><dt>Cards, 200 × Rs. 150</dt><dd>30,000</dd></div>
+        <div><dt>Card design</dt><dd>5,000</dd></div>
+        <div><dt>Courier and hand delivery</dt><dd>3,500</dd></div>
+        <div><dt>Reprint after list changes</dt><dd>6,000</dd></div>
+        <div class="tot"><dt>Total</dt><dd><s>Rs. 44,500</s></dd></div>
+        <div class="na"><dt>Who is coming?</dt><dd>can't tell</dd></div>
+        <div class="na"><dt>Change after printing</dt><dd>not possible</dd></div>
+      </dl>
+      <hr>
+      <p class="ours">Aradhanawa</p>
+      <dl style="border-top:0;margin-top:6px;padding-top:6px">
+        <div><dt>One design + 5 guests</dt><dd>Free</dd></div>
+        <div><dt>Plus: unlimited guests</dt><dd>${CONFIG.PRICE_PLUS.replace("Rs. ","")}</dd></div>
+        <div><dt>Custom design (optional)</dt><dd>${CONFIG.PRICE_CUSTOM.replace("Rs. ","")}</dd></div>
+      </dl>
+      <div class="save"><div class="stamp">Free to start<b>Rs. 0</b></div><div class="keep">You keep about<b>Rs. 38,610</b></div></div>
+      <p class="fine">Printed prices are typical Colombo estimates. Your printer's quote will differ.</p>
+    </div>
+  </div></section>
+
+  <section class="band" id="pricing"><div class="wrap">
+    <span class="eyebrow">Pricing</span>
+    <h2>Start free. Pay only when you want more.</h2>
+    <p class="lead">Every function gets one beautiful design for free. Upgrade when your guest list grows or when you want something made just for you.</p>
+    <div class="plans">
+      <div class="plan"><h3>Free</h3><div class="price">Rs. 0</div><ul>
+        <li>1 design for each event type</li><li>Personal links for up to 5 guests</li><li>WhatsApp message in Singlish, සිංහල and English</li><li>Map, calendar and RSVP buttons</li></ul>
+        <a class="btn" href="#create">Create an invitation</a></div>
+      <div class="plan hl"><h3>Aradhanawa Plus</h3><div class="price">${CONFIG.PRICE_PLUS} <small>per event</small></div><ul>
+        <li>Unlimited guests and links</li><li>RSVP list: who is coming, how many</li><li>No Aradhanawa branding on the card</li><li>Reminder message a day before</li></ul>
+        <button class="btn primary" data-upgrade="plus">Get Plus</button></div>
+      <div class="plan"><h3>Custom design</h3><div class="price">${CONFIG.PRICE_CUSTOM} <small>one time</small></div><ul>
+        <li>Our designer customises a premium template</li><li>Your photos, colours and wording</li><li>Poruwa, Kandyan, Galle Fort or tea country themes</li><li>2 rounds of changes, ready in 48 hours</li></ul>
+        <button class="btn" data-upgrade="custom">Request a custom design</button></div>
+    </div>
+    <p class="note" style="margin-top:12px">Prices are suggestions for launch. Payments are not connected yet: the buttons open a WhatsApp chat with the Aradhanawa team.</p>
+  </div></section>
+
+  <section class="band" id="faq"><div class="wrap">
+    <span class="eyebrow">FAQ</span>
+    <h2>Questions, answered</h2>
+    <p class="lead">Short answers to what families usually ask before sending.</p>
+    <div class="faq">
+      <details><summary>Is it really free?</summary><p>Yes. Every event type has one free design, and you can send personal links to 5 guests with the WhatsApp message written for you. You pay only for more guests (${CONFIG.PRICE_PLUS} per event) or a custom design.</p></details>
+      <details><summary>Can each guest's name be on the invitation?</summary><p>Yes. Add a guest in Step 5 and their personal link opens with "Dear Nimal Uncle" (or their name) on the card.</p></details>
+      <details><summary>Can I write it in Sinhala?</summary><p>Yes. Switch the language to සිංහල and the card, the invitation website and the WhatsApp message all change. Singlish and English work too.</p></details>
+      <details><summary>How do guests reply?</summary><p>The invitation has a reply form. Guests enter their name, say yes or no, choose how many people are coming and add a wish. It arrives in your WhatsApp, already written.</p></details>
+      <details><summary>Can I add the Poruwa nekath time and the reception?</summary><p>Yes. Weddings have separate fields for the Poruwa ceremony nekath and the reception, and both show on the card and in the schedule.</p></details>
+      <details><summary>Can I add our photos?</summary><p>Yes. Add up to 6 photos in Step 3 and they appear in the gallery section. Almsgiving invitations leave the gallery out.</p></details>
+      <details><summary>Do guests need to install anything?</summary><p>No. The link opens in the phone's browser straight from WhatsApp.</p></details>
+    </div>
+  </div></section>
+
+  <section class="band" id="prompts"><div class="wrap">
+    <span class="eyebrow">For the design team</span>
+    <h2>AI image prompts</h2>
+    <p class="lead">The cards above use hand-drawn vector art. Use these prompts in Midjourney, DALL·E, Ideogram or Gemini to make photo-quality artwork for premium templates and the landing page.</p>
+    <div class="prompts">${PROMPTS.map((p,i)=>`<div class="prompt">${p.img?`<figure class="gen">${pic(p.img,"(max-width:760px) 92vw, 560px",p.t)}</figure>`:""}<header><h3>${p.t}</h3><button class="btn sm" data-prompt="${i}">${I.copy} Copy</button></header><p id="pr-${i}">${esc(p.p)}</p><span class="use">Use for: ${p.u}</span></div>`).join("")}</div>
+    <p class="note" style="margin-top:14px">Add to every prompt: <code>no text, no letters, no watermark, no logos</code>. Generate wedding and premium art at 4:5 or 9:16 for cards and 16:9 for the website hero.</p>
+  </div></section>
+
+  <footer class="foot"><div class="wrap">ආරාධනාව · Aradhanawa.com · Made in Sri Lanka for every celebration.</div></footer>
+  <div class="ctabar"><div class="p"><small>Start with</small><b>Free · 5 guests</b></div><a class="wa-ic" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,"Hi Aradhanawa! I have a question about invitations.")}" aria-label="Chat with Aradhanawa on WhatsApp">${I.wa}</a><button class="btn primary" data-start>Start free →</button></div>`;
+  document.body.classList.add("has-bar");
+  bind(); refreshLive();
+}
+
+const curPrem = () => { const i=S.tpl[S.type]; return i ? PREMIUM[S.type][i-1] || null : null };
+function refreshLive(){
+  const ev=cur(), lang=S.lang;
+  const prem = curPrem();
+  document.getElementById("cardSlot").innerHTML = cardHTML(S.type, ev, lang==="si"?"si":"en", "", prem);
+  document.getElementById("premBar").hidden = !prem;
+  const hp=document.getElementById("heroPhone");
+  if(hp){ const sc=hp.querySelector(".screen"), top=sc?sc.scrollTop:0; hp.innerHTML=phoneHTML(siteHTML(S.type,ev,lang==="si"?"si":"en","",prem,galleryFor(S.type))); hp.querySelector(".screen").scrollTop=top; initSites(hp) }
+  const msg = waMessage(S.type, ev, lang, "", inviteLink(""));
+  document.getElementById("bubble").innerHTML = waHTML(msg);
+  document.getElementById("sendAll").href = waLink("", msg);
+}
+
+function bind(){
+  const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+  $$("[data-type]").forEach(b=>b.onclick=()=>{S.type=b.dataset.type; save(); render(); document.getElementById("h-type").scrollIntoView({block:"nearest"})});
+  $$("[data-lang]").forEach(b=>b.onclick=()=>{S.lang=b.dataset.lang; save(); $$("[data-lang]").forEach(x=>x.setAttribute("aria-pressed",x===b)); refreshLive(); refreshGuestLinks()});
+  $("#evform").addEventListener("input",e=>{
+    const f=e.target.name; if(!f) return; cur()[f]=e.target.value;
+    if(!S.edited[S.type]){S.edited[S.type]=true; const s=document.querySelector(".sample"); s&&s.remove()}
+    save(); refreshLive(); refreshGuestLinks();
+  });
+  const cs=$("#clearSample"); cs&&(cs.onclick=()=>{ const keep={date:cur().date}; S.ev[S.type]={...Object.fromEntries(TYPES[S.type].fields.map(f=>[f,""])),...keep}; S.edited[S.type]=true; save(); render(); });
+  $("#copyMsg").onclick=()=>copy(waMessage(S.type,cur(),S.lang,"",inviteLink("")),$("#bubble"));
+  $("#copyLink").onclick=()=>copy(inviteLink(""));
+  $("#preview").onclick=()=>guestPreview("");
+  $("#gadd").onsubmit=e=>{
+    e.preventDefault();
+    const name=$("#g-name").value.trim(), phone=$("#g-phone").value.trim();
+    if(!name) return;
+    if(S.guests.length>=CONFIG.FREE_GUESTS){ upsell(); return }
+    S.guests.push({name,phone}); save(); render(); toast(`${name} added`);
+    document.getElementById("g-name").focus();
+  };
+  $$("[data-gdel]").forEach(b=>b.onclick=()=>{S.guests.splice(+b.dataset.gdel,1); save(); render()});
+  $$("[data-glink]").forEach(b=>b.onclick=()=>copy(inviteLink(S.guests[+b.dataset.glink].name)));
+  $$("[data-gprev]").forEach(b=>b.onclick=()=>guestPreview(S.guests[+b.dataset.gprev].name));
+  $$("[data-tpl]").forEach(b=>b.onclick=()=>{ S.tpl[S.type]=+b.dataset.tpl; save(); $$("[data-tpl]").forEach(x=>x.setAttribute("aria-pressed",x===b)); refreshLive(); if(matchMedia("(max-width:920px)").matches) document.getElementById("cardSlot").scrollIntoView({behavior:"smooth",block:"center"}) });
+  $("#reqPrem").onclick=()=>{ const p=curPrem(); p&&customReq(p.n) };
+  $$("[data-upgrade]").forEach(b=>b.onclick=()=>b.dataset.upgrade==="plus"?upsell(true):customReq(""));
+  $$("[data-df]").forEach(b=>b.onclick=()=>{ $$("[data-df]").forEach(x=>x.setAttribute("aria-pressed",x===b)); $("#drow").innerHTML=designItems(b.dataset.df); $("#drow").scrollLeft=0 });
+  $("#drow").addEventListener("click",e=>{ const d=e.target.closest("[data-pick]"); if(!d) return; const [k,i]=d.dataset.pick.split(":"); S.type=k; S.tpl[k]=+i; save(); render(); requestAnimationFrame(()=>document.getElementById("editor").scrollIntoView({block:"start"})) });
+  $$("[data-start]").forEach(b=>b.onclick=()=>document.getElementById("editor").scrollIntoView({behavior:"smooth",block:"start"}));
+  $$("[data-demo]").forEach(b=>b.onclick=()=>guestPreview(""));
+  $$("[data-pdel]").forEach(b=>b.onclick=()=>{ S.photos[S.type].splice(+b.dataset.pdel,1); save(); render() });
+  const pf=$("#pfile"); pf&&(pf.onchange=async()=>{
+    const list=S.photos[S.type]||(S.photos[S.type]=[]);
+    for(const file of [...pf.files].slice(0,6-list.length)){ try{ list.push(await shrink(file)) }catch(e){ toast("That file could not be read as an image.") } }
+    save(); render(); toast("Photos added to your gallery");
+  });
+  $$("[data-prompt]").forEach(b=>b.onclick=()=>copy(PROMPTS[+b.dataset.prompt].p, document.getElementById("pr-"+b.dataset.prompt)));
+}
+function shrink(file){ return new Promise((res,rej)=>{
+  const r=new FileReader(); r.onerror=rej; r.onload=()=>{ const im=new Image(); im.onerror=rej; im.onload=()=>{
+    const k=Math.min(1,800/Math.max(im.width,im.height)), c=document.createElement("canvas"); c.width=Math.round(im.width*k); c.height=Math.round(im.height*k);
+    c.getContext("2d").drawImage(im,0,0,c.width,c.height); res(c.toDataURL("image/jpeg",.72)) }; im.src=r.result }; r.readAsDataURL(file) }) }
+function designItems(filter){
+  const out=[];
+  for(const [k,T] of Object.entries(TYPES)){
+    if(filter&&filter!=="all"&&filter!==k) continue;
+    const ev=T.sample;
+    out.push(`<button class="ditem" data-pick="${k}:0"><div class="dphone">${cardHTML(k,ev,"en","",null)}</div><div class="meta"><span><b>${T.tpl}</b><small>${T.name}</small></span><span class="pill free">Free</span></div></button>`);
+    PREMIUM[k].forEach((t,i)=>{ if(!t.img&&!t.layout) return; if(tplOff().includes(k+":"+(i+1))) return; out.push(`<button class="ditem" data-pick="${k}:${i+1}"><div class="dphone">${cardHTML(k,ev,"en","",{...t,_noribbon:1})}</div><div class="meta"><span><b>${esc(t.n)}</b><small>${T.name}</small></span><span class="pill pro">Custom</span></div></button>`) });
+  }
+  return out.join("");
+}
+function refreshGuestLinks(){
+  document.querySelectorAll(".glist li").forEach((li,i)=>{
+    const g=S.guests[i]; const a=li.querySelector("a.wa"); if(!g||!a) return;
+    a.href=waLink(g.phone,waMessage(S.type,cur(),S.lang,g.name,inviteLink(g.name)));
+  });
+}
+function upsell(direct){
+  const txt=`Hi Aradhanawa! I'd like Aradhanawa Plus for my ${TYPES[S.type].name.toLowerCase()} invitation (${cur().date||""}).`;
+  modal(`<span class="eyebrow">${direct?"Aradhanawa Plus":"Free limit reached"}</span>
+    <h3>${direct?"Unlimited guests for one event":"You've shared with 5 guests"}</h3>
+    <p>${direct?"":"The free plan covers 5 personal links. "}Upgrade to Aradhanawa Plus for ${CONFIG.PRICE_PLUS} per event to send to everyone, see who's coming, and remove the Aradhanawa branding.</p>
+    <div class="row" style="justify-content:flex-end;margin-top:6px"><button class="btn" data-x>Not now</button><a class="btn primary" data-order="plus" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,txt)}">Upgrade on WhatsApp</a></div>
+    <p class="note">You can still copy the main invite link and paste it into a WhatsApp group.</p>`);
+}
+function customReq(name){
+  const ev=cur();
+  const txt=`Hi Aradhanawa! I'd like a custom ${TYPES[S.type].name.toLowerCase()} invitation${name?` using the "${name}" design`:""}.\nDate: ${ev.date||"-"}\nNames: ${[ev.a,ev.b,ev.title].filter(Boolean).join(", ")}\nI'll send my photos and colours here.`;
+  modal(`<span class="eyebrow">Custom design · ${CONFIG.PRICE_CUSTOM}</span>
+    <h3>${name?esc(name):"Made just for you"}</h3>
+    <p>Our designer customises this template with your photos, colours and wording, in Sinhala or English. You get 2 rounds of changes and the finished card within 48 hours.</p>
+    <div class="bubble" style="font-size:13px">${esc(txt)}</div>
+    <div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><a class="btn wa" data-order="custom|${esc(name||"")}" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,txt)}">${I.wa} Send request</a></div>`);
+}
+function guestPreview(guest){
+  const lang=S.lang==="si"?"si":"en";
+  modal(`${phoneHTML(siteHTML(S.type,cur(),lang,guest,curPrem(),galleryFor(S.type)))}<button class="btn" data-x>Close preview</button>`);
+  const m=document.querySelector(".modal"); m.classList.add("phonebox"); initSites(m);
+}
+
+
+/* ================= INVITATION SITE (scrolling mini-website) ================= */
+const SAMPLE_GAL = {wedding:["poruwa-couple","card-flatlay","galle-fort","kandyan-pattern"],homecoming:["tea-bungalow","galle-fort","card-flatlay"],birthday:["birthday-table","tuktuk"],party:["vesak-lanterns","tuktuk","galle-fort"],dana:[],other:["perahera","kandyan-pattern","card-flatlay"]};
+function galleryFor(type){
+  const own=(S.photos&&S.photos[type])||[];
+  if(own.length) return own.map(src=>`<img src="${src}" alt="" loading="lazy">`);
+  return (SAMPLE_GAL[type]||[]).map(n=>pic(n,"180px",""));
+}
+function evName(type,ev,lang){
+  const T=TYPES[type];
+  if(lang==="si") return ev.title || (ev.b?`${ev.a} සහ ${ev.b} ගේ ${T.si}`:`${ev.a} ගේ ${T.si}`);
+  return ev.title || (ev.b?`${ev.a} & ${ev.b}'s ${T.name.toLowerCase()}`:`${ev.a}'s ${T.name.toLowerCase()}`);
+}
+const orn = () => `<svg class="s-orn" viewBox="0 0 120 24" aria-hidden="true"><path d="M4 14H44M76 14H116" stroke="var(--c-gold)" stroke-width="1"/><g transform="translate(60 18) scale(.32)">${lotus(0,0,1,"var(--c-gold)","var(--c-soft)")}</g><circle cx="44" cy="14" r="2" fill="var(--c-gold)"/><circle cx="76" cy="14" r="2" fill="var(--c-gold)"/></svg>`;
+let SITE_N=0;
+function siteHTML(type, ev, lang, guest, prem, gallery){
+  const si=lang==="si", L=(e,s)=>si?s:e, T=TYPES[type], id="st"+(++SITE_N);
+  const loc=si?"si-LK":"en-GB";
+  const dt=ev.date?new Date(ev.date+"T00:00:00"):null, ok=dt&&!isNaN(dt);
+  const f=o=>{try{return dt.toLocaleDateString(loc,o)}catch(e){return ""}};
+  const target = ev.date ? `${ev.date}T${ev.nekath||ev.time||"00:00"}` : "";
+  const evs = type==="wedding"
+    ? [[ev.nekath,L("Poruwa ceremony","පෝරුව චාරිත්‍රය")],[ev.time,L("Wedding reception","මංගල සාදය")]]
+    : [[ev.time, ev.title || L(T.name,T.si)]];
+  const sections = [["home",I.home,L("Invitation","ආරාධනාව")],["date",I.cal,L("Date","දිනය")]];
+  if(gallery&&gallery.length) sections.push(["gal",I.img,L("Gallery","ඡායාරූප")]);
+  sections.push(["loc",I.pin,L("Location","ස්ථානය")]);
+  if(ev.rsvp) sections.push(["rsvp",I.mail,L("Reply","පිළිතුර")]);
+  const mapHref = ev.map || (ev.venue?`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ev.venue)}`:"");
+  return `<div class="site t-${type} ${si?"si":""}" ${prem?`style="${tplVars(prem)}"`:""} data-site="${id}">
+  <section class="s-hero" id="${id}-home">${cardHTML(type,ev,lang,guest,prem)}<span class="s-hint">${L("Scroll for details","විස්තර සඳහා පහළට")} ↓</span></section>
+
+  <section class="s-sec" id="${id}-date">
+    <span class="s-eb">${L("Save the date","දිනය සලකුණු කරගන්න")}</span>
+    ${ok?`<div class="s-year">${dt.getFullYear()}</div><div class="s-date"><span>${f({month:"long"})}</span><b>${dt.getDate()}</b><span>${f({weekday:"long"})}</span></div>`:""}
+    ${orn()}
+    ${target?`<h2 class="s-h">${L("Counting down","සුබ මොහොත ළඟයි")}</h2>
+    <div class="s-cd" data-t="${target}"><div><b data-u="d">0</b><small>${L("days","දින")}</small></div><div><b data-u="h">0</b><small>${L("hours","පැය")}</small></div><div><b data-u="m">0</b><small>${L("mins","මිනිත්තු")}</small></div><div><b data-u="s">0</b><small>${L("secs","තත්පර")}</small></div></div>`:""}
+    <div class="s-evs">${evs.filter(e=>e[0]).map(([t,n])=>`<div class="s-ev"><span class="t">${fTime(t,lang)}</span><span class="n">${esc(n)}</span>${ev.venue?`<span class="w">${esc(ev.venue)}</span>`:""}</div>`).join("")}
+      ${ev.dress?`<div class="s-ev"><span class="n">${L("Dress code","ඇඳුම")}</span><span class="w">${esc(ev.dress)}</span></div>`:""}</div>
+    ${ev.note?`<p class="s-p">${esc(ev.note)}</p>`:""}
+    ${ev.date?`<a class="s-row" target="_blank" rel="noopener" href="${gcalLink(type,ev)}"><i>${I.cal}</i><span><b>${L("Save the date","දිනය සුරකින්න")}</b><small>${L("Add it to your calendar","ඔබගේ දින දර්ශනයට එක් කරන්න")}</small></span>›</a>`:""}
+  </section>
+
+  ${gallery&&gallery.length?`<section class="s-sec" id="${id}-gal">
+    <span class="s-eb">${L("Gallery","Gallery")}</span><h2 class="s-h">${L("Moments","ඡායාරූප එකතුව")}</h2>${orn()}
+    <div class="s-gal">${gallery.map(g=>`<figure>${g}</figure>`).join("")}</div>
+  </section>`:""}
+
+  <section class="s-sec" id="${id}-loc">
+    <span class="s-eb">${L("Location","Location")}</span><h2 class="s-h">${L("Where to come","උත්සව ස්ථානය")}</h2>${orn()}
+    <div class="s-map"><svg viewBox="0 0 360 170" aria-hidden="true"><rect width="360" height="170" fill="var(--c-ink)" opacity=".06"/>
+      <path d="M-10 120Q90 96 180 110T370 86" stroke="var(--c-gold)" stroke-width="16" opacity=".14" fill="none"/>
+      <path d="M0 40H360M0 140H360M70 0V170M250 0V170M0 95L360 60" stroke="var(--c-soft)" stroke-width="5" opacity=".28" fill="none"/>
+      <path d="M140 0Q150 80 120 170" stroke="var(--c-soft)" stroke-width="3" opacity=".25" fill="none"/>
+      <g transform="translate(180 82)"><circle r="26" fill="var(--c-gold)" opacity=".18"/><path d="M0 8s-14-12-14-22a14 14 0 0 1 28 0c0 10-14 22-14 22z" fill="var(--c-gold)"/><circle cy="-14" r="5" fill="var(--c-bg)"/></g></svg></div>
+    ${ev.venue?`<p class="s-p"><b style="color:var(--c-ink)">${esc(ev.venue)}</b></p>`:""}
+    ${mapHref?`<a class="s-btn" target="_blank" rel="noopener" href="${esc(mapHref)}">${I.pin} ${L("Open in Google Maps","Google Maps හි බලන්න")}</a>`:""}
+  </section>
+
+  ${ev.rsvp?`<section class="s-sec" id="${id}-rsvp">
+    <span class="s-eb">RSVP</span><h2 class="s-h">${L("Will you join us?","ඔබ සහභාගී වෙනවාද?")}</h2>${orn()}
+    ${ev.rsvpBy?`<p class="s-p">${L(`Kindly reply by ${fDate(ev.rsvpBy,"en")}`,`${fDate(ev.rsvpBy,"si")} ට පෙර කරුණාකර දන්වන්න`)}</p>`:""}
+    <form class="s-form" data-rsvp data-phone="${esc(ev.rsvp)}" data-ev="${esc(evName(type,ev,lang))}" data-lang="${lang}" data-c="yes" data-n="1" onsubmit="return false">
+      <label>${L("Your name","ඔබගේ නම")}<input name="nm" value="${esc(guest||"")}" placeholder="${L("Your name","ඔබගේ නම")}" autocomplete="name"></label>
+      <div class="lbl">${L("Are you coming?","සහභාගී වෙනවාද?")}<div class="s-choice"><button type="button" data-c="yes" aria-pressed="true">${L("Joyfully yes","සතුටින් එනවා")}</button><button type="button" data-c="no" aria-pressed="false">${L("Sorry, can't","එන්න බැහැ")}</button></div></div>
+      <div class="lbl s-count">${L("How many people?","පැමිණෙන ගණන")}<div class="s-step"><button type="button" data-n="-1" aria-label="${L("One less","අඩු කරන්න")}">−</button><output>1</output><button type="button" data-n="1" aria-label="${L("One more","වැඩි කරන්න")}">+</button></div></div>
+      <label>${L("A wish for us (optional)","සුබ පැතුමක් (අවශ්‍ය නම්)")}<textarea name="msg" rows="2"></textarea></label>
+      <a class="s-btn" target="_blank" rel="noopener" data-send>${I.send} ${L("Send reply on WhatsApp","WhatsApp මගින් යවන්න")}</a>
+    </form>
+  </section>`:""}
+
+  <footer class="s-foot">${L("Made with","නිර්මාණය")} <a href="${CONFIG.SITE.split("#")[0]}" target="_blank" rel="noopener">Aradhanawa.com</a></footer>
+  <nav class="snav" aria-label="${L("Invitation sections","කොටස්")}">${sections.map(([k,ic,lb],i)=>`<button type="button" data-go="${id}-${k}" aria-label="${lb}" ${i===0?'aria-current="true"':""}>${ic}</button>`).join("")}</nav>
+</div>`;
+}
+function rsvpText(f){
+  const si=f.dataset.lang==="si", nm=(f.querySelector("[name=nm]").value||"").trim(), msg=(f.querySelector("[name=msg]").value||"").trim(), n=+f.dataset.n, ev=f.dataset.ev;
+  const who = nm ? (si?`මම ${nm}. `:`This is ${nm}. `) : "";
+  let t = f.dataset.c==="yes"
+    ? (si?`ආයුබෝවන්! ${who}✅ ${ev} එකට අපි ${n} දෙනෙක් එනවා.`:`Hi! ${who}✅ We'll be at ${ev}. ${n} ${n>1?"people":"person"} coming.`)
+    : (si?`ආයුබෝවන්! ${who}සමාවෙන්න, ${ev} එකට එන්න බැහැ. සුබ පැතුම්! 🙏`:`Hi! ${who}Sorry, I can't make it to ${ev}. Best wishes! 🙏`);
+  if(msg) t+=`\n💬 ${msg}`;
+  return t;
+}
+function syncRsvp(f){
+  const a=f.querySelector("[data-send]"); a.href=waLink(f.dataset.phone, rsvpText(f));
+  a.classList.toggle("off", !(f.querySelector("[name=nm]").value||"").trim());
+  f.querySelector(".s-count").hidden = f.dataset.c!=="yes";
+  f.querySelector("output").textContent=f.dataset.n;
+}
+function initSites(scope){
+  (scope||document).querySelectorAll(".site:not([data-ready])").forEach(site=>{
+    site.dataset.ready="1";
+    site.querySelectorAll("[data-rsvp]").forEach(syncRsvp);
+    const root=site.closest(".screen")||null, nav=site.querySelectorAll(".snav button");
+    if(!("IntersectionObserver" in window)) return;
+    const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) nav.forEach(b=>b.setAttribute("aria-current", b.dataset.go===e.target.id)) }),{root,rootMargin:"-45% 0px -50% 0px"});
+    nav.forEach(b=>{const t=document.getElementById(b.dataset.go); t&&io.observe(t)});
+  });
+  tick();
+}
+function tick(){
+  document.querySelectorAll("[data-t]").forEach(el=>{
+    let ms=new Date(el.dataset.t)-new Date(); if(isNaN(ms)||ms<0) ms=0;
+    const v={d:Math.floor(ms/864e5),h:Math.floor(ms/36e5)%24,m:Math.floor(ms/6e4)%60,s:Math.floor(ms/1e3)%60};
+    el.querySelectorAll("[data-u]").forEach(b=>{b.textContent=String(v[b.dataset.u]).padStart(b.dataset.u==="d"?1:2,"0")});
+  });
+}
+setInterval(tick,1000);
+document.addEventListener("click",e=>{
+  const go=e.target.closest("[data-go]"); if(go){ const t=document.getElementById(go.dataset.go); t&&t.scrollIntoView({behavior:"smooth",block:"start"}); return }
+  const f=e.target.closest("[data-rsvp]"); if(!f) return;
+  const c=e.target.closest("[data-c]"); if(c&&c.tagName==="BUTTON"){ f.dataset.c=c.dataset.c; f.querySelectorAll(".s-choice button").forEach(b=>b.setAttribute("aria-pressed",b===c)); syncRsvp(f) }
+  const n=e.target.closest("button[data-n]"); if(n){ f.dataset.n=Math.max(1,Math.min(20,+f.dataset.n + +n.dataset.n)); syncRsvp(f) }
+});
+document.addEventListener("input",e=>{ const f=e.target.closest("[data-rsvp]"); f&&syncRsvp(f) });
+function phoneHTML(inner){ return `<div class="phone"><span class="island"></span><div class="screen">${inner}</div></div>` }
+
+/* ================= GUEST PAGE (opened from a share link) ================= */
+function gcalLink(type,ev){
+  const T=TYPES[type]; const title=ev.title||(ev.b?`${ev.a} & ${ev.b} – ${T.name}`:`${ev.a} – ${T.name}`);
+  const t=(ev.nekath||ev.time||"09:00").replace(":","");
+  const d=(ev.date||"").replace(/-/g,"");
+  const start=`${d}T${t}00`; const endH=String(Math.min(23,+t.slice(0,2)+4)).padStart(2,"0");
+  const end=`${d}T${endH}${t.slice(2)}00`;
+  return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=${start}/${end}&ctz=Asia/Colombo&location=${encodeURIComponent(ev.venue||"")}`;
+}
+function rsvpBlock(type,ev,lang,guest){
+  const si=lang==="si", who=guest?` – ${guest}`:"";
+  const evName = ev.title || TYPES[type].name.toLowerCase();
+  const yes = si?`ආයුබෝවන්! මම ${ev.title||TYPES[type].si} එකට එනවා. 🙏${who}`:`Hi! I'll be there for the ${evName}. 🙏${who}`;
+  const no = si?`ආයුබෝවන්! සමාවෙන්න, මට ${ev.title||TYPES[type].si} එකට එන්න බැහැ. සුබ පැතුම්! 🙏${who}`:`Hi! Sorry, I can't make it to the ${evName}. Best wishes! 🙏${who}`;
+  return `<div class="rsvp">
+    ${ev.rsvp?`<div class="row"><a class="btn wa" target="_blank" rel="noopener" href="${waLink(ev.rsvp,yes)}">${I.wa} ${si?"මම එනවා":"I'll be there"}</a><a class="btn" target="_blank" rel="noopener" href="${waLink(ev.rsvp,no)}">${si?"එන්න බැහැ":"Can't make it"}</a></div>`:""}
+    <div class="row">${ev.map?`<a class="btn sm" target="_blank" rel="noopener" href="${esc(ev.map)}">${si?"සිතියම":"Open map"}</a>`:(ev.venue?`<a class="btn sm" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ev.venue)}">${si?"සිතියම":"Open map"}</a>`:"")}
+    ${ev.date?`<a class="btn sm" target="_blank" rel="noopener" href="${gcalLink(type,ev)}">${si?"දින දර්ශනයට එක් කරන්න":"Add to calendar"}</a>`:""}</div>
+  </div>`;
+}
+function renderGuest(p){
+  const type=TYPES[p.t]?p.t:"other";
+  document.title = (p.e.title || [p.e.a,p.e.b].filter(Boolean).join(" & ") || "Invitation") + " · Aradhanawa";
+  document.getElementById("app").innerHTML = `<main class="gwrap t-${type}">${siteHTML(type,p.e,p.l,p.g,null,[])}</main>`;
+  document.body.style.background = getComputedStyle(document.querySelector(".gwrap")).backgroundColor;
+  initSites();
+}
+
+/* ================= AI IMAGE PROMPTS ================= */
+const PROMPTS = [
+  {img:"card-flatlay", t:"Wedding card flat lay", u:"Wedding landing hero, Rathu Ran premium card",
+   p:"Luxury Sri Lankan wedding invitation card flat lay, deep maroon card with gold foil liyawela border and a small poruwa illustration, surrounded by fresh jasmine flowers, betel leaves (bulath kola), a small brass pahana and a strand of pol mal on ivory raw silk, soft daylight from the left, top-down editorial product photography, 16:9"},
+  {img:"poruwa-couple", t:"Poruwa ceremony illustration", u:"Wedding card header art",
+   p:"Elegant flat illustration of a Sri Lankan Buddhist poruwa wedding stage, carved wooden poruwa decorated with white jasmine, coconut flower (pol mal) arrangements and brass oil lamps, a bride in a white Kandyan osariya and a groom in a Kandyan nilame outfit seen from behind, maroon background with fine gold line work, symmetrical composition, vector style, 4:5"},
+  {img:"kandyan-pattern", t:"Kandyan gold pattern", u:"Kandyan Gold premium template background",
+   p:"Seamless traditional Sri Lankan liyawela and lotus pattern inspired by Kandyan temple paintings, fine gold line art on deep maroon, ornate border motifs, palapethi leaf scrolls, high detail, symmetrical, flat, print quality, tileable"},
+  {img:"tea-bungalow", t:"Homecoming at a tea estate", u:"Tea Country homecoming template",
+   p:"A colonial planter's bungalow with a red tile roof among lush Nuwara Eliya tea estates at sunrise, mist over the hills, the verandah decorated with jasmine garlands and brass oil lamps for a homecoming, cinematic, soft greens and warm gold, wide shot, 4:5"},
+  {img:"galle-fort", t:"Galle Fort sunset", u:"Galle Fort Sunset wedding / engagement template",
+   p:"Galle Fort lighthouse and ramparts at sunset, warm coral and violet sky over the Indian Ocean, a few string lights, romantic mood, gentle film grain, empty space in the top third for text, photographic, 9:16"},
+  {img:"birthday-table", t:"Birthday with kiribath", u:"Kiribath birthday card and Avurudu Fun template",
+   p:"A cheerful Sri Lankan child's birthday table, a diamond-cut plate of kiribath next to a colourful cake with candles, kavum and kokis on banana leaves, balloons and paper bunting, bright saffron and leaf green palette, playful flat illustration, 4:5"},
+  {img:"vesak-lanterns", t:"Vesak lantern night", u:"Vesak Night party template and Poson Lights",
+   p:"Night sky filled with handmade Sri Lankan Vesak lanterns (atapattam kudu) in yellow, coral, turquoise and violet tissue paper, glowing softly with long paper tails, string lights below, deep indigo background, magical atmosphere, illustration with soft glow, 4:5"},
+  {t:"Pahana for almsgiving", u:"Pahana dana template and Bodhi Leaf template",
+   p:"A single brass Sri Lankan oil lamp (pahana) with a gentle flame, white lotus flowers and a bodhi leaf beside it on a white cloth, calm and respectful mood, soft morning light, minimal composition, lots of empty space, ivory and saffron tones, photographic, 4:5"},
+  {img:"tuktuk", t:"Tuk-tuk party ride", u:"Tuk-tuk Ride birthday / party template",
+   p:"A playful illustrated Sri Lankan three-wheeler (tuk-tuk) decorated with balloons and streamers driving down a Colombo street with palm trees, bright teal and mango colours, fun flat vector art, friendly, 4:5"},
+  {img:"perahera", t:"Perahera procession", u:"Perahera premium template for big functions",
+   p:"Stylised illustration of the Kandy Esala Perahera at night, a decorated tusker elephant in a jewelled cloth with Kandyan drummers and fire dancers, rich maroon, gold and saffron, fine line detail like a temple mural, 16:9"},
+];
+
+/* ================= BOOT ================= */
+/* ================= ACCOUNTS (local demo store; swap for a real backend before launch) ================= */
+const DB = {
+  users(){return store.get("users",[])}, setUsers(v){store.set("users",v)},
+  orders(){return store.get("orders",[])}, setOrders(v){store.set("orders",v)},
+};
+const me = () => { const s=store.get("session",null); return s ? DB.users().find(u=>u.email===s)||null : null };
+async function hashPw(p){
+  try{ const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("aradhana:"+p)); return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("") }
+  catch(e){ let h=5381; for(const c of "aradhana:"+p) h=((h<<5)+h+c.charCodeAt(0))|0; return "d"+(h>>>0).toString(16) }
+}
+async function seedDB(){
+  if(store.get("seeded",0)){ const us=DB.users(), a=us.find(u=>u.email==="admin@aradhana.lk"); if(a){ a.email="admin@aradhanawa.lk"; a.name="Aradhanawa Admin"; DB.setUsers(us); if(store.get("session","")==="admin@aradhana.lk") store.set("session",a.email) } return }
+  const pw=await hashPw("admin123"), now=Date.now(), d=n=>new Date(now-n*864e5).toISOString();
+  DB.setUsers([
+    {id:"u1",name:"Aradhanawa Admin",email:"admin@aradhanawa.lk",phone:"0770000000",pw,role:"admin",plan:"Staff",created:d(45)},
+    {id:"u2",name:"Kasun Perera",email:"kasun@example.com",phone:"0771234567",pw:"",role:"user",plan:"Plus",created:d(12),sample:1},
+    {id:"u3",name:"Senuli's Mum",email:"dilini@example.com",phone:"0712345678",pw:"",role:"user",plan:"Free",created:d(6),sample:1},
+    {id:"u4",name:"Royal 2010 Batch",email:"batch2010@example.com",phone:"0761234567",pw:"",role:"user",plan:"Free",created:d(2),sample:1}]);
+  DB.setOrders([
+    {id:"o1",kind:"custom",design:"Poruwa Royal",type:"wedding",name:"Kasun Perera",email:"kasun@example.com",phone:"0771234567",amount:"Rs. 4,900",status:"In progress",created:d(3),sample:1},
+    {id:"o2",kind:"plus",design:"Aradhanawa Plus",type:"wedding",name:"Kasun Perera",email:"kasun@example.com",phone:"0771234567",amount:"Rs. 990",status:"Done",created:d(10),sample:1},
+    {id:"o3",kind:"custom",design:"Confetti Pop",type:"birthday",name:"Senuli's Mum",email:"dilini@example.com",phone:"0712345678",amount:"Rs. 4,900",status:"New",created:d(1),sample:1}]);
+  store.set("seeded",1);
+}
+function logOrder(kind,design){
+  const u=me(), ev=cur(), os=DB.orders();
+  os.unshift({id:"o"+Date.now().toString(36),kind,design:design||(kind==="plus"?"Aradhanawa Plus":"Custom design"),type:S.type,
+    name:u?u.name:([ev.a,ev.b].filter(Boolean).join(" & ")||ev.title||"Website visitor"),email:u?u.email:"",phone:u?u.phone:(ev.rsvp||""),
+    amount:kind==="plus"?CONFIG.PRICE_PLUS:CONFIG.PRICE_CUSTOM,status:"New",created:new Date().toISOString()});
+  DB.setOrders(os);
+}
+const tplOff = () => store.get("tplOff",[]);
+
+function headerHTML(){
+  const u=me();
+  return `<header class="top"><div class="wrap">
+    <a class="logo" href="#"><b>ආරාධනාව</b><span>Aradhanawa.com</span></a>
+    <nav class="top" aria-label="Main"><a href="#create">Create</a><a href="#designs">Designs</a><a href="#compare">Compare</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a></nav>
+    <div class="auth">${u
+      ? `${u.role==="admin"?`<a class="btn sm primary" href="#admin">Admin</a>`:`<a class="btn sm primary" href="#account">My account</a>`}<button class="lnk" data-logout>Log out</button>`
+      : `<a class="lnk" href="#login">Log in</a><a class="btn sm primary" href="#register">Register</a>`}</div>
+  </div></header>`;
+}
+function shell(inner){
+  document.body.classList.remove("has-bar");
+  document.getElementById("app").innerHTML = headerHTML() + inner;
+  window.scrollTo(0,0);
+}
+
+/* ---------- login / register ---------- */
+function renderAuth(kind){
+  const reg = kind==="register";
+  if(me()){ location.replace(me().role==="admin"?"#admin":"#account"); return }
+  shell(`<main class="apage">
+    <div class="aside">${pic(reg?"card-flatlay":"poruwa-couple","(max-width:820px) 100vw, 52vw","",reg?"50% 50%":"50% 32%",false)}
+      <div class="q"><span class="eyebrow">ආරාධනාව · Aradhanawa</span><b>${reg?"Your first invitation is on us.":"Welcome back. Your guests are waiting."}</b>
+      <span>${reg?"Save your events, keep your guest list in one place and order custom designs from our studio.":"Pick up where you left off with your events, guest links and designs."}</span></div></div>
+    <div class="formside"><form class="aform" id="aform" novalidate>
+      <div><span class="eyebrow">${reg?"Create account":"Log in"}</span><h1>${reg?"Join <em>Aradhanawa</em>":"Ayubowan"}</h1></div>
+      <p class="sub">${reg?"Free forever for 5 guests. No card needed.":"Log in with your email and password."}</p>
+      ${reg?`<div class="af"><label for="f-name">Full name</label><input id="f-name" name="fullname" autocomplete="name" placeholder="Tharushi Fernando"></div>`:""}
+      <div class="af"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" placeholder="you@email.com"></div>
+      ${reg?`<div class="af"><label for="f-phone">WhatsApp number</label><input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="07X XXX XXXX"></div>`:""}
+      <div class="af"><label for="f-pw">Password</label><div class="pw"><input id="f-pw" name="pw" type="password" autocomplete="${reg?"new-password":"current-password"}" placeholder="${reg?"At least 6 characters":""}"><button type="button" data-showpw>Show</button></div>${reg?`<div class="meter" aria-hidden="true"><i></i></div>`:""}</div>
+      ${reg?`<label class="chk"><input type="checkbox" name="terms"> <span>I agree to the Terms and Privacy Policy.</span></label>`
+           :`<div class="split"><label class="chk"><input type="checkbox" name="keep" checked> <span>Keep me logged in</span></label><button type="button" class="lk" data-forgot>Forgot password?</button></div>`}
+      <p class="err" role="alert"></p>
+      <button class="btn primary" type="submit">${reg?"Create account":"Log in"}</button>
+      <p class="alt">${reg?`Already have an account? <a href="#login">Log in</a>`:`New to Aradhanawa? <a href="#register">Create an account</a>`}</p>
+      ${reg?"":`<p class="hint">Admin demo login: <b>admin@aradhanawa.lk</b> / <b>admin123</b>. Change it before going live.</p>`}
+    </form></div></main>`);
+  const f=document.getElementById("aform"), err=f.querySelector(".err"), pw=f.querySelector("#f-pw");
+  f.querySelector("[data-showpw]").onclick=e=>{ const s=pw.type==="password"; pw.type=s?"text":"password"; e.target.textContent=s?"Hide":"Show" };
+  const fg=f.querySelector("[data-forgot]"); if(fg) fg.onclick=()=>modal(`<span class="eyebrow">Reset password</span><h3>Forgot your password?</h3><p>Message our studio on WhatsApp from the number on your account and we'll reset it for you.</p><div class="row" style="justify-content:flex-end"><button class="btn" data-x>Close</button><a class="btn wa" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,"Hi Aradhanawa! Please help me reset my account password.")}">${I.wa} WhatsApp us</a></div>`);
+  if(reg) pw.oninput=()=>{ const v=pw.value, sc=(v.length>=6)+(v.length>=10)+/[A-Z]/.test(v)+/\d/.test(v)+/[^A-Za-z0-9]/.test(v); const i=f.querySelector(".meter i"); i.style.width=(sc*20)+"%"; i.style.background=sc<2?"#B3261E":sc<4?"#C29A55":"#2F7A57" };
+  f.onsubmit=async e=>{
+    e.preventDefault(); err.textContent=""; f.querySelectorAll("[aria-invalid]").forEach(x=>x.removeAttribute("aria-invalid"));
+    const v=k=>(f.elements[k]&&f.elements[k].value||"").trim(), bad=(k,m)=>{ err.textContent=m; const el=f.elements[k]; if(el&&el.focus){ el.setAttribute("aria-invalid","true"); el.focus() } };
+    const email=v("email").toLowerCase(), users=DB.users();
+    if(reg){
+      if(v("fullname").length<2) return bad("fullname","Please enter your name.");
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return bad("email","Please enter a valid email.");
+      if(v("phone") && intlPhone(v("phone")).length!==11) return bad("phone","WhatsApp number should look like 07X XXX XXXX.");
+      if(pw.value.length<6) return bad("pw","Password needs at least 6 characters.");
+      if(!f.elements.terms.checked) return bad("terms","Please accept the terms to continue.");
+      if(users.some(u=>u.email===email)) return bad("email","An account with this email already exists. Try logging in.");
+      users.push({id:"u"+Date.now().toString(36),name:v("fullname"),email,phone:v("phone"),pw:await hashPw(pw.value),role:"user",plan:"Free",created:new Date().toISOString()});
+      DB.setUsers(users); store.set("session",email); toast("Account created. Welcome to Aradhanawa!");
+      location.hash="#account";
+    }else{
+      const u=users.find(x=>x.email===email);
+      if(!u||!u.pw||u.pw!==await hashPw(pw.value)) return bad("pw","Email or password is incorrect.");
+      store.set("session",email); toast(`Welcome back, ${u.name.split(" ")[0]}`);
+      const nx=store.get("next",""); store.set("next","");
+      location.hash = nx || (u.role==="admin"?"#admin":"#account");
+    }
+  };
+}
+
+/* ---------- user account ---------- */
+function renderAccount(){
+  const u=me(); if(!u){ store.set("next","#account"); location.replace("#login"); return }
+  const mine=DB.orders().filter(o=>o.email===u.email);
+  const evs=Object.keys(TYPES).filter(k=>S.edited[k]);
+  shell(`<main class="acct"><div class="wrap">
+    <div class="mh"><div><span class="eyebrow">My account</span><h1>Ayubowan, ${esc(u.name.split(" ")[0])}</h1><p>${esc(u.email)}${u.phone?` · ${esc(prettyPhone(u.phone))}`:""}</p></div>
+      <div class="row"><a class="btn primary" href="#create">Create invitation</a>${u.plan==="Free"?`<button class="btn" data-upgrade>Upgrade to Plus</button>`:""}</div></div>
+    <div class="kpis">
+      <div class="kpi"><small>Plan</small><b>${esc(u.plan)}</b><span>${u.plan==="Free"?`${CONFIG.FREE_GUESTS} guest links per event`:"Unlimited guests"}</span></div>
+      <div class="kpi"><small>Guest links</small><b>${S.guests.length}</b><span>on this device</span></div>
+      <div class="kpi"><small>Events edited</small><b>${evs.length}</b><span>${evs.map(k=>TYPES[k].name).join(", ")||"None yet"}</span></div>
+      <div class="kpi"><small>Orders</small><b>${mine.length}</b><span>${mine.filter(o=>o.status!=="Done").length} open</span></div>
+    </div>
+    <div class="box"><div class="bh"><h2>My orders</h2></div><div class="tblwrap"><table class="tbl"><thead><tr><th>Design</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody>
+      ${mine.map(o=>`<tr><td><b>${esc(o.design)}</b><small>${esc((TYPES[o.type]||TYPES.other).name)}</small></td><td>${esc(o.amount)}</td><td>${stBadge(o.status)}</td><td>${fdt(o.created)}</td></tr>`).join("")||`<tr><td colspan="4" class="empty">No orders yet. Pick a custom design from the editor and request it.</td></tr>`}
+    </tbody></table></div></div>
+  </div></main>`);
+  const up=document.querySelector("[data-upgrade]"); if(up) up.onclick=()=>upsell(true);
+}
+
+/* ---------- admin ---------- */
+const AI = {
+  chart:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V11M10 20V4M16 20v-7M22 20H2"/></svg>`,
+  users:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.6a3.5 3.5 0 0 1 0 6.8M21.5 20a6.5 6.5 0 0 0-4-6"/></svg>`,
+  bag:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8h14l-1 13H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>`,
+  grid:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>`,
+  gear:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>`,
+  out:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4M10 17l5-5-5-5M15 12H3"/></svg>`,
+};
+const fdt = s => { try{ return new Date(s).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}) }catch(e){ return "" } };
+const stBadge = s => `<span class="badge ${s==="Done"?"ok":s==="In progress"?"warn":s==="New"?"new":""}">${esc(s)}</span>`;
+const rsNum = s => +String(s||"").replace(/[^\d]/g,"")||0;
+const rs = n => "Rs. "+n.toLocaleString("en-LK");
+
+function renderAdmin(tab){
+  const u=me();
+  if(!u||u.role!=="admin"){ store.set("next","#admin"+(tab?"/"+tab:"")); location.replace("#login"); if(u) toast("That page is for admins only"); return }
+  const TABS=[["overview",AI.chart,"Overview"],["users",AI.users,"Users"],["orders",AI.bag,"Orders"],["templates",AI.grid,"Templates"],["settings",AI.gear,"Settings"]];
+  tab = TABS.some(t=>t[0]===tab) ? tab : "overview";
+  const users=DB.users(), orders=DB.orders(), off=tplOff();
+  const open=orders.filter(o=>o.status==="New"||o.status==="In progress");
+  const week=Date.now()-7*864e5;
+  const orderHead=edit=>`<thead><tr><th>Customer</th><th>Design</th><th>Amount</th><th>Status</th><th>Date</th>${edit?"<th></th>":""}</tr></thead>`;
+  const orderRows=(list,edit)=>list.map(o=>`<tr><td><b>${esc(o.name)}</b>${o.sample?` <span class="badge">Sample</span>`:""}<small>${esc(o.email||prettyPhone(o.phone)||"")}</small></td>
+    <td>${esc(o.design)}<small>${esc((TYPES[o.type]||TYPES.other).name)} · ${o.kind==="plus"?"Plan":"Custom"}</small></td><td>${esc(o.amount)}</td>
+    <td>${edit?`<select data-ostatus="${o.id}" aria-label="Order status">${["New","In progress","Done","Cancelled"].map(s=>`<option ${s===o.status?"selected":""}>${s}</option>`).join("")}</select>`:stBadge(o.status)}</td>
+    <td>${fdt(o.created)}</td>${edit?`<td><div class="acts">${o.phone?`<a class="btn sm" target="_blank" rel="noopener" href="${waLink(o.phone,`Hi ${o.name}, this is Aradhanawa about your "${o.design}" order.`)}">${I.wa} Chat</a>`:""}</div></td>`:""}</tr>`).join("")
+    || `<tr><td colspan="6" class="empty">No orders yet.</td></tr>`;
+  let body="";
+  if(tab==="overview"){
+    body=`<div class="mh"><div><span class="eyebrow">Admin</span><h1>Overview</h1><p>How Aradhanawa is doing today.</p></div></div>
+    <div class="kpis">
+      <div class="kpi"><small>Users</small><b>${users.length}</b><span>${users.filter(x=>new Date(x.created)>week).length} new this week</span></div>
+      <div class="kpi"><small>Plus customers</small><b>${users.filter(x=>x.plan==="Plus").length}</b><span>${CONFIG.PRICE_PLUS} per event</span></div>
+      <div class="kpi"><small>Open orders</small><b>${open.length}</b><span>${rs(open.reduce((a,o)=>a+rsNum(o.amount),0))} pending</span></div>
+      <div class="kpi"><small>Revenue</small><b>${rs(orders.filter(o=>o.status==="Done").reduce((a,o)=>a+rsNum(o.amount),0))}</b><span>from completed orders</span></div>
+    </div>
+    <div class="two">
+      <div class="box"><div class="bh"><h2>Latest orders</h2><a href="#admin/orders">See all</a></div><div class="tblwrap"><table class="tbl">${orderHead(false)}<tbody>${orderRows(orders.slice(0,5),false)}</tbody></table></div></div>
+      <div class="box"><div class="bh"><h2>New users</h2><a href="#admin/users">See all</a></div><div class="tblwrap"><table class="tbl"><tbody>
+        ${[...users].sort((a,b)=>b.created.localeCompare(a.created)).slice(0,5).map(x=>`<tr><td><b>${esc(x.name)}</b><small>${esc(x.email)}</small></td><td style="text-align:right"><span class="badge ${x.plan==="Plus"?"gold":""}">${esc(x.plan)}</span></td></tr>`).join("")}
+      </tbody></table></div></div>
+    </div>`;
+  }
+  if(tab==="users"){
+    body=`<div class="mh"><div><span class="eyebrow">Admin</span><h1>Users</h1><p>${users.length} accounts</p></div></div>
+    <div class="box"><div class="tbar" style="margin-bottom:12px"><input type="search" id="usearch" placeholder="Search name, email or phone" aria-label="Search users"></div>
+    <div class="tblwrap"><table class="tbl" id="utbl"><thead><tr><th>Name</th><th>WhatsApp</th><th>Plan</th><th>Role</th><th>Joined</th><th></th></tr></thead><tbody>
+      ${users.map(x=>`<tr data-q="${esc((x.name+" "+x.email+" "+x.phone).toLowerCase())}"><td><b>${esc(x.name)}</b>${x.sample?` <span class="badge">Sample</span>`:""}<small>${esc(x.email)}</small></td><td>${esc(prettyPhone(x.phone)||"-")}</td>
+        <td><span class="badge ${x.plan==="Plus"?"gold":""}">${esc(x.plan)}</span></td><td>${x.role==="admin"?`<span class="badge ok">Admin</span>`:"User"}</td><td>${fdt(x.created)}</td>
+        <td><div class="acts">${x.role==="admin"?"":`<button class="btn sm" data-uplan="${x.id}">${x.plan==="Plus"?"Set Free":"Give Plus"}</button><button class="btn sm" data-udel="${x.id}">Delete</button>`}</div></td></tr>`).join("")}
+    </tbody></table></div></div>`;
+  }
+  if(tab==="orders"){
+    body=`<div class="mh"><div><span class="eyebrow">Admin</span><h1>Orders</h1><p>Custom designs and Plus upgrades requested from the site.</p></div></div>
+    <div class="box"><div class="tbar" style="margin-bottom:12px"><select id="ofilter" aria-label="Filter by status"><option value="">All statuses</option>${["New","In progress","Done","Cancelled"].map(s=>`<option>${s}</option>`).join("")}</select></div>
+    <div class="tblwrap"><table class="tbl" id="otbl">${orderHead(true)}<tbody>${orderRows(orders,true)}</tbody></table></div></div>`;
+  }
+  if(tab==="templates"){
+    body=`<div class="mh"><div><span class="eyebrow">Admin</span><h1>Templates</h1><p>Turn designs on or off. Hidden designs disappear from the gallery and the editor.</p></div></div>
+    ${Object.entries(TYPES).map(([k,T])=>`<section class="tsec"><h2>${T.name} <small>${1+PREMIUM[k].length} designs</small></h2><div class="tgrid">
+      <div class="titem">${cardHTML(k,T.sample,"en","",null)}<div class="trow"><span><b>${esc(T.tpl)}</b><small>Free</small></span><input type="checkbox" class="sw-t" checked disabled aria-label="Free design is always on"></div></div>
+      ${PREMIUM[k].map((t,i)=>{ const key=k+":"+(i+1), on=!off.includes(key); return `<div class="titem" data-off="${on?0:1}">${cardHTML(k,T.sample,"en","",{...t,_noribbon:1})}<div class="trow"><span><b>${esc(t.n)}</b><small>Custom · ${CONFIG.PRICE_CUSTOM}</small></span><input type="checkbox" class="sw-t" data-tog="${key}" ${on?"checked":""} aria-label="Show ${esc(t.n)}"></div></div>` }).join("")}
+    </div></section>`).join("")}`;
+  }
+  if(tab==="settings"){
+    body=`<div class="mh"><div><span class="eyebrow">Admin</span><h1>Settings</h1><p>Prices, limits and the studio WhatsApp number used across the site.</p></div></div>
+    <form class="box" id="sform"><h2>Plans and contact</h2><div class="sform">
+      <div class="af"><label for="s-free">Free guest links per event</label><input id="s-free" name="FREE_GUESTS" type="number" min="1" max="50" value="${CONFIG.FREE_GUESTS}"></div>
+      <div class="af"><label for="s-wa">Studio WhatsApp</label><input id="s-wa" name="STUDIO_WA" value="${esc(CONFIG.STUDIO_WA)}"><small>International format, for example 94771234567</small></div>
+      <div class="af"><label for="s-plus">Plus price</label><input id="s-plus" name="PRICE_PLUS" value="${esc(CONFIG.PRICE_PLUS)}"></div>
+      <div class="af"><label for="s-custom">Custom design price</label><input id="s-custom" name="PRICE_CUSTOM" value="${esc(CONFIG.PRICE_CUSTOM)}"></div>
+    </div><div class="row" style="margin-top:18px"><button class="btn primary" type="submit">Save settings</button></div></form>
+    <div class="box danger"><h2>Data</h2><p class="sub" style="margin:-4px 0 14px;color:var(--muted)">Everything here is saved in this browser only until a real database is connected.</p>
+      <div class="row"><button class="btn" data-clearsample>Remove sample data</button></div></div>`;
+  }
+  shell(`<div class="adm"><aside class="side"><div class="who"><b>${esc(u.name)}</b><small>${esc(u.email)}</small></div>
+    ${TABS.map(([k,ic,lb])=>`<a href="#admin/${k}" ${k===tab?'aria-current="page"':""}>${ic}${lb}</a>`).join("")}
+    <span class="sp"></span><a href="#">${I.home} View site</a></aside><main class="main">${body}</main></div>`);
+
+  const A=document.querySelector(".adm"), re=()=>renderAdmin(tab);
+  A.addEventListener("change",e=>{
+    const t=e.target;
+    if(t.dataset.ostatus){ const os=DB.orders(), o=os.find(x=>x.id===t.dataset.ostatus); if(o){ o.status=t.value; DB.setOrders(os); toast(`Order marked ${t.value}`) } }
+    if(t.dataset.tog){ let o=tplOff(); o=t.checked?o.filter(x=>x!==t.dataset.tog):[...o,t.dataset.tog]; store.set("tplOff",o); t.closest(".titem").dataset.off=t.checked?0:1; toast(t.checked?"Design visible":"Design hidden") }
+    if(t.id==="ofilter") A.querySelectorAll("#otbl tbody tr").forEach(r=>{ const s=r.querySelector("select"); r.hidden=!!t.value&&!!s&&s.value!==t.value });
+  });
+  A.addEventListener("input",e=>{ if(e.target.id==="usearch"){ const q=e.target.value.toLowerCase().trim(); A.querySelectorAll("#utbl tbody tr").forEach(r=>r.hidden=!!q&&!r.dataset.q.includes(q)) } });
+  A.addEventListener("click",e=>{
+    const b=e.target.closest("button"); if(!b) return;
+    if(b.dataset.uplan){ const us=DB.users(), x=us.find(y=>y.id===b.dataset.uplan); if(x){ x.plan=x.plan==="Plus"?"Free":"Plus"; DB.setUsers(us); toast(`${x.name} is now on ${x.plan}`); re() } }
+    if(b.dataset.udel){ const x=DB.users().find(y=>y.id===b.dataset.udel); if(!x) return;
+      modal(`<span class="eyebrow">Delete user</span><h3>Delete ${esc(x.name)}?</h3><p>This removes the account from this browser. Their orders stay in the list.</p><div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><button class="btn primary" id="cdel">Delete</button></div>`);
+      document.getElementById("cdel").onclick=()=>{ DB.setUsers(DB.users().filter(y=>y.id!==x.id)); document.getElementById("layer").innerHTML=""; toast("User deleted"); re() } }
+    if(b.hasAttribute("data-clearsample")){ DB.setUsers(DB.users().filter(x=>!x.sample)); DB.setOrders(DB.orders().filter(x=>!x.sample)); toast("Sample data removed"); re() }
+  });
+  const sf=document.getElementById("sform");
+  if(sf) sf.onsubmit=e=>{ e.preventDefault(); const c={}; for(const k of ["FREE_GUESTS","STUDIO_WA","PRICE_PLUS","PRICE_CUSTOM"]){ const v=sf.elements[k].value.trim(); if(v) c[k]=k==="FREE_GUESTS"?Math.max(1,+v||5):k==="STUDIO_WA"?intlPhone(v):v } store.set("config",c); Object.assign(CONFIG,c); toast("Settings saved") };
+}
+
+/* ---------- router ---------- */
+const PAGES = { login:()=>renderAuth("login"), register:()=>renderAuth("register"), account:renderAccount, admin:renderAdmin };
+function route(){
+  const h=location.hash||"";
+  if(h.startsWith("#i=")){ try{ const p=JSON.parse(unb64(h.slice(3))); if(p&&p.e){ renderGuest(p); return } }catch(e){} }
+  const [pg,sub]=h.slice(1).split("/");
+  if(PAGES[pg]){ PAGES[pg](sub); return }
+  if(!document.getElementById("editor")){ render(); const el=h.length>1&&document.getElementById(h.slice(1)); if(el) el.scrollIntoView(); else window.scrollTo(0,0) }
+}
+addEventListener("hashchange",route);
+document.addEventListener("click",e=>{
+  const o=e.target.closest("[data-order]"); if(o){ const [k,d]=o.dataset.order.split("|"); logOrder(k,d) }
+  if(e.target.closest("[data-logout]")){ store.set("session",null); toast("Logged out"); if(/^#(admin|account)/.test(location.hash)) location.hash=""; else render() }
+});
+
+(function boot(){
+  try{ Object.assign(CONFIG, store.get("config",{})) }catch(e){}
+  seedDB().catch(()=>{}).finally(route);
+})();
+</script>
+</body></html>

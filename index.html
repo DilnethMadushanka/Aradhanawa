@@ -1607,6 +1607,12 @@ body:has(.lp){background:#fff}
   .hx-props .lo{display:none}
   .hx-props .j1{left:6%;top:9%}.hx-props .j2{display:none}.hx-props .j3{right:4%;bottom:auto;top:52%}.hx-props .j4,.hx-props .p3{display:none}.hx-props .p1{left:84%;top:12%}.hx-props .p2{right:auto;left:8%;top:47%}
 }
+.hx-dev.wide{width:min(560px,100%)}
+.hx-dev.wide .hx-tab{border-radius:5.3% / 7%}
+.hx-dev.wide .hx-tab::after{top:50%;left:1.9%;translate:-50% -50%;width:1.2%}
+.hx-dev.wide .hx-scr{aspect-ratio:4/3;border-radius:1.8% / 2.4%}
+.hx-in:has(.hx-dev.wide){grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}
+@media (max-width:860px){.hx-in:has(.hx-dev.wide){grid-template-columns:minmax(0,1fr)}.hx-dev.wide{width:min(440px,92vw)}}
 @media (prefers-reduced-motion:reduce){
   .hx-env,.hx-card,.hx-flap,.hx-seal,.hx-clip,.lp .hx-txt h1 em{animation:none}
   .hx-seal{opacity:0}.hx-flap{transform:rotateX(178deg);z-index:0}.hx-clip{clip-path:none;z-index:6}.hx-card{transform:translateY(-45cqw) scale(1.06)}.hx-env{transform:translateY(10cqw) scale(.94)}
@@ -2397,13 +2403,13 @@ const LP_BANDS=[
   {h:"Play the Jayamangala gatha as it opens",fb:"var(--l-surface)",fi:"#1E1418",music:1,c:()=>`Playing now. The Lotus Mandala design starts the gatha when a guest taps Open, and every guest can mute it.`}];
 
 // Hero: flat-lay desk with a tablet showing an invitation opening. Set HERO_VIDEO to an mp4 path to play a video on the tablet instead.
-const HERO_VIDEO="";
+const HERO_VIDEO="img/hero-tablet.mp4";
 function lpHero(){
   const ev=TYPES.wedding.sample;
   const jas=`<svg viewBox="0 0 60 60" aria-hidden="true"><g fill="#FFFDF7" stroke="#E6DCC6" stroke-width=".8">${[0,72,144,216,288].map(r=>`<path transform="rotate(${r} 30 30)" d="M30 30C24 22 23 9 30 4c7 5 6 18 0 26z"/>`).join("")}</g><circle cx="30" cy="30" r="3.2" fill="#E9C46E"/></svg>`;
   const pet=`<svg viewBox="0 0 30 50" aria-hidden="true"><path d="M15 2C25 14 27 32 15 48 3 32 5 14 15 2z" fill="#D9AE4F"/><path d="M15 6v38" stroke="#A67A1F" stroke-width=".8"/></svg>`;
   const lotus=`<svg viewBox="0 0 40 40" aria-hidden="true"><g fill="none" stroke="#EBD29A" stroke-width="1.6" stroke-linejoin="round"><path d="M20 31C14 26 13 17 20 9c7 8 6 17 0 22z"/><path d="M20 31C12 30 7 24 6 16c7 1 12 6 14 15z"/><path d="M20 31c8-1 13-7 14-15-7 1-12 6-14 15z"/><path d="M9 33h22"/></g></svg>`;
-  const screen=HERO_VIDEO?`<video class="hx-vid" src="${HERO_VIDEO}" autoplay muted loop playsinline preload="metadata" aria-hidden="true"></video>`
+  const screen=HERO_VIDEO?`<video class="hx-vid" src="${HERO_VIDEO}" poster="img/hero-tablet-poster.webp" ${matchMedia("(prefers-reduced-motion: reduce)").matches?"":"autoplay"} muted loop playsinline preload="auto" aria-hidden="true"></video>`
    :`<div class="hx-env" aria-hidden="true"><div class="bk"></div>
       <div class="hx-clip"><div class="hx-card"><span class="k">The wedding of</span><span class="n">${esc(ev.a)}<i>&amp;</i>${esc(ev.b)}</span><span class="rl"></span><span class="si">ස්වස්ති සිද්ධම්</span><span class="d">${esc(fDate(ev.date,"en"))}</span></div></div>
       <div class="fr"></div><div class="hx-flap"></div><div class="hx-seal">${lotus}</div></div>`;
@@ -2412,7 +2418,7 @@ function lpHero(){
       ${jas.replace("<svg",'<svg class="j1"')}${jas.replace("<svg",'<svg class="j2"')}${jas.replace("<svg",'<svg class="j3"')}${jas.replace("<svg",'<svg class="j4"')}
       ${pet.replace("<svg",'<svg class="p1"')}${pet.replace("<svg",'<svg class="p2"')}${pet.replace("<svg",'<svg class="p3"')}</div>
     <div class="hx-in">
-      <div class="hx-dev"><div class="hx-tab"><div class="hx-scr">${screen}</div></div></div>
+      <div class="hx-dev${HERO_VIDEO?" wide":""}"><div class="hx-tab"><div class="hx-scr">${screen}</div></div></div>
       <div class="hx-txt"><span class="lp-eb">Wedding · Homecoming · Birthday · Dana</span>
         <h1>Send your <em>invitation</em> on WhatsApp, in minutes.</h1>
         <p class="sub">Sinhala, Singlish or English. A personal link for every guest.</p>

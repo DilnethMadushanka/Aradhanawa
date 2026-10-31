@@ -19,6 +19,7 @@ window.ARADHANA_FIREBASE = {
     measurementId: "G-YQJEHHCVPK"
   },
   adminEmails: [
-    "raveeshaheshan26@gmail.com"
+    "raveeshaheshan26@gmail.com",
+    "gamingmads0103@gmail.com"
   ]
 };

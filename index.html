@@ -1353,7 +1353,7 @@ body:has(.lp){background:#fff}
 /* ================= CONFIG ================= */
 const CONFIG = {
   FREE_GUESTS: 5,
-  STUDIO_WA: "94770000000",          // Aradhanawa studio WhatsApp number (replace with the real one)
+  STUDIO_WA: "94764487857",          // Aradhanawa studio WhatsApp number
   PRICE_PLUS: "Rs. 990",
   PRICE_CUSTOM: "Rs. 4,900",
   MUSIC: "audio/jayamangala-gatha.mp3",   // background music for the Lotus Mandala design (put your MP3 here)
@@ -2548,7 +2548,7 @@ async function seedDB(){
   if(store.get("seeded",0)){ const us=DB.users(), a=us.find(u=>u.email==="admin@aradhana.lk"); if(a){ a.email="admin@aradhanawa.lk"; a.name="Aradhanawa Admin"; DB.setUsers(us); if(store.get("session","")==="admin@aradhana.lk") store.set("session",a.email) } return }
   const pw=await hashPw("admin123"), now=Date.now(), d=n=>new Date(now-n*864e5).toISOString();
   DB.setUsers([
-    {id:"u1",name:"Aradhanawa Admin",email:"admin@aradhanawa.lk",phone:"0770000000",pw,role:"admin",plan:"Staff",created:d(45)},
+    {id:"u1",name:"Aradhanawa Admin",email:"admin@aradhanawa.lk",phone:"0764487857",pw,role:"admin",plan:"Staff",created:d(45)},
     {id:"u2",name:"Kasun Perera",email:"kasun@example.com",phone:"0771234567",pw:"",role:"user",plan:"Plus",created:d(12),sample:1},
     {id:"u3",name:"Senuli's Mum",email:"dilini@example.com",phone:"0712345678",pw:"",role:"user",plan:"Free",created:d(6),sample:1},
     {id:"u4",name:"Royal 2010 Batch",email:"batch2010@example.com",phone:"0761234567",pw:"",role:"user",plan:"Free",created:d(2),sample:1}]);

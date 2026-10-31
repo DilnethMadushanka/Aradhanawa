@@ -740,6 +740,12 @@ nav.top a{font-weight:600}
 .aform .alt{text-align:center;color:var(--muted);font-size:14px;margin:0}
 .aform .alt a,.aform .lk{font-weight:700;color:var(--accent);background:none;border:0;cursor:pointer;font-size:13.5px;padding:0}
 .aform .hint{font-size:12.5px;color:var(--muted);background:var(--sunk);padding:10px 12px;border-left:2px solid var(--gold);margin:0}
+.aform .gbtn{width:100%;padding:13px 16px;gap:12px;background:#fff;color:#1F1F1F;border-color:#DADCE0;text-transform:none;letter-spacing:0;font-size:15px}
+.aform .gbtn:hover{background:#F7F8F8}.aform .gbtn svg{width:19px;height:19px;flex:none}.aform .gbtn[disabled]{opacity:.6;cursor:progress}
+.aform .or{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:12.5px;margin:-2px 0}
+.aform .or::before,.aform .or::after{content:"";flex:1;height:1px;background:var(--line-2)}
+.adm .demo{border-left:3px solid var(--gold);background:var(--sunk);font-size:14px}.adm .demo b{display:block;margin-bottom:2px}
+.tbl td.wrap{white-space:normal;min-width:180px;max-width:340px}
 .aform .chk{display:flex;gap:10px;align-items:flex-start;font-size:13.5px;color:var(--muted);cursor:pointer}
 .aform .chk input{accent-color:var(--jade);margin-top:3px}
 .aform .split{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
@@ -1353,6 +1359,8 @@ body:has(.lp){background:#fff}
 <div id="app"></div>
 <div id="layer"></div>
 
+<script src="firebase-config.js"></script>
+<script>/* aradhanawa.com/admin → dashboard */ if(/^\/admin\/?$/.test(location.pathname)) history.replaceState(null,"","/#admin"+(location.hash.startsWith("#/")?location.hash.slice(1):""));</script>
 <script>
 /* ================= CONFIG ================= */
 const CONFIG = {
@@ -1743,7 +1751,7 @@ const S = {
   guests: store.get("guests",[{name:"Nimal Uncle",phone:"0771112233"},{name:"Ruwani",phone:"0712223344"}]),
 };
 for(const k in TYPES) if(!S.ev[k]) S.ev[k] = {...TYPES[k].sample};
-const save = () => { store.set("type",S.type); store.set("msglang",S.lang); store.set("ev",S.ev); store.set("edited",S.edited); store.set("guests",S.guests); store.set("tpl",S.tpl); try{localStorage.setItem("aradhana:photos",JSON.stringify(S.photos))}catch(e){ toast("Photo storage is full in this browser. Remove a photo or use smaller ones.") } };
+const save = () => { fbSyncInvite(); store.set("type",S.type); store.set("msglang",S.lang); store.set("ev",S.ev); store.set("edited",S.edited); store.set("guests",S.guests); store.set("tpl",S.tpl); try{localStorage.setItem("aradhana:photos",JSON.stringify(S.photos))}catch(e){ toast("Photo storage is full in this browser. Remove a photo or use smaller ones.") } };
 const cur = () => S.ev[S.type];
 
 /* ================= FORMATTERS ================= */
@@ -1776,7 +1784,7 @@ const prettyPhone = p => { const d=String(p||"").replace(/\D/g,""); return d.len
 const b64 = s => btoa(unescape(encodeURIComponent(s))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
 const unb64 = s => decodeURIComponent(escape(atob(s.replace(/-/g,"+").replace(/_/g,"/"))));
 function inviteLink(guest){
-  const payload = {t:S.type, l:S.lang==="si"?"si":"en", e:cur(), g:guest||""}; const cp=curPrem(); if(cp&&cp.site) payload.d=cp.site;
+  const payload = {t:S.type, l:S.lang==="si"?"si":"en", e:cur(), g:guest||""}; const cp=curPrem(); if(cp&&cp.site) payload.d=cp.site; if(FB_ON()&&window.FBX&&FBX.user) payload.o=FBX.user.uid;
   return CONFIG.SITE + "#i=" + b64(JSON.stringify(payload));
 }
 
@@ -2429,6 +2437,14 @@ document.addEventListener("click",e=>{
   const n=e.target.closest("button[data-n]"); if(n){ f.dataset.n=Math.max(1,Math.min(20,+f.dataset.n + +n.dataset.n)); syncRsvp(f) }
 });
 document.addEventListener("input",e=>{ const f=e.target.closest("[data-rsvp]"); f&&syncRsvp(f) });
+// Save each guest reply in Firebase too, so the host and admin can see RSVPs (WhatsApp still opens as before).
+document.addEventListener("click",e=>{
+  const s=e.target.closest("[data-rsvp] [data-send]"); if(!s||s.classList.contains("off")) return;
+  const f=s.closest("[data-rsvp]"), p=S.guestP; if(!p||!p.o||!FB_ON()||!window.FBX) return;
+  const nm=(f.querySelector("[name=nm]").value||"").trim(), msg=(f.querySelector("[name=msg]").value||"").trim(), key=[nm,f.dataset.c,f.dataset.n,msg].join("|");
+  if(!nm||f.dataset.logged===key) return; f.dataset.logged=key;
+  FBX.addRsvp({inviteId:p.o+"_"+p.t,ownerUid:p.o,type:p.t,event:f.dataset.ev,guest:p.g||"",name:nm,coming:f.dataset.c==="yes",count:f.dataset.c==="yes"?+f.dataset.n:0,msg}).catch(er=>console.warn("[fb] rsvp",er));
+});
 function phoneHTML(inner){ return `<div class="phone"><span class="island"></span><div class="screen">${inner}</div></div>` }
 
 /* ================= GUEST PAGE (opened from a share link) ================= */
@@ -2452,6 +2468,7 @@ function rsvpBlock(type,ev,lang,guest){
   </div>`;
 }
 function renderGuest(p){
+  S.guestP=p;
   const type=TYPES[p.t]?p.t:"other";
   document.title = (p.e.title || [p.e.a,p.e.b].filter(Boolean).join(" & ") || "Invitation") + " · Aradhanawa";
   document.getElementById("app").innerHTML = `<main class="gwrap t-${type}">${siteHTML(type,p.e,p.l,p.g,p.d?(PREMIUM[type].find(x=>x.site===p.d)||null):null,[])}</main>`; lxArm();
@@ -2538,17 +2555,41 @@ const PROMPTS = [
 ];
 
 /* ================= BOOT ================= */
-/* ================= ACCOUNTS (local demo store; swap for a real backend before launch) ================= */
+/* ================= ACCOUNTS =================
+   With a config in firebase-config.js: Firebase Auth (Google + email) and Firestore (fb.js).
+   Without one: demo mode, everything is kept in this browser's localStorage. */
+function FB_ON(){ return !!(window.ARADHANA_FIREBASE && window.ARADHANA_FIREBASE.config) }
+const FBD = () => (window.FBX && FBX.data) || {users:[],orders:[],invitations:[],rsvps:[],admins:[]};
 const DB = {
-  users(){return store.get("users",[])}, setUsers(v){store.set("users",v)},
-  orders(){return store.get("orders",[])}, setOrders(v){store.set("orders",v)},
+  users(){ return FB_ON() ? FBD().users.map(u=>{ const adm=!!(window.FBX&&FBX.isAdminEmail(u.email)); return {...u,role:adm?"admin":"user",plan:adm?"Staff":(u.plan||"Free"),created:u.created||""} }) : store.get("users",[]) },
+  setUsers(v){ store.set("users",v) },
+  orders(){ return FB_ON() ? FBD().orders : store.get("orders",[]) },
+  setOrders(v){ store.set("orders",v) },
+  invitations(){ return FB_ON() ? FBD().invitations : [] },
+  rsvps(){ return FB_ON() ? FBD().rsvps : [] },
 };
-const me = () => { const s=store.get("session",null); return s ? DB.users().find(u=>u.email===s)||null : null };
+const me = () => { if(FB_ON()) return (window.FBX&&FBX.profile)||null; const s=store.get("session",null); return s ? DB.users().find(u=>u.email===s)||null : null };
+let fbErrText = e => (e&&e.message)||"Something went wrong. Please try again.";
+const fbFail = e => { console.warn("[fb]",e); toast(fbErrText(e)) };
+const fbNeed = () => { if(window.FBX) return true; toast("Can't reach the Aradhanawa server right now. Check your connection and refresh."); return false };
+let fbInvT=0;
+function fbSyncInvite(){
+  if(!FB_ON()||!window.FBX||!FBX.user) return;
+  const type=S.type; if(!S.edited[type]) return;
+  clearTimeout(fbInvT);
+  fbInvT=setTimeout(()=>{
+    const ev=S.ev[type]||{}, e={};
+    for(const k in ev){ const v=ev[k]; if((typeof v==="string"&&v.length<2000)||typeof v==="number"||typeof v==="boolean") e[k]=v }
+    FBX.saveInvite({type,lang:S.lang,tpl:S.tpl[type]??0,title:ev.title||"",names:[ev.a,ev.b].filter(Boolean).join(" & "),date:ev.date||"",venue:ev.venue||"",ev:e,
+      guests:S.guests.slice(0,500).map(g=>({name:String(g.name||"").slice(0,80)}))}).catch(er=>console.warn("[fb] invite",er));
+  },1500);
+}
 async function hashPw(p){
   try{ const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("aradhana:"+p)); return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("") }
   catch(e){ let h=5381; for(const c of "aradhana:"+p) h=((h<<5)+h+c.charCodeAt(0))|0; return "d"+(h>>>0).toString(16) }
 }
 async function seedDB(){
+  if(FB_ON()) return;
   if(store.get("seeded",0)){ const us=DB.users(), a=us.find(u=>u.email==="admin@aradhana.lk"); if(a){ a.email="admin@aradhanawa.lk"; a.name="Aradhanawa Admin"; DB.setUsers(us); if(store.get("session","")==="admin@aradhana.lk") store.set("session",a.email) } return }
   const pw=await hashPw("admin123"), now=Date.now(), d=n=>new Date(now-n*864e5).toISOString();
   DB.setUsers([
@@ -2563,11 +2604,12 @@ async function seedDB(){
   store.set("seeded",1);
 }
 function logOrder(kind,design){
-  const u=me(), ev=cur(), os=DB.orders();
-  os.unshift({id:"o"+Date.now().toString(36),kind,design:design||(kind==="plus"?"Aradhanawa Plus":"Custom design"),type:S.type,
+  const u=me(), ev=cur();
+  const o={id:"o"+Date.now().toString(36),kind,design:design||(kind==="plus"?"Aradhanawa Plus":"Custom design"),type:S.type,
     name:u?u.name:([ev.a,ev.b].filter(Boolean).join(" & ")||ev.title||"Website visitor"),email:u?u.email:"",phone:u?u.phone:(ev.rsvp||""),
-    amount:kind==="plus"?CONFIG.PRICE_PLUS:CONFIG.PRICE_CUSTOM,status:"New",created:new Date().toISOString()});
-  DB.setOrders(os);
+    amount:kind==="plus"?CONFIG.PRICE_PLUS:CONFIG.PRICE_CUSTOM,status:"New",created:new Date().toISOString()};
+  if(FB_ON()){ if(window.FBX) FBX.addOrder(o).catch(er=>console.warn("[fb] order",er)); return }
+  const os=DB.orders(); os.unshift(o); DB.setOrders(os);
 }
 const tplOff = () => store.get("tplOff",[]);
 
@@ -2592,14 +2634,16 @@ function shell(inner){
 /* ---------- login / register ---------- */
 function renderAuth(kind){
   const reg = kind==="register";
-  if(me()){ location.replace(me().role==="admin"?"#admin":"#account"); return }
+  if(me()){ const nx=store.get("next",""); store.set("next",""); location.replace(nx||(me().role==="admin"?"#admin":"#account")); return }
   shell(`<main class="apage">
     <div class="aside">${pic(reg?"card-flatlay":"poruwa-couple","(max-width:820px) 100vw, 52vw","",reg?"50% 50%":"50% 32%",false)}
       <div class="q"><span class="eyebrow">ආරාධනාව · Aradhanawa</span><b>${reg?"Your first invitation is on us.":"Welcome back. Your guests are waiting."}</b>
       <span>${reg?"Save your events, keep your guest list in one place and order custom designs from our studio.":"Pick up where you left off with your events, guest links and designs."}</span></div></div>
     <div class="formside"><form class="aform" id="aform" novalidate>
       <div><span class="eyebrow">${reg?"Create account":"Log in"}</span><h1>${reg?"Join <em>Aradhanawa</em>":"Ayubowan"}</h1></div>
-      <p class="sub">${reg?"Free forever for 5 guests. No card needed.":"Log in with your email and password."}</p>
+      <p class="sub">${reg?"Free forever for 5 guests. No card needed.":"Log in with Google, or with your email and password."}</p>
+      <button type="button" class="btn gbtn" data-google><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.6 5.4 2.7 13.3l7.9 6.1C12.5 13.6 17.8 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.6 5.9c4.4-4.1 7-10.1 7-17.6z"/><path fill="#FBBC05" d="M10.6 28.6c-.5-1.4-.8-3-.8-4.6s.3-3.2.8-4.6l-7.9-6.1C1 16.6 0 20.2 0 24s1 7.4 2.7 10.7l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.6-5.9c-2.1 1.4-4.9 2.3-8.3 2.3-6.2 0-11.5-4.2-13.4-9.9l-7.9 6.1C6.6 42.6 14.6 48 24 48z"/></svg>Continue with Google</button>
+      <div class="or"><span>or ${reg?"sign up":"log in"} with email</span></div>
       ${reg?`<div class="af"><label for="f-name">Full name</label><input id="f-name" name="fullname" autocomplete="name" placeholder="Tharushi Fernando"></div>`:""}
       <div class="af"><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" placeholder="you@email.com"></div>
       ${reg?`<div class="af"><label for="f-phone">WhatsApp number</label><input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="07X XXX XXXX"></div>`:""}
@@ -2609,16 +2653,45 @@ function renderAuth(kind){
       <p class="err" role="alert"></p>
       <button class="btn primary" type="submit">${reg?"Create account":"Log in"}</button>
       <p class="alt">${reg?`Already have an account? <a href="#login">Log in</a>`:`New to Aradhanawa? <a href="#register">Create an account</a>`}</p>
-      ${reg?"":`<p class="hint">Admin demo login: <b>admin@aradhanawa.lk</b> / <b>admin123</b>. Change it before going live.</p>`}
+      ${reg||FB_ON()?"":`<p class="hint">Demo mode (Firebase not connected yet). Admin demo login: <b>admin@aradhanawa.lk</b> / <b>admin123</b>.</p>`}
     </form></div></main>`);
   const f=document.getElementById("aform"), err=f.querySelector(".err"), pw=f.querySelector("#f-pw");
   f.querySelector("[data-showpw]").onclick=e=>{ const s=pw.type==="password"; pw.type=s?"text":"password"; e.target.textContent=s?"Hide":"Show" };
-  const fg=f.querySelector("[data-forgot]"); if(fg) fg.onclick=()=>modal(`<span class="eyebrow">Reset password</span><h3>Forgot your password?</h3><p>Message our studio on WhatsApp from the number on your account and we'll reset it for you.</p><div class="row" style="justify-content:flex-end"><button class="btn" data-x>Close</button><a class="btn wa" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,"Hi Aradhanawa! Please help me reset my account password.")}">${I.wa} WhatsApp us</a></div>`);
+  const sb=f.querySelector("button[type=submit]"), gb=f.querySelector("[data-google]");
+  const busy=on=>{ sb.disabled=gb.disabled=on; sb.style.opacity=on?.6:"" };
+  gb.onclick=async()=>{
+    if(!FB_ON()) return toast("Google login starts working once Firebase is connected (firebase-config.js).");
+    if(!fbNeed()) return; err.textContent=""; busy(true);
+    try{ await FBX.signInGoogle() }catch(e){ err.textContent=fbErrText(e) } finally{ busy(false) }
+  };
+  const fg=f.querySelector("[data-forgot]"); if(fg&&FB_ON()) fg.onclick=async()=>{
+    const em=(f.elements.email.value||"").trim().toLowerCase();
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){ err.textContent="Type your email above first, then tap Forgot password."; f.elements.email.focus(); return }
+    if(!fbNeed()) return;
+    try{ await FBX.resetPassword(em); toast("Password reset link sent. Check your email.") }catch(e){ err.textContent=fbErrText(e) }
+  };
+  else if(fg) fg.onclick=()=>modal(`<span class="eyebrow">Reset password</span><h3>Forgot your password?</h3><p>Message our studio on WhatsApp from the number on your account and we'll reset it for you.</p><div class="row" style="justify-content:flex-end"><button class="btn" data-x>Close</button><a class="btn wa" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,"Hi Aradhanawa! Please help me reset my account password.")}">${I.wa} WhatsApp us</a></div>`);
   if(reg) pw.oninput=()=>{ const v=pw.value, sc=(v.length>=6)+(v.length>=10)+/[A-Z]/.test(v)+/\d/.test(v)+/[^A-Za-z0-9]/.test(v); const i=f.querySelector(".meter i"); i.style.width=(sc*20)+"%"; i.style.background=sc<2?"#B3261E":sc<4?"#C29A55":"#2F7A57" };
   f.onsubmit=async e=>{
     e.preventDefault(); err.textContent=""; f.querySelectorAll("[aria-invalid]").forEach(x=>x.removeAttribute("aria-invalid"));
     const v=k=>(f.elements[k]&&f.elements[k].value||"").trim(), bad=(k,m)=>{ err.textContent=m; const el=f.elements[k]; if(el&&el.focus){ el.setAttribute("aria-invalid","true"); el.focus() } };
     const email=v("email").toLowerCase(), users=DB.users();
+    if(FB_ON()){
+      if(reg){
+        if(v("fullname").length<2) return bad("fullname","Please enter your name.");
+        if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return bad("email","Please enter a valid email.");
+        if(v("phone") && intlPhone(v("phone")).length!==11) return bad("phone","WhatsApp number should look like 07X XXX XXXX.");
+        if(pw.value.length<6) return bad("pw","Password needs at least 6 characters.");
+        if(!f.elements.terms.checked) return bad("terms","Please accept the terms to continue.");
+      }else if(!email||!pw.value) return bad(email?"pw":"email","Enter your email and password.");
+      if(!fbNeed()) return; busy(true);
+      try{
+        if(reg){ await FBX.register({name:v("fullname"),email,phone:v("phone"),pw:pw.value}); toast("Account created. Welcome to Aradhanawa!") }
+        else await FBX.signInEmail(email,pw.value);
+        // the auth listener moves on to the account / admin page
+      }catch(er){ const m=fbErrText(er); bad(/email/i.test(m)&&!/password/i.test(m)?"email":"pw",m) } finally{ busy(false) }
+      return;
+    }
     if(reg){
       if(v("fullname").length<2) return bad("fullname","Please enter your name.");
       if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return bad("email","Please enter a valid email.");
@@ -2642,9 +2715,13 @@ function renderAuth(kind){
 /* ---------- user account ---------- */
 function renderAccount(){
   const u=me(); if(!u){ store.set("next","#account"); location.replace("#login"); return }
-  const mine=DB.orders().filter(o=>o.email===u.email);
+  const needVerify=FB_ON()&&window.FBX&&FBX.user&&!FBX.user.emailVerified&&FBX.isBootstrapAdmin(u.email);
+  const mine=DB.orders().filter(o=>(FB_ON()&&o.uid===u.id)||o.email===u.email);
+  const invs=DB.invitations().filter(x=>x.uid===u.id), rsv=DB.rsvps().filter(x=>x.ownerUid===u.id);
   const evs=Object.keys(TYPES).filter(k=>S.edited[k]);
   shell(`<main class="acct"><div class="wrap">
+    ${needVerify?`<div class="box" style="border-left:3px solid var(--gold)"><h2>Verify your email to open the admin dashboard</h2><p style="margin:0 0 14px;color:var(--muted)">${esc(u.email)} is an admin email, but this login isn't verified yet. The quickest way is to log in with Google using the same Gmail. Or send yourself a verification link, tap it, then come back and tap “I've verified”.</p>
+      <div class="row"><button class="btn primary" data-vgoogle>Log in with Google</button><button class="btn" data-vsend>Send verification email</button><button class="btn" data-vdone>I've verified</button></div></div>`:""}
     <div class="mh"><div><span class="eyebrow">My account</span><h1>Ayubowan, ${esc(u.name.split(" ")[0])}</h1><p>${esc(u.email)}${u.phone?` · ${esc(prettyPhone(u.phone))}`:""}</p></div>
       <div class="row"><a class="btn primary" href="#create">Create invitation</a>${u.plan==="Free"?`<button class="btn" data-upgrade>Upgrade to Plus</button>`:""}</div></div>
     <div class="kpis">
@@ -2656,8 +2733,21 @@ function renderAccount(){
     <div class="box"><div class="bh"><h2>My orders</h2></div><div class="tblwrap"><table class="tbl"><thead><tr><th>Design</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody>
       ${mine.map(o=>`<tr><td><b>${esc(o.design)}</b><small>${esc((TYPES[o.type]||TYPES.other).name)}</small></td><td>${esc(o.amount)}</td><td>${stBadge(o.status)}</td><td>${fdt(o.created)}</td></tr>`).join("")||`<tr><td colspan="4" class="empty">No orders yet. Pick a custom design from the editor and request it.</td></tr>`}
     </tbody></table></div></div>
+    ${FB_ON()?`<div class="two">
+      <div class="box"><div class="bh"><h2>Guest replies</h2><span class="badge ok">${rsv.filter(r=>r.coming).reduce((a,r)=>a+(+r.count||0),0)} coming</span></div><div class="tblwrap"><table class="tbl"><thead><tr><th>Guest</th><th>Reply</th><th>Date</th></tr></thead><tbody>
+        ${rsv.map(r=>`<tr><td><b>${esc(r.name)}</b><small>${esc(r.event)}</small>${r.msg?`<small>“${esc(r.msg)}”</small>`:""}</td><td>${r.coming?`<span class="badge ok">Coming · ${+r.count||1}</span>`:`<span class="badge new">Can't come</span>`}</td><td>${fdt(r.created)}</td></tr>`).join("")||`<tr><td colspan="3" class="empty">Replies from your guests appear here when they tap “Send reply” on your invitation.</td></tr>`}
+      </tbody></table></div></div>
+      <div class="box"><div class="bh"><h2>Saved invitations</h2></div><div class="tblwrap"><table class="tbl"><tbody>
+        ${invs.map(x=>`<tr><td><b>${esc(x.title||x.names||(TYPES[x.type]||TYPES.other).name)}</b><small>${esc((TYPES[x.type]||TYPES.other).name)}${x.date?" · "+esc(x.date):""}</small></td><td style="text-align:right">${x.guestCount||0} guests</td></tr>`).join("")||`<tr><td class="empty">Edit an invitation while logged in and it is saved to your account.</td></tr>`}
+      </tbody></table></div></div>
+    </div>`:""}
   </div></main>`);
   const up=document.querySelector("[data-upgrade]"); if(up) up.onclick=()=>upsell(true);
+  if(needVerify){
+    document.querySelector("[data-vgoogle]").onclick=()=>FBX.signInGoogle().catch(fbFail);
+    document.querySelector("[data-vsend]").onclick=()=>FBX.sendVerify().then(()=>toast("Verification link sent. Check your Gmail (and Spam)."),fbFail);
+    document.querySelector("[data-vdone]").onclick=()=>FBX.refresh().then(p=>{ if(p&&p.role==="admin"){ toast("Verified. Opening the dashboard"); location.hash="#admin" } else toast("Not verified yet. Tap the link in the email first.") },fbFail);
+  }
 }
 
 /* ---------- admin ---------- */
@@ -2668,18 +2758,23 @@ const AI = {
   grid:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>`,
   gear:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>`,
   out:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4M10 17l5-5-5-5M15 12H3"/></svg>`,
+  mail:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14"/><path d="M3 6l9 7 9-7"/></svg>`,
+  check:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12.5l5 5L20 6.5"/></svg>`,
 };
 const fdt = s => { try{ return new Date(s).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}) }catch(e){ return "" } };
 const stBadge = s => `<span class="badge ${s==="Done"?"ok":s==="In progress"?"warn":s==="New"?"new":""}">${esc(s)}</span>`;
 const rsNum = s => +String(s||"").replace(/[^\d]/g,"")||0;
 const rs = n => "Rs. "+n.toLocaleString("en-LK");
 
-function renderAdmin(tab){
+function renderAdmin(tab,arg){
   const u=me();
-  if(!u||u.role!=="admin"){ store.set("next","#admin"+(tab?"/"+tab:"")); location.replace("#login"); if(u) toast("That page is for admins only"); return }
-  const TABS=[["overview",AI.chart,"Overview"],["users",AI.users,"Users"],["orders",AI.bag,"Orders"],["templates",AI.grid,"Templates"],["prompts",AI.grid,"Image prompts"],["settings",AI.gear,"Settings"]];
+  if(!u){ store.set("next","#admin"+(tab?"/"+tab:"")); location.replace("#login"); return }
+  if(u.role!=="admin"){ store.set("next",""); location.replace("#account"); toast("That page is for admins only"); return }
+  const TABS=[["overview",AI.chart,"Overview"],["users",AI.users,"Users"],["orders",AI.bag,"Orders"],["invitations",AI.mail,"Invitations"],["rsvps",AI.check,"RSVPs"],["templates",AI.grid,"Templates"],["prompts",AI.grid,"Image prompts"],["settings",AI.gear,"Settings"]];
   tab = TABS.some(t=>t[0]===tab) ? tab : "overview";
-  const users=DB.users(), orders=DB.orders(), off=tplOff();
+  const users=DB.users(), orders=DB.orders(), off=tplOff(), invs=DB.invitations(), rsvps=DB.rsvps(), fb=FB_ON();
+  const typeName=t=>(TYPES[t]||TYPES.other).name, coming=list=>list.filter(r=>r.coming).reduce((a,r)=>a+(+r.count||0),0);
+  const demo=fb?"":`<div class="box demo"><b>Demo mode</b>Firebase is not connected yet, so this data lives only in this browser. Add your Firebase config to firebase-config.js to see real users, orders, invitations and RSVPs here.</div>`;
   const open=orders.filter(o=>o.status==="New"||o.status==="In progress");
   const week=Date.now()-7*864e5;
   const orderHead=edit=>`<thead><tr><th>Customer</th><th>Design</th><th>Amount</th><th>Status</th><th>Date</th>${edit?"<th></th>":""}</tr></thead>`;
@@ -2697,6 +2792,12 @@ function renderAdmin(tab){
       <div class="kpi"><small>Open orders</small><b>${open.length}</b><span>${rs(open.reduce((a,o)=>a+rsNum(o.amount),0))} pending</span></div>
       <div class="kpi"><small>Revenue</small><b>${rs(orders.filter(o=>o.status==="Done").reduce((a,o)=>a+rsNum(o.amount),0))}</b><span>from completed orders</span></div>
     </div>
+    ${fb?`<div class="kpis">
+      <div class="kpi"><small>Invitations</small><b>${invs.length}</b><span>${invs.filter(x=>new Date(x.updated)>week).length} edited this week</span></div>
+      <div class="kpi"><small>Guests invited</small><b>${invs.reduce((a,x)=>a+(+x.guestCount||0),0)}</b><span>personal links made</span></div>
+      <div class="kpi"><small>RSVPs</small><b>${rsvps.length}</b><span>${rsvps.filter(r=>new Date(r.created)>week).length} this week</span></div>
+      <div class="kpi"><small>People coming</small><b>${coming(rsvps)}</b><span>${rsvps.filter(r=>!r.coming).length} can't make it</span></div>
+    </div>`:""}
     <div class="two">
       <div class="box"><div class="bh"><h2>Latest orders</h2><a href="#admin/orders">See all</a></div><div class="tblwrap"><table class="tbl">${orderHead(false)}<tbody>${orderRows(orders.slice(0,5),false)}</tbody></table></div></div>
       <div class="box"><div class="bh"><h2>New users</h2><a href="#admin/users">See all</a></div><div class="tblwrap"><table class="tbl"><tbody>
@@ -2710,13 +2811,36 @@ function renderAdmin(tab){
     <div class="tblwrap"><table class="tbl" id="utbl"><thead><tr><th>Name</th><th>WhatsApp</th><th>Plan</th><th>Role</th><th>Joined</th><th></th></tr></thead><tbody>
       ${users.map(x=>`<tr data-q="${esc((x.name+" "+x.email+" "+x.phone).toLowerCase())}"><td><b>${esc(x.name)}</b>${x.sample?` <span class="badge">Sample</span>`:""}<small>${esc(x.email)}</small></td><td>${esc(prettyPhone(x.phone)||"-")}</td>
         <td><span class="badge ${x.plan==="Plus"?"gold":""}">${esc(x.plan)}</span></td><td>${x.role==="admin"?`<span class="badge ok">Admin</span>`:"User"}</td><td>${fdt(x.created)}</td>
-        <td><div class="acts">${x.role==="admin"?"":`<button class="btn sm" data-uplan="${x.id}">${x.plan==="Plus"?"Set Free":"Give Plus"}</button><button class="btn sm" data-udel="${x.id}">Delete</button>`}</div></td></tr>`).join("")}
+        <td><div class="acts">${fb&&x.id!==u.id&&!FBX.isBootstrapAdmin(x.email)?`<button class="btn sm" data-uadmin="${esc(x.email)}" data-on="${x.role==="admin"?0:1}">${x.role==="admin"?"Remove admin":"Make admin"}</button>`:""}${x.role==="admin"?"":`<button class="btn sm" data-uplan="${x.id}">${x.plan==="Plus"?"Set Free":"Give Plus"}</button><button class="btn sm" data-udel="${x.id}">Delete</button>`}</div></td></tr>`).join("")||`<tr><td colspan="6" class="empty">No users yet.</td></tr>`}
     </tbody></table></div></div>`;
   }
   if(tab==="orders"){
     body=`<div class="mh"><div><span class="eyebrow">Admin</span><h1>Orders</h1><p>Custom designs and Plus upgrades requested from the site.</p></div></div>
     <div class="box"><div class="tbar" style="margin-bottom:12px"><select id="ofilter" aria-label="Filter by status"><option value="">All statuses</option>${["New","In progress","Done","Cancelled"].map(s=>`<option>${s}</option>`).join("")}</select></div>
     <div class="tblwrap"><table class="tbl" id="otbl">${orderHead(true)}<tbody>${orderRows(orders,true)}</tbody></table></div></div>`;
+  }
+  if(tab==="invitations"){
+    body=`<div class="mh"><div><span class="eyebrow">Admin</span><h1>Invitations</h1><p>${invs.length} invitations saved by logged-in customers</p></div></div>
+    <div class="box"><div class="tbar" style="margin-bottom:12px"><input type="search" id="isearch" placeholder="Search names, owner or venue" aria-label="Search invitations"></div>
+    <div class="tblwrap"><table class="tbl" id="itbl"><thead><tr><th>Event</th><th>Owner</th><th>Date</th><th>Guests</th><th>Replies</th><th>Updated</th><th></th></tr></thead><tbody>
+      ${invs.map(x=>{ const rr=rsvps.filter(r=>r.inviteId===x.id); return `<tr data-q="${esc([x.title,x.names,x.venue,x.ownerName,x.ownerEmail].join(" ").toLowerCase())}">
+        <td class="wrap"><b>${esc(x.title||x.names||typeName(x.type))}</b><small>${esc(typeName(x.type))}${x.venue?" · "+esc(x.venue):""}</small></td>
+        <td><b>${esc(x.ownerName||"-")}</b><small>${esc(x.ownerEmail||"")}</small></td><td>${esc(x.date||"-")}</td><td>${+x.guestCount||0}</td>
+        <td>${rr.length?`<a href="#admin/rsvps/${encodeURIComponent(x.id)}">${coming(rr)} coming · ${rr.length} replies</a>`:"-"}</td><td>${fdt(x.updated)}</td>
+        <td><div class="acts"><button class="btn sm" data-idel="${esc(x.id)}">Delete</button></div></td></tr>` }).join("")||`<tr><td colspan="7" class="empty">${fb?"No invitations yet. They appear here when a logged-in customer edits an event.":"Invitations are saved once Firebase is connected."}</td></tr>`}
+    </tbody></table></div></div>`;
+  }
+  if(tab==="rsvps"){
+    const fid=arg?decodeURIComponent(arg):"", inv=fid&&invs.find(x=>x.id===fid), list=fid?rsvps.filter(r=>r.inviteId===fid):rsvps;
+    body=`<div class="mh"><div><span class="eyebrow">Admin</span><h1>RSVPs</h1><p>${inv?`Replies for <b>${esc(inv.title||inv.names||typeName(inv.type))}</b> · <a href="#admin/rsvps">Show all</a>`:"Guest replies sent from invitation websites"}</p></div>
+      <div class="kpis" style="grid-template-columns:repeat(3,minmax(110px,1fr));min-width:min(100%,420px)"><div class="kpi"><small>Replies</small><b>${list.length}</b></div><div class="kpi"><small>Coming</small><b>${coming(list)}</b></div><div class="kpi"><small>Can't come</small><b>${list.filter(r=>!r.coming).length}</b></div></div></div>
+    <div class="box"><div class="tbar" style="margin-bottom:12px"><input type="search" id="rsearch" placeholder="Search guest or event" aria-label="Search replies"><select id="rfilter" aria-label="Filter replies"><option value="">All replies</option><option value="1">Coming</option><option value="0">Can't come</option></select></div>
+    <div class="tblwrap"><table class="tbl" id="rtbl"><thead><tr><th>Guest</th><th>Event</th><th>Reply</th><th>Message</th><th>Date</th><th></th></tr></thead><tbody>
+      ${list.map(r=>`<tr data-q="${esc([r.name,r.guest,r.event].join(" ").toLowerCase())}" data-c="${r.coming?1:0}"><td><b>${esc(r.name)}</b>${r.guest&&r.guest!==r.name?`<small>Link for ${esc(r.guest)}</small>`:""}</td>
+        <td><b>${esc(r.event||typeName(r.type))}</b><small>${esc(typeName(r.type))}</small></td>
+        <td>${r.coming?`<span class="badge ok">Coming · ${+r.count||1}</span>`:`<span class="badge new">Can't come</span>`}</td>
+        <td class="wrap">${esc(r.msg||"")}</td><td>${fdt(r.created)}</td><td><div class="acts"><button class="btn sm" data-rdel="${esc(r.id)}">Delete</button></div></td></tr>`).join("")||`<tr><td colspan="6" class="empty">${fb?"No replies yet.":"RSVPs are saved once Firebase is connected."}</td></tr>`}
+    </tbody></table></div></div>`;
   }
   if(tab==="templates"){
     body=`<div class="mh"><div><span class="eyebrow">Admin</span><h1>Templates</h1><p>Turn designs on or off. Hidden designs disappear from the gallery and the editor.</p></div></div>
@@ -2738,32 +2862,51 @@ function renderAdmin(tab){
       <div class="af"><label for="s-custom">Custom design price</label><input id="s-custom" name="PRICE_CUSTOM" value="${esc(CONFIG.PRICE_CUSTOM)}"></div>
       <div class="af" style="grid-column:1/-1"><label for="s-music">Background music (Lotus Mandala)</label><input id="s-music" name="MUSIC" value="${esc(CONFIG.MUSIC||"")}"><small>MP3 path or URL, for example audio/jayamangala-gatha.mp3. Leave empty for no music.</small></div>
     </div><div class="row" style="margin-top:18px"><button class="btn primary" type="submit">Save settings</button></div></form>
-    <div class="box danger"><h2>Data</h2><p class="sub" style="margin:-4px 0 14px;color:var(--muted)">Everything here is saved in this browser only until a real database is connected.</p>
-      <div class="row"><button class="btn" data-clearsample>Remove sample data</button></div></div>`;
+    ${fb?`<div class="box"><h2>Admins</h2><p class="sub" style="margin:-4px 0 14px;color:var(--muted)">These Google accounts can open this dashboard. Owners listed in firebase-config.js and firestore.rules can't be removed here.</p>
+      <div class="tblwrap"><table class="tbl"><tbody>
+        ${[...new Set([...(window.ARADHANA_FIREBASE.adminEmails||[]).map(e=>String(e).toLowerCase()),...FBD().admins.map(a=>a.id)])].map(em=>`<tr><td><b>${esc(em)}</b><small>${FBX.isBootstrapAdmin(em)?"Owner":"Added from dashboard"}</small></td><td><div class="acts">${FBX.isBootstrapAdmin(em)||em===u.email?"":`<button class="btn sm" data-uadmin="${esc(em)}" data-on="0">Remove</button>`}</div></td></tr>`).join("")}
+      </tbody></table></div>
+      <form class="tbar" id="aform2" style="margin-top:14px"><input type="email" name="em" placeholder="name@gmail.com" aria-label="New admin email" required><button class="btn primary" type="submit">Add admin</button></form></div>
+    <div class="box"><h2>Data</h2><p class="sub" style="margin:0;color:var(--muted)">Saved in Firebase (${esc(window.ARADHANA_FIREBASE.config.projectId||"")}). Users, orders, invitations and RSVPs update live.</p></div>`
+    :`<div class="box danger"><h2>Data</h2><p class="sub" style="margin:-4px 0 14px;color:var(--muted)">Everything here is saved in this browser only until Firebase is connected.</p>
+      <div class="row"><button class="btn" data-clearsample>Remove sample data</button></div></div>`}`;
   }
   shell(`<div class="adm"><aside class="side"><div class="who"><b>${esc(u.name)}</b><small>${esc(u.email)}</small></div>
     ${TABS.map(([k,ic,lb])=>`<a href="#admin/${k}" ${k===tab?'aria-current="page"':""}>${ic}${lb}</a>`).join("")}
-    <span class="sp"></span><a href="#">${I.home} View site</a></aside><main class="main">${body}</main></div>`);
+    <span class="sp"></span><a href="#">${I.home} View site</a></aside><main class="main">${demo}${body}</main></div>`);
 
   const A=document.querySelector(".adm"), re=()=>renderAdmin(tab);
   A.addEventListener("change",e=>{
     const t=e.target;
-    if(t.dataset.ostatus){ const os=DB.orders(), o=os.find(x=>x.id===t.dataset.ostatus); if(o){ o.status=t.value; DB.setOrders(os); toast(`Order marked ${t.value}`) } }
-    if(t.dataset.tog){ let o=tplOff(); o=t.checked?o.filter(x=>x!==t.dataset.tog):[...o,t.dataset.tog]; store.set("tplOff",o); t.closest(".titem").dataset.off=t.checked?0:1; toast(t.checked?"Design visible":"Design hidden") }
+    if(t.dataset.ostatus){ if(fb){ if(fbNeed()) FBX.setOrderStatus(t.dataset.ostatus,t.value).then(()=>toast(`Order marked ${t.value}`),fbFail) } else { const os=DB.orders(), o=os.find(x=>x.id===t.dataset.ostatus); if(o){ o.status=t.value; DB.setOrders(os); toast(`Order marked ${t.value}`) } } }
+    if(t.dataset.tog){ let o=tplOff(); o=t.checked?o.filter(x=>x!==t.dataset.tog):[...o,t.dataset.tog]; store.set("tplOff",o); if(fb&&fbNeed()) FBX.setTplOff(o).catch(fbFail); t.closest(".titem").dataset.off=t.checked?0:1; toast(t.checked?"Design visible":"Design hidden") }
+    if(t.id==="rfilter"||t.id==="rsearch") filterR();
     if(t.id==="ofilter") A.querySelectorAll("#otbl tbody tr").forEach(r=>{ const s=r.querySelector("select"); r.hidden=!!t.value&&!!s&&s.value!==t.value });
   });
-  A.addEventListener("input",e=>{ if(e.target.id==="usearch"){ const q=e.target.value.toLowerCase().trim(); A.querySelectorAll("#utbl tbody tr").forEach(r=>r.hidden=!!q&&!r.dataset.q.includes(q)) } });
+  const filterR=()=>{ const q=(A.querySelector("#rsearch").value||"").toLowerCase().trim(), c=A.querySelector("#rfilter").value; A.querySelectorAll("#rtbl tbody tr[data-q]").forEach(r=>r.hidden=(!!q&&!r.dataset.q.includes(q))||(c!==""&&r.dataset.c!==c)) };
+  A.addEventListener("input",e=>{ const id=e.target.id, q=e.target.value.toLowerCase().trim();
+    if(id==="usearch") A.querySelectorAll("#utbl tbody tr").forEach(r=>r.hidden=!!q&&!r.dataset.q.includes(q));
+    if(id==="isearch") A.querySelectorAll("#itbl tbody tr[data-q]").forEach(r=>r.hidden=!!q&&!r.dataset.q.includes(q));
+    if(id==="rsearch") filterR() });
   A.addEventListener("click",e=>{
     const b=e.target.closest("button"); if(!b) return;
-    if(b.dataset.uplan){ const us=DB.users(), x=us.find(y=>y.id===b.dataset.uplan); if(x){ x.plan=x.plan==="Plus"?"Free":"Plus"; DB.setUsers(us); toast(`${x.name} is now on ${x.plan}`); re() } }
+    if(b.dataset.uplan){ const us=DB.users(), x=us.find(y=>y.id===b.dataset.uplan); if(x){ const np=x.plan==="Plus"?"Free":"Plus";
+      if(fb){ if(fbNeed()) FBX.setUserPlan(x.id,np).then(()=>toast(`${x.name} is now on ${np}`),fbFail) } else { x.plan=np; DB.setUsers(us); toast(`${x.name} is now on ${x.plan}`); re() } } }
+    if(b.dataset.uadmin&&fb&&fbNeed()){ const em=b.dataset.uadmin, on=b.dataset.on==="1"; FBX.setAdmin(em,on).then(()=>toast(on?`${em} can now open the admin dashboard`:`${em} is no longer an admin`),fbFail) }
+    if(b.dataset.idel&&fbNeed()){ const id=b.dataset.idel; modal(`<span class="eyebrow">Delete invitation</span><h3>Delete this invitation?</h3><p>The customer's saved copy in their account is removed. Guest links already sent keep working.</p><div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><button class="btn primary" id="cdel">Delete</button></div>`);
+      document.getElementById("cdel").onclick=()=>{ document.getElementById("layer").innerHTML=""; FBX.deleteInvite(id).then(()=>toast("Invitation deleted"),fbFail) } }
+    if(b.dataset.rdel&&fbNeed()){ FBX.deleteRsvp(b.dataset.rdel).then(()=>toast("Reply deleted"),fbFail) }
     if(b.dataset.udel){ const x=DB.users().find(y=>y.id===b.dataset.udel); if(!x) return;
       modal(`<span class="eyebrow">Delete user</span><h3>Delete ${esc(x.name)}?</h3><p>This removes the account from this browser. Their orders stay in the list.</p><div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><button class="btn primary" id="cdel">Delete</button></div>`);
-      document.getElementById("cdel").onclick=()=>{ DB.setUsers(DB.users().filter(y=>y.id!==x.id)); document.getElementById("layer").innerHTML=""; toast("User deleted"); re() } }
+      document.getElementById("cdel").onclick=()=>{ document.getElementById("layer").innerHTML=""; if(fb){ if(fbNeed()) FBX.deleteUser(x.id).then(()=>toast("User profile deleted. Remove their sign-in in Firebase → Authentication too."),fbFail); return } DB.setUsers(DB.users().filter(y=>y.id!==x.id)); toast("User deleted"); re() } }
     if(b.dataset.prompt){ copy(PROMPTS[+b.dataset.prompt].p, document.getElementById("pr-"+b.dataset.prompt)) }
     if(b.hasAttribute("data-clearsample")){ DB.setUsers(DB.users().filter(x=>!x.sample)); DB.setOrders(DB.orders().filter(x=>!x.sample)); toast("Sample data removed"); re() }
   });
   const sf=document.getElementById("sform");
-  if(sf) sf.onsubmit=e=>{ e.preventDefault(); const c={}; for(const k of ["FREE_GUESTS","STUDIO_WA","PRICE_PLUS","PRICE_CUSTOM","MUSIC"]){ const v=sf.elements[k].value.trim(); if(k==="MUSIC"){ c.MUSIC=v; const a=document.getElementById("lxAudio"); if(a) a.remove(); continue } if(v) c[k]=k==="FREE_GUESTS"?Math.max(1,+v||5):k==="STUDIO_WA"?intlPhone(v):v } store.set("config",c); Object.assign(CONFIG,c); toast("Settings saved") };
+  if(sf) sf.onsubmit=e=>{ e.preventDefault(); const c={}; for(const k of ["FREE_GUESTS","STUDIO_WA","PRICE_PLUS","PRICE_CUSTOM","MUSIC"]){ const v=sf.elements[k].value.trim(); if(k==="MUSIC"){ c.MUSIC=v; const a=document.getElementById("lxAudio"); if(a) a.remove(); continue } if(v) c[k]=k==="FREE_GUESTS"?Math.max(1,+v||5):k==="STUDIO_WA"?intlPhone(v):v } store.set("config",c); Object.assign(CONFIG,c);
+    if(fb){ if(fbNeed()) FBX.saveSettings(c).then(()=>toast("Settings saved for every visitor"),fbFail) } else toast("Settings saved") };
+  const af2=document.getElementById("aform2");
+  if(af2) af2.onsubmit=e=>{ e.preventDefault(); const em=af2.elements.em.value.trim().toLowerCase(); if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) return toast("Enter a valid email"); if(fbNeed()) FBX.setAdmin(em,true).then(()=>toast(`${em} added. They log in with Google to open the dashboard.`),fbFail) };
 }
 
 /* ---------- router ---------- */
@@ -2783,13 +2926,36 @@ function route(){
 addEventListener("hashchange",route);
 document.addEventListener("click",e=>{
   const o=e.target.closest("[data-order]"); if(o){ const [k,d]=o.dataset.order.split("|"); logOrder(k,d) }
-  if(e.target.closest("[data-logout]")){ store.set("session",null); toast("Logged out"); if(/^#(admin|account)/.test(location.hash)) location.hash=""; else render() }
+  if(e.target.closest("[data-logout]")){ e.preventDefault();
+    if(FB_ON()){ if(fbNeed()) FBX.signOut().then(()=>{ toast("Logged out"); if(/^#(admin|account)/.test(location.hash)) location.hash="" },fbFail); return }
+    store.set("session",null); toast("Logged out"); if(/^#(admin|account)/.test(location.hash)) location.hash=""; else render() }
 });
+
+/* Firebase: live data changes re-render the admin / account pages; sign-in changes move between pages. */
+let fbT=0, fbDirty=false;
+function fbApplySettings(){ const st=(window.FBX&&FBX.settings)||{}; if(st.config){ store.set("config",st.config); Object.assign(CONFIG,st.config) } if(Array.isArray(st.tplOff)) store.set("tplOff",st.tplOff) }
+function fbChanged(why){
+  if(why==="settings"){ fbApplySettings(); return }
+  const h=location.hash||"", pg=h.slice(1).split("/")[0];
+  if(h.startsWith("#i=")) return;
+  if(why==="auth"){ if(["login","register","admin","account"].includes(pg)) route(); else render(); return }
+  if(pg!=="admin"&&pg!=="account") return;
+  const a=document.activeElement; if(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&a.closest(".adm,.acct")){ fbDirty=true; return }
+  clearTimeout(fbT); fbT=setTimeout(route,120);
+}
+document.addEventListener("focusout",()=>{ if(!fbDirty) return; setTimeout(()=>{ const a=document.activeElement; if(fbDirty&&!(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))){ fbDirty=false; route() } },200) });
+function fbStart(){
+  return import("./fb.js").then(m=>{ fbErrText=m.errText; return m.init(window.ARADHANA_FIREBASE,{onChange:fbChanged,onError:e=>toast(fbErrText(e))}) })
+    .then(fbApplySettings).catch(e=>console.error("[fb] could not start",e));
+}
 
 (function boot(){
   try{ Object.assign(CONFIG, store.get("config",{})) }catch(e){}
   lxCSS();
-  seedDB().catch(()=>{}).finally(route);
+  if(!FB_ON()){ seedDB().catch(()=>{}).finally(route); return }
+  // Guest invitation links open straight away; Firebase loads alongside for the RSVP save.
+  if((location.hash||"").startsWith("#i=")){ route(); fbStart(); return }
+  Promise.race([fbStart(), new Promise(r=>setTimeout(r,8000))]).finally(route);
 })();
 </script>
 </body></html>

@@ -928,6 +928,47 @@ nav.top a{font-weight:600}
 .lx-hero .lx-names.lx-rv.in{transform:none;letter-spacing:-.01em}
 @media (prefers-reduced-motion:reduce){.lx-bgfx *,.lx-heart{animation:none!important}.lx-petals{display:none}.lx-rv,.lx-rv *{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}}
 
+/* ---- themed cards: moving side art, gold light running round the border, particles ---- */
+@property --cang{syntax:"<angle>";inherits:false;initial-value:0deg}
+.card.thc .art{overflow:hidden}
+.cfx{position:absolute;inset:0}
+.cfx img{position:absolute;inset:-2%;width:104%;height:104%;object-fit:cover;display:block}
+.cfx .cb{animation:lxsilk 22s ease-in-out infinite alternate}
+.cfx .fl.l{transform-origin:0% 85%;animation:cflL 6s ease-in-out infinite alternate}
+.cfx .fl.r{transform-origin:100% 85%;animation:cflR 7s ease-in-out infinite alternate;animation-delay:-2.5s}
+@keyframes cflL{0%{transform:rotate(-1deg) scale(1)}50%{transform:rotate(.6deg) scale(1.02)}100%{transform:rotate(1.2deg) scale(1.006)}}
+@keyframes cflR{0%{transform:rotate(1deg) scale(1)}50%{transform:rotate(-.6deg) scale(1.02)}100%{transform:rotate(-1.2deg) scale(1.006)}}
+.cm-bob .cfx .fl.l{transform-origin:50% 50%;animation:cbobL 4.5s ease-in-out infinite alternate}
+.cm-bob .cfx .fl.r{transform-origin:50% 50%;animation:cbobR 5.2s ease-in-out infinite alternate;animation-delay:-1.6s}
+@keyframes cbobL{from{transform:translate3d(0,2.5cqw,0) rotate(-.4deg)}to{transform:translate3d(0,-3cqw,0) rotate(.5deg)}}
+@keyframes cbobR{from{transform:translate3d(0,-2.5cqw,0) rotate(.4deg)}to{transform:translate3d(0,3cqw,0) rotate(-.5deg)}}
+.cm-swing .cfx .fl.l{transform-origin:20% 0%;animation:cswL 4s ease-in-out infinite alternate}
+.cm-swing .cfx .fl.r{transform-origin:80% 0%;animation:cswR 4.6s ease-in-out infinite alternate;animation-delay:-2s}
+@keyframes cswL{from{transform:rotate(-1.3deg)}to{transform:rotate(1.3deg)}}
+@keyframes cswR{from{transform:rotate(1.3deg)}to{transform:rotate(-1.3deg)}}
+.cglow .cfx .fl.l{animation:cswL 4s ease-in-out infinite alternate,lxglow 2s ease-in-out infinite alternate}
+.cglow .cfx .fl.r{animation:cswR 4.6s ease-in-out infinite alternate,lxglow 2.7s ease-in-out infinite alternate}
+.cpt{position:absolute;inset:0;pointer-events:none}
+.cpt i{position:absolute;top:-6%;width:calc(3.4cqw * var(--s));height:calc(2.4cqw * var(--s));border-radius:80% 0 80% 0;background:linear-gradient(135deg,#F7D5D6,#E9AEB3);opacity:0;animation:cpetal var(--d) linear infinite}
+@keyframes cpetal{0%{opacity:0;transform:translate3d(0,0,0) rotate(0)}8%{opacity:.9}50%{transform:translate3d(var(--w),78cqw,0) rotate(200deg)}92%{opacity:.7}100%{opacity:0;transform:translate3d(calc(var(--w) * -1),156cqw,0) rotate(420deg)}}
+.cx-jasmine .cpt i{background:linear-gradient(135deg,#FFFFFF,#E8EEDF);border-radius:50% 50% 50% 0}
+.cx-rose .cpt i{background:linear-gradient(135deg,#F9D3D6,#E39AA5)}
+.cx-confetti .cpt i,.cx-gold .cpt i{border-radius:1px;width:calc(1.8cqw * var(--s));height:calc(3cqw * var(--s));animation-name:cconf}
+.cx-confetti .cpt i:nth-child(4n){background:#BFE8D6}.cx-confetti .cpt i:nth-child(4n+1){background:#F8C8B4}.cx-confetti .cpt i:nth-child(4n+2){background:#D9C6EE}.cx-confetti .cpt i:nth-child(4n+3){background:#F7E1A0}
+.cx-gold .cpt i{background:linear-gradient(135deg,#FCE7A8,#C9993F);box-shadow:0 0 1.5cqw rgba(255,215,130,.6)}
+@keyframes cconf{0%{opacity:0;transform:translate3d(0,0,0) rotateX(0) rotate(0)}8%{opacity:.95}50%{transform:translate3d(var(--w),78cqw,0) rotateX(540deg) rotate(120deg)}100%{opacity:0;transform:translate3d(calc(var(--w) * -1),156cqw,0) rotateX(1080deg) rotate(260deg)}}
+.cx-spark .cpt i,.cx-ember .cpt i{top:auto;bottom:-4%;width:calc(1.6cqw * var(--s));height:calc(1.6cqw * var(--s));border-radius:50%;animation-name:crise}
+.cx-spark .cpt i{background:radial-gradient(#FFF6C8,#FFC85A 45%,transparent 70%)}
+.cx-ember .cpt i{background:radial-gradient(#FFE7A8,#E2A33A 45%,transparent 70%)}
+@keyframes crise{0%{opacity:0;transform:translate3d(0,0,0) scale(.6)}15%{opacity:1}50%{transform:translate3d(var(--w),-72cqw,0) scale(1.2)}85%{opacity:.9}100%{opacity:0;transform:translate3d(calc(var(--w) * -.5),-150cqw,0) scale(.8)}}
+/* border: thin gold double frame that draws in, then a band of light keeps running round it */
+.card.thc .frame{z-index:1;inset:3.2cqw;border-color:color-mix(in srgb,var(--c-gold) 85%,transparent);opacity:1;clip-path:inset(0 50% 100% 50%);animation:lfopen 1.6s cubic-bezier(.6,0,.2,1) .2s forwards}
+.card.thc .frame::before{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1.5px;background:conic-gradient(from var(--cang),transparent 0 62%,color-mix(in srgb,var(--c-gold) 40%,#fff) 72%,#FFF8DC 75%,color-mix(in srgb,var(--c-gold) 40%,#fff) 78%,transparent 88%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box exclude,linear-gradient(#000 0 0);filter:drop-shadow(0 0 1.2cqw #FFE7A8);animation:cring 5s linear infinite}
+@keyframes cring{to{--cang:360deg}}
+.card.thc .corner{z-index:1;opacity:0;animation:lfband .8s ease 1.3s forwards,cpulse 3s ease-in-out 2.1s infinite}
+@keyframes cpulse{50%{filter:drop-shadow(0 0 1.4cqw #FFE7A8) brightness(1.25)}}
+.card.thc .txt{z-index:2}
+@media (prefers-reduced-motion:reduce){.card.thc *,.card.thc .frame::before{animation:none!important}.card.thc .frame,.card.thc .corner{clip-path:none;opacity:1}.cpt{display:none}}
 /* ---- themed sites: motion of side art, particles, dark themes ---- */
 .site.lotus:not(.th-lotus):not(.th-maroon) :is(.lx-cover,.lx-hero) > .lx-mandala{display:none}
 .site.lotus:not(.th-lotus):not(.th-maroon) :is(.lx-cover,.lx-hero){padding-top:110px}
@@ -1641,6 +1682,12 @@ function confettiArt(){
   return svg("0 0 300 110",`${st(26,"#EB5757")}${st(272,"#2D9CDB")}${st(58,"#F2C94C")}${st(240,"#27AE60")}${out}`);
 }
 function premArt(type,t,ev){
+  if(t.img&&t.site&&LX_TH[t.site]&&/-card$/.test(t.img)){
+    const TH=LX_TH[t.site], b=t.img, ss=n=>`srcset="img/${b}${n}-480.webp 480w, img/${b}${n}-960.webp 960w" sizes="(max-width:440px) 92vw, 380px"`;
+    const many=TH.fx==="confetti"||TH.fx==="gold";
+    const fx=Array.from({length:many?12:9},(_,i)=>`<i style="left:${(i*41+7)%94}%;--d:${(8+i%4*2)}s;--w:${(i%3-1)*14}cqw;animation-delay:-${(i*1.7).toFixed(1)}s;--s:${(.6+(i%3)*.2).toFixed(1)}"></i>`).join("");
+    return `<div class="cfx" aria-hidden="true"><img class="cb" src="img/${b}-480.webp" ${ss("")} alt=""><img class="fl l" src="img/${b}l-480.webp" ${ss("l")} alt=""><img class="fl r" src="img/${b}r-480.webp" ${ss("r")} alt=""><div class="cpt">${fx}</div></div>`;
+  }
   if(t.img) return pic(t.img,"(max-width:440px) 92vw, 380px",t.n,t.pos);
   if(t.layout==="floral") return floralArt();
   if(t.layout==="mono") return monoArt(type,ev||TYPES[type].sample);
@@ -2054,7 +2101,8 @@ function cardHTML(type, ev, lang, guest, prem){
       body=`<div class="rule"></div><div class="dets"><b>${esc(D)}</b>${det(L("Time","වේලාව"),fTime(ev.time,lang))}${venue}</div>`;
   }
   const c="var(--c-gold)";
-  const pc = prem ? `${prem.img&&prem.mode?`photo-${prem.mode}`:""} ${prem.layout?`L-${prem.layout}`:""}` : "";
+  const thc = prem&&prem.site&&LX_TH[prem.site]&&/-card$/.test(prem.img||"") ? LX_TH[prem.site] : null;
+  const pc = prem ? `${prem.img&&prem.mode?`photo-${prem.mode}`:""} ${prem.layout?`L-${prem.layout}`:""} ${thc?`thc cm-${thc.mo} cx-${thc.fx} ${thc.glow?"cglow":""}`:""}` : "";
   return `<article class="card t-${type} ${si?"si":""} ${pc}" aria-label="Invitation preview" ${prem?`style="${tplVars(prem)}"`:""}>
     ${prem&&!prem._noribbon?`<div class="ribbon">Preview</div>`:""}
     <div class="frame"></div>${["tl","tr","bl","br"].map(p=>corner(c).replace("%POS%",p)).join("")}

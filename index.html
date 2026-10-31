@@ -394,6 +394,38 @@ footer.foot{border-top:1px solid var(--line);padding-block:22px;color:var(--mute
 /* guest page */
 .gwrap{min-height:100vh;background:var(--c-bg)}
 .gwrap .site{max-width:480px;margin:0 auto;min-height:100vh}
+/* guest link: full-page card */
+.gwrap .site:not(.lotus) > .s-hero{min-height:100svh;padding:0;gap:0;position:relative;align-content:stretch}
+.gwrap .site:not(.lotus) > .s-hero .card{max-width:none;width:100%;aspect-ratio:auto;min-height:100svh;border-radius:0;box-shadow:none}
+.gwrap .site:not(.lotus) > .s-hero .s-hint{position:absolute;left:0;right:0;bottom:calc(74px + env(safe-area-inset-bottom,0px));text-align:center;color:var(--c-soft);animation:ghint 2s ease-in-out infinite;z-index:2;pointer-events:none}
+@keyframes ghint{50%{transform:translateY(5px);opacity:.6}}
+@media (min-width:600px){.gwrap{padding:0}.gwrap .site:not(.lotus) > .s-hero .card{box-shadow:0 0 60px -10px rgba(0,0,0,.35)}}
+.gwrap.in .s-hero .card{animation:gcardin 1s cubic-bezier(.2,.8,.2,1) both}
+@keyframes gcardin{from{opacity:0;transform:scale(.94) translateY(16px);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+/* guest link: envelope loader */
+.gload{position:fixed;inset:0;z-index:100;display:grid;place-items:center;align-content:center;gap:26px;background:radial-gradient(ellipse at 50% 40%,color-mix(in srgb,var(--g-bg) 80%,#fff),var(--g-bg));color:var(--g-ink);font-family:"Cormorant Garamond","Noto Serif Sinhala",Georgia,serif;transition:opacity .7s ease,transform .9s ease;cursor:pointer}
+.gload.out{opacity:0;transform:scale(1.15);pointer-events:none}
+.gl-env{position:relative;width:min(70vw,300px);aspect-ratio:1.5;perspective:900px;animation:glrise .8s cubic-bezier(.2,.8,.2,1) both}
+.gl-back{position:absolute;inset:0;border-radius:6px;background:color-mix(in srgb,var(--g-gold) 55%,#000 10%);box-shadow:0 30px 50px -24px rgba(0,0,0,.6)}
+.gl-letter{position:absolute;left:7%;right:7%;top:8%;height:88%;border-radius:4px;background:#FFFDF7;border:1px solid var(--g-gold);display:grid;place-items:center;align-content:center;gap:4px;color:#5A4320;text-align:center;animation:glletter 1s cubic-bezier(.3,.8,.3,1) 1.5s both}
+.gl-letter b{font:italic 600 clamp(18px,5vw,24px)/1.1 "Cormorant Garamond",serif}
+.gl-letter small{font:600 9px/1 "Inter Tight",sans-serif;letter-spacing:.24em;text-transform:uppercase;color:#9A6E1C}
+.gl-front{position:absolute;inset:0;border-radius:6px;background:var(--g-gold);clip-path:polygon(0 0,50% 56%,100% 0,100% 100%,0 100%);z-index:2;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.gl-front::before{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(255,255,255,.35),transparent 45%),linear-gradient(20deg,rgba(0,0,0,.12),transparent 50%)}
+.gl-flap{position:absolute;left:0;right:0;top:0;height:60%;background:color-mix(in srgb,var(--g-gold) 88%,#fff);clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:50% 0;z-index:3;animation:glflap .8s cubic-bezier(.5,0,.3,1) .9s both}
+.gl-seal{position:absolute;left:50%;top:60%;width:52px;height:52px;margin:-26px 0 0 -26px;border-radius:50%;z-index:4;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--g-bg) 60%,#fff 20%),var(--g-bg));color:var(--g-gold);font:italic 700 18px/1 "Cormorant Garamond",serif;box-shadow:0 4px 10px rgba(0,0,0,.35),inset 0 0 0 3px color-mix(in srgb,var(--g-gold) 60%,transparent);animation:glseal .5s ease .55s both}
+.gl-txt{text-align:center;display:grid;gap:6px;animation:glfade .8s ease .4s both}
+.gl-txt b{font:italic 600 clamp(22px,6vw,30px)/1.15 "Cormorant Garamond","Noto Serif Sinhala",serif;color:var(--g-ink)}
+.gl-txt small{font:500 11px/1 "Inter Tight",sans-serif;letter-spacing:.3em;text-transform:uppercase;opacity:.7}
+.gl-bar{width:120px;height:2px;border-radius:2px;background:color-mix(in srgb,var(--g-gold) 30%,transparent);overflow:hidden}
+.gl-bar i{display:block;height:100%;width:100%;background:var(--g-gold);transform-origin:0 50%;animation:glbar 2.6s linear both}
+@keyframes glrise{from{opacity:0;transform:translateY(30px) scale(.9)}}
+@keyframes glseal{to{transform:scale(1.25);opacity:0}}
+@keyframes glflap{to{transform:rotateX(180deg);z-index:0}}
+@keyframes glletter{to{transform:translateY(-46%);z-index:3}}
+@keyframes glfade{from{opacity:0;transform:translateY(8px)}}
+@keyframes glbar{from{transform:scaleX(0)}}
+@media (prefers-reduced-motion:reduce){.gload *{animation-duration:.01s!important;animation-delay:0s!important}}
 .guest{min-height:100%;display:grid;place-items:center;padding-block:28px;gap:18px}
 .guest .rsvp{display:grid;gap:10px;width:100%;max-width:380px}
 .guest .rsvp .row{justify-content:center}
@@ -2144,6 +2176,20 @@ function renderGuest(p){
   document.getElementById("app").innerHTML = `<main class="gwrap t-${type}">${siteHTML(type,p.e,p.l,p.g,p.d?(PREMIUM[type].find(x=>x.site===p.d)||null):null,[])}</main>`; lxArm();
   document.body.style.background = getComputedStyle(document.querySelector(".gwrap")).backgroundColor;
   initSites();
+  guestLoader(p,type);
+}
+function guestLoader(p,type){
+  const si=p.l==="si", card=document.querySelector(".gwrap .card"), cs=card?getComputedStyle(card):null, v=k=>cs&&cs.getPropertyValue(k).trim();
+  const ini=type==="wedding"&&p.e.a&&p.e.b?`${p.e.a[0]}${p.e.b[0]}`:((p.e.title||p.e.a||"A")[0]);
+  const who=p.g?(si?`${esc(p.g)}, ඔබට ආරාධනා`:`Dear ${esc(p.g)}`):(si?"ඔබට ආරාධනාවක්":"You are invited");
+  const gw=document.querySelector(".gwrap"); gw.classList.remove("in");
+  const el=document.createElement("div"); el.className="gload"; el.setAttribute("role","status"); el.setAttribute("aria-label",si?"ආරාධනාව විවෘත වෙමින්":"Opening your invitation");
+  el.style.cssText=`--g-bg:${v("--c-bg")||"#5E1224"};--g-ink:${v("--c-ink")||"#F8EBD6"};--g-gold:${v("--c-gold")||"#D4A84A"}`;
+  el.innerHTML=`<div class="gl-env"><div class="gl-back"></div><div class="gl-letter"><small>${si?"ආරාධනා":"Invitation"}</small><b>${esc(ini)}</b></div><div class="gl-front"></div><div class="gl-flap"></div><div class="gl-seal">${esc(ini)}</div></div>
+  <div class="gl-txt"><b>${who}</b><small>${si?"ඔබගේ ආරාධනාව විවෘත වෙමින්":"Opening your invitation"}</small></div><div class="gl-bar"><i></i></div>`;
+  document.body.appendChild(el); document.documentElement.style.overflow="hidden";
+  let done=false; const fin=()=>{ if(done) return; done=true; el.classList.add("out"); gw.classList.add("in"); document.documentElement.style.overflow=""; setTimeout(()=>el.remove(),800) };
+  el.addEventListener("click",fin); setTimeout(fin,matchMedia("(prefers-reduced-motion:reduce)").matches?300:2700);
 }
 
 /* ================= AI IMAGE PROMPTS ================= */

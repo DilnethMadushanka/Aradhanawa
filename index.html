@@ -817,7 +817,7 @@ nav.top a{font-weight:600}
   background:var(--lx-l) left top/82px auto repeat-y,var(--lx-r) right top/82px auto repeat-y,
   linear-gradient(118deg,rgba(255,255,255,0) 18%,rgba(255,255,255,.55) 30%,rgba(255,255,255,0) 42%,rgba(255,255,255,.4) 62%,rgba(255,255,255,0) 74%),
   linear-gradient(165deg,#F8F3EA,#EEE4D3 48%,#F7F0E4);background-color:#F3ECDF}
-.site.lotus.locked > :not(.lx-cover){display:none!important}
+.site.lotus.locked > :not(.lx-cover):not(.lx-bgfx){display:none!important}
 .site.lotus:not(.locked) > .lx-cover{display:none}
 .lx-cover,.lx-hero{position:relative;overflow:hidden;min-height:min(100svh,820px);display:grid;align-items:center;justify-items:center;text-align:center;padding:calc(min(100cqw,520px)*.5 + 6px) 26px 150px}
 .phone .lx-cover{min-height:100%;height:100%}
@@ -884,6 +884,49 @@ nav.top a{font-weight:600}
 .lx-sheet button:hover{background:#F6EFE3}
 .lx-sheet svg{width:18px;height:18px;color:var(--c-gold)}
 .site.lotus .snav{display:none}
+
+/* ---- Ivory Lotus: animated silk and lotus background, scroll reveals ---- */
+.site.lotus{background:#F4EEE4}
+.lx-bgfx{position:sticky;top:0;height:100svh;margin-bottom:-100svh;overflow:hidden;z-index:0;pointer-events:none}
+.phone .lx-bgfx{height:calc(min(680px,calc(100vh - 140px)) - 22px);margin-bottom:calc(22px - min(680px,calc(100vh - 140px)))}
+.lx-bgfx img{position:absolute;inset:-2%;width:104%;height:104%;object-fit:cover;object-position:50% 50%}
+.lx-bgfx > img:first-child{animation:lxsilk 26s ease-in-out infinite alternate}
+.lx-bgfx .fl.l{transform-origin:0% 85%;animation:lxflL 9s ease-in-out infinite alternate}
+.lx-bgfx .fl.r{transform-origin:100% 85%;animation:lxflR 10.5s ease-in-out infinite alternate;animation-delay:-3s}
+@keyframes lxsilk{from{transform:scale(1) translate3d(0,0,0)}to{transform:scale(1.035) translate3d(-.6%,-.8%,0)}}
+@keyframes lxflL{0%{transform:rotate(-.5deg) scale(1)}50%{transform:rotate(.35deg) scale(1.012)}100%{transform:rotate(.7deg) scale(1.004)}}
+@keyframes lxflR{0%{transform:rotate(.5deg) scale(1)}50%{transform:rotate(-.35deg) scale(1.012)}100%{transform:rotate(-.7deg) scale(1.004)}}
+.lx-petals{position:absolute;inset:0}
+.lx-petals i{position:absolute;top:-6%;width:calc(14px * var(--s));height:calc(10px * var(--s));border-radius:80% 0 80% 0;background:linear-gradient(135deg,#F7D5D6,#E9AEB3);opacity:0;animation:lxpetal var(--d) linear infinite;box-shadow:inset -1px -1px 2px rgba(180,90,100,.25)}
+.lx-petals i:nth-child(3n){background:linear-gradient(135deg,#FFFDF6,#EADFC9)}
+@keyframes lxpetal{0%{opacity:0;transform:translate3d(0,0,0) rotate(0)}8%{opacity:.85}50%{transform:translate3d(var(--w),55vh,0) rotate(200deg)}92%{opacity:.7}100%{opacity:0;transform:translate3d(calc(var(--w) * -1),112vh,0) rotate(420deg)}}
+.site.lotus > :not(.lx-bgfx){position:relative;z-index:1}
+.site.lotus > .lx-fabs{position:sticky;z-index:7}
+.site.lotus > .lx-top{position:sticky;z-index:6}
+.lx-cover,.lx-hero{background:none}
+.site.lotus .lx-bq{display:none}
+.lx-art{aspect-ratio:4/3;background:#FFFDF8}
+.lx-art img{object-fit:cover}
+.lx-vimg{width:100%;max-width:400px;height:auto;mix-blend-mode:multiply;border-radius:14px;margin-bottom:8px}
+/* reveal */
+.lx-rv{opacity:0;transform:translate3d(0,22px,0);filter:blur(4px);transition:opacity .9s ease var(--rd,0ms),transform .9s cubic-bezier(.2,.7,.2,1) var(--rd,0ms),filter .9s ease var(--rd,0ms)}
+.lx-rv.in{opacity:1;transform:none;filter:none}
+.s-eb.lx-rv{letter-spacing:.9em;transition-property:opacity,transform,filter,letter-spacing;transition-duration:1.3s}
+.s-eb.lx-rv.in{letter-spacing:.36em}
+.lx-heart.lx-rv i{transform:scaleX(0);transition:transform 1.1s cubic-bezier(.2,.7,.2,1) calc(var(--rd,0ms) + 200ms)}
+.lx-heart.lx-rv i:first-child{transform-origin:100% 50%}.lx-heart.lx-rv i:last-child{transform-origin:0 50%}
+.lx-heart.lx-rv.in i{transform:scaleX(1)}
+.lx-heart.lx-rv.in{animation:lxbeat 2.4s ease-in-out 1.4s infinite}
+@keyframes lxbeat{50%{color:color-mix(in srgb,var(--c-gold) 60%,var(--lx-wine))}}
+.lx-evc.lx-rv .art{transform:scale(.86) rotate(-2deg);transition:transform 1.2s cubic-bezier(.2,.8,.2,1) calc(var(--rd,0ms) + 250ms)}
+.lx-evc.lx-rv.in .art{transform:none}
+.lx-evc.flip.lx-rv{transform:translate3d(28px,0,0)}.lx-evc.lx-rv:not(.flip){transform:translate3d(-28px,0,0)}
+.lx-evc.lx-rv.in{transform:none}
+.lx-cd > div.lx-rv{transform:translate3d(0,26px,0) scale(.92)}
+.lx-cd > div.lx-rv.in{transform:none}
+.lx-hero .lx-names.lx-rv{transform:scale(.94);letter-spacing:.06em;transition-property:opacity,transform,filter,letter-spacing;transition-duration:1.6s}
+.lx-hero .lx-names.lx-rv.in{transform:none;letter-spacing:-.01em}
+@media (prefers-reduced-motion:reduce){.lx-bgfx *,.lx-heart{animation:none!important}.lx-petals{display:none}.lx-rv,.lx-rv *{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}}
 /* ---- Ivory Lotus additions ---- */
 .lx-parents{display:grid;gap:18px;margin:4px 0}
 .lx-parents div{display:grid;gap:6px}
@@ -1650,12 +1693,14 @@ function lxSite(type, ev, lang, guest, prem, gallery, base){
   const eyebrow = type==="wedding" ? L("The wedding of","විවාහ මංගල්‍යය") : type==="homecoming" ? L("The homecoming of","හෝම්කමිං උත්සවය") : (ev.a?esc(ev.a)+" "+L("invites you to","ආරාධනා කරයි"):L("You are invited to","ඔබට ආරාධනා"));
   const D = fDate(ev.date, lang);
   const dust = Array.from({length:10},(_,i)=>`<i style="left:${(i*37+11)%96}%;top:${(i*53+7)%90}%;animation-delay:${(i*.7).toFixed(1)}s"></i>`).join("");
-  const photo = gallery&&gallery[0] ? `<figure class="lx-photo">${gallery[0]}</figure>` : `<div class="lx-photo lx-ph">${lxMandala("lx-mini")}</div>`;
+  const photo = ev.hero ? `<figure class="lx-photo lx-art"><img src="img/${esc(ev.hero)}-960.webp" srcset="img/${esc(ev.hero)}-480.webp 480w, img/${esc(ev.hero)}-960.webp 960w" sizes="340px" alt=""></figure>` : gallery&&gallery[0] ? `<figure class="lx-photo">${gallery[0]}</figure>` : `<div class="lx-photo lx-ph">${lxMandala("lx-mini")}</div>`;
   const nm2 = names.length>1 ? `${esc(names[0])} ${L("and","සහ")} ${esc(names[1])}` : esc(names[0]);
   const fabs = `<div class="lx-fabs"><div class="lx-sheet" hidden>${base.sections.map(([k,ic,lb])=>`<button type="button" data-go="${base.id}-${k}">${ic}<span>${lb}</span></button>`).join("")}</div>
     <button type="button" class="lx-fab" data-lxmenu aria-label="${L("Menu","මෙනුව")}" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 7h14M5 12h14M5 17h14"/></svg></button>
     ${CONFIG.MUSIC?`<button type="button" class="lx-fab" data-music aria-pressed="false" aria-label="${L("Mute or unmute music","සංගීතය නවත්වන්න / වාදනය")}"><svg class="m-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg><svg class="m-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg></button>`:""}</div>`;
+  const petals = Array.from({length:9},(_,i)=>`<i style="left:${(i*41+7)%94}%;--d:${(11+i%4*3)}s;--w:${(i%3-1)*40}px;animation-delay:-${(i*2.3).toFixed(1)}s;--s:${(.7+(i%3)*.2).toFixed(1)}"></i>`).join("");
   return `<div class="site lotus locked t-${type} ${si?"si":""}" style="${tplVars(prem)}" data-site="${base.id}">
+  <div class="lx-bgfx" aria-hidden="true"><img src="img/ivory-silk-900.webp" alt=""><img class="fl l" src="img/ivory-lotus-l.webp" alt=""><img class="fl r" src="img/ivory-lotus-r.webp" alt=""><div class="lx-petals">${petals}</div></div>
   <section class="lx-cover">${lxMandala()}${lxBouquet("l")}${lxBouquet("r")}<div class="lx-dust">${dust}</div>
     <div class="lx-in"><span class="lx-eb">${eyebrow}</span>${lxRule()}
     <h1 class="lx-names one">${names.map(esc).join(` <span>&amp;</span> `)}</h1>
@@ -1705,6 +1750,7 @@ function lxEmblem(k){
   return `<svg class="lx-emb" viewBox="0 0 120 112" aria-hidden="true"><g ${g}>${A[k]||A.event}</g></svg>`;
 }
 function lxVenueArt(church){
+  if(!church) return `<img class="lx-vimg" src="img/venue-lineart-900.webp" alt="" loading="lazy">`;
   const g=`fill="none" stroke="var(--c-gold)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"`;
   const palm=x=>`<path d="M${x} 150c2-18 2-34-2-48"/><path d="M${x-2} 102c-10-6-20-4-26 2M${x-2} 102c10-8 20-8 26-2M${x-2} 102c-6-10-16-14-24-12M${x-2} 102c6-12 16-14 24-10M${x-2} 102c-2 8-8 14-14 16M${x-2} 102c4 8 10 14 16 16"/>`;
   const body = church
@@ -1755,7 +1801,7 @@ const TYPES = {
   wedding:{ name:"Wedding", si:"විවාහ මංගල්‍යය", tpl:"Rathu Ran", art:weddingArt,
     fields:["a","b","pg","pb","date","church","cvenue","nekath","time","venue","map","rsvp","rsvpBy","note"],
     labels:{a:"Groom's name",b:"Bride's name",nekath:"Poruwa ceremony (nekath time)",time:"Reception starts",venue:"Poruwa and reception venue"},
-    sample:{a:"Kasun",b:"Tharushi",pg:"Mr & Mrs Ranasinghe",pb:"Mr & Mrs Fonseka",date:days(58),church:"",cvenue:"",nekath:"09:41",time:"11:30",venue:"Cinnamon Grand, Colombo 03",map:"",rsvp:"0771234567",note:""}},
+    sample:{a:"Kasun",b:"Tharushi",hero:"ivory-couple",pg:"Mr & Mrs Ranasinghe",pb:"Mr & Mrs Fonseka",date:days(58),church:"",cvenue:"",nekath:"09:41",time:"11:30",venue:"Cinnamon Grand, Colombo 03",map:"",rsvp:"0771234567",note:""}},
   homecoming:{ name:"Homecoming", si:"හෝම්කමිං", tpl:"Pol Atu", art:homecomingArt,
     fields:["a","b","pg","pb","date","time","venue","map","rsvp","rsvpBy","note"],
     labels:{a:"Groom's name",b:"Bride's name"},
@@ -2517,9 +2563,16 @@ function syncRsvp(f){
   f.querySelector(".s-count").hidden = f.dataset.c!=="yes";
   f.querySelector("output").textContent=f.dataset.n;
 }
+function lxReveal(site){
+  const els=site.querySelectorAll(".lx-hero .lx-in > *,.s-sec .s-eb,.s-sec .s-h,.s-sec .lx-heart,.s-sec .s-p,.lx-parents > div,.lx-date,.lx-photo,.lx-cd > div,.lx-evc,.lx-save,.lx-vc,.lx-map,.lx-ghost,.s-gal figure,.lx-rsvp .s-form");
+  els.forEach((e,i)=>{ e.classList.add("lx-rv"); e.style.setProperty("--rd",(Math.min([...e.parentNode.children].indexOf(e),6)*90)+"ms") });
+  if(!("IntersectionObserver" in window)){ els.forEach(e=>e.classList.add("in")); return }
+  const io=new IntersectionObserver(es=>es.forEach(x=>{ if(x.isIntersecting){ x.target.classList.add("in"); io.unobserve(x.target) } }),{root:site.closest(".screen")||null,rootMargin:"0px 0px -8% 0px",threshold:.12});
+  els.forEach(e=>io.observe(e));
+}
 function initSites(scope){
   (scope||document).querySelectorAll(".site:not([data-ready])").forEach(site=>{
-    site.dataset.ready="1";
+    site.dataset.ready="1"; if(site.classList.contains("lotus")) lxReveal(site);
     site.querySelectorAll("[data-rsvp]").forEach(syncRsvp);
     const root=site.closest(".screen")||null, nav=site.querySelectorAll(".snav button[data-go]");
     if(!("IntersectionObserver" in window)) return;

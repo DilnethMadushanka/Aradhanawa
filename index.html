@@ -1541,6 +1541,82 @@ body:has(.lp){background:#fff}
 .lp #editor .stage .table{background:var(--l-tone);border:0;box-shadow:none}
 .lp #editor .sample,.lp #editor .linkbtn,.lp #editor .hint,.lp #editor .btn,.lp #editor .sub,.lp #editor .pnote{font-size:14px}
 .lp #editor .btn{text-transform:none;letter-spacing:0;border-radius:0;font-family:"Inter Tight",sans-serif;font-weight:600}
+/* ===== hero v4: flat-lay desk, tablet with opening invitation (hx-) ===== */
+.hx-hero{position:relative;overflow:hidden;isolation:isolate;min-height:min(100svh,940px);display:grid;align-items:center;padding:clamp(96px,10vw,120px) var(--m) clamp(48px,6vw,80px);
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .42 0 0 0 0 .29 0 0 0 0 .12 0 0 0 .6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E"),radial-gradient(ellipse 60% 70% at 38% 50%,#FFFDF8 0%,transparent 70%),radial-gradient(ellipse 110% 100% at 50% 50%,transparent 60%,rgba(166,122,31,.14) 100%),#FAF2E4}
+.lp-main > section.hx-hero + section::before{display:none}
+.hx-props{position:absolute;inset:0;z-index:-1;pointer-events:none}
+.hx-props .lo{position:absolute;top:-8%;height:122%;width:auto;opacity:.95;filter:drop-shadow(0 18px 22px rgba(90,62,20,.16))}
+.hx-props .lo.l{left:-4%;-webkit-mask-image:linear-gradient(90deg,#000 22%,transparent 34%);mask-image:linear-gradient(90deg,#000 22%,transparent 34%)}.hx-props .lo.r{right:-4%;-webkit-mask-image:linear-gradient(270deg,#000 22%,transparent 34%);mask-image:linear-gradient(270deg,#000 22%,transparent 34%)}
+.hx-props svg{position:absolute;filter:drop-shadow(0 6px 8px rgba(90,62,20,.22))}
+.hx-props .j1{width:58px;left:24%;top:16%;rotate:12deg}.hx-props .j2{width:44px;left:21%;top:24%;rotate:-30deg}
+.hx-props .j3{width:52px;right:22%;bottom:12%;rotate:40deg}.hx-props .j4{width:38px;right:26%;bottom:8%;rotate:-8deg}
+.hx-props .p1{width:30px;left:44%;top:13%;rotate:-40deg}.hx-props .p2{width:24px;right:20%;top:10%;rotate:70deg}.hx-props .p3{width:26px;left:30%;bottom:9%;rotate:160deg}
+.hx-in{position:relative;width:min(1180px,100%);margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:clamp(36px,6vw,96px);align-items:center}
+.hx-txt{display:grid;justify-items:start;gap:0;color:#2A1E12}
+.hx-txt .lp-eb{margin-bottom:18px}
+.hx-txt h1{font:500 clamp(42px,4.6vw,70px)/1.04 "Cormorant Garamond","Noto Serif Sinhala",Georgia,serif;letter-spacing:-.01em;color:#2A1E12;text-wrap:balance;max-width:14ch}
+.lp .hx-txt h1 em{font-weight:600;color:transparent;background:linear-gradient(100deg,#8A6420 0%,#C9993A 35%,#E9C46E 50%,#C9993A 65%,#8A6420 100%) 0 0/240% 100%;-webkit-background-clip:text;background-clip:text;animation:lpshine 7s linear infinite;padding-right:.06em}
+.hx-txt .sub{margin-top:22px;font:600 13.5px/1.6 "Inter Tight",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#6E5D48;max-width:44ch}
+.hx-txt .acts{display:flex;align-items:center;gap:18px 26px;flex-wrap:wrap;margin-top:30px}
+.hx-txt .note{margin-top:16px;font:italic 500 17px/1.3 "Cormorant Garamond",Georgia,serif;color:#6E5D48}
+/* tablet */
+.hx-dev{position:relative;justify-self:center;width:min(430px,100%)}
+.hx-dev::before{content:"";position:absolute;left:8%;right:-4%;bottom:-5%;height:14%;background:radial-gradient(closest-side,rgba(74,52,20,.35),transparent);filter:blur(10px);z-index:-1}
+.hx-tab{position:relative;padding:4.2%;border-radius:7% / 5.3%;background:linear-gradient(145deg,#3A2C1C,#1B130B 60%,#2E2216);box-shadow:0 0 0 1.5px #A67A1F,inset 0 0 0 1px rgba(255,255,255,.08),0 40px 70px -30px rgba(60,40,12,.55),0 12px 24px -12px rgba(60,40,12,.4)}
+.hx-tab::after{content:"";position:absolute;top:2%;left:50%;width:1.6%;aspect-ratio:1;translate:-50% 0;border-radius:50%;background:#0c0905;box-shadow:inset 0 0 0 1px #3a2c1c}
+.hx-scr{position:relative;aspect-ratio:3/4;border-radius:2.4% / 1.8%;overflow:hidden;container-type:inline-size;perspective:900px;
+  background:radial-gradient(ellipse 80% 55% at 50% 42%,#FFFCF5 0%,transparent 75%),linear-gradient(160deg,#F6EEDF,#EADDC6);}
+.hx-scr .hx-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.hx-scr::after{content:"";position:absolute;inset:0;background:linear-gradient(125deg,rgba(255,255,255,.18) 0%,transparent 32%);pointer-events:none;z-index:9}
+/* envelope scene, all in cqw so it scales with the screen */
+.hx-env{position:absolute;left:12cqw;width:76cqw;top:50cqw;height:76cqw;transform-style:preserve-3d;animation:hxEnv 10s ease-in-out infinite}
+.hx-env .bk{position:absolute;inset:0;border-radius:1.5cqw;background:linear-gradient(180deg,#E2C47E,#C9993A);box-shadow:0 3cqw 6cqw -2cqw rgba(74,52,20,.45)}
+.hx-env .bk::before{content:"";position:absolute;inset:1.6cqw 1.6cqw 0;clip-path:polygon(0 0,100% 0,100% 40%,50% 72%,0 40%);background:repeating-linear-gradient(45deg,rgba(255,255,255,.18) 0 1cqw,transparent 1cqw 2.4cqw),linear-gradient(180deg,#7E1F2C,#5E1620)}
+.hx-clip{position:absolute;inset:-200% 0 0 0;clip-path:inset(0 0 0 0);animation:hxClip 10s infinite}
+.hx-card{position:absolute;left:5cqw;width:66cqw;height:92cqw;bottom:-18cqw;border-radius:1.2cqw;text-align:center;display:grid;align-content:center;justify-items:center;gap:2.2cqw;padding:0 15cqw;color:#7A1E2B;
+  background:url(img/ivory-silk-900.webp) center/100% 100%,#F7F0E4;box-shadow:0 1.5cqw 4cqw -1cqw rgba(74,52,20,.35),0 0 0 .3cqw rgba(201,153,58,.6) inset;animation:hxCard 10s cubic-bezier(.5,0,.25,1) infinite}
+.hx-card .k{font:600 2.3cqw/1.4 "Inter Tight",sans-serif;letter-spacing:.32em;text-transform:uppercase;color:#A67A1F}
+.hx-card .n{font:italic 600 8.6cqw/1.02 "Cormorant Garamond",Georgia,serif;color:#7A1E2B}
+.hx-card .n i{display:block;font-size:.55em;color:#A67A1F;margin:.5cqw 0}
+.hx-card .si{font:600 4.4cqw/1.3 "Noto Serif Sinhala",serif;color:#A67A1F}
+.hx-card .rl{width:22cqw;height:1px;background:linear-gradient(90deg,transparent,#C9993A,transparent)}
+.hx-card .d{font:500 3.6cqw/1.3 "Cormorant Garamond",Georgia,serif;color:#4A3820}
+.hx-env .fr{position:absolute;inset:0;border-radius:1.5cqw;clip-path:polygon(0 0,50% 60%,100% 0,100% 100%,0 100%);background:linear-gradient(170deg,#F7EEDC,#EADBBE);z-index:3}
+.hx-env .fr::before{content:"";position:absolute;inset:0;clip-path:polygon(0 100%,50% 52%,100% 100%);background:linear-gradient(0deg,#F3E7CF,#FBF4E6)}
+.hx-env .fr::after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 0 0 .35cqw rgba(201,153,58,.55)}
+.hx-flap{position:absolute;left:0;right:0;top:0;height:52cqw;filter:drop-shadow(0 .7cqw .8cqw rgba(110,80,30,.28));transform-origin:50% 0;z-index:4;animation:hxFlap 10s cubic-bezier(.6,0,.3,1) infinite;transform-style:preserve-3d}
+.hx-flap::before{content:"";position:absolute;inset:0;clip-path:polygon(0 0,100% 0,50% 100%);background:linear-gradient(180deg,#FBF4E6,#EADCC0);border-radius:1.5cqw 1.5cqw 0 0}
+.hx-seal{position:absolute;left:50%;top:44cqw;width:15cqw;aspect-ratio:1;translate:-50% -50%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#A8394A,#7A1E2B 55%,#5A1420);box-shadow:0 .8cqw 1.6cqw rgba(60,10,20,.45),inset 0 0 0 1cqw rgba(0,0,0,.08);display:grid;place-items:center;z-index:5;animation:hxSeal 10s ease infinite}
+.hx-seal svg{width:62%;height:62%}
+@keyframes hxSeal{0%,10%{opacity:1;scale:1}18%,94%{opacity:0;scale:1.25}100%{opacity:1;scale:1}}
+@keyframes hxFlap{0%,16%{transform:rotateX(0);z-index:4}30%{transform:rotateX(178deg);z-index:4}31%,92%{transform:rotateX(178deg);z-index:0}100%{transform:rotateX(0);z-index:4}}
+@keyframes hxCard{0%,32%{transform:none}50%{transform:translateY(-53cqw)}58%{transform:translateY(-53cqw)}70%,90%{transform:translateY(-45cqw) scale(1.06)}100%{transform:none}}
+@keyframes hxClip{0%,57%{clip-path:inset(0 0 0 0);z-index:1}58%,91%{clip-path:inset(-50% -50% -50% -50%);z-index:6}92%,100%{clip-path:inset(0 0 0 0);z-index:1}}
+@keyframes hxEnv{0%,58%{transform:none;opacity:1}70%,88%{transform:translateY(10cqw) scale(.94);opacity:.9}92%{opacity:0}96%{transform:none;opacity:0}100%{opacity:1}}
+.hx-env .fr,.hx-env .bk{animation:none}
+@media (max-width:860px){
+  .hx-hero{min-height:0;padding:96px 18px 56px}
+  .hx-in{grid-template-columns:minmax(0,1fr);gap:40px}
+  .hx-txt{justify-items:center;text-align:center;order:-1}
+  .hx-txt h1{font-size:clamp(40px,11vw,54px)}
+  .hx-txt .sub{font-size:12px;letter-spacing:.12em}
+  .hx-txt .lp-eb{letter-spacing:.14em;font-size:11px}
+  .hx-txt .acts{justify-content:center;flex-direction:column;gap:16px}
+  .hx-dev{width:min(330px,82vw)}
+  .hx-props .lo{display:none}
+  .hx-props .j1{left:6%;top:9%}.hx-props .j2{display:none}.hx-props .j3{right:4%;bottom:auto;top:52%}.hx-props .j4,.hx-props .p3{display:none}.hx-props .p1{left:84%;top:12%}.hx-props .p2{right:auto;left:8%;top:47%}
+}
+.hx-dev.wide{width:min(560px,100%)}
+.hx-dev.wide .hx-tab{border-radius:5.3% / 7%}
+.hx-dev.wide .hx-tab::after{top:50%;left:1.9%;translate:-50% -50%;width:1.2%}
+.hx-dev.wide .hx-scr{aspect-ratio:4/3;border-radius:1.8% / 2.4%}
+.hx-in:has(.hx-dev.wide){grid-template-columns:minmax(0,1.15fr) minmax(0,1fr)}
+@media (max-width:860px){.hx-in:has(.hx-dev.wide){grid-template-columns:minmax(0,1fr)}.hx-dev.wide{width:min(440px,92vw)}}
+@media (prefers-reduced-motion:reduce){
+  .hx-env,.hx-card,.hx-flap,.hx-seal,.hx-clip,.lp .hx-txt h1 em{animation:none}
+  .hx-seal{opacity:0}.hx-flap{transform:rotateX(178deg);z-index:0}.hx-clip{clip-path:none;z-index:6}.hx-card{transform:translateY(-45cqw) scale(1.06)}.hx-env{transform:translateY(10cqw) scale(.94)}
+}
 </style>
 </head><body>
 <link rel="stylesheet" href="loader.css"><div id="aw-loader" role="status" aria-live="polite" aria-label="Aradhanawa loading"><div class="aw-ld-frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="aw-ld-box"><svg class="aw-ld-lotus" viewBox="0 0 120 84" aria-hidden="true"><defs><linearGradient id="aw-ld-gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBF1DC"/><stop offset=".55" stop-color="#EBD3A0"/><stop offset="1" stop-color="#C9A25E"/></linearGradient><radialGradient id="aw-ld-halo"><stop offset="0" stop-color="#F3DFB2" stop-opacity=".9"/><stop offset="1" stop-color="#F3DFB2" stop-opacity="0"/></radialGradient></defs><circle class="aw-ld-glow" cx="60" cy="46" r="40"/><circle class="aw-ld-dot" cx="38" cy="14" r="1.3"/><circle class="aw-ld-dot" cx="84" cy="10" r="1"/><circle class="aw-ld-dot" cx="96" cy="26" r="1.2"/><path class="aw-ld-p l2" d="M60 64C40 66 22 56 14 42C30 40 48 48 60 64Z"/><path class="aw-ld-p r2" d="M60 64C80 66 98 56 106 42C90 40 72 48 60 64Z"/><path class="aw-ld-p l1" d="M60 64C44 58 34 42 34 24C46 30 56 44 60 64Z"/><path class="aw-ld-p r1" d="M60 64C76 58 86 42 86 24C74 30 64 44 60 64Z"/><path class="aw-ld-p c" d="M60 64C47 50 48 26 60 8C72 26 73 50 60 64Z"/><path class="aw-ld-water" d="M26 72Q60 80 94 72"/><path class="aw-ld-water b" d="M40 79Q60 84 80 79"/></svg><p class="aw-ld-name">Aradhanawa</p><div class="aw-ld-si" lang="si">ආරාධනාව</div><div class="aw-ld-rule" aria-hidden="true"><span></span><b></b><span></span></div><div class="aw-ld-tag">Digital invitations</div></div><div class="aw-ld-bar" aria-hidden="true"><i></i></div></div><script src="loader.js" defer></script>
@@ -2326,19 +2402,37 @@ const LP_BANDS=[
   {h:"Take guests straight to the venue",fb:"#FFF3E3",fi:"#2A1E12",c:()=>`One tap opens Google Maps for ${esc(TYPES.wedding.sample.venue)}, one more adds the day to their calendar.`},
   {h:"Play the Jayamangala gatha as it opens",fb:"var(--l-surface)",fi:"#1E1418",music:1,c:()=>`Playing now. The Lotus Mandala design starts the gatha when a guest taps Open, and every guest can mute it.`}];
 
+// Hero: flat-lay desk with a tablet showing an invitation opening. Set HERO_VIDEO to an mp4 path to play a video on the tablet instead.
+const HERO_VIDEO="img/hero-tablet.mp4";
+function lpHero(){
+  const ev=TYPES.wedding.sample;
+  const jas=`<svg viewBox="0 0 60 60" aria-hidden="true"><g fill="#FFFDF7" stroke="#E6DCC6" stroke-width=".8">${[0,72,144,216,288].map(r=>`<path transform="rotate(${r} 30 30)" d="M30 30C24 22 23 9 30 4c7 5 6 18 0 26z"/>`).join("")}</g><circle cx="30" cy="30" r="3.2" fill="#E9C46E"/></svg>`;
+  const pet=`<svg viewBox="0 0 30 50" aria-hidden="true"><path d="M15 2C25 14 27 32 15 48 3 32 5 14 15 2z" fill="#D9AE4F"/><path d="M15 6v38" stroke="#A67A1F" stroke-width=".8"/></svg>`;
+  const lotus=`<svg viewBox="0 0 40 40" aria-hidden="true"><g fill="none" stroke="#EBD29A" stroke-width="1.6" stroke-linejoin="round"><path d="M20 31C14 26 13 17 20 9c7 8 6 17 0 22z"/><path d="M20 31C12 30 7 24 6 16c7 1 12 6 14 15z"/><path d="M20 31c8-1 13-7 14-15-7 1-12 6-14 15z"/><path d="M9 33h22"/></g></svg>`;
+  const screen=HERO_VIDEO?`<video class="hx-vid" src="${HERO_VIDEO}" poster="img/hero-tablet-poster.webp" ${matchMedia("(prefers-reduced-motion: reduce)").matches?"":"autoplay"} muted loop playsinline preload="auto" aria-hidden="true"></video>`
+   :`<div class="hx-env" aria-hidden="true"><div class="bk"></div>
+      <div class="hx-clip"><div class="hx-card"><span class="k">The wedding of</span><span class="n">${esc(ev.a)}<i>&amp;</i>${esc(ev.b)}</span><span class="rl"></span><span class="si">ස්වස්ති සිද්ධම්</span><span class="d">${esc(fDate(ev.date,"en"))}</span></div></div>
+      <div class="fr"></div><div class="hx-flap"></div><div class="hx-seal">${lotus}</div></div>`;
+  return `<section class="hx-hero" data-f="paper" id="top">
+    <div class="hx-props" aria-hidden="true"><img class="lo l" src="img/ivory-lotus-l.webp" alt=""><img class="lo r" src="img/ivory-lotus-r.webp" alt="">
+      ${jas.replace("<svg",'<svg class="j1"')}${jas.replace("<svg",'<svg class="j2"')}${jas.replace("<svg",'<svg class="j3"')}${jas.replace("<svg",'<svg class="j4"')}
+      ${pet.replace("<svg",'<svg class="p1"')}${pet.replace("<svg",'<svg class="p2"')}${pet.replace("<svg",'<svg class="p3"')}</div>
+    <div class="hx-in">
+      <div class="hx-dev${HERO_VIDEO?" wide":""}"><div class="hx-tab"><div class="hx-scr">${screen}</div></div></div>
+      <div class="hx-txt"><span class="lp-eb">Wedding · Homecoming · Birthday · Dana</span>
+        <h1>Send your <em>invitation</em> on WhatsApp, in minutes.</h1>
+        <p class="sub">Sinhala, Singlish or English. A personal link for every guest.</p>
+        <div class="acts">${lpNakath("md")}<a class="lp-hghost" href="#designs">See all card designs</a></div>
+        <p class="note">The first ${CONFIG.FREE_GUESTS} guest links are free.</p></div>
+    </div>
+  </section>
+`;
+}
 function render(){
   const T=TYPES[S.type], ev=cur(), PG=S.page||"home";
   document.documentElement.classList.add("js");
   const SEC={
-    hero:()=>`<section class="lp-hero" data-f="dark" id="top">${lpFrame()}
-    <div class="h1w">${lpMedal()}
-      <h1 class="hl"><span class="ln">Send your <em>invitation</em></span><span class="ln g">on WhatsApp</span></h1>
-    </div>
-    <div class="sup"><p>Wedding, homecoming, birthday and dana invitations in Sinhala, Singlish or English.</p>
-      <div class="acts">${lpNakath("lg")}
-      <a class="lp-hghost" href="#designs">See all card designs</a></div></div>
-  </section>
-`,
+    hero:()=>lpHero(),
     try:()=>`<section class="lp-ch lp-paper g lp-try" data-f="paper" id="try">
     <h2 class="tryh rv"><label for="tryIn">Try it with your names</label></h2>
     <div class="line rv" data-ui><input id="tryIn" value="Kasun &amp; Tharushi" autocomplete="off" spellcheck="false" aria-describedby="tryHelp"></div>

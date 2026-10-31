@@ -328,6 +328,9 @@ footer.foot{border-top:1px solid var(--line);padding-block:22px;color:var(--mute
 .site .snav button{width:42px;height:42px;border-radius:50%;border:0;background:transparent;color:var(--c-bg);display:grid;place-items:center;cursor:pointer}
 .site .snav button svg{width:19px;height:19px}
 .site .snav button[aria-current="true"]{background:var(--c-gold)}
+.site .snav .s-mus{border-left:1px solid color-mix(in srgb,var(--c-bg) 30%,transparent);border-radius:0 50% 50% 0}
+.site .s-mus .m-off,.site .s-mus.on .m-on{display:block}.site .s-mus .m-on,.site .s-mus.on .m-off{display:none}
+.site .s-mus.on{color:var(--c-gold)}
 /* phone frame */
 .phone{position:relative;width:min(330px,100%);height:min(680px,calc(100vh - 140px));min-height:520px;border-radius:46px;background:#141012;padding:11px;box-shadow:0 0 0 1px #3a3034,0 30px 60px -25px rgba(40,10,15,.6);margin-inline:auto}
 .phone .screen{height:100%;border-radius:36px;overflow-y:auto;overflow-x:hidden;scrollbar-width:none;overscroll-behavior:contain}
@@ -1257,7 +1260,7 @@ function lxPlay(){ if(!CONFIG.MUSIC) return Promise.reject(); const a=lxAudio();
 const LX_EV=["pointerdown","touchend","keydown","click"];
 function lxDisarm(){ LX_EV.forEach(t=>document.removeEventListener(t,lxKick,true)) }
 function lxKick(e){ if(e&&e.target&&e.target.closest&&e.target.closest("[data-music]")) { lxDisarm(); return } lxDisarm(); lxPlay() }
-function lxArm(){ if(!CONFIG.MUSIC||!document.querySelector(".site.lotus")) return; lxDisarm(); lxPlay().catch(()=>{ LX_EV.forEach(t=>document.addEventListener(t,lxKick,{capture:true,passive:true})) }) }
+function lxArm(){ if(!CONFIG.MUSIC||!document.querySelector(".site [data-music]")) return; lxDisarm(); lxPlay().catch(()=>{ LX_EV.forEach(t=>document.addEventListener(t,lxKick,{capture:true,passive:true})) }) }
 function lxStop(){ lxDisarm(); const a=document.getElementById("lxAudio"); if(a) a.pause() }
 document.addEventListener("click",e=>{
   const op=e.target.closest("[data-open]");
@@ -2004,7 +2007,7 @@ function siteHTML(type, ev, lang, guest, prem, gallery){
   </section>`:""}
 
   <footer class="s-foot">${L("Made with","නිර්මාණය")} <a href="${CONFIG.SITE.split("#")[0]}" target="_blank" rel="noopener">Aradhanawa.com</a></footer>
-  <nav class="snav" aria-label="${L("Invitation sections","කොටස්")}">${sections.map(([k,ic,lb],i)=>`<button type="button" data-go="${id}-${k}" aria-label="${lb}" ${i===0?'aria-current="true"':""}>${ic}</button>`).join("")}</nav>
+  <nav class="snav" aria-label="${L("Invitation sections","කොටස්")}">${sections.map(([k,ic,lb],i)=>`<button type="button" data-go="${id}-${k}" aria-label="${lb}" ${i===0?'aria-current="true"':""}>${ic}</button>`).join("")}${type==="wedding"&&CONFIG.MUSIC?`<button type="button" class="s-mus" data-music aria-pressed="true" aria-label="${L("Play or mute music","සංගීතය වාදනය / නවත්වන්න")}"><svg class="m-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg><svg class="m-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg></button>`:""}</nav>
 </div>`;
   if(prem&&prem.site==="lotus"){ lxCSS(); const a=html.indexOf(`<section class="s-sec" id="${id}-date">`), b=html.indexOf(`<nav class="snav"`); const secs=[...sections]; secs.splice(1,0,["details",I.eye,L("Details","විස්තර")]); return lxSite(type,ev,lang,guest,prem,gallery,{id,sections:secs,rest:html.slice(a,b)}) }
   return html;
@@ -2028,7 +2031,7 @@ function initSites(scope){
   (scope||document).querySelectorAll(".site:not([data-ready])").forEach(site=>{
     site.dataset.ready="1";
     site.querySelectorAll("[data-rsvp]").forEach(syncRsvp);
-    const root=site.closest(".screen")||null, nav=site.querySelectorAll(".snav button");
+    const root=site.closest(".screen")||null, nav=site.querySelectorAll(".snav button[data-go]");
     if(!("IntersectionObserver" in window)) return;
     const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) nav.forEach(b=>b.setAttribute("aria-current", b.dataset.go===e.target.id)) }),{root,rootMargin:"-45% 0px -50% 0px"});
     nav.forEach(b=>{const t=document.getElementById(b.dataset.go); t&&io.observe(t)});

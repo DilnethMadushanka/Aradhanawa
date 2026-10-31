@@ -9,15 +9,15 @@
  * These keys are public by design (Firebase web config); security comes from firestore.rules.
  */
 window.ARADHANA_FIREBASE = {
-  config: null,
-  // config: {
-  //   apiKey: "AIza...",
-  //   authDomain: "your-project.firebaseapp.com",
-  //   projectId: "your-project",
-  //   storageBucket: "your-project.appspot.com",
-  //   messagingSenderId: "1234567890",
-  //   appId: "1:1234567890:web:abc123"
-  // },
+  config: {
+    apiKey: "AIzaSyB9LkG0w9QI5C76bDpoc6fdvu1BHheBfik",
+    authDomain: "aradhanawa-e52be.firebaseapp.com",
+    projectId: "aradhanawa-e52be",
+    storageBucket: "aradhanawa-e52be.firebasestorage.app",
+    messagingSenderId: "177511735890",
+    appId: "1:177511735890:web:505396847f755bb524758b",
+    measurementId: "G-YQJEHHCVPK"
+  },
   adminEmails: [
     // "you@gmail.com"
   ]

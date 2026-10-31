@@ -62,6 +62,16 @@ service cloud.firestore {
       allow delete: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
     }
 
+    // Gallery photos shown on the guest invitation link (doc id = uid_type). Anyone with the link may read them.
+    match /galleries/{id} {
+      allow read: if true;
+      allow create, update: if signedIn() && request.resource.data.uid == request.auth.uid
+        && id == request.auth.uid + "_" + request.resource.data.type
+        && request.resource.data.keys().hasOnly(["uid", "type", "photos", "updated"])
+        && request.resource.data.photos is list && request.resource.data.photos.size() <= 6;
+      allow delete: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
+    }
+
     // Guest replies from the invitation website. Guests don't sign in.
     match /rsvps/{id} {
       allow read: if isAdmin() || (signedIn() && resource.data.ownerUid == request.auth.uid);

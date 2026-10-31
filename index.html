@@ -2128,7 +2128,7 @@ const S = {
   guests: store.get("guests",[{name:"Nimal Uncle",phone:"0771112233"},{name:"Ruwani",phone:"0712223344"}]),
 };
 for(const k in TYPES) if(!S.ev[k]) S.ev[k] = {...TYPES[k].sample};
-const save = () => { fbSyncInvite(); store.set("type",S.type); store.set("msglang",S.lang); store.set("ev",S.ev); store.set("edited",S.edited); store.set("guests",S.guests); store.set("tpl",S.tpl); try{localStorage.setItem("aradhana:photos",JSON.stringify(S.photos))}catch(e){ toast("Photo storage is full in this browser. Remove a photo or use smaller ones.") } };
+const save = () => { fbSyncInvite(); fbSyncGallery(S.type); store.set("type",S.type); store.set("msglang",S.lang); store.set("ev",S.ev); store.set("edited",S.edited); store.set("guests",S.guests); store.set("tpl",S.tpl); try{localStorage.setItem("aradhana:photos",JSON.stringify(S.photos))}catch(e){ toast("Photo storage is full in this browser. Remove a photo or use smaller ones.") } };
 const cur = () => S.ev[S.type];
 
 /* ================= FORMATTERS ================= */
@@ -2489,7 +2489,7 @@ function render(){
           ${T.fields.map(f=>{const d=FIELD[f]; const lbl=(T.labels&&T.labels[f])||d.label; const id=`f-${S.type}-${f}`;
             return `<div class="fld ${d.full?"full":""}"><label for="${id}">${lbl}</label>${d.area?`<textarea id="${id}" name="${f}" rows="2">${esc(ev[f])}</textarea>`:`<input id="${id}" name="${f}" type="${d.type||"text"}" value="${esc(ev[f])}" ${d.ph?`placeholder="${d.ph}"`:""} ${f==="rsvp"?'inputmode="tel"':""}>`}</div>`}).join("")}
         </form>
-        ${S.type!=="dana"?`<div class="photos"><label class="fld"><span style="font-size:13px;font-weight:600">Gallery photos</span></label><span class="hint">These appear in the gallery section of your invitation. Up to 6. Until you add yours, sample images are shown in the preview.</span>
+        ${S.type!=="dana"?`<div class="photos"><label class="fld"><span style="font-size:13px;font-weight:600">Gallery photos</span></label><span class="hint">These appear in the gallery section of your invitation. Up to 6. Until you add yours, sample images are shown in the preview.${FB_ON()&&!(window.FBX&&FBX.user)?` <b><a href="#login">Log in</a> so your guests can see your photos on their link.</b>`:""}</span>
           <div class="pgrid" data-ui>${((S.photos[S.type])||[]).map((src,i)=>`<div class="ph"><img src="${src}" alt="Gallery photo ${i+1}"><button type="button" data-pdel="${i}" aria-label="Remove photo ${i+1}">×</button></div>`).join("")}
           ${((S.photos[S.type])||[]).length<6?`<label class="padd" for="pfile">+ Add photos</label>`:""}</div>
           <input type="file" id="pfile" accept="image/*" multiple hidden></div>`:""}
@@ -2869,11 +2869,11 @@ function rsvpBlock(type,ev,lang,guest){
     ${ev.date?`<a class="btn sm" target="_blank" rel="noopener" href="${gcalLink(type,ev)}">${si?"දින දර්ශනයට එක් කරන්න":"Add to calendar"}</a>`:""}</div>
   </div>`;
 }
-function renderGuest(p){
+function renderGuest(p,gallery){
   S.guestP=p;
   const type=TYPES[p.t]?p.t:"other";
   document.title = (p.e.title || [p.e.a,p.e.b].filter(Boolean).join(" & ") || "Invitation") + " · Aradhanawa";
-  document.getElementById("app").innerHTML = `<main class="gwrap t-${type}">${siteHTML(type,p.e,p.l,p.g,p.d?(PREMIUM[type].find(x=>x.site===p.d)||null):null,[])}</main>`; lxArm();
+  document.getElementById("app").innerHTML = `<main class="gwrap t-${type}">${siteHTML(type,p.e,p.l,p.g,p.d?(PREMIUM[type].find(x=>x.site===p.d)||null):null,(gallery||[]).map(src=>`<img src="${src}" alt="" loading="lazy">`))}</main>`; lxArm();
   document.body.style.background = getComputedStyle(document.querySelector(".gwrap")).backgroundColor;
   initSites();
   guestLoader(p,type,document.querySelector(".gwrap .card"));
@@ -2985,6 +2985,44 @@ function fbSyncInvite(){
     FBX.saveInvite({type,lang:S.lang,tpl:tplOf(type),title:ev.title||"",names:[ev.a,ev.b].filter(Boolean).join(" & "),date:ev.date||"",venue:ev.venue||"",ev:e,
       guests:S.guests.slice(0,500).map(g=>({name:String(g.name||"").slice(0,80)}))}).catch(er=>console.warn("[fb] invite",er));
   },1500);
+}
+/* Gallery photos for guest links. Photos live in this browser (S.photos); a copy goes to Firestore galleries/{uid_type}
+   so the guest link can show them. Guests read it over the public REST API, so the page doesn't wait for Firebase sign-in. */
+const IMG_OK = s => typeof s==="string" && s.length<400000 && /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(s);
+const strHash = s => { let h=5381; for(let i=0;i<s.length;i+=7) h=((h<<5)+h+s.charCodeAt(i))|0; return (h>>>0).toString(36)+"."+s.length };
+function reshrink(src,max,q){ return new Promise(res=>{ const im=new Image(); im.onerror=()=>res(src); im.onload=()=>{
+  const k=Math.min(1,max/Math.max(im.width,im.height)), c=document.createElement("canvas"); c.width=Math.round(im.width*k); c.height=Math.round(im.height*k);
+  c.getContext("2d").drawImage(im,0,0,c.width,c.height); res(c.toDataURL("image/jpeg",q)) }; im.src=src }) }
+async function galleryPayload(list){
+  const size=a=>a.reduce((n,x)=>n+x.length,0);
+  let out=list.filter(x=>typeof x==="string"&&/^data:image\//.test(x));
+  for(const [max,q] of [[720,.68],[600,.6],[480,.55],[400,.5]]){ if(size(out)<850000&&out.every(IMG_OK)) break; out=await Promise.all(out.map(x=>reshrink(x,max,q))) }   // Firestore docs max out at 1 MB
+  out=out.filter(IMG_OK); while(out.length&&size(out)>900000) out.pop();
+  return out;
+}
+const fbGalT={};
+function fbSyncGallery(type){
+  if(!FB_ON()||!window.FBX||!FBX.user||type==="dana") return;
+  clearTimeout(fbGalT[type]);
+  fbGalT[type]=setTimeout(async()=>{
+    const list=(S.photos&&S.photos[type])||[], key="galsync:"+FBX.user.uid+"_"+type, sig=strHash(list.join("|"));
+    if(store.get(key,"")===sig) return;
+    if(!list.length&&!store.get(key,"")) return;
+    try{ await FBX.saveGallery(type,await galleryPayload(list)); store.set(key,sig) }
+    catch(er){ console.warn("[fb] gallery",er); if(list.length&&!fbGalT.warned){ fbGalT.warned=1; toast("Couldn't save your photos for the guest link. Check your connection and try again.") } }
+  },1200);
+}
+function fbSyncGalleries(){ for(const k in TYPES) fbSyncGallery(k) }
+const GUEST_GAL={};
+function guestGallery(p){
+  const cfg=window.ARADHANA_FIREBASE&&window.ARADHANA_FIREBASE.config, t=TYPES[p.t]?p.t:"other";
+  if(!cfg||!p.o||!/^[A-Za-z0-9]{1,128}$/.test(p.o)||t==="dana") return Promise.resolve([]);
+  const id=p.o+"_"+t; if(GUEST_GAL[id]) return GUEST_GAL[id];
+  const ctl=new AbortController(), tm=setTimeout(()=>ctl.abort(),4000);
+  return GUEST_GAL[id]=fetch(`https://firestore.googleapis.com/v1/projects/${encodeURIComponent(cfg.projectId)}/databases/(default)/documents/galleries/${encodeURIComponent(id)}?key=${encodeURIComponent(cfg.apiKey)}`,{signal:ctl.signal})
+    .then(r=>r.ok?r.json():null)
+    .then(d=>(((d&&d.fields&&d.fields.photos&&d.fields.photos.arrayValue&&d.fields.photos.arrayValue.values)||[]).map(v=>v.stringValue).filter(IMG_OK).slice(0,6)))
+    .catch(()=>[]).finally(()=>clearTimeout(tm));
 }
 async function hashPw(p){
   try{ const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("aradhana:"+p)); return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("") }
@@ -3318,7 +3356,7 @@ const PAGES = { login:()=>renderAuth("login"), register:()=>renderAuth("register
   design:(sub,rest)=>{ S.page="design"; S.dt=sub; S.di=rest; render(); scrollTo(0,0) } };
 function route(){
   const h=location.hash||"";
-  if(h.startsWith("#i=")){ try{ const p=JSON.parse(unb64(h.slice(3))); if(p&&p.e){ renderGuest(p); return } }catch(e){} }
+  if(h.startsWith("#i=")){ try{ const p=JSON.parse(unb64(h.slice(3))); if(p&&p.e){ guestGallery(p).then(g=>{ if(location.hash===h) renderGuest(p,g) }); return } }catch(e){} }
   const [pg,sub,rest]=h.slice(1).split("/");
   if(PAGES[pg]){ PAGES[pg](sub,rest); return }
   if(pg==="make"){ location.replace("#create"); return }
@@ -3341,7 +3379,7 @@ function fbChanged(why){
   if(why==="settings"){ fbApplySettings(); return }
   const h=location.hash||"", pg=h.slice(1).split("/")[0];
   if(h.startsWith("#i=")) return;
-  if(why==="auth"){ if(["login","register","admin","account"].includes(pg)) route(); else render(); return }
+  if(why==="auth"){ fbSyncGalleries(); if(["login","register","admin","account"].includes(pg)) route(); else render(); return }
   if(pg!=="admin"&&pg!=="account") return;
   const a=document.activeElement; if(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&a.closest(".adm,.acct")){ fbDirty=true; return }
   clearTimeout(fbT); fbT=setTimeout(route,120);
@@ -3349,7 +3387,7 @@ function fbChanged(why){
 document.addEventListener("focusout",()=>{ if(!fbDirty) return; setTimeout(()=>{ const a=document.activeElement; if(fbDirty&&!(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))){ fbDirty=false; route() } },200) });
 function fbStart(){
   return import("./fb.js").then(m=>{ fbErrText=m.errText; return m.init(window.ARADHANA_FIREBASE,{onChange:fbChanged,onError:e=>toast(fbErrText(e))}) })
-    .then(fbApplySettings).catch(e=>console.error("[fb] could not start",e));
+    .then(()=>{ fbApplySettings(); fbSyncGalleries() }).catch(e=>console.error("[fb] could not start",e));
 }
 
 (function boot(){

@@ -461,6 +461,34 @@ footer.foot{border-top:1px solid var(--line);padding-block:22px;color:var(--mute
 .gload.go .gl-seal{transform:scale(1.3);opacity:0}
 .gload.go .gl-flap{transform:rotateX(180deg);z-index:0}
 .gload.go .gl-letter{transform:translateY(-46%);z-index:3}
+/* wedding: magul pahana opener */
+.gload.t-wedding{background:radial-gradient(ellipse 70% 45% at 50% 52%,color-mix(in srgb,var(--g-bg) 70%,#E8A24A 18%),transparent 70%),radial-gradient(ellipse at 50% 40%,color-mix(in srgb,var(--g-bg) 86%,#fff),var(--g-bg) 70%,color-mix(in srgb,var(--g-bg) 80%,#000))}
+.gload.t-wedding::before{content:"";position:absolute;inset:14px;border:1px solid color-mix(in srgb,var(--g-gold) 38%,transparent);border-radius:4px;pointer-events:none;box-shadow:inset 0 0 0 4px transparent,inset 0 0 0 5px color-mix(in srgb,var(--g-gold) 16%,transparent)}
+.gl-corner{position:absolute;width:clamp(56px,16vw,96px);height:auto;color:var(--g-gold);opacity:.75;pointer-events:none;animation:glfade 1s ease .3s both}
+.gl-corner.tl{left:8px;top:8px}.gl-corner.tr{right:8px;top:8px;transform:scaleX(-1)}.gl-corner.bl{left:8px;bottom:8px;transform:scaleY(-1)}.gl-corner.br{right:8px;bottom:8px;transform:scale(-1)}
+.gl-orn{display:block;width:150px;height:14px;margin:6px auto 0;color:var(--g-gold)}
+.t-wedding .gl-stage{width:min(78vw,300px);aspect-ratio:.86}
+.t-wedding .gl-ring{display:none}
+.gl-pahana{filter:drop-shadow(0 14px 18px rgba(0,0,0,.35))}
+.gl-mandala{position:absolute!important;left:50%;top:44%;width:112%!important;height:auto!important;aspect-ratio:1;translate:-50% -50%;color:var(--g-gold);opacity:.22;z-index:0!important;animation:glspin 90s linear infinite;transition:opacity 1.2s ease}
+.gload.go .gl-mandala{opacity:.42}
+.t-wedding .gl-glow{inset:-26% -30% -10%;background:radial-gradient(circle closest-side at 50% 42%,rgba(255,214,120,.7),rgba(255,170,60,.22) 32%,transparent 62%)}
+.gl-halo{opacity:0;transform-box:fill-box;transform-origin:50% 50%;transform:scale(.3);transition:opacity .6s ease,transform .8s ease;transition-delay:var(--d)}
+.gload.go .gl-halo{opacity:1;transform:scale(1);animation:glhalo 1.6s ease-in-out calc(var(--d) + .8s) infinite alternate}
+.gl-oil{opacity:0;transition:opacity 1.4s ease .3s}
+.gload.go .gl-oil{opacity:.55}
+.gl-spark{transform-box:fill-box;transform-origin:50% 50%;filter:blur(.6px);animation:glspark 1.6s ease-in-out infinite}
+.gload.go .gl-spark{display:none}
+.gl-emb{position:absolute;inset:0 10% 30%;pointer-events:none;z-index:2}
+.gl-emb i{position:absolute;left:calc(50% + var(--x));bottom:10%;width:calc(4px * var(--s));height:calc(4px * var(--s));border-radius:50%;background:var(--g-gold);box-shadow:0 0 6px var(--g-gold);opacity:0;animation:glember var(--t) linear var(--dl) infinite}
+.gload.go .gl-emb i{background:#FFD27A;box-shadow:0 0 8px #FFB547;animation-duration:calc(var(--t) * .55)}
+.t-wedding .gl-do{background:linear-gradient(180deg,color-mix(in srgb,var(--g-gold) 22%,transparent),color-mix(in srgb,var(--g-gold) 8%,transparent));box-shadow:0 0 0 4px color-mix(in srgb,var(--g-gold) 10%,transparent),0 10px 24px -12px rgba(0,0,0,.5);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.t-wedding .gl-msg{top:auto;bottom:calc(16% + env(safe-area-inset-bottom,0px));text-shadow:0 0 18px rgba(255,190,90,.45)}
+@keyframes glspin{to{rotate:360deg}}
+@keyframes glhalo{to{transform:scale(1.18);opacity:.8}}
+@keyframes glspark{50%{transform:scale(1.7);opacity:.55}}
+@keyframes glember{0%{transform:translateY(0);opacity:0}15%{opacity:.8}100%{transform:translate(calc(var(--x) * -.3),-260px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.gl-mandala,.gl-emb i,.gl-spark,.gload.go .gl-halo,.gload.go .gl-fl{animation:none!important}.gload.go .gl-fl{transform:scale(1);opacity:1}.gl-emb{display:none}}
 @keyframes glrise{from{opacity:0;transform:translateY(30px) scale(.9)}}
 @keyframes glfade{from{opacity:0;transform:translateY(8px)}}
 @keyframes glpulse{50%{transform:scale(1.05)}}
@@ -2893,7 +2921,7 @@ function renderGuest(p,gallery){
   guestLoader(p,type,document.querySelector(".gwrap .card"));
 }
 const GL_COPY={
-  wedding:{en:["Tap to light the magul pahana","May the light bless their new life"],si:["මංගල පහන දල්වන්න තට්ටු කරන්න","නව දිවියට ආලෝකය"],t:2600},
+  wedding:{en:["Tap to light the magul pahana","May the light bless their new life"],si:["මංගල පහන දල්වන්න තට්ටු කරන්න","නව දිවියට ආලෝකය"],t:3400},
   birthday:{en:["Tap the cake to light the candles","Make a wish!"],si:["ඉටිපන්දම් දල්වන්න කේක් එක තට්ටු කරන්න","පැතුමක් පතන්න!"],t:2300},
   homecoming:{en:["Tap to open the door","Welcome home"],si:["දොර විවෘත කරන්න තට්ටු කරන්න","සාදරයෙන් පිළිගනිමු"],t:1900},
   dana:{en:["Tap the lotus","Sadhu! Sadhu! Sadhu!"],si:["නෙළුම තට්ටු කරන්න","සාධු! සාධු! සාධු!"],t:2200},
@@ -2911,13 +2939,69 @@ function glScene(type,ini,si){
     ${[72,100,128].map((x,i)=>`<rect x="${x-3}" y="56" width="6" height="30" rx="2" fill="${["#5BC0EB","#F2C14E","#E86A92"][i]}"/><path d="M${x-3} 62l6-4M${x-3} 70l6-4M${x-3} 78l6-4" stroke="#fff" stroke-width="1.5" opacity=".7"/><path d="M${x} 56v-5" stroke="#4A3320" stroke-width="1.5"/>${fl(x,52,.1+i*.25)}`).join("")}
     ${[44,70,96,122,148].map((x,i)=>`<circle cx="${x+8}" cy="${148+(i%2)*10}" r="3" fill="${["#E86A92","#5BC0EB","#F2C14E"][i%3]}"/>`).join("")}
   </svg>${glConfetti()}`;
-  if(type==="wedding") return `<div class="gl-glow"></div><svg viewBox="0 0 200 220" aria-hidden="true"><defs><linearGradient id="glBr" x1="0" x2="1"><stop offset="0" stop-color="#8A6420"/><stop offset=".45" stop-color="#F2D27A"/><stop offset="1" stop-color="#9A6E1C"/></linearGradient></defs>
-    <path d="M60 212h80l-10-16H70z" fill="url(#glBr)"/><ellipse cx="100" cy="196" rx="30" ry="6" fill="url(#glBr)"/>
-    <path d="M94 196V120h12v76z" fill="url(#glBr)"/><ellipse cx="100" cy="170" rx="13" ry="7" fill="url(#glBr)"/><ellipse cx="100" cy="146" rx="11" ry="6" fill="url(#glBr)"/><ellipse cx="100" cy="124" rx="16" ry="6" fill="url(#glBr)"/>
-    <path d="M34 92h132c-6 22-34 34-66 34S40 114 34 92z" fill="url(#glBr)"/><ellipse cx="100" cy="92" rx="66" ry="9" fill="#6E4C14"/><ellipse cx="100" cy="91" rx="62" ry="6.5" fill="#C9993A"/>
-    <path d="M100 86V44" stroke="url(#glBr)" stroke-width="5"/><path d="M100 18c10 8 12 18 0 30-12-12-10-22 0-30z" fill="url(#glBr)"/><circle cx="100" cy="58" r="6" fill="url(#glBr)"/>
-    ${[40,70,100,130,160].map((x,i)=>`<path d="M${x} ${x===100?84:88}l-2-6" stroke="#4A3320" stroke-width="2"/>${fl(x-2,x===100?80:84,.1+[2,1,0,1,2][i]*.3,1.2)}`).join("")}
-  </svg>`;
+  if(type==="wedding"){
+    /* Magul pahana: shaded brass lamp, lotus engraving, 7 wicks lit from the centre outwards */
+    const W=[[100,0],[78,1],[122,1],[57,2],[143,2],[39,3],[161,3]].map(([x,o])=>{ const dx=(x-100)/66; return [x,Math.round((84+8*Math.sqrt(Math.max(0,1-dx*dx)))*10)/10,.15+o*.32] });
+    const flame=(x,y,d)=>`<g transform="translate(${x} ${y})"><circle class="gl-halo" style="--d:${d}s" r="15" fill="url(#mpHalo)"/><g class="gl-fl" style="--d:${d}s"><path d="M0-17C6-10 6.5-3 3.6 0.6C2 2.3-2 2.3-3.6 0.6C-6.5-3-6-10 0-17Z" fill="url(#mpFl)"/><path d="M0-10.5C3-6 3.2-1.8 1.6 0.4C.7 1.3-.7 1.3-1.6 0.4C-3.2-1.8-3-6 0-10.5Z" fill="#FFF6C8"/><ellipse cy="0.2" rx="1.3" ry="1.8" fill="#9ED0FF" opacity=".7"/></g></g>`;
+    const spout=(x,y)=>`<path d="M${x-5} ${y+1.5}Q${x} ${y-3.5} ${x+5} ${y+1.5}Q${x} ${y+3} ${x-5} ${y+1.5}Z" fill="url(#mpH)" stroke="#5A3A0E" stroke-width=".5"/><path d="M${x-.3} ${y}l.6-4.2" stroke="#2A1A08" stroke-width="1.6" stroke-linecap="round"/>`;
+    const petals=[-48,-32,-16,0,16,32,48].map(dx=>{ const x=100+dx, s=1-Math.abs(dx)/80; return `<path d="M${x} ${116-2*s}C${x-7*s} ${108} ${x-6*s} ${99} ${x} ${94+Math.abs(dx)*.06}C${x+6*s} ${99} ${x+7*s} ${108} ${x} ${116-2*s}Z" fill="none" stroke="#6A4510" stroke-width=".8" opacity=".75"/><path d="M${x} ${112-2*s}V${99+Math.abs(dx)*.06}" stroke="#FCEBB0" stroke-width=".5" opacity=".6"/>` }).join("");
+    const beads=(y,x0,x1,n,r=1.3)=>Array.from({length:n},(_,i)=>`<circle cx="${(x0+(x1-x0)*i/(n-1)).toFixed(1)}" cy="${y}" r="${r}" fill="url(#mpH)" stroke="#5A3A0E" stroke-width=".3"/>`).join("");
+    const mandala=Array.from({length:16},(_,i)=>`<path transform="rotate(${i*22.5} 100 100)" d="M100 12C93 22 93 32 100 38C107 32 107 22 100 12Z"/>`).join("")+Array.from({length:32},(_,i)=>`<circle transform="rotate(${i*11.25+5.6} 100 100)" cx="100" cy="6" r="1.1" fill="currentColor" stroke="none"/>`).join("");
+    return `<div class="gl-glow"></div>
+    <svg class="gl-mandala" viewBox="0 0 200 200" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width=".7">${mandala}<circle cx="100" cy="100" r="62"/><circle cx="100" cy="100" r="58" stroke-dasharray="1 4"/><circle cx="100" cy="100" r="90"/></g></svg>
+    <div class="gl-emb">${Array.from({length:16},(_,i)=>`<i style="--x:${((i*37)%100)-50}%;--s:${(.5+((i*29)%10)/10).toFixed(2)};--t:${(5+(i*13)%6)}s;--dl:-${((i*7)%11)}s"></i>`).join("")}</div>
+    <svg class="gl-pahana" viewBox="0 0 200 248" aria-hidden="true"><defs>
+      <linearGradient id="mpH" x1="0" x2="1"><stop offset="0" stop-color="#4E3009"/><stop offset=".16" stop-color="#9C7024"/><stop offset=".36" stop-color="#F8E29A"/><stop offset=".46" stop-color="#E6BE62"/><stop offset=".66" stop-color="#94681A"/><stop offset=".84" stop-color="#C99A3E"/><stop offset="1" stop-color="#5A3A0E"/></linearGradient>
+      <linearGradient id="mpV" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F6DC8E"/><stop offset=".5" stop-color="#B98A34"/><stop offset="1" stop-color="#6A4510"/></linearGradient>
+      <radialGradient id="mpBowl" cx=".5" cy=".35" r=".8"><stop offset="0" stop-color="#2A1606"/><stop offset=".7" stop-color="#4A2E0C"/><stop offset="1" stop-color="#7A5418"/></radialGradient>
+      <radialGradient id="mpHalo"><stop offset="0" stop-color="#FFE7A0" stop-opacity=".95"/><stop offset=".35" stop-color="#FFB547" stop-opacity=".45"/><stop offset="1" stop-color="#FF8A1E" stop-opacity="0"/></radialGradient>
+      <linearGradient id="mpFl" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FFD25A"/><stop offset=".55" stop-color="#FF9A26"/><stop offset="1" stop-color="#E2541A"/></linearGradient>
+      <radialGradient id="mpShine" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>
+      <radialGradient id="mpShadow"><stop offset="0" stop-color="#000" stop-opacity=".45"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+    </defs>
+    <ellipse cx="100" cy="240" rx="70" ry="7" fill="url(#mpShadow)"/>
+    <!-- base: stepped plinth + bell -->
+    <path d="M44 238h112l-6-9H50z" fill="url(#mpH)" stroke="#4A2E0A" stroke-width=".6"/>
+    <path d="M50 229h100l-4-5H54z" fill="url(#mpV)"/>${beads(226.6,58,142,22,1.2)}
+    <path d="M56 224C66 222 80 214 86 200H114C120 214 134 222 144 224Z" fill="url(#mpH)" stroke="#4A2E0A" stroke-width=".6"/>
+    <path d="M70 220C80 216 88 210 91 203M130 220C120 216 112 210 109 203" stroke="#FBE6A6" stroke-width=".6" fill="none" opacity=".55"/>
+    <path d="M64 222.5C74 220 85 213 89 205M136 222.5C126 220 115 213 111 205" stroke="#5A3A0E" stroke-width=".5" fill="none" stroke-dasharray="1.5 2"/>
+    <!-- stem: rings + kalasa (pot) -->
+    <ellipse cx="100" cy="200" rx="16" ry="4" fill="url(#mpH)" stroke="#4A2E0A" stroke-width=".5"/>
+    <path d="M95 197V182h10v15z" fill="url(#mpH)"/>
+    <ellipse cx="100" cy="182" rx="12" ry="3.4" fill="url(#mpH)" stroke="#4A2E0A" stroke-width=".5"/>
+    <path d="M96 180c-12-3-16-12-12-20 3-6 9-8 9-14h14c0 6 6 8 9 14 4 8 0 17-12 20z" fill="url(#mpH)" stroke="#4A2E0A" stroke-width=".6"/>
+    <path d="M86 164h28M85 168h30" stroke="#5A3A0E" stroke-width=".55"/>${beads(166,88,112,9,.9)}
+    <ellipse cx="94" cy="163" rx="3" ry="8" fill="url(#mpShine)"/>
+    <ellipse cx="100" cy="145" rx="10" ry="3" fill="url(#mpH)" stroke="#4A2E0A" stroke-width=".5"/>
+    <path d="M96 144V132h8v12z" fill="url(#mpH)"/>
+    <ellipse cx="100" cy="136" rx="9" ry="4" fill="url(#mpH)" stroke="#4A2E0A" stroke-width=".5"/>
+    <ellipse cx="100" cy="126" rx="15" ry="5" fill="url(#mpH)" stroke="#4A2E0A" stroke-width=".5"/>
+    <!-- bowl -->
+    <path d="M34 86C38 104 60 120 100 121C140 120 162 104 166 86Z" fill="url(#mpH)" stroke="#4A2E0A" stroke-width=".7"/>
+    ${petals}
+    <path d="M40 96C58 106 80 110 100 110S142 106 160 96" stroke="#5A3A0E" stroke-width=".6" fill="none"/>
+    <path d="M50 108C66 115 84 117 100 117" stroke="#FBE6A6" stroke-width=".9" fill="none" opacity=".5"/>
+    <ellipse cx="100" cy="86" rx="67" ry="10.5" fill="url(#mpV)" stroke="#4A2E0A" stroke-width=".7"/>
+    <ellipse cx="100" cy="85.6" rx="61" ry="7.6" fill="url(#mpBowl)"/>
+    <ellipse class="gl-oil" cx="100" cy="86.4" rx="52" ry="5" fill="#FFC45A"/>
+    ${beads(95.6,52,148,25,1.15)}
+    <!-- neck + finial (lotus bud kotha) -->
+    <path d="M97 80V52h6v28z" fill="url(#mpH)"/>
+    <ellipse cx="100" cy="80" rx="8" ry="2.6" fill="url(#mpH)"/>
+    <ellipse cx="100" cy="66" rx="7" ry="2.6" fill="url(#mpH)" stroke="#4A2E0A" stroke-width=".4"/>
+    <ellipse cx="100" cy="52" rx="10" ry="3" fill="url(#mpH)" stroke="#4A2E0A" stroke-width=".5"/>
+    <path d="M100 12C112 22 114 36 100 50C86 36 88 22 100 12Z" fill="url(#mpH)" stroke="#4A2E0A" stroke-width=".6"/>
+    <path d="M100 16C106 26 106 38 100 48C94 38 94 26 100 16Z" fill="none" stroke="#5A3A0E" stroke-width=".5"/>
+    <path d="M100 48C92 46 86 42 84 36C90 38 96 42 100 48ZM100 48C108 46 114 42 116 36C110 38 104 42 100 48Z" fill="url(#mpV)" stroke="#4A2E0A" stroke-width=".4"/>
+    <circle cx="100" cy="10" r="2.2" fill="url(#mpV)"/>
+    <ellipse cx="95" cy="28" rx="2.4" ry="9" fill="url(#mpShine)"/>
+    <!-- wicks + flames -->
+    ${W.map(([x,y])=>spout(x,y)).join("")}
+    <circle class="gl-spark" cx="100.3" cy="${W[0][1]-4.5}" r="2.2" fill="#FFB547"/>
+    ${W.map(([x,y,d])=>flame(x+.3,y-4.3,d.toFixed(2))).join("")}
+    </svg>`;
+  }
   if(type==="homecoming") return `<div class="gl-doors"><i class="l"></i><i class="r"></i></div>${glConfetti(20)}`;
   if(type==="dana"){ const pet=(as,d,f,st,len)=>as.map(a=>`<path class="pt" style="--a:${a};--d:${d}s" d="M100 150C${100-len*.24} ${150-len*.5} ${100-len*.2} ${150-len*.85} 100 ${150-len}C${100+len*.2} ${150-len*.85} ${100+len*.24} ${150-len*.5} 100 150Z" fill="${f}" stroke="${st}" stroke-width="1.2"/>`).join("");
     return `<div class="gl-glow"></div><svg class="gl-lotus" viewBox="0 0 200 200" aria-hidden="true"><ellipse cx="100" cy="166" rx="78" ry="12" fill="#3F7D55" opacity=".85"/><ellipse cx="100" cy="163" rx="70" ry="8" fill="#5E9E6E"/>
@@ -2934,7 +3018,8 @@ function guestLoader(p,type,card){
   const gw=document.querySelector(".gwrap"); gw&&gw.classList.remove("in");
   const el=document.createElement("div"); el.className="gload t-"+type;
   el.style.cssText=`--g-bg:${v("--c-bg")||"#5E1224"};--g-ink:${v("--c-ink")||"#F8EBD6"};--g-gold:${v("--c-gold")||"#D4A84A"}`;
-  el.innerHTML=`<div class="gl-who"><small>${si?"ආරාධනාව":"An invitation for"}</small><b>${who}</b></div>
+  const wed=type==="wedding", orn=wed?`<svg class="gl-orn" viewBox="0 0 150 14" aria-hidden="true"><path d="M2 7H58M92 7H148" stroke="currentColor" stroke-width=".8"/><circle cx="56" cy="7" r="1.6" fill="currentColor"/><circle cx="94" cy="7" r="1.6" fill="currentColor"/><path d="M75 1C79 4 79 9 75 13C71 9 71 4 75 1ZM75 13C70 12 66 9 64 6C69 7 72 9 75 13ZM75 13C80 12 84 9 86 6C81 7 78 9 75 13Z" fill="currentColor"/></svg>`:"", corners=wed?["tl","tr","bl","br"].map(c=>`<svg class="gl-corner ${c}" viewBox="0 0 74 74" aria-hidden="true"><path d="M4 4h66M4 4v66M12 12h40M12 12v40" fill="none" stroke="currentColor" stroke-width="1"/><circle cx="70" cy="4" r="2" fill="currentColor"/><circle cx="4" cy="70" r="2" fill="currentColor"/><path d="M8 8C24 10 32 18 34 34C18 32 10 24 8 8Z" fill="currentColor" opacity=".55"/><path d="M8 8C20 14 26 20 30 30" fill="none" stroke="currentColor" stroke-width=".8"/><path d="M52 12c4 4 4 9 0 12-4-3-4-8 0-12zM12 52c4 4 9 4 12 0-3-4-8-4-12 0z" fill="currentColor" opacity=".7"/></svg>`).join(""):"";
+  el.innerHTML=`${corners}<div class="gl-who"><small${si?' style="letter-spacing:.04em"':""}>${si?"ආරාධනාව":"An invitation for"}</small><b>${who}</b>${orn}</div>
   <button type="button" class="gl-stage" aria-label="${esc(cp[0])}"><span class="gl-ring"></span>${glScene(type,ini,si)}</button>
   <div class="gl-do" aria-hidden="true">${esc(cp[0])}</div><div class="gl-msg" aria-live="polite">${esc(cp[1])}</div>
   <button type="button" class="gl-skip">${si?"මඟ හරින්න":"Skip"}</button>`;

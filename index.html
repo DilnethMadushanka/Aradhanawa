@@ -2447,7 +2447,8 @@ function lpTry(){
   const lang=S.lang==="si"?"si":S.lang;
   document.getElementById("tryKind").innerHTML=`${T.name} <span>· ${esc(T.si)}</span>`;
   document.getElementById("tryMsg").innerHTML=waHTML(waMessage(r.type,ev,lang,"Nimal Uncle","https://aradhanawa.com/…"));
-  document.getElementById("tryCard").innerHTML=cardHTML(r.type,ev,lang==="si"?"si":"en","Nimal Uncle",null);
+  const pr=(PREMIUM[r.type]||[]).find(t=>/-card$/.test(t.img||"")); /* show a themed design, not the plain card */
+  document.getElementById("tryCard").innerHTML=cardHTML(r.type,ev,lang==="si"?"si":"en","Nimal Uncle",pr?{...pr,_noribbon:1}:null);
   inp.dataset.type=r.type; inp._ev=r.ev;
 }
 const LP_STAGES=[

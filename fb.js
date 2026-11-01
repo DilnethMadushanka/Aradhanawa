@@ -176,9 +176,22 @@ export async function init(cfg, hooks = {}) {
     return photos.length ? F.setDoc(ref, { uid: u.uid, type, photos, updated: now() }) : F.deleteDoc(ref);
   };
   // Short guest link: links/{code} holds the same JSON the long #i= link carries.
+  // Hosts who are not logged in get short links too: a separate, anonymous Firebase session is used only to
+  // write links/{code} (needs Authentication → Sign-in method → Anonymous turned on). It never touches FBX.user.
+  let linkAuthP = null, linkDb = null;
+  FBX.anonUid = ""; FBX.anonOff = false;
+  FBX.linkAuth = () => linkAuthP || (linkAuthP = (async () => {
+    const app2 = initializeApp(cfg.config, "links"), a2 = A.getAuth(app2);
+    await a2.authStateReady();
+    const u = a2.currentUser || (await A.signInAnonymously(a2)).user;
+    linkDb = F.getFirestore(app2); FBX.anonUid = u.uid; changed("links");
+    return u.uid;
+  })().catch(e => { FBX.anonOff = true; console.warn("[fb] short links for logged-out hosts are off:", e.code || e); return "" }));
   FBX.saveLink = (code, p) => FBX.user
     ? F.setDoc(F.doc(db, "links", code), { uid: FBX.user.uid, p: String(p), created: now() })
-    : Promise.reject(new Error("Not signed in"));
+    : FBX.anonUid && linkDb
+      ? F.setDoc(F.doc(linkDb, "links", code), { uid: FBX.anonUid, p: String(p), created: now() })
+      : Promise.reject(new Error("Not signed in"));
   FBX.deleteInvite = id => F.deleteDoc(F.doc(db, "invitations", id));
   FBX.addRsvp = r => F.addDoc(F.collection(db, "rsvps"), {
     inviteId: String(r.inviteId || "").slice(0, 200), ownerUid: String(r.ownerUid || "").slice(0, 128),

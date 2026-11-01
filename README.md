@@ -15,4 +15,6 @@ Login + database: Firebase (Google login, Firestore). Setup steps: `FIREBASE_SET
 
 Online payments: Dialog Genie Business (`api/pay/*`, Vercel serverless). Setup steps: `PAYMENTS_SETUP.md`.
 
-Production ekata ilaga steps: short links (aradhanawa.com/i/xyz), server-side 5-guest limit (danata browser eke witharai).
+Short guest links: login wela inna kenekuta guest link eka `aradhanawa.com/i/Ab3dE9xk` widihata enawa (details Firestore `links/{code}` eke save wenawa). Save wenakan, logout wela innakota, nathnam `firestore.rules` publish karala nathnam parana digu `#i=` link eka enawa. Parana `#i=` links okkoma thawa wada.
+
+Production ekata ilaga steps: server-side 5-guest limit (danata browser eke witharai).

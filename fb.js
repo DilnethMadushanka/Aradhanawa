@@ -10,6 +10,7 @@
  *                          + paid orders (written only by api/pay/*): amountCents, currency, paid, paidAt, payRef, payState, method
  *   invitations/{uid_type} uid, ownerName, ownerEmail, type, lang, tpl, title, names, date, venue, ev, guests, guestCount, updated
  *   galleries/{uid_type}   uid, type, photos [data:image/jpeg URLs], updated   (public read: guest links show these)
+ *   links/{code}           uid, p (guest link details as JSON), created   (short guest links aradhanawa.com/i/{code}; public get)
  *   rsvps/{id}             inviteId, ownerUid, type, event, guest, name, coming, count, msg, created
  *   settings/site          config {FREE_GUESTS, STUDIO_WA, PRICE_PLUS, PRICE_CUSTOM, PLANS [{id, kind, name, price, details, on}], MUSIC}, tplOff []
  */
@@ -174,6 +175,10 @@ export async function init(cfg, hooks = {}) {
     const u = FBX.user, ref = F.doc(db, "galleries", `${u.uid}_${type}`);
     return photos.length ? F.setDoc(ref, { uid: u.uid, type, photos, updated: now() }) : F.deleteDoc(ref);
   };
+  // Short guest link: links/{code} holds the same JSON the long #i= link carries.
+  FBX.saveLink = (code, p) => FBX.user
+    ? F.setDoc(F.doc(db, "links", code), { uid: FBX.user.uid, p: String(p), created: now() })
+    : Promise.reject(new Error("Not signed in"));
   FBX.deleteInvite = id => F.deleteDoc(F.doc(db, "invitations", id));
   FBX.addRsvp = r => F.addDoc(F.collection(db, "rsvps"), {
     inviteId: String(r.inviteId || "").slice(0, 200), ownerUid: String(r.ownerUid || "").slice(0, 128),

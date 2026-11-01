@@ -2258,7 +2258,8 @@ const prettyPhone = p => { const d=String(p||"").replace(/\D/g,""); return d.len
 const b64 = s => btoa(unescape(encodeURIComponent(s))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
 const unb64 = s => decodeURIComponent(escape(atob(s.replace(/-/g,"+").replace(/_/g,"/"))));
 function inviteLink(guest){
-  const payload = {t:S.type, l:S.lang==="si"?"si":"en", e:cur(), g:guest||""}; const cp=curPrem(); if(cp&&cp.site) payload.d=cp.site; if(FB_ON()&&window.FBX&&FBX.user) payload.o=FBX.user.uid;
+  const e={}; for(const [k,v] of Object.entries(cur()||{})) if(v!==""&&v!=null) e[k]=v;   // leave out empty fields: shorter links
+  const payload = {t:S.type, e}; if(S.lang==="si") payload.l="si"; if(guest) payload.g=guest; const cp=curPrem(); if(cp&&cp.site) payload.d=cp.site; if(FB_ON()&&window.FBX&&FBX.user) payload.o=FBX.user.uid;
   const json=JSON.stringify(payload);
   return shortLink(json) || (CONFIG.SITE + "#i=" + b64(json));
 }
@@ -2278,16 +2279,20 @@ function shortCode(str){
 }
 const SHORT={ok:null, want:null, busy:new Set(), off:false, t:0, last:0};
 const shortOk=()=>SHORT.ok||(SHORT.ok=new Set(store.get("shortok",[])));
+const linkUid=()=>window.FBX&&(FBX.user?FBX.user.uid:FBX.anonUid)||"";
+const canShort=()=>!SHORT.off&&FB_ON()&&window.FBX&&FBX.saveLink&&(FBX.user||(FBX.linkAuth&&!FBX.anonOff));
 function shortLink(json){
-  if(SHORT.off||!FB_ON()||!window.FBX||!FBX.user||!FBX.saveLink) return "";
-  const code=shortCode(FBX.user.uid+"|"+json);
+  if(!canShort()) return "";
+  const uid=linkUid();
+  if(!uid){ FBX.linkAuth().then(id=>{ if(id){ clearTimeout(SHORT.t); SHORT.t=setTimeout(flushShort,250) } }); return "" }   // logged out: start the anonymous link session
+  const code=shortCode(uid+"|"+json);
   if(shortOk().has(code)) return CONFIG.SITE.replace(/[#?].*$/,"").replace(/\/?$/,"/") + "i/" + code;
   if(SHORT.want) SHORT.want.set(code,json);
   else if(!SHORT.busy.has(code)){ const n=Date.now(); clearTimeout(SHORT.t); SHORT.t=setTimeout(flushShort,n-SHORT.last<2000?2000:250); SHORT.last=n }   // save soon, but wait while the host is typing
   return "";
 }
 async function flushShort(){
-  if(!window.FBX||!FBX.user) return;
+  if(!linkUid()) return;
   // Save only the links the create page shows right now (not every half-typed version).
   SHORT.want=new Map(); try{ inviteLink(""); (S.guests||[]).forEach(g=>inviteLink(g.name)) }catch(e){}
   const jobs=[...SHORT.want].filter(([c])=>!SHORT.busy.has(c)); SHORT.want=null; if(!jobs.length) return;
@@ -2313,16 +2318,17 @@ function loadShort(code){
 // Copy buttons: if the short link isn't saved yet, save it now (up to 2.5s) so the host copies the short one.
 async function copyInvite(guest){
   let link=inviteLink(guest);
-  if(link.includes("#i=")&&!SHORT.off&&window.FBX&&FBX.user){ clearTimeout(SHORT.t); await Promise.race([flushShort(),new Promise(r=>setTimeout(r,2500))]); link=inviteLink(guest) }
+  if(link.includes("#i=")&&canShort()){ if(!linkUid()) await Promise.race([FBX.linkAuth(),new Promise(r=>setTimeout(r,2500))]); clearTimeout(SHORT.t); await Promise.race([flushShort(),new Promise(r=>setTimeout(r,2500))]); link=inviteLink(guest) }
   return link;
 }
 // WhatsApp Send buttons: if the message still carries the long link, save the short one first, then open WhatsApp.
 // A blank tab is opened at the tap (so pop-up blockers allow it) and pointed at WhatsApp once the link is ready.
 async function sendInvite(e){
   const a=e.currentTarget;
-  if(!a.href.includes("%23i%3D")||SHORT.off||!window.FBX||!FBX.user) return;
+  if(!a.href.includes("%23i%3D")||!canShort()) return;
   e.preventDefault();
   const w=window.open("","_blank");
+  if(!linkUid()) await Promise.race([FBX.linkAuth(),new Promise(r=>setTimeout(r,2500))]);
   clearTimeout(SHORT.t); await Promise.race([flushShort(),new Promise(r=>setTimeout(r,2500))]);
   refreshShareLinks();
   if(w) w.location.href=a.href; else location.href=a.href;
@@ -3084,6 +3090,7 @@ function guestDesign(type,d){
   return t?{...t,_noribbon:1}:null;
 }
 function renderGuest(p,gallery){
+  p.l=p.l||"en"; p.g=p.g||""; p.e=p.e||{};   // short links leave out defaults
   S.guestP=p;
   const type=TYPES[p.t]?p.t:"other";
   document.title = (p.e.title || [p.e.a,p.e.b].filter(Boolean).join(" & ") || "Invitation") + " · Aradhanawa";

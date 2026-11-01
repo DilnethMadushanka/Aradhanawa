@@ -536,12 +536,15 @@ footer.foot{border-top:1px solid var(--line);padding-block:22px;color:var(--mute
 .ge-env:focus-visible{outline:2px dashed var(--ge-gold);outline-offset:10px;border-radius:8px}
 .ge-env>*{position:absolute}
 .ge-back{inset:0;border-radius:2cqw;background:linear-gradient(180deg,color-mix(in srgb,var(--ge-env) 62%,#000),color-mix(in srgb,var(--ge-env) 85%,#000));box-shadow:0 6cqw 8cqw -4cqw rgba(30,8,8,.45),0 1cqw 2cqw rgba(30,8,8,.18)}
-.ge-card{left:6%;right:6%;top:5%;height:90%;z-index:1;border-radius:1.2cqw;background:linear-gradient(180deg,#FFFEFB,#FAF2E4);box-shadow:inset 0 0 0 1.4cqw #FFFDF8,inset 0 0 0 1.7cqw color-mix(in srgb,var(--ge-gold) 75%,transparent),0 1cqw 2cqw rgba(0,0,0,.18);display:grid;justify-items:center;align-content:start;gap:.6cqw;padding:7cqw 6cqw 0;text-align:center;color:#3B2A1E;transition:transform 1.15s cubic-bezier(.3,.8,.25,1) 1s}
-.ge-card small{font:600 2.3cqw/1.2 "Inter Tight","Noto Sans Sinhala",sans-serif;letter-spacing:.3em;text-transform:uppercase;color:color-mix(in srgb,var(--ge-gold) 80%,#000)}
-.ge-card b{font:400 9.2cqw/1 "Pinyon Script","Noto Serif Sinhala",serif;color:var(--ge-env);max-width:100%;overflow-wrap:anywhere}
-.ge-card i{font:italic 500 4.4cqw/.8 "Cormorant Garamond",serif;color:color-mix(in srgb,var(--ge-gold) 85%,#000)}
-.ge-card span{margin-top:1.2cqw;font:600 2.5cqw/1.3 "Cormorant Garamond","Noto Serif Sinhala",serif;letter-spacing:.12em;text-transform:uppercase;color:#6B5844}
-.ge-card svg{width:22cqw;height:auto;color:var(--ge-gold)}
+.ge-slot{left:0;right:0;bottom:0;top:-300%;z-index:1;overflow:hidden;pointer-events:none}
+.ge-card{position:absolute;left:11%;width:78%;top:76.25%;transition:transform 1.3s cubic-bezier(.3,.8,.25,1) 1.05s}
+.ge-card .card{max-width:none;width:100%;box-shadow:0 1cqw 3cqw rgba(0,0,0,.28)}
+.gload.ge.go .ge-card{transform:translateY(calc(-1 * var(--ge-up,0px)))}
+.gload.ge.go .ge-env{animation:none;transform:translateY(var(--ge-drop,0px));transition:transform 1.1s cubic-bezier(.4,0,.2,1) .9s}
+.gload.ge.lift .ge-back,.gload.ge.lift .ge-pocket,.gload.ge.lift .ge-flap{opacity:0;transform:translateY(30%);transition:opacity .7s ease,transform .9s ease}
+.gload.ge.lift .ge-slot{overflow:visible}
+.gload.ge.lift .ge-card{transform:translateY(calc(var(--ge-c,0px) - var(--ge-up,0px))) scale(1.04);transition:transform .9s cubic-bezier(.4,0,.2,1)}
+.ge.si .ge-top small,.ge.si .ge-tap{letter-spacing:.06em;text-transform:none;font-size:13px}
 .ge-pocket{inset:0;z-index:2;border-radius:2cqw;clip-path:polygon(0 0,50% 54%,100% 0,100% 100%,0 100%);background:repeating-linear-gradient(45deg,rgba(255,255,255,.025) 0 2px,transparent 2px 5px),linear-gradient(165deg,color-mix(in srgb,var(--ge-env) 88%,#fff),var(--ge-env) 45%,color-mix(in srgb,var(--ge-env) 82%,#000))}
 .ge-pocket>svg:first-child,.ge-flap svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .ge-flap{left:0;right:0;top:0;height:60%;z-index:3;transform-origin:50% 0;filter:drop-shadow(0 1.2cqw 1.2cqw rgba(0,0,0,.3));transition:transform .85s cubic-bezier(.5,0,.3,1) .35s,z-index 0s .78s}
@@ -553,12 +556,10 @@ footer.foot{border-top:1px solid var(--line);padding-block:22px;color:var(--mute
 .ge-seal::after{content:"";position:absolute;inset:-14%;border-radius:50%;border:2px solid var(--ge-gold);opacity:0;animation:glring 2s ease-out 1.2s infinite}
 .ge-tap{font:600 11px/1 "Inter Tight","Noto Sans Sinhala",sans-serif;letter-spacing:.42em;text-transform:uppercase;opacity:.8;animation:glfade .8s ease .6s both,gePulse 1.8s ease-in-out 1.4s infinite;transition:opacity .3s}
 @keyframes gePulse{50%{opacity:.35}}
-.ge.si .ge-top small,.ge.si .ge-tap,.ge.si .ge-card small{letter-spacing:.06em;text-transform:none;font-size:13px}.ge.si .ge-card small{font-size:2.8cqw}
 .gload.ge .gl-skip{z-index:3;color:var(--ge-ink)}
 .gload.ge.go .ge-seal{transform:scale(1.3);opacity:0}
 .gload.ge.go .ge-seal::after{display:none}
 .gload.ge.go .ge-flap{transform:rotateX(180deg);z-index:0}
-.gload.ge.go .ge-card{transform:translateY(-40%)}
 .gload.ge.go .ge-tap{animation:none;opacity:0}
 .gload.ge.go .ge-top{transition:opacity .5s ease 1s,transform .8s ease 1s;opacity:0;transform:translateY(-12px)}
 @media (prefers-reduced-motion:reduce){.ge-art,.ge-tap,.ge-seal::after{animation:none!important}}
@@ -3339,17 +3340,13 @@ function guestEnvLoader(p,type,card){
   const gw=document.querySelector(".gwrap"); gw&&gw.classList.remove("in");
   const el=document.createElement("div"); el.className="gload ge t-"+type+(si?" si":"");
   el.style.cssText=`--g-bg:${bg};--g-gold:${gold};--ge-paper:${bg};--ge-ink:${ink};--ge-gold:${gold};--ge-env:${env};--ge-name:${dark?gold:env};--ge-bgimg:url("${art.bg}")`;
-  const L=(en,s)=>si?s:en, names=ev.b?[ev.a,ev.b]:[ev.title||ev.a||""];
-  const what=L({wedding:"The wedding of",homecoming:"The homecoming of",birthday:"Birthday of",dana:"Almsgiving",party:"Celebrating"}[type]||"Invitation",
-    {wedding:"මංගල උත්සවය",homecoming:"ගෙදර ඒම",birthday:"උපන් දිනය",dana:"දාන පිංකම",party:"සාදය"}[type]||"ආරාධනා");
-  const orn=`<svg viewBox="0 0 60 12" aria-hidden="true"><path d="M2 6H22M38 6H58" stroke="currentColor" stroke-width=".6"/><path d="M30 1C33 3 33 7 30 11C27 7 27 3 30 1ZM30 11C26 10 23 8 22 5C26 6 28 8 30 11ZM30 11C34 10 37 8 38 5C34 6 32 8 30 11Z" fill="currentColor"/></svg>`;
   const sprig=c=>`<svg class="ge-sprig ${c}" viewBox="0 0 60 40" aria-hidden="true" fill="none" stroke="currentColor" stroke-width=".8"><path d="M2 38C14 30 24 20 34 6"/><path d="M10 32C8 26 10 22 14 20C15 25 13 29 10 32Z M17 26C16 20 19 16 23 15C23 20 21 24 17 26Z M24 19C24 13 27 10 31 9C30 14 28 17 24 19Z M14 30C19 31 23 29 25 26C21 25 17 27 14 30Z M21 23C26 24 30 22 32 18C28 18 24 20 21 23Z" fill="currentColor" fill-opacity=".25"/><circle cx="35" cy="5" r="2.4" fill="currentColor"/><circle cx="40" cy="12" r="1.4" fill="currentColor"/></svg>`;
   el.innerHTML=`<div class="ge-bg"></div><img class="ge-art l" src="${art.l}" alt=""><img class="ge-art r" src="${art.r}" alt="">
   <div class="ge-col">
     <div class="ge-top"><small>${si?"ඔබට ආරාධනා":"You are invited"}</small>${p.g?`<b>${si?"":"Dear "}${esc(p.g)}</b>`:""}</div>
     <button type="button" class="ge-env" aria-label="${si?"විවෘත කරන්න තට්ටු කරන්න":"Tap to open the invitation"}">
       <div class="ge-back"></div>
-      <div class="ge-card">${orn}<small>${esc(what)}</small>${names.map((n,i)=>`${i?"<i>&amp;</i>":""}<b>${esc(n)}</b>`).join("")}${ev.date?`<span>${esc(fDate(ev.date,si?"si":"en"))}</span>`:""}</div>
+      <div class="ge-slot"><div class="ge-card">${cardHTML(type,ev,si?"si":"en",p.g,guestDesign(type,p.d))}</div></div>
       <div class="ge-pocket"><svg viewBox="0 0 142 100" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0L71 54L142 0" fill="none" stroke="var(--ge-gold)" stroke-width="1.2" vector-effect="non-scaling-stroke"/><path d="M0 100L62 59M142 100L80 59" fill="none" stroke="rgba(0,0,0,.22)" stroke-width="1" vector-effect="non-scaling-stroke"/><rect x="3" y="3" width="136" height="94" rx="1.5" fill="none" stroke="var(--ge-gold)" stroke-opacity=".35" stroke-width=".8" vector-effect="non-scaling-stroke"/></svg>${sprig("a")}${sprig("b")}</div>
       <div class="ge-flap"><i></i><svg viewBox="0 0 142 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0L71 60L142 0" fill="none" stroke="var(--ge-gold)" stroke-width="1.2" vector-effect="non-scaling-stroke"/></svg></div>
       <div class="ge-seal"><svg viewBox="0 0 60 60" aria-hidden="true"><defs>${GL_GOLD}<radialGradient id="geWax" cx=".38" cy=".32" r=".75"><stop offset="0" style="stop-color:color-mix(in srgb,var(--ge-env) 70%,#fff)"/><stop offset=".55" style="stop-color:var(--ge-env)"/><stop offset="1" style="stop-color:color-mix(in srgb,var(--ge-env) 55%,#000)"/></radialGradient></defs><path d="M30 3C36 3 38 7 43 8S53 11 54 17 57 25 57 30 54 38 53 43 48 52 43 53 36 57 30 57 23 54 18 53 9 49 7 43 3 36 3 30 6 22 7 17 13 9 18 7 24 3 30 3Z" fill="url(#geWax)"/><circle cx="30" cy="30" r="17" fill="none" stroke="#000" stroke-width="1.4" opacity=".3"/><circle cx="30" cy="30" r="17.8" fill="none" stroke="#fff" stroke-width=".5" opacity=".3"/><text x="30" y="36" text-anchor="middle" font-family="Cormorant Garamond,serif" font-style="italic" font-weight="700" font-size="17" fill="url(#glGv)">${esc(ini)}</text></svg></div>
@@ -3359,7 +3356,11 @@ function guestEnvLoader(p,type,card){
   <button type="button" class="gl-skip">${si?"මඟ හරින්න":"Skip"}</button>`;
   document.body.appendChild(el); document.documentElement.style.overflow="hidden";
   let done=false, went=false; const fin=()=>{ if(done) return; done=true; el.classList.add("out"); gw&&gw.classList.add("in"); document.documentElement.style.overflow=""; setTimeout(()=>el.remove(),800) };
-  const go=()=>{ if(went) return; went=true; el.classList.add("go"); setTimeout(fin,matchMedia("(prefers-reduced-motion:reduce)").matches?400:3700) };
+  const go=()=>{ if(went) return; went=true;
+    /* how far the card must rise to be fully out (its bottom stays tucked in the top quarter of the envelope), and how far the envelope drops so the card stays on screen */
+    const E=el.querySelector(".ge-env").getBoundingClientRect(), H=el.querySelector(".ge-card").offsetHeight, up=Math.max(0,H-.2*E.height), drop=Math.max(0,Math.min(16+up-.05*E.height-E.top,innerHeight-E.bottom-8));
+    el.style.setProperty("--ge-up",up+"px"); el.style.setProperty("--ge-drop",drop+"px"); el.style.setProperty("--ge-c",((innerHeight-H)/2-(E.top+drop+.05*E.height-up))+"px");
+    el.classList.add("go"); const rm=matchMedia("(prefers-reduced-motion:reduce)").matches; if(!rm) setTimeout(()=>el.classList.add("lift"),2700); setTimeout(fin,rm?400:4200) };
   el.querySelector(".ge-env").addEventListener("click",go); el.querySelector(".ge-tap").addEventListener("click",go);
   el.querySelector(".gl-skip").addEventListener("click",fin);
   return el;

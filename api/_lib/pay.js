@@ -5,6 +5,7 @@ import { createTransaction, getTransaction, CURRENCY, PAID_STATES, FAILED_STATES
 export const SITE = () => (process.env.SITE_URL || "https://www.aradhanawa.com").replace(/\/+$/, "");
 export const TYPES = ["wedding", "homecoming", "birthday", "party", "dana", "other"];
 const DEFAULT_PRICE = { plus: "Rs. 990", custom: "Rs. 4,900" };
+export const KINDS = ["plus", "custom", "service"];   // what a plan unlocks: unlimited guests, a custom design, or a service the studio fulfils
 export const ST = { AWAIT: "Awaiting payment", FAILED: "Payment failed" };
 
 const now = () => new Date().toISOString();
@@ -14,16 +15,34 @@ export const toCents = label => {   // "Rs. 4,900" -> 490000, "Rs. 990.50" -> 99
   const n = m ? +m[0] : 0; return n > 0 ? Math.round(n * 100) : 0 };
 export const fail = (status, message) => Object.assign(new Error(message), { status });
 
-/* Price comes from Firestore settings/site (Admin → Settings), never from the browser. */
+/* Plans and prices come from Firestore settings/site (Admin → Prices), never from the browser.
+ * Before any plan is saved, the old Plus / Custom price settings are used. */
+const cleanPlan = p => {
+  if (!p || typeof p !== "object") return null;
+  const id = str(p.id, 40), kind = KINDS.includes(p.kind) ? p.kind : "", price = str(p.price, 40);
+  if (!/^[a-z0-9-]+$/.test(id) || !kind || !toCents(price)) return null;
+  return { id, kind, name: str(p.name, 120) || id, price, on: p.on !== false };
+};
+export function plansFrom(c) {
+  c = c || {};
+  if (Array.isArray(c.PLANS)) return c.PLANS.map(cleanPlan).filter(Boolean);
+  return [
+    { id: "plus", kind: "plus", name: "Aradhanawa Plus", price: toCents(c.PRICE_PLUS) ? c.PRICE_PLUS : DEFAULT_PRICE.plus, on: true },
+    { id: "custom", kind: "custom", name: "Custom design", price: toCents(c.PRICE_CUSTOM) ? c.PRICE_CUSTOM : DEFAULT_PRICE.custom, on: true },
+  ];
+}
+/* A plan id picks that plan. Without one (older pages), the first plan of the kind is used. Hidden plans can't be bought. */
+export async function planFor({ plan, kind } = {}) {
+  let c = {};
+  try { const s = await db().doc("settings/site").get(); c = (s.exists && s.data().config) || {} }
+  catch (e) { console.warn("[pay] settings", e.message) }
+  const on = plansFrom(c).filter(p => p.on);
+  const p = plan ? on.find(x => x.id === String(plan)) : on.find(x => x.kind === kind);
+  return p ? { ...p, label: p.price, cents: toCents(p.price) } : null;
+}
 export async function priceFor(kind) {
-  let label = DEFAULT_PRICE[kind];
-  try {
-    const s = await db().doc("settings/site").get();
-    const c = (s.exists && s.data().config) || {};
-    const v = kind === "plus" ? c.PRICE_PLUS : c.PRICE_CUSTOM;
-    if (toCents(v)) label = v;
-  } catch (e) { console.warn("[pay] settings", e.message) }
-  return { label, cents: toCents(label) };
+  const p = await planFor({ kind });
+  return p ? { label: p.label, cents: p.cents } : { label: "", cents: 0 };
 }
 
 export async function userFromRequest(req) {
@@ -34,17 +53,19 @@ export async function userFromRequest(req) {
 }
 
 export async function startCheckout(user, body) {
-  const kind = body && body.kind;
-  if (kind !== "plus" && kind !== "custom") throw fail(400, "Unknown product.");
-  const type = TYPES.includes(body.type) ? body.type : "other";
-  const design = str(body.design, 120) || (kind === "plus" ? "Aradhanawa Plus" : "Custom design");
-  const { label, cents } = await priceFor(kind);
+  body = body || {};
+  if (!body.plan && !KINDS.includes(body.kind)) throw fail(400, "Unknown product.");
+  const plan = await planFor({ plan: body.plan, kind: body.kind });
+  if (!plan) throw fail(400, "This price plan is not available any more. Please refresh the page.");
+  const { kind, label, cents } = plan;
   if (!cents) throw fail(500, "Price is not set.");
+  const type = TYPES.includes(body.type) ? body.type : "other";
+  const design = (kind === "custom" && str(body.design, 120)) || plan.name;
 
   const prof = (await db().doc(`users/${user.uid}`).get()).data() || {};
   const ref = db().collection("orders").doc();
   const order = {
-    kind, design, type,
+    kind, design, type, planId: plan.id, planName: plan.name,
     name: str(prof.name || user.name || "", 160), email: str(prof.email || user.email || "", 160).toLowerCase(), phone: str(prof.phone || "", 40),
     amount: label, amountCents: cents, currency: CURRENCY, status: ST.AWAIT, paid: false, method: "genie",
     created: now(), uid: user.uid,
@@ -93,7 +114,7 @@ export async function settle(orderId) {
   if (PAID_STATES.includes(state) && amountOk && currencyOk && localOk) {
     const upd = {
       paid: true, paidAt: now(), payState: state, updated: now(),
-      // Plus is ready at once. A custom design still needs the designer, so the admin marks it Done later.
+      // Plus is ready at once. A custom design or a service still needs the studio, so the admin marks it Done later.
       status: o.kind === "plus" ? "Done" : "In progress",
     };
     await ref.update(upd);

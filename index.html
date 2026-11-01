@@ -796,7 +796,7 @@ nav.top a{font-weight:600}
 .aform .sub{color:var(--muted);margin:-6px 0 4px}
 .af{display:grid;gap:6px}
 .af label{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700}
-.af input{width:100%;border:1px solid var(--line-2);background:var(--surface);padding:13px 14px;border-radius:var(--r);font-size:15px}
+.af input,.af select,.af textarea{width:100%;font:inherit;border:1px solid var(--line-2);background:var(--surface);padding:13px 14px;border-radius:var(--r);font-size:15px}
 .af input:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px color-mix(in srgb,var(--gold) 28%,transparent)}
 .af input[aria-invalid="true"]{border-color:#B3261E}
 .af .pw{position:relative}
@@ -1339,6 +1339,13 @@ nav.top a{font-weight:600}
 .lp-strip figure{margin:0;display:grid;gap:10px;font-size:var(--s-small);color:var(--l-paper-soft)}
 .lp-strip img{width:100%;aspect-ratio:16/10;object-fit:cover;display:block}
 @media (max-width:700px){.lp-strip{grid-template-columns:minmax(0,1fr)}}
+.lp-price .plans{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+.lp-price .plan{border:1px solid color-mix(in srgb,currentColor 22%,transparent);padding:22px;display:grid;gap:10px;align-content:start;grid-template-rows:auto auto auto 1fr auto}
+.lp-price .plan small{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--l-muted)}
+.lp-price .plan h3{font-size:24px;margin:0}
+.lp-price .plan .pp{font-size:30px;letter-spacing:-.02em}
+.lp-price .plan ul{margin:0;padding-left:18px;display:grid;gap:4px;align-content:start;font-size:15px;line-height:1.4}
+.lp-price .plan .lp-btn{justify-self:start;margin-top:6px}
 @media (max-width:820px){.lp-price h2{font-size:8.1vw}.lp-price .row{grid-template-columns:minmax(0,1fr)!important}.lp-price .pph{grid-column:1;grid-row:auto}.lp-price .row p{font-size:17px}.lp-price .row .act{grid-column:1;justify-items:stretch}.lp-price .row .act .lp-link{justify-self:start}}
 
 /* faq: large questions, answers beside */
@@ -1715,6 +1722,18 @@ const CONFIG = {
   SITE: (location.protocol.startsWith("http") && !/claude|anthropic|usercontent/.test(location.hostname))
           ? location.origin + location.pathname : "https://aradhanawa.com/"
 };
+/* Price plans (Admin → Prices). Saved as CONFIG.PLANS in Firestore settings/site; the payment API reads the same list,
+ * so the price paid is always the one set here. Before any plan is saved, Plus and Custom design are shown. */
+const PLAN_KINDS = { plus:"Plus: unlimited guests for one event", custom:"Custom design", service:"Other service (studio does it)" };
+const PLAN_KIND_SHORT = { plus:"Plus", custom:"Custom design", service:"Service" };
+function plans(){
+  if(Array.isArray(CONFIG.PLANS)) return CONFIG.PLANS;
+  return [{id:"plus",kind:"plus",name:"Aradhanawa Plus",price:CONFIG.PRICE_PLUS,on:true,details:"Unlimited guest links for one event\nSee who is coming\nNo Aradhanawa name on the card"},
+    {id:"custom",kind:"custom",name:"Custom design",price:CONFIG.PRICE_CUSTOM,on:true,details:"Your photos, colours and wording\n2 rounds of changes\nReady within 48 hours"}];
+}
+const livePlans = () => plans().filter(p=>p&&p.on!==false&&p.price);
+const mainPlan = kind => livePlans().find(p=>p.kind===kind)||null;
+const planById = id => livePlans().find(p=>p.id===id)||null;
 
 /* ================= SVG ART ================= */
 const svg = (vb, inner) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${inner}</svg>`;
@@ -2620,7 +2639,8 @@ function render(){
     <h2>Free for five guests, <span class="pb">${CONFIG.PRICE_PLUS}</span> for everyone.</h2>
     <div class="row"><p style="--d:80ms">One design and ${CONFIG.FREE_GUESTS} personal links cost nothing. Plus covers one event: unlimited guests, a list of who is coming and no Aradhanawa name on the card. A printed order for 200 guests usually runs past Rs. 40,000.</p>
       <figure class="pph" style="--d:80ms">${pic("card-flatlay","(max-width:820px) 92vw, 30vw","A printed maroon and gold wedding card with jasmine, betel leaves and a brass pahana","50% 50%")}<figcaption>The printed way: card, envelope and courier, for every guest.</figcaption></figure>
-      <div class="act" style="--d:160ms"><button class="lp-btn" data-upgrade="plus">Get Plus</button><button class="lp-link" data-upgrade="custom">Or a custom design, ${CONFIG.PRICE_CUSTOM}</button></div></div>
+      <div class="act" style="--d:160ms">${mainPlan("plus")?`<button class="lp-btn" data-upgrade="plus">Get Plus</button>`:""}${mainPlan("custom")?`<button class="lp-link" data-upgrade="custom">Or a custom design, ${esc(mainPlan("custom").price)}</button>`:""}</div></div>
+    ${planCards()}
   </section>
 `,
     faq:()=>`<section class="lp-ch lp-paper g lp-faq" id="faq" data-f="paper"><div class="t">
@@ -2785,22 +2805,38 @@ function refreshGuestLinks(){
     a.href=waLink(g.phone,waMessage(S.type,cur(),S.lang,g.name,inviteLink(g.name)));
   });
 }
-function upsell(direct){
+function planCards(){
+  const ps=livePlans(); if(!ps.length) return "";
+  return `<div class="plans" style="--d:200ms">${ps.map(p=>`<article class="plan"><small>${p.kind==="plus"?"Plan":p.kind==="custom"?"Design":"Service"}</small><h3>${esc(p.name)}</h3><b class="pp">${esc(p.price)}</b>
+    ${p.details?`<ul>${String(p.details).split(/\n+/).filter(x=>x.trim()).map(x=>`<li>${esc(x.trim())}</li>`).join("")}</ul>`:""}<button class="lp-btn" data-buy="${esc(p.id)}">Buy</button></article>`).join("")}</div>`;
+}
+function buyPlan(id){
+  const p=planById(id); if(!p) return toast("This plan is not available any more");
+  if(p.kind==="plus") return upsell(true,p);
+  if(p.kind==="custom") return customReq("",p);
+  const txt=`Hi Aradhanawa! I'd like "${p.name}" (${p.price}) for my ${TYPES[S.type].name.toLowerCase()}.`;
+  modal(`<span class="eyebrow">${esc(p.name)} · ${esc(p.price)}</span><h3>${esc(p.name)}</h3>
+    ${p.details?`<p>${String(p.details).split(/\n+/).map(esc).join("<br>")}</p>`:""}
+    <div class="row" style="justify-content:flex-end;margin-top:6px"><button class="btn" data-x>Cancel</button><a class="btn wa" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,txt)}">${I.wa} Ask first</a><button class="btn primary" data-pay="service||${esc(p.id)}">Pay ${esc(p.price)}</button></div>
+    <p class="note">Secure payment through Dialog Genie. We'll contact you on WhatsApp after you pay.</p>`);
+}
+function upsell(direct,plan){
+  const p=plan||mainPlan("plus"), price=p?p.price:CONFIG.PRICE_PLUS;
   const txt=`Hi Aradhanawa! I'd like Aradhanawa Plus for my ${TYPES[S.type].name.toLowerCase()} invitation (${cur().date||""}).`;
   modal(`<span class="eyebrow">${direct?"Aradhanawa Plus":"Free limit reached"}</span>
     <h3>${direct?"Unlimited guests for one event":"You've shared with 5 guests"}</h3>
-    <p>${direct?"":"The free plan covers 5 personal links. "}Upgrade to Aradhanawa Plus for ${CONFIG.PRICE_PLUS} per event to send to everyone, see who's coming, and remove the Aradhanawa branding.</p>
-    <div class="row" style="justify-content:flex-end;margin-top:6px"><button class="btn" data-x>Not now</button><button class="btn primary" data-pay="plus">Pay ${esc(CONFIG.PRICE_PLUS)}</button></div>
+    <p>${direct?"":"The free plan covers 5 personal links. "}Upgrade to ${esc(p?p.name:"Aradhanawa Plus")} for ${esc(price)} per event to send to everyone, see who's coming, and remove the Aradhanawa branding.</p>
+    <div class="row" style="justify-content:flex-end;margin-top:6px"><button class="btn" data-x>Not now</button>${p?`<button class="btn primary" data-pay="plus||${esc(p.id)}">Pay ${esc(price)}</button>`:""}</div>
     <p class="note">Secure payment through Dialog Genie. Prefer to talk first? <a target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,txt)}">Ask us on WhatsApp</a>. You can still copy the main invite link and paste it into a WhatsApp group.</p>`);
 }
-function customReq(name){
-  const ev=cur();
+function customReq(name,plan){
+  const ev=cur(), p=plan||mainPlan("custom"), price=p?p.price:CONFIG.PRICE_CUSTOM;
   const txt=`Hi Aradhanawa! I'd like a custom ${TYPES[S.type].name.toLowerCase()} invitation${name?` using the "${name}" design`:""}.\nDate: ${ev.date||"-"}\nNames: ${[ev.a,ev.b,ev.title].filter(Boolean).join(", ")}\nI'll send my photos and colours here.`;
-  modal(`<span class="eyebrow">Custom design · ${CONFIG.PRICE_CUSTOM}</span>
+  modal(`<span class="eyebrow">${esc(p&&p.id!=="custom"?p.name:"Custom design")} · ${esc(price)}</span>
     <h3>${name?esc(name):"Made just for you"}</h3>
     <p>Our designer customises this template with your photos, colours and wording, in Sinhala or English. You get 2 rounds of changes and the finished card within 48 hours.</p>
     <div class="bubble" style="font-size:13px">${esc(txt)}</div>
-    <div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><a class="btn wa" data-order="custom|${esc(name||"")}" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,txt)}">${I.wa} Ask first</a><button class="btn primary" data-pay="custom|${esc(name||"")}">Pay ${esc(CONFIG.PRICE_CUSTOM)}</button></div>
+    <div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><a class="btn wa" data-order="custom|${esc(name||"")}" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,txt)}">${I.wa} Ask first</a>${p?`<button class="btn primary" data-pay="custom|${esc(name||"")}|${esc(p.id)}">Pay ${esc(price)}</button>`:""}</div>
     <p class="note">Pay securely through Dialog Genie, then send your photos on WhatsApp.</p>`);
 }
 function guestPreview(guest){
@@ -3298,7 +3334,7 @@ function logOrder(kind,design){
   const os=DB.orders(); os.unshift(o); DB.setOrders(os);
 }
 /* Online payment (Dialog Genie). The server (api/pay/create) sets the price and holds the Genie key. */
-async function payNow(kind,design,btn){
+async function payNow(kind,design,btn,plan){
   if(!FB_ON()||!window.FBX) return toast("Online payment needs the live site (Firebase connected).");
   if(!me()){
     store.set("next",location.hash||"#create");
@@ -3309,7 +3345,7 @@ async function payNow(kind,design,btn){
   try{
     const tok=await FBX.idToken();
     const r=await fetch("/api/pay/create",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+tok},
-      body:JSON.stringify({kind,type:S.type,design:design||(kind==="plus"?"Aradhanawa Plus":"Custom design")})});
+      body:JSON.stringify({kind,plan:plan||undefined,type:S.type,design:design||(kind==="plus"?"Aradhanawa Plus":"Custom design")})});
     const j=await r.json().catch(()=>({}));
     if(!r.ok||!j.url) throw new Error(j.error||"Payment could not start. Please try again.");
     location.href=j.url;
@@ -3324,6 +3360,9 @@ function payBackModal(){
     const txt=`Hi Aradhanawa! I paid for a custom design (order ${ref}). Here are my photos, colours and wording:`;
     modal(`<span class="eyebrow">Payment received</span><h3>Thank you! Now send us your photos</h3><p>Your order <b>${esc(ref)}</b> is paid. Send your photos, colours and wording on WhatsApp and our designer will start. The finished card is ready within 48 hours.</p>
       <div class="row" style="justify-content:flex-end"><button class="btn" data-x>Later</button><a class="btn wa" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,txt)}">${I.wa} Send photos</a></div>`);
+  } else if(pay==="ok"&&kind==="service"){
+    modal(`<span class="eyebrow">Payment received</span><h3>Thank you!</h3><p>Your order <b>${esc(ref)}</b> is paid. Message us on WhatsApp with the details and we'll get started.</p>
+      <div class="row" style="justify-content:flex-end"><button class="btn" data-x>Later</button><a class="btn wa" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,`Hi Aradhanawa! I paid for order ${ref}.`)}">${I.wa} Message us</a></div>`);
   } else if(pay==="ok") modal(`<span class="eyebrow">Payment received</span><h3>Aradhanawa Plus is on</h3><p>Order <b>${esc(ref)}</b> is paid. You can now send your invitation to every guest.</p><div class="row" style="justify-content:flex-end"><button class="btn" data-x>Done</button><a class="btn primary" href="#create" data-x>Add guests</a></div>`);
   else if(pay==="failed") modal(`<span class="eyebrow">Payment not completed</span><h3>No money was taken</h3><p>The payment was cancelled or declined. You can try again, or message us on WhatsApp for help.</p><div class="row" style="justify-content:flex-end"><button class="btn" data-x>Close</button><a class="btn wa" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,`Hi Aradhanawa, my payment (order ${ref}) didn't go through.`)}">${I.wa} Get help</a></div>`);
   else modal(`<span class="eyebrow">Payment processing</span><h3>We're confirming your payment</h3><p>This can take a minute. Your order <b>${esc(ref)}</b> will show as Paid in My orders once Genie confirms it.</p><div class="row" style="justify-content:flex-end"><button class="btn" data-x>OK</button></div>`);
@@ -3488,7 +3527,7 @@ function renderAdmin(tab,arg){
   const u=me();
   if(!u){ store.set("next","#admin"+(tab?"/"+tab:"")); location.replace("#login"); return }
   if(u.role!=="admin"){ store.set("next",""); location.replace("#account"); toast("That page is for admins only"); return }
-  const TABS=[["overview",AI.chart,"Overview"],["users",AI.users,"Users"],["orders",AI.bag,"Orders"],["invitations",AI.mail,"Invitations"],["rsvps",AI.check,"RSVPs"],["templates",AI.grid,"Templates"],["prompts",AI.grid,"Image prompts"],["settings",AI.gear,"Settings"]];
+  const TABS=[["overview",AI.chart,"Overview"],["users",AI.users,"Users"],["orders",AI.bag,"Orders"],["invitations",AI.mail,"Invitations"],["rsvps",AI.check,"RSVPs"],["templates",AI.grid,"Templates"],["prices",AI.bag,"Prices"],["prompts",AI.grid,"Image prompts"],["settings",AI.gear,"Settings"]];
   tab = TABS.some(t=>t[0]===tab) ? tab : "overview";
   const users=DB.users(), orders=DB.orders(), off=tplOff(), invs=DB.invitations(), rsvps=DB.rsvps(), fb=FB_ON();
   const typeName=t=>(TYPES[t]||TYPES.other).name, coming=list=>list.filter(r=>r.coming).reduce((a,r)=>a+(+r.count||0),0);
@@ -3497,7 +3536,7 @@ function renderAdmin(tab,arg){
   const week=Date.now()-7*864e5;
   const orderHead=edit=>`<thead><tr><th>Customer</th><th>Design</th><th>Amount</th><th>Status</th><th>Date</th>${edit?"<th></th>":""}</tr></thead>`;
   const orderRows=(list,edit)=>list.map(o=>`<tr><td><b>${esc(o.name)}</b>${o.sample?` <span class="badge">Sample</span>`:""}<small>${esc(o.email||prettyPhone(o.phone)||"")}</small></td>
-    <td>${esc(o.design)}<small>${esc((TYPES[o.type]||TYPES.other).name)} · ${o.kind==="plus"?"Plan":"Custom"}</small></td><td>${esc(o.amount)}${paidTag(o)}</td>
+    <td>${esc(o.design)}<small>${esc((TYPES[o.type]||TYPES.other).name)} · ${esc(o.planName&&o.planName!==o.design?o.planName:o.kind==="plus"?"Plan":o.kind==="service"?"Service":"Custom")}</small></td><td>${esc(o.amount)}${paidTag(o)}</td>
     <td>${edit?`<select data-ostatus="${o.id}" aria-label="Order status">${["New","Awaiting payment","In progress","Done","Payment failed","Cancelled"].map(s=>`<option ${s===o.status?"selected":""}>${s}</option>`).join("")}</select>`:stBadge(o.status)}</td>
     <td>${fdt(o.created)}</td>${edit?`<td><div class="acts">${o.phone?`<a class="btn sm" target="_blank" rel="noopener" href="${waLink(o.phone,`Hi ${o.name}, this is Aradhanawa about your "${o.design}" order.`)}">${I.wa} Chat</a>`:""}</div></td>`:""}</tr>`).join("")
     || `<tr><td colspan="6" class="empty">No orders yet.</td></tr>`;
@@ -3567,17 +3606,28 @@ function renderAdmin(tab,arg){
       ${PREMIUM[k].map((t,i)=>{ const key=k+":"+(i+1), on=!off.includes(key); return `<div class="titem" data-off="${on?0:1}">${cardHTML(k,T.sample,"en","",{...t,_noribbon:1})}<div class="trow"><span><b>${esc(t.n)}</b><small>Custom · ${CONFIG.PRICE_CUSTOM}</small></span><input type="checkbox" class="sw-t" data-tog="${key}" ${on?"checked":""} aria-label="Show ${esc(t.n)}"></div></div>` }).join("")}
     </div></section>`).join("")}`;
   }
+  if(tab==="prices"){
+    const ps=plans();
+    body=`<div class="mh"><div><span class="eyebrow">Admin</span><h1>Prices</h1><p>Plans and prices shown on the site. The payment page charges exactly the price saved here.</p></div>
+      <div class="row"><button class="btn primary" data-padd>Add plan</button></div></div>
+    <div class="box"><div class="tblwrap"><table class="tbl"><thead><tr><th>Plan</th><th>Price</th><th>Type</th><th>On site</th><th></th></tr></thead><tbody>
+      ${ps.map((p,i)=>`<tr><td><b>${esc(p.name)}</b>${p.details?`<small>${esc(String(p.details).replace(/\n+/g," · "))}</small>`:""}</td><td><b>${esc(p.price)}</b></td>
+        <td>${esc(PLAN_KIND_SHORT[p.kind]||p.kind)}${p.on!==false&&mainPlan(p.kind)===p&&p.kind!=="service"?` <span class="badge ok">Main</span>`:""}</td>
+        <td><input type="checkbox" class="sw-t" data-pon="${i}" ${p.on!==false?"checked":""} aria-label="Show ${esc(p.name)} on the site"></td>
+        <td><div class="acts">${i?`<button class="btn sm" data-pup="${i}" aria-label="Move ${esc(p.name)} up">↑</button>`:""}<button class="btn sm" data-pedit="${i}">Edit</button><button class="btn sm" data-pdel="${i}">Delete</button></div></td></tr>`).join("")||`<tr><td colspan="5" class="empty">No plans. Customers can only ask on WhatsApp until you add one.</td></tr>`}
+    </tbody></table></div>
+    <p class="sub" style="margin:14px 0 0;color:var(--muted)">The first plan shown on the site of each type is the <b>Main</b> one: the Plus upgrade in the editor and the Buy button under premium designs use it. Orders already paid keep the price they were paid at.</p></div>`;
+  }
   if(tab==="prompts"){
     body=`<div class="mh"><div><span class="eyebrow">Admin</span><h1>Image prompts</h1><p>Use these in Midjourney, DALL·E, Ideogram or Gemini for premium templates and the site. Add: no text, no letters, no watermark.</p></div></div>
     <div class="two" style="grid-template-columns:repeat(auto-fill,minmax(300px,1fr))">${PROMPTS.map((p,i)=>`<div class="box">${p.img?`<figure style="margin:0 0 12px">${pic(p.img,"320px",p.t)}</figure>`:""}<div class="bh"><h2>${esc(p.t)}</h2><button class="btn sm" data-prompt="${i}">${I.copy} Copy</button></div><p id="pr-${i}" style="margin:0 0 8px">${esc(p.p)}</p><small style="color:var(--muted)">Use for: ${esc(p.u)}</small></div>`).join("")}</div>`;
   }
   if(tab==="settings"){
-    body=`<div class="mh"><div><span class="eyebrow">Admin</span><h1>Settings</h1><p>Prices, limits and the studio WhatsApp number used across the site.</p></div></div>
+    body=`<div class="mh"><div><span class="eyebrow">Admin</span><h1>Settings</h1><p>Limits, music and the studio WhatsApp number used across the site.</p></div></div>
     <form class="box" id="sform"><h2>Plans and contact</h2><div class="sform">
       <div class="af"><label for="s-free">Free guest links per event</label><input id="s-free" name="FREE_GUESTS" type="number" min="1" max="50" value="${CONFIG.FREE_GUESTS}"></div>
       <div class="af"><label for="s-wa">Studio WhatsApp</label><input id="s-wa" name="STUDIO_WA" value="${esc(CONFIG.STUDIO_WA)}"><small>International format, for example 94771234567</small></div>
-      <div class="af"><label for="s-plus">Plus price</label><input id="s-plus" name="PRICE_PLUS" value="${esc(CONFIG.PRICE_PLUS)}"></div>
-      <div class="af"><label for="s-custom">Custom design price</label><input id="s-custom" name="PRICE_CUSTOM" value="${esc(CONFIG.PRICE_CUSTOM)}"></div>
+      <div class="af"><label>Prices</label><small>Add, change or delete plans and prices in <a href="#admin/prices">Admin → Prices</a>.</small></div>
       ${Object.entries(MUSIC_KEY).map(([t,k])=>`<div class="af"><label for="s-${k}">Music: ${esc(TYPES[t].name)}</label><input id="s-${k}" name="${k}" value="${esc(CONFIG[k]||"")}"></div>`).join("")}
       <div class="af" style="grid-column:1/-1"><small>Background music for each function: an MP3 path or URL, for example audio/jayamangala-gatha.mp3. Leave empty for no music.</small></div>
     </div><div class="row" style="margin-top:18px"><button class="btn primary" type="submit">Save settings</button></div></form>
@@ -3599,6 +3649,7 @@ function renderAdmin(tab,arg){
     const t=e.target;
     if(t.dataset.ostatus){ if(fb){ if(fbNeed()) FBX.setOrderStatus(t.dataset.ostatus,t.value).then(()=>toast(`Order marked ${t.value}`),fbFail) } else { const os=DB.orders(), o=os.find(x=>x.id===t.dataset.ostatus); if(o){ o.status=t.value; DB.setOrders(os); toast(`Order marked ${t.value}`) } } }
     if(t.dataset.tog){ let o=tplOff(); o=t.checked?o.filter(x=>x!==t.dataset.tog):[...o,t.dataset.tog]; store.set("tplOff",o); if(fb&&fbNeed()) FBX.setTplOff(o).catch(fbFail); t.closest(".titem").dataset.off=t.checked?0:1; toast(t.checked?"Design visible":"Design hidden") }
+    if(t.dataset.pon){ const ps=plans().map((p,i)=>i===+t.dataset.pon?{...p,on:t.checked}:p); savePlans(ps,t.checked?"Plan shown on the site":"Plan hidden from the site") }
     if(t.id==="rfilter"||t.id==="rsearch") filterR();
     if(t.id==="ofilter") A.querySelectorAll("#otbl tbody tr").forEach(r=>{ const s=r.querySelector("select"); r.hidden=!!t.value&&!!s&&s.value!==t.value });
   });
@@ -3618,14 +3669,52 @@ function renderAdmin(tab,arg){
     if(b.dataset.udel){ const x=DB.users().find(y=>y.id===b.dataset.udel); if(!x) return;
       modal(`<span class="eyebrow">Delete user</span><h3>Delete ${esc(x.name)}?</h3><p>This removes the account from this browser. Their orders stay in the list.</p><div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><button class="btn primary" id="cdel">Delete</button></div>`);
       document.getElementById("cdel").onclick=()=>{ document.getElementById("layer").innerHTML=""; if(fb){ if(fbNeed()) FBX.deleteUser(x.id).then(()=>toast("User profile deleted. Remove their sign-in in Firebase → Authentication too."),fbFail); return } DB.setUsers(DB.users().filter(y=>y.id!==x.id)); toast("User deleted"); re() } }
+    if(b.hasAttribute("data-padd")) planForm(-1);
+    if(b.dataset.pedit) planForm(+b.dataset.pedit);
+    if(b.dataset.pup){ const ps=[...plans()], i=+b.dataset.pup; [ps[i-1],ps[i]]=[ps[i],ps[i-1]]; savePlans(ps,"Order saved") }
+    if(b.dataset.pdel){ const ps=plans(), i=+b.dataset.pdel, p=ps[i]; if(!p) return;
+      modal(`<span class="eyebrow">Delete plan</span><h3>Delete ${esc(p.name)}?</h3><p>It disappears from the site and can't be bought any more. Past orders are kept. To hide it for a while, switch off “On site” instead.</p><div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><button class="btn primary" id="cdel">Delete</button></div>`);
+      document.getElementById("cdel").onclick=()=>{ document.getElementById("layer").innerHTML=""; savePlans(plans().filter(x=>x!==p),"Plan deleted") } }
     if(b.dataset.prompt){ copy(PROMPTS[+b.dataset.prompt].p, document.getElementById("pr-"+b.dataset.prompt)) }
     if(b.hasAttribute("data-clearsample")){ DB.setUsers(DB.users().filter(x=>!x.sample)); DB.setOrders(DB.orders().filter(x=>!x.sample)); toast("Sample data removed"); re() }
   });
   const sf=document.getElementById("sform");
-  if(sf) sf.onsubmit=e=>{ e.preventDefault(); const c={}; for(const k of ["FREE_GUESTS","STUDIO_WA","PRICE_PLUS","PRICE_CUSTOM",...Object.values(MUSIC_KEY)]){ const v=sf.elements[k].value.trim(); if(k.startsWith("MUSIC")){ c[k]=v; const a=document.getElementById("lxAudio"); if(a) a.remove(); continue } if(v) c[k]=k==="FREE_GUESTS"?Math.max(1,+v||5):k==="STUDIO_WA"?intlPhone(v):v } store.set("config",c); Object.assign(CONFIG,c);
+  if(sf) sf.onsubmit=e=>{ e.preventDefault(); const c={}; for(const k of ["FREE_GUESTS","STUDIO_WA",...Object.values(MUSIC_KEY)]){ const v=sf.elements[k].value.trim(); if(k.startsWith("MUSIC")){ c[k]=v; const a=document.getElementById("lxAudio"); if(a) a.remove(); continue } if(v) c[k]=k==="FREE_GUESTS"?Math.max(1,+v||5):k==="STUDIO_WA"?intlPhone(v):v } store.set("config",{...store.get("config",{}),...c}); Object.assign(CONFIG,c);
     if(fb){ if(fbNeed()) FBX.saveSettings(c).then(()=>toast("Settings saved for every visitor"),fbFail) } else toast("Settings saved") };
   const af2=document.getElementById("aform2");
   if(af2) af2.onsubmit=e=>{ e.preventDefault(); const em=af2.elements.em.value.trim().toLowerCase(); if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) return toast("Enter a valid email"); if(fbNeed()) FBX.setAdmin(em,true).then(()=>toast(`${em} added. They log in with Google to open the dashboard.`),fbFail) };
+}
+
+/* Admin → Prices: add / edit a plan, and save the whole list (site + payment API read it from settings/site). */
+function savePlans(list,msg){
+  const c={PLANS:list}, p=list.find(x=>x.on!==false&&x.kind==="plus"), cu=list.find(x=>x.on!==false&&x.kind==="custom");
+  if(p) c.PRICE_PLUS=p.price; if(cu) c.PRICE_CUSTOM=cu.price;   // older pages and the SEO text still read these two
+  store.set("config",{...store.get("config",{}),...c}); Object.assign(CONFIG,c);
+  if(FB_ON()){ if(fbNeed()) FBX.savePlans(c).then(()=>toast(msg||"Prices saved"),er=>{ fbFail(er); route() }) } else toast(msg||"Prices saved");
+  if(/^#admin\/prices/.test(location.hash)) route();
+}
+function planForm(i){
+  const ps=plans(), p=ps[i]||{kind:"service",on:true};
+  modal(`<span class="eyebrow">${i<0?"Add plan":"Edit plan"}</span><h3>${i<0?"New price plan":esc(p.name)}</h3>
+    <form id="pform" class="sform" style="grid-template-columns:1fr">
+      <div class="af"><label for="p-name">Name</label><input id="p-name" name="name" maxlength="80" required value="${esc(p.name||"")}" placeholder="100 printed cards"></div>
+      <div class="af"><label for="p-price">Price</label><input id="p-price" name="price" required value="${esc(p.price||"")}" placeholder="Rs. 12,000" inputmode="decimal"></div>
+      <div class="af"><label for="p-kind">What the customer gets</label><select id="p-kind" name="kind">${Object.entries(PLAN_KINDS).map(([k,v])=>`<option value="${k}" ${p.kind===k?"selected":""}>${esc(v)}</option>`).join("")}</select>
+        <small>Plus turns on unlimited guests for that event as soon as it's paid. Custom design and other services stay “In progress” until you mark the order Done.</small></div>
+      <div class="af"><label for="p-det">Details</label><textarea id="p-det" name="details" rows="4" maxlength="600" placeholder="One point per line">${esc(p.details||"")}</textarea></div>
+      <label class="row" style="gap:8px;align-items:center"><input type="checkbox" name="on" ${p.on!==false?"checked":""}> Show on the site</label>
+      <div class="row" style="justify-content:flex-end"><button class="btn" type="button" data-x>Cancel</button><button class="btn primary" type="submit">Save plan</button></div>
+    </form>`);
+  const f=document.getElementById("pform");
+  f.onsubmit=e=>{ e.preventDefault();
+    const name=f.elements.name.value.trim(), raw=f.elements.price.value.trim(), n=+raw.replace(/[^\d.]/g,"");
+    if(!name) return toast("Enter a name"); if(!(n>0)) return toast("Enter a price, for example Rs. 4,900");
+    const price=/^\s*rs/i.test(raw)?raw.replace(/^\s*rs\.?\s*/i,"Rs. "):"Rs. "+(Number.isInteger(n)?n.toLocaleString("en-LK"):n.toFixed(2));
+    const base=name.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,30)||"plan";
+    let id=p.id; if(!id){ id=base; let k=2; while(ps.some(x=>x.id===id)) id=base+"-"+k++ }
+    const np={id,kind:f.elements.kind.value,name,price,details:f.elements.details.value.trim(),on:f.elements.on.checked};
+    const list=i<0?[...ps,np]:ps.map((x,j)=>j===i?np:x);
+    document.getElementById("layer").innerHTML=""; savePlans(list,i<0?"Plan added":"Plan saved") };
 }
 
 /* ---------- router ---------- */
@@ -3646,7 +3735,8 @@ function route(){
 addEventListener("hashchange",route);
 document.addEventListener("click",e=>{
   const o=e.target.closest("[data-order]"); if(o){ const [k,d]=o.dataset.order.split("|"); logOrder(k,d) }
-  const pb=e.target.closest("[data-pay]"); if(pb){ const [k,d]=pb.dataset.pay.split("|"); payNow(k,d,pb) }
+  const pb=e.target.closest("[data-pay]"); if(pb){ const [k,d,pl]=pb.dataset.pay.split("|"); payNow(k,d,pb,pl) }
+  const bp=e.target.closest("[data-buy]"); if(bp) buyPlan(bp.dataset.buy);
   if(e.target.closest("[data-logout]")){ e.preventDefault();
     if(FB_ON()){ if(fbNeed()) FBX.signOut().then(()=>{ toast("Logged out"); if(/^#(admin|account)/.test(location.hash)) location.hash="" },fbFail); return }
     store.set("session",null); toast("Logged out"); if(/^#(admin|account)/.test(location.hash)) location.hash=""; else render() }

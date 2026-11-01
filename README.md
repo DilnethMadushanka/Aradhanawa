@@ -13,4 +13,6 @@ Wenas karanna one dewal (`CONFIG` in the script):
 
 Login + database: Firebase (Google login, Firestore). Setup steps: `FIREBASE_SETUP.md`. Files: `firebase-config.js` (config + admin emails), `fb.js` (Auth + Firestore), `firestore.rules`.
 
-Production ekata ilaga steps: short links (aradhanawa.com/i/xyz), PayHere payments, server-side 5-guest limit (danata browser eke witharai).
+Online payments: Dialog Genie Business (`api/pay/*`, Vercel serverless). Setup steps: `PAYMENTS_SETUP.md`.
+
+Production ekata ilaga steps: short links (aradhanawa.com/i/xyz), server-side 5-guest limit (danata browser eke witharai).

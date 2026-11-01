@@ -1,0 +1,13 @@
+{
+  "name": "aradhanawa",
+  "private": true,
+  "type": "module",
+  "description": "Static site + Vercel serverless functions for Genie Business payments (api/pay/*).",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "node --experimental-test-module-mocks --test test/*.test.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.7.0"
+  }
+}

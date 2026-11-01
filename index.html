@@ -2688,6 +2688,14 @@ function ownsDesign(type,t){
     && String(o.design||"").trim().toLowerCase()===n
     && ((FB_ON()&&o.uid===u.id) || (!!em&&String(o.email||"").toLowerCase()===em)));
 }
+/* Plus lifts the guest limit: admin-given plan, or a paid Plus order for this function. */
+function hasPlus(type){
+  const u=me(); if(!u) return false;
+  if(u.role==="admin"||u.plan==="Plus"||u.plan==="Staff") return true;
+  const em=String(u.email||"").toLowerCase();
+  return DB.orders().some(o=>o.kind==="plus" && o.status==="Done" && o.type===type
+    && ((FB_ON()&&o.uid===u.id) || (!!em&&String(o.email||"").toLowerCase()===em)));
+}
 const curPrem = () => { const i=tplOf(S.type); return i ? PREMIUM[S.type][i-1] || PREMIUM[S.type][0] || null : null };
 function refreshLive(){
   if(!document.getElementById("cardSlot")) return;
@@ -2721,7 +2729,7 @@ function bind(){
     e.preventDefault();
     const name=$("#g-name").value.trim(), phone=$("#g-phone").value.trim();
     if(!name) return;
-    if(S.guests.length>=CONFIG.FREE_GUESTS){ upsell(); return }
+    if(S.guests.length>=CONFIG.FREE_GUESTS&&!hasPlus(S.type)){ upsell(); return }
     S.guests.push({name,phone}); save(); render(); toast(`${name} added`);
     document.getElementById("g-name").focus();
   };
@@ -2773,8 +2781,8 @@ function upsell(direct){
   modal(`<span class="eyebrow">${direct?"Aradhanawa Plus":"Free limit reached"}</span>
     <h3>${direct?"Unlimited guests for one event":"You've shared with 5 guests"}</h3>
     <p>${direct?"":"The free plan covers 5 personal links. "}Upgrade to Aradhanawa Plus for ${CONFIG.PRICE_PLUS} per event to send to everyone, see who's coming, and remove the Aradhanawa branding.</p>
-    <div class="row" style="justify-content:flex-end;margin-top:6px"><button class="btn" data-x>Not now</button><a class="btn primary" data-order="plus" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,txt)}">Upgrade on WhatsApp</a></div>
-    <p class="note">You can still copy the main invite link and paste it into a WhatsApp group.</p>`);
+    <div class="row" style="justify-content:flex-end;margin-top:6px"><button class="btn" data-x>Not now</button><button class="btn primary" data-pay="plus">Pay ${esc(CONFIG.PRICE_PLUS)}</button></div>
+    <p class="note">Secure payment through Dialog Genie. Prefer to talk first? <a target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,txt)}">Ask us on WhatsApp</a>. You can still copy the main invite link and paste it into a WhatsApp group.</p>`);
 }
 function customReq(name){
   const ev=cur();
@@ -2783,7 +2791,8 @@ function customReq(name){
     <h3>${name?esc(name):"Made just for you"}</h3>
     <p>Our designer customises this template with your photos, colours and wording, in Sinhala or English. You get 2 rounds of changes and the finished card within 48 hours.</p>
     <div class="bubble" style="font-size:13px">${esc(txt)}</div>
-    <div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><a class="btn wa" data-order="custom|${esc(name||"")}" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,txt)}">${I.wa} Send request</a></div>`);
+    <div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><a class="btn wa" data-order="custom|${esc(name||"")}" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,txt)}">${I.wa} Ask first</a><button class="btn primary" data-pay="custom|${esc(name||"")}">Pay ${esc(CONFIG.PRICE_CUSTOM)}</button></div>
+    <p class="note">Pay securely through Dialog Genie, then send your photos on WhatsApp.</p>`);
 }
 function guestPreview(guest){
   const lang=S.lang==="si"?"si":"en";
@@ -3279,6 +3288,33 @@ function logOrder(kind,design){
   if(FB_ON()){ if(window.FBX) FBX.addOrder(o).catch(er=>console.warn("[fb] order",er)); return }
   const os=DB.orders(); os.unshift(o); DB.setOrders(os);
 }
+/* Online payment (Dialog Genie). The server (api/pay/create) sets the price and holds the Genie key. */
+async function payNow(kind,design,btn){
+  if(!FB_ON()||!window.FBX) return toast("Online payment needs the live site (Firebase connected).");
+  if(!me()){ store.set("next",location.hash||"#create"); document.getElementById("layer").innerHTML=""; location.hash="#login"; toast("Log in first, then tap Pay again"); return }
+  const lbl=btn&&btn.textContent; if(btn){ btn.disabled=true; btn.textContent="Opening payment…" }
+  try{
+    const tok=await FBX.idToken();
+    const r=await fetch("/api/pay/create",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+tok},
+      body:JSON.stringify({kind,type:S.type,design:design||(kind==="plus"?"Aradhanawa Plus":"Custom design")})});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok||!j.url) throw new Error(j.error||"Payment could not start. Please try again.");
+    location.href=j.url;
+  }catch(er){ toast(er.message||"Payment could not start"); if(btn){ btn.disabled=false; btn.textContent=lbl } }
+}
+/* Back from Genie: /?pay=ok|pending|failed&kind=…&order=…#account */
+const PAY_BACK = (()=>{ try{ const q=new URLSearchParams(location.search); const p=q.get("pay"); if(!p) return null;
+  history.replaceState(null,"",location.pathname+location.hash); return {pay:p,kind:q.get("kind")||"",order:q.get("order")||""} }catch(e){ return null } })();
+function payBackModal(){
+  if(!PAY_BACK) return; const {pay,kind,order}=PAY_BACK, ref=order.slice(-6).toUpperCase();
+  if(pay==="ok"&&kind==="custom"){
+    const txt=`Hi Aradhanawa! I paid for a custom design (order ${ref}). Here are my photos, colours and wording:`;
+    modal(`<span class="eyebrow">Payment received</span><h3>Thank you! Now send us your photos</h3><p>Your order <b>${esc(ref)}</b> is paid. Send your photos, colours and wording on WhatsApp and our designer will start. The finished card is ready within 48 hours.</p>
+      <div class="row" style="justify-content:flex-end"><button class="btn" data-x>Later</button><a class="btn wa" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,txt)}">${I.wa} Send photos</a></div>`);
+  } else if(pay==="ok") modal(`<span class="eyebrow">Payment received</span><h3>Aradhanawa Plus is on</h3><p>Order <b>${esc(ref)}</b> is paid. You can now send your invitation to every guest.</p><div class="row" style="justify-content:flex-end"><button class="btn" data-x>Done</button><a class="btn primary" href="#create" data-x>Add guests</a></div>`);
+  else if(pay==="failed") modal(`<span class="eyebrow">Payment not completed</span><h3>No money was taken</h3><p>The payment was cancelled or declined. You can try again, or message us on WhatsApp for help.</p><div class="row" style="justify-content:flex-end"><button class="btn" data-x>Close</button><a class="btn wa" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,`Hi Aradhanawa, my payment (order ${ref}) didn't go through.`)}">${I.wa} Get help</a></div>`);
+  else modal(`<span class="eyebrow">Payment processing</span><h3>We're confirming your payment</h3><p>This can take a minute. Your order <b>${esc(ref)}</b> will show as Paid in My orders once Genie confirms it.</p><div class="row" style="justify-content:flex-end"><button class="btn" data-x>OK</button></div>`);
+}
 const tplOff = () => store.get("tplOff",[]);
 
 function headerHTML(){
@@ -3399,7 +3435,7 @@ function renderAccount(){
       <div class="kpi"><small>Orders</small><b>${mine.length}</b><span>${mine.filter(o=>o.status!=="Done").length} open</span></div>
     </div>
     <div class="box"><div class="bh"><h2>My orders</h2></div><div class="tblwrap"><table class="tbl"><thead><tr><th>Design</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody>
-      ${mine.map(o=>`<tr><td><b>${esc(o.design)}</b><small>${esc((TYPES[o.type]||TYPES.other).name)}</small></td><td>${esc(o.amount)}</td><td>${stBadge(o.status)}</td><td>${fdt(o.created)}</td></tr>`).join("")||`<tr><td colspan="4" class="empty">No orders yet. Pick a custom design from the editor and request it.</td></tr>`}
+      ${mine.map(o=>`<tr><td><b>${esc(o.design)}</b><small>${esc((TYPES[o.type]||TYPES.other).name)}</small></td><td>${esc(o.amount)}${paidTag(o)}</td><td>${stBadge(o.status)}</td><td>${fdt(o.created)}</td></tr>`).join("")||`<tr><td colspan="4" class="empty">No orders yet. Pick a custom design from the editor and request it.</td></tr>`}
     </tbody></table></div></div>
     ${FB_ON()?`<div class="two">
       <div class="box"><div class="bh"><h2>Guest replies</h2><span class="badge ok">${rsv.filter(r=>r.coming).reduce((a,r)=>a+(+r.count||0),0)} coming</span></div><div class="tblwrap"><table class="tbl"><thead><tr><th>Guest</th><th>Reply</th><th>Date</th></tr></thead><tbody>
@@ -3430,7 +3466,8 @@ const AI = {
   check:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12.5l5 5L20 6.5"/></svg>`,
 };
 const fdt = s => { try{ return new Date(s).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}) }catch(e){ return "" } };
-const stBadge = s => `<span class="badge ${s==="Done"?"ok":s==="In progress"?"warn":s==="New"?"new":""}">${esc(s)}</span>`;
+const stBadge = s => `<span class="badge ${s==="Done"?"ok":s==="In progress"||s==="Awaiting payment"?"warn":s==="New"?"new":""}">${esc(s)}</span>`;
+const paidTag = o => o.paid?` <span class="badge ok">Paid</span>`:"";
 const rsNum = s => +String(s||"").replace(/[^\d]/g,"")||0;
 const rs = n => "Rs. "+n.toLocaleString("en-LK");
 
@@ -3447,8 +3484,8 @@ function renderAdmin(tab,arg){
   const week=Date.now()-7*864e5;
   const orderHead=edit=>`<thead><tr><th>Customer</th><th>Design</th><th>Amount</th><th>Status</th><th>Date</th>${edit?"<th></th>":""}</tr></thead>`;
   const orderRows=(list,edit)=>list.map(o=>`<tr><td><b>${esc(o.name)}</b>${o.sample?` <span class="badge">Sample</span>`:""}<small>${esc(o.email||prettyPhone(o.phone)||"")}</small></td>
-    <td>${esc(o.design)}<small>${esc((TYPES[o.type]||TYPES.other).name)} · ${o.kind==="plus"?"Plan":"Custom"}</small></td><td>${esc(o.amount)}</td>
-    <td>${edit?`<select data-ostatus="${o.id}" aria-label="Order status">${["New","In progress","Done","Cancelled"].map(s=>`<option ${s===o.status?"selected":""}>${s}</option>`).join("")}</select>`:stBadge(o.status)}</td>
+    <td>${esc(o.design)}<small>${esc((TYPES[o.type]||TYPES.other).name)} · ${o.kind==="plus"?"Plan":"Custom"}</small></td><td>${esc(o.amount)}${paidTag(o)}</td>
+    <td>${edit?`<select data-ostatus="${o.id}" aria-label="Order status">${["New","Awaiting payment","In progress","Done","Payment failed","Cancelled"].map(s=>`<option ${s===o.status?"selected":""}>${s}</option>`).join("")}</select>`:stBadge(o.status)}</td>
     <td>${fdt(o.created)}</td>${edit?`<td><div class="acts">${o.phone?`<a class="btn sm" target="_blank" rel="noopener" href="${waLink(o.phone,`Hi ${o.name}, this is Aradhanawa about your "${o.design}" order.`)}">${I.wa} Chat</a>`:""}</div></td>`:""}</tr>`).join("")
     || `<tr><td colspan="6" class="empty">No orders yet.</td></tr>`;
   let body="";
@@ -3484,7 +3521,7 @@ function renderAdmin(tab,arg){
   }
   if(tab==="orders"){
     body=`<div class="mh"><div><span class="eyebrow">Admin</span><h1>Orders</h1><p>Custom designs and Plus upgrades requested from the site.</p></div></div>
-    <div class="box"><div class="tbar" style="margin-bottom:12px"><select id="ofilter" aria-label="Filter by status"><option value="">All statuses</option>${["New","In progress","Done","Cancelled"].map(s=>`<option>${s}</option>`).join("")}</select></div>
+    <div class="box"><div class="tbar" style="margin-bottom:12px"><select id="ofilter" aria-label="Filter by status"><option value="">All statuses</option>${["New","Awaiting payment","In progress","Done","Payment failed","Cancelled"].map(s=>`<option>${s}</option>`).join("")}</select></div>
     <div class="tblwrap"><table class="tbl" id="otbl">${orderHead(true)}<tbody>${orderRows(orders,true)}</tbody></table></div></div>`;
   }
   if(tab==="invitations"){
@@ -3596,6 +3633,7 @@ function route(){
 addEventListener("hashchange",route);
 document.addEventListener("click",e=>{
   const o=e.target.closest("[data-order]"); if(o){ const [k,d]=o.dataset.order.split("|"); logOrder(k,d) }
+  const pb=e.target.closest("[data-pay]"); if(pb){ const [k,d]=pb.dataset.pay.split("|"); payNow(k,d,pb) }
   if(e.target.closest("[data-logout]")){ e.preventDefault();
     if(FB_ON()){ if(fbNeed()) FBX.signOut().then(()=>{ toast("Logged out"); if(/^#(admin|account)/.test(location.hash)) location.hash="" },fbFail); return }
     store.set("session",null); toast("Logged out"); if(/^#(admin|account)/.test(location.hash)) location.hash=""; else render() }
@@ -3626,7 +3664,7 @@ function fbStart(){
   if(!FB_ON()){ seedDB().catch(()=>{}).finally(route); return }
   // Guest invitation links open straight away; Firebase loads alongside for the RSVP save.
   if((location.hash||"").startsWith("#i=")){ route(); fbStart(); return }
-  Promise.race([fbStart(), new Promise(r=>setTimeout(r,8000))]).finally(route);
+  Promise.race([fbStart(), new Promise(r=>setTimeout(r,8000))]).finally(()=>{ route(); payBackModal() });
 })();
 </script>
 </body></html>

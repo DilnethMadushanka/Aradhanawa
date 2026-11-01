@@ -2276,14 +2276,14 @@ function shortCode(str){
   for(let i=0;i<SHORT_LEN;i++){ out+=B62[n%62]; n=Math.floor(n/62) }
   return out;
 }
-const SHORT={ok:null, want:null, busy:new Set(), off:false, t:0};
+const SHORT={ok:null, want:null, busy:new Set(), off:false, t:0, last:0};
 const shortOk=()=>SHORT.ok||(SHORT.ok=new Set(store.get("shortok",[])));
 function shortLink(json){
   if(SHORT.off||!FB_ON()||!window.FBX||!FBX.user||!FBX.saveLink) return "";
   const code=shortCode(FBX.user.uid+"|"+json);
   if(shortOk().has(code)) return CONFIG.SITE.replace(/[#?].*$/,"").replace(/\/?$/,"/") + "i/" + code;
   if(SHORT.want) SHORT.want.set(code,json);
-  else if(!SHORT.busy.has(code)){ clearTimeout(SHORT.t); SHORT.t=setTimeout(flushShort,2000) }   // wait until typing stops
+  else if(!SHORT.busy.has(code)){ const n=Date.now(); clearTimeout(SHORT.t); SHORT.t=setTimeout(flushShort,n-SHORT.last<2000?2000:250); SHORT.last=n }   // save soon, but wait while the host is typing
   return "";
 }
 async function flushShort(){
@@ -2309,6 +2309,23 @@ function loadShort(code){
   return fetch(`https://firestore.googleapis.com/v1/projects/${encodeURIComponent(cfg.projectId)}/databases/(default)/documents/links/${code}?key=${encodeURIComponent(cfg.apiKey)}`,{signal:ctl.signal})
     .then(r=>r.ok?r.json():null).then(d=>{ const p=JSON.parse(d.fields.p.stringValue); return p&&p.e?p:null })
     .catch(()=>null).finally(()=>clearTimeout(tm));
+}
+// Copy buttons: if the short link isn't saved yet, save it now (up to 2.5s) so the host copies the short one.
+async function copyInvite(guest){
+  let link=inviteLink(guest);
+  if(link.includes("#i=")&&!SHORT.off&&window.FBX&&FBX.user){ clearTimeout(SHORT.t); await Promise.race([flushShort(),new Promise(r=>setTimeout(r,2500))]); link=inviteLink(guest) }
+  return link;
+}
+// WhatsApp Send buttons: if the message still carries the long link, save the short one first, then open WhatsApp.
+// A blank tab is opened at the tap (so pop-up blockers allow it) and pointed at WhatsApp once the link is ready.
+async function sendInvite(e){
+  const a=e.currentTarget;
+  if(!a.href.includes("%23i%3D")||SHORT.off||!window.FBX||!FBX.user) return;
+  e.preventDefault();
+  const w=window.open("","_blank");
+  clearTimeout(SHORT.t); await Promise.race([flushShort(),new Promise(r=>setTimeout(r,2500))]);
+  refreshShareLinks();
+  if(w) w.location.href=a.href; else location.href=a.href;
 }
 const isGuestHash=h=>/^#[is]=/.test(h||"");
 
@@ -2808,9 +2825,10 @@ function bind(){
     save(); refreshLive(); refreshGuestLinks();
   });
   const cs=$("#clearSample"); cs&&(cs.onclick=()=>{ const keep={date:cur().date}; S.ev[S.type]={...Object.fromEntries(TYPES[S.type].fields.map(f=>[f,""])),...keep}; S.edited[S.type]=true; save(); render(); });
-  $("#copyMsg").onclick=()=>copy(waMessage(S.type,cur(),S.lang,"",inviteLink("")),$("#bubble"));
-  $("#copyLink").onclick=()=>copy(inviteLink(""));
+  $("#copyMsg").onclick=async()=>{ await copyInvite(""); copy(waMessage(S.type,cur(),S.lang,"",inviteLink("")),$("#bubble")) };
+  $("#copyLink").onclick=async()=>copy(await copyInvite(""));
   $("#preview").onclick=()=>guestPreview("");
+  $("#sendAll").onclick=sendInvite; $$(".glist a.wa").forEach(a=>a.onclick=sendInvite);
   $("#gadd").onsubmit=e=>{
     e.preventDefault();
     const name=$("#g-name").value.trim(), phone=$("#g-phone").value.trim();
@@ -2820,7 +2838,7 @@ function bind(){
     document.getElementById("g-name").focus();
   };
   $$("[data-gdel]").forEach(b=>b.onclick=()=>{S.guests.splice(+b.dataset.gdel,1); save(); render()});
-  $$("[data-glink]").forEach(b=>b.onclick=()=>copy(inviteLink(S.guests[+b.dataset.glink].name)));
+  $$("[data-glink]").forEach(b=>b.onclick=async()=>copy(await copyInvite(S.guests[+b.dataset.glink].name)));
   $$("[data-gprev]").forEach(b=>b.onclick=()=>guestPreview(S.guests[+b.dataset.gprev].name));
   $$("[data-tpl]").forEach(b=>b.onclick=()=>{ S.tpl[S.type]=+b.dataset.tpl; save(); $$("[data-tpl]").forEach(x=>x.setAttribute("aria-pressed",x===b)); refreshLive(); if(matchMedia("(max-width:920px)").matches) document.getElementById("cardSlot").scrollIntoView({behavior:"smooth",block:"center"}) });
   $("#reqPrem").onclick=()=>{ const p=curPrem(); p&&customReq(p.n) };

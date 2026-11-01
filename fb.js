@@ -7,6 +7,7 @@
  *   users/{uid}            name, email, phone, plan, created, lastLogin, photo
  *   admins/{email}         email, added, by           (who may open the admin dashboard)
  *   orders/{id}            kind, design, type, name, email, phone, amount, status, created, uid
+ *                          + paid orders (written only by api/pay/*): amountCents, currency, paid, paidAt, payRef, payState, method
  *   invitations/{uid_type} uid, ownerName, ownerEmail, type, lang, tpl, title, names, date, venue, ev, guests, guestCount, updated
  *   galleries/{uid_type}   uid, type, photos [data:image/jpeg URLs], updated   (public read: guest links show these)
  *   rsvps/{id}             inviteId, ownerUid, type, event, guest, name, coming, count, msg, created
@@ -122,6 +123,7 @@ export async function init(cfg, hooks = {}) {
   };
   FBX.resetPassword = email => A.sendPasswordResetEmail(auth, email);
   FBX.signOut = () => A.signOut(auth);
+  FBX.idToken = () => auth.currentUser ? auth.currentUser.getIdToken() : Promise.reject(new Error("Please log in to pay."));
   FBX.sendVerify = () => A.sendEmailVerification(auth.currentUser);
   FBX.refresh = async () => {
     const u = auth.currentUser; if (!u) return null;

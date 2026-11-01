@@ -2316,6 +2316,17 @@ async function copyInvite(guest){
   if(link.includes("#i=")&&!SHORT.off&&window.FBX&&FBX.user){ clearTimeout(SHORT.t); await Promise.race([flushShort(),new Promise(r=>setTimeout(r,2500))]); link=inviteLink(guest) }
   return link;
 }
+// WhatsApp Send buttons: if the message still carries the long link, save the short one first, then open WhatsApp.
+// A blank tab is opened at the tap (so pop-up blockers allow it) and pointed at WhatsApp once the link is ready.
+async function sendInvite(e){
+  const a=e.currentTarget;
+  if(!a.href.includes("%23i%3D")||SHORT.off||!window.FBX||!FBX.user) return;
+  e.preventDefault();
+  const w=window.open("","_blank");
+  clearTimeout(SHORT.t); await Promise.race([flushShort(),new Promise(r=>setTimeout(r,2500))]);
+  refreshShareLinks();
+  if(w) w.location.href=a.href; else location.href=a.href;
+}
 const isGuestHash=h=>/^#[is]=/.test(h||"");
 
 /* ================= CARD ================= */
@@ -2817,6 +2828,7 @@ function bind(){
   $("#copyMsg").onclick=async()=>{ await copyInvite(""); copy(waMessage(S.type,cur(),S.lang,"",inviteLink("")),$("#bubble")) };
   $("#copyLink").onclick=async()=>copy(await copyInvite(""));
   $("#preview").onclick=()=>guestPreview("");
+  $("#sendAll").onclick=sendInvite; $$(".glist a.wa").forEach(a=>a.onclick=sendInvite);
   $("#gadd").onsubmit=e=>{
     e.preventDefault();
     const name=$("#g-name").value.trim(), phone=$("#g-phone").value.trim();

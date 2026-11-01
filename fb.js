@@ -11,7 +11,7 @@
  *   invitations/{uid_type} uid, ownerName, ownerEmail, type, lang, tpl, title, names, date, venue, ev, guests, guestCount, updated
  *   galleries/{uid_type}   uid, type, photos [data:image/jpeg URLs], updated   (public read: guest links show these)
  *   rsvps/{id}             inviteId, ownerUid, type, event, guest, name, coming, count, msg, created
- *   settings/site          config {FREE_GUESTS, STUDIO_WA, PRICE_PLUS, PRICE_CUSTOM, MUSIC}, tplOff []
+ *   settings/site          config {FREE_GUESTS, STUDIO_WA, PRICE_PLUS, PRICE_CUSTOM, PLANS [{id, kind, name, price, details, on}], MUSIC}, tplOff []
  */
 const V = "10.12.2";
 const CDN = `https://www.gstatic.com/firebasejs/${V}`;
@@ -154,6 +154,8 @@ export async function init(cfg, hooks = {}) {
   FBX.isAdminEmail = em => { em = String(em || "").toLowerCase(); return adminEmails.includes(em) || FBX.data.admins.some(a => a.id === em) };
   FBX.isBootstrapAdmin = em => adminEmails.includes(String(em || "").toLowerCase());
   FBX.saveSettings = c => F.setDoc(F.doc(db, "settings", "site"), { config: c, updated: now() }, { merge: true });
+  // Admin → Prices. Merges into config, so the plan list replaces the old one and other settings stay.
+  FBX.savePlans = c => F.setDoc(F.doc(db, "settings", "site"), { config: c, updated: now() }, { merge: true });
   FBX.setTplOff = list => F.setDoc(F.doc(db, "settings", "site"), { tplOff: list, updated: now() }, { merge: true });
 
   FBX.inviteId = type => FBX.user ? `${FBX.user.uid}_${type}` : "";

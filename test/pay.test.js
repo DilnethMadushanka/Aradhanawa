@@ -120,3 +120,35 @@ test("failed payment is recorded; bad ids are ignored", async () => {
   assert.equal(store.get("orders/" + id).status, "Payment failed");
   assert.equal((await pay.settle("../settings/site")).result, "missing");
 });
+
+test("plans from Admin → Prices: chosen by id, hidden or deleted plans can't be bought", async () => {
+  const { default: create } = await import("../api/pay/create.js");
+  store.set("settings/site", { config: { PRICE_PLUS: "Rs. 990", PLANS: [
+    { id: "plus", kind: "plus", name: "Aradhanawa Plus", price: "Rs. 1,500", on: true },
+    { id: "print-100", kind: "service", name: "100 printed cards", price: "Rs. 12,000", details: "Printed and couriered", on: true },
+    { id: "old", kind: "custom", name: "Old offer", price: "Rs. 100", on: false },
+  ] } });
+  let res = fakeRes();
+  await create({ method: "POST", headers: { authorization: "Bearer good" }, body: { plan: "print-100", type: "wedding", design: "ignored", amount: 1 } }, res);
+  assert.equal(res.code, 200, JSON.stringify(res.body));
+  assert.equal(lastCreate.amount, 1200000);
+  const o = store.get("orders/" + res.body.orderId);
+  assert.equal(o.kind, "service"); assert.equal(o.planId, "print-100"); assert.equal(o.design, "100 printed cards"); assert.equal(o.amount, "Rs. 12,000");
+
+  res = fakeRes();   // older pages send only a kind: the first plan of that kind is used, not the old PRICE_PLUS
+  await create({ method: "POST", headers: { authorization: "Bearer good" }, body: { kind: "plus" } }, res);
+  assert.equal(lastCreate.amount, 150000);
+
+  for (const body of [{ plan: "old" }, { plan: "gone" }, { kind: "custom" }, { kind: "hack" }]) {
+    res = fakeRes();
+    await create({ method: "POST", headers: { authorization: "Bearer good" }, body }, res);
+    assert.equal(res.code, 400, JSON.stringify(body));
+  }
+});
+
+test("a paid service order waits for the studio (In progress)", async () => {
+  const id = [...store].filter(([k, d]) => k.startsWith("orders/") && d.kind === "service")[0][0].split("/")[1];
+  txs.get(store.get("orders/" + id).payRef).state = "CONFIRMED";
+  assert.equal((await pay.settle(id)).result, "paid");
+  assert.equal(store.get("orders/" + id).status, "In progress");
+});

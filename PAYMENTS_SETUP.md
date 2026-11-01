@@ -4,7 +4,11 @@ Customers **Pay Rs. 990** (Aradhanawa Plus) or **Pay Rs. 4,900** (custom design)
 
 - Plus: order eka `Done` wenawa, e function ekata guest limit eka ain wenawa.
 - Custom design: order eka `In progress` wenawa (paid). Design eka ready unama Admin → Orders eken `Done` karanna; ethakota design eka unlock wenawa.
-- Prices ganne Admin → Settings eke Plus / Custom price walin (server eken). Browser eken price eka wenas karanna ba.
+- Prices ganne **Admin → Prices** walin (server eken). Browser eken price eka wenas karanna ba.
+  - **Add plan**: nama, price (`Rs. 12,000` wage), type eka (Plus / Custom design / Other service), details (line ekakata point ekak).
+  - **Edit** / **Delete** / ↑ (order eka) / **On site** switch eken hide karanna puluwan. Hide karapu ho delete karapu plan ekak kawuruwath ganna ba.
+  - Plus type eka pay karapu gaman guest limit eka ain wenawa. Custom design saha Other service `In progress` wela, oya Orders eken `Done` karanna one.
+  - Hama type ekema site eke pennanne udinma thiyena plan eka **Main** eka (editor eke Plus upgrade eka saha design yata Buy button eka eka use karanawa).
 
 ## Vercel eke danna one env vars (eka parak witharai)
 

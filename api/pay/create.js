@@ -1,5 +1,5 @@
 /* POST /api/pay/create   Authorization: Bearer <Firebase ID token>
- * body { kind: "plus" | "custom", type, design }  ->  { orderId, url }  (send the browser to url) */
+ * body { plan: <plan id from Admin → Prices>, type, design }  (or the older { kind: "plus" | "custom" })  ->  { orderId, url }  (send the browser to url) */
 import { userFromRequest, startCheckout, sendError } from "../_lib/pay.js";
 
 export default async function handler(req, res) {

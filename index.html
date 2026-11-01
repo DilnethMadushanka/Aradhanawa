@@ -2598,7 +2598,7 @@ function render(){
 
     <aside class="stage" aria-label="Live preview">
       <div class="table" id="cardSlot" data-ui></div>
-      <p class="pnote" id="premOwn" hidden>Your purchased design. Guest links use this design.</p><div id="premBar" hidden><p class="pnote">Premium preview. Guest links use the free design until your custom design is ready.</p><div class="row" style="margin-top:8px"><button class="btn primary" id="reqPrem">Request this design · ${CONFIG.PRICE_CUSTOM}</button></div></div>
+      <p class="pnote" id="premOwn" hidden>Your purchased design. Guest links use this design.</p><div id="premBar" hidden><p class="pnote">Premium preview. Guest links use the free design until your custom design is ready.</p><div class="row" style="margin-top:8px;justify-content:center"><button class="btn primary" id="buyPrem">Buy this design · ${CONFIG.PRICE_CUSTOM}</button><button class="btn" id="reqPrem">Details</button></div></div>
       <div class="row">
         <button class="btn" id="preview">${I.eye} Preview as guest</button>
         <button class="btn" id="copyLink">${I.link} Copy invite link</button>
@@ -2738,6 +2738,7 @@ function bind(){
   $$("[data-gprev]").forEach(b=>b.onclick=()=>guestPreview(S.guests[+b.dataset.gprev].name));
   $$("[data-tpl]").forEach(b=>b.onclick=()=>{ S.tpl[S.type]=+b.dataset.tpl; save(); $$("[data-tpl]").forEach(x=>x.setAttribute("aria-pressed",x===b)); refreshLive(); if(matchMedia("(max-width:920px)").matches) document.getElementById("cardSlot").scrollIntoView({behavior:"smooth",block:"center"}) });
   $("#reqPrem").onclick=()=>{ const p=curPrem(); p&&customReq(p.n) };
+  $("#buyPrem").onclick=e=>{ const p=curPrem(); p&&payNow("custom",p.n,e.currentTarget) };
   $$("[data-upgrade]").forEach(b=>b.onclick=()=>b.dataset.upgrade==="plus"?upsell(true):customReq(""));
   $$("[data-df]").forEach(b=>b.onclick=()=>{ $$("[data-df]").forEach(x=>x.setAttribute("aria-pressed",x===b)); $("#drow").innerHTML=designItems(b.dataset.df); $("#drow").classList.toggle("all",b.dataset.df!=="all"); const dm=$("#dmore"); if(dm) dm.hidden=b.dataset.df!=="all" });
   $("#drow").addEventListener("click",e=>{ const d=e.target.closest("[data-pick]"); if(!d) return; const [k,i]=d.dataset.pick.split(":"); location.hash=`#design/${k}/${i}` });
@@ -3291,7 +3292,11 @@ function logOrder(kind,design){
 /* Online payment (Dialog Genie). The server (api/pay/create) sets the price and holds the Genie key. */
 async function payNow(kind,design,btn){
   if(!FB_ON()||!window.FBX) return toast("Online payment needs the live site (Firebase connected).");
-  if(!me()){ store.set("next",location.hash||"#create"); document.getElementById("layer").innerHTML=""; location.hash="#login"; toast("Log in first, then tap Pay again"); return }
+  if(!me()){
+    store.set("next",location.hash||"#create");
+    modal(`<span class="eyebrow">Log in to buy</span><h3>Please log in first</h3><p>Your purchase is saved to your account, so you need to log in or create a free account before paying. You'll come back here after logging in.</p>
+      <div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><a class="btn" href="#register" data-x>Register</a><a class="btn primary" href="#login" data-x>Log in</a></div>`);
+    return }
   const lbl=btn&&btn.textContent; if(btn){ btn.disabled=true; btn.textContent="Opening payment…" }
   try{
     const tok=await FBX.idToken();

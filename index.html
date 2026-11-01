@@ -1560,14 +1560,16 @@ button.lp-hghost{background:none;border:0;border-bottom:1.5px solid rgba(122,84,
 .mj-plate small{order:-1;font:900 1.6em/1.05 "Cinzel Decorative",Georgia,serif;letter-spacing:.03em;text-transform:none;color:#5B0E0A;text-shadow:0 1px 0 rgba(255,240,200,.75)}
 .mj-plate b::before,.mj-plate b::after{content:"";display:inline-block;width:1.6em;height:1px;background:#7A5410;vertical-align:.35em;margin:0 .5em;opacity:.7}
 .lp-mj:hover .mj-plate{box-shadow:inset 0 0 0 .18em #7A5410,inset 0 0 0 .36em #FFE9A8,inset 0 0 0 .48em #9A6E1C,0 0 1.6em rgba(255,200,90,.85)}
-/* make the plate read as a tappable button: raised edge, arrow chip, gentle glow, press-down */
-.mj-plate{border-radius:.9em;padding:.75em 1.6em .7em;box-shadow:inset 0 0 0 .18em #7A5410,inset 0 0 0 .36em #FFE9A8,inset 0 0 0 .48em #9A6E1C,0 .45em 0 #6E4A10,0 .9em 1.4em rgba(60,30,5,.45);animation:mjpulse 2.4s ease-in-out infinite;transition:transform .15s,box-shadow .15s}
-.mj-plate small{display:flex;align-items:center;gap:.4em}
-.mj-plate small::after{content:"→";display:grid;place-items:center;width:1.35em;height:1.35em;margin-left:.2em;border-radius:50%;background:#6E0F0B;color:#FFE9A8;font:800 1em/1 Arial,sans-serif;box-shadow:0 .1em 0 rgba(0,0,0,.25);transition:transform .2s}
-.lp-mj:hover .mj-plate{box-shadow:inset 0 0 0 .18em #7A5410,inset 0 0 0 .36em #FFE9A8,inset 0 0 0 .48em #9A6E1C,0 .45em 0 #6E4A10,0 0 1.8em rgba(255,200,90,.9)}
-.lp-mj:hover .mj-plate small::after{transform:translateX(.2em)}
-.lp-mj:active .mj-plate{transform:translateX(-50%) translateY(.35em);box-shadow:inset 0 0 0 .18em #7A5410,inset 0 0 0 .36em #FFE9A8,inset 0 0 0 .48em #9A6E1C,0 .1em 0 #6E4A10,0 .3em .6em rgba(60,30,5,.4)}
-@keyframes mjpulse{0%,100%{filter:none}50%{filter:brightness(1.08) drop-shadow(0 0 .8em rgba(255,205,100,.75))}}
+/* make the plate read as a real button: wide maroon pill, gold text, raised edge, arrow chip, glow, press-down */
+.mj-plate{top:8.4em;min-width:30em;padding:.95em 2.6em .9em 2.2em;border-radius:3em;background:linear-gradient(180deg,#B3261A,#8A1810 55%,#6A0F0A);box-shadow:inset 0 0 0 .2em #F2D27A,inset 0 0 0 .38em #8A1810,inset 0 0 0 .5em rgba(242,210,122,.55),inset 0 .9em 1em rgba(255,255,255,.12),0 .5em 0 #4A0A06,0 1em 1.6em rgba(60,10,5,.5);animation:mjpulse 2.4s ease-in-out infinite;transition:transform .15s,box-shadow .15s}
+.mj-plate small{display:flex;align-items:center;gap:.45em;color:#FFE9A8;text-shadow:0 1px 0 rgba(60,0,0,.7)}
+.mj-plate b{color:#FFE9A8;text-shadow:0 1px 0 rgba(60,0,0,.7)}
+.mj-plate b::before,.mj-plate b::after{background:#F2D27A}
+.mj-plate small::after{content:"→";display:grid;place-items:center;width:1.35em;height:1.35em;margin-left:.25em;border-radius:50%;background:linear-gradient(180deg,#FFF0B8,#E2B85A);color:#6E0F0B;font:800 1em/1 Arial,sans-serif;box-shadow:0 .1em 0 rgba(0,0,0,.35);transition:transform .2s}
+.lp-mj:hover .mj-plate{box-shadow:inset 0 0 0 .2em #F2D27A,inset 0 0 0 .38em #8A1810,inset 0 0 0 .5em rgba(242,210,122,.55),inset 0 .9em 1em rgba(255,255,255,.12),0 .5em 0 #4A0A06,0 0 2em rgba(255,190,80,.9)}
+.lp-mj:hover .mj-plate small::after{transform:translateX(.25em)}
+.lp-mj:active .mj-plate{transform:translateX(-50%) translateY(.4em);box-shadow:inset 0 0 0 .2em #F2D27A,inset 0 0 0 .38em #8A1810,inset 0 0 0 .5em rgba(242,210,122,.55),0 .1em 0 #4A0A06,0 .3em .6em rgba(60,10,5,.4)}
+@keyframes mjpulse{0%,100%{filter:none}50%{filter:brightness(1.1) drop-shadow(0 0 .9em rgba(255,200,90,.8))}}
 .lp-mj:hover .mj-sun .rays{animation-duration:4s}
 .mj-posts{position:absolute;left:12em;right:12em;top:13em;height:3em;background:linear-gradient(90deg,#4A140F,#6E2219 50%,#4A140F)}
 .mj-base{position:absolute;left:4em;right:4em;bottom:.6em;height:2.2em;border-radius:.6em;background:linear-gradient(180deg,#8A3A2C,#5A1A12 60%,#3A0E0B);box-shadow:inset 0 .2em 0 rgba(255,200,170,.25)}

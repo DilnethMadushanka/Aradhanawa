@@ -2257,7 +2257,7 @@ const prettyPhone = p => { const d=String(p||"").replace(/\D/g,""); return d.len
 const b64 = s => btoa(unescape(encodeURIComponent(s))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
 const unb64 = s => decodeURIComponent(escape(atob(s.replace(/-/g,"+").replace(/_/g,"/"))));
 function inviteLink(guest){
-  const payload = {t:S.type, l:S.lang==="si"?"si":"en", e:cur(), g:guest||""}; const cp=curPrem(); if(cp&&cp.site&&ownsDesign(S.type,cp)) payload.d=cp.site; if(FB_ON()&&window.FBX&&FBX.user) payload.o=FBX.user.uid;
+  const payload = {t:S.type, l:S.lang==="si"?"si":"en", e:cur(), g:guest||""}; const cp=curPrem(); if(cp&&cp.site) payload.d=cp.site; if(FB_ON()&&window.FBX&&FBX.user) payload.o=FBX.user.uid;
   return CONFIG.SITE + "#i=" + b64(JSON.stringify(payload));
 }
 
@@ -2443,8 +2443,8 @@ function lpDetail(){
       <div class="dt-card"><div class="dt-cardin">${cardHTML(k,ev,"en","Nimal Uncle",t?{...t,_noribbon:1}:null)}</div>
         <div class="dt-nav"><a href="#design/${k}/${prev}" aria-label="Previous design">←</a><span>${pos+1} / ${all.length}</span><a href="#design/${k}/${next}" aria-label="Next design">→</a></div></div>
       <div class="dt-info">${lpOrn()}<span class="lp-eb">${T.name} · ${esc(T.si)}</span><h1>${esc(name)}</h1>
-        <p class="dt-price">${t?`Custom design · <b>${CONFIG.PRICE_CUSTOM}</b>`:`<b>Free</b> for every ${T.name.toLowerCase()}`}</p>
-        <ul class="dt-list"><li>Each guest's name on the card, like <i>Dear Nimal Uncle</i></li><li>A ${({wedding:"magul pahana",birthday:"birthday cake",homecoming:"door",dana:"lotus",party:"gift box"})[k]||"envelope"} opening screen when the link opens</li><li>Date, ${k==="wedding"?"poruwa nekath, reception, ":""}map and reply form</li><li>WhatsApp message in Sinhala, Singlish or English</li>${t?`<li>Our team changes the photos and colours for you</li>`:""}${k==="wedding"?`<li>Jayamangala gatha plays as the card opens</li>`:""}</ul>
+        <p class="dt-price"><b>Free</b> for every ${T.name.toLowerCase()}${t?` · customised with your photos for <b>${CONFIG.PRICE_CUSTOM}</b>`:""}</p>
+        <ul class="dt-list"><li>Each guest's name on the card, like <i>Dear Nimal Uncle</i></li><li>A ${({wedding:"magul pahana",birthday:"birthday cake",homecoming:"door",dana:"lotus",party:"gift box"})[k]||"envelope"} opening screen when the link opens</li><li>Date, ${k==="wedding"?"poruwa nekath, reception, ":""}map and reply form</li><li>WhatsApp message in Sinhala, Singlish or English</li>${t?`<li>Optional: our team can change the photos and colours for you</li>`:""}${k==="wedding"?`<li>Jayamangala gatha plays as the card opens</li>`:""}</ul>
         <div class="dt-acts">${lpNakath("md",{tag:"button",attrs:`type="button" data-use="${k}:${i}"`,si:"මෙම කාඩ්පත තෝරන්න",en:"Use this design"})}
           <button type="button" class="lp-hghost" data-dprev="${k}:${i}">Open it like a guest</button></div>
       </div></div></section>`;
@@ -2572,10 +2572,10 @@ function render(){
       </section>
 
       <section class="panel" aria-labelledby="h-tpl">
-        <div class="phead"><div><span class="eyebrow">Step 2</span><h2 id="h-tpl">Choose a design</h2><p class="sub">Tap a design to preview it with your details. Our team customises it with your photos and colours.</p></div></div>
+        <div class="phead"><div><span class="eyebrow">Step 2</span><h2 id="h-tpl">Choose a design</h2><p class="sub">Tap a design to preview it with your details. Every design is free, and the one you pick is what your guests see. Want your own photos and colours? Our team can customise it.</p></div></div>
         <div class="tpls" data-ui>
           <button class="tpl" data-tpl="0" ${hasTh(S.type)?"hidden":""} aria-pressed="${!tplOf(S.type)}"><div class="sw t-${S.type}" style="background:var(--c-bg)">${T.art()}</div><div class="nm">${T.tpl}<span class="pill free">Free</span></div></button>
-          ${PREMIUM[S.type].map((t,i)=>{ const own=ownsDesign(S.type,t); return `<button class="tpl ${own?"owned":"locked"}" data-tpl="${i+1}" ${tplOff().includes(S.type+":"+(i+1))&&!own?"hidden":""} aria-pressed="${tplOf(S.type)===i+1}">${own?"":`<span class="lock">${I.lock} ${CONFIG.PRICE_CUSTOM}</span>`}<div class="sw t-${S.type}" style="${tplVars(t)}background:${t.bg}">${t.img?pic(t.img,"160px",t.n,t.pos):premArt(S.type,t,ev)}</div><div class="nm">${esc(t.n)}${own?`<span class="pill free">Yours</span>`:`<span class="pill pro">Custom</span>`}</div></button>` }).join("")}
+          ${PREMIUM[S.type].map((t,i)=>{ const own=ownsDesign(S.type,t); return `<button class="tpl ${own?"owned":""}" data-tpl="${i+1}" ${tplOff().includes(S.type+":"+(i+1))&&!own?"hidden":""} aria-pressed="${tplOf(S.type)===i+1}"><div class="sw t-${S.type}" style="${tplVars(t)}background:${t.bg}">${t.img?pic(t.img,"160px",t.n,t.pos):premArt(S.type,t,ev)}</div><div class="nm">${esc(t.n)}${own?`<span class="pill free">Yours</span>`:`<span class="pill free">Free</span>`}</div></button>` }).join("")}
         </div>
       </section>
 
@@ -2627,7 +2627,7 @@ function render(){
 
     <aside class="stage" aria-label="Live preview">
       <div class="table" id="cardSlot" data-ui></div>
-      <p class="pnote" id="premOwn" hidden>Your purchased design. Guest links use this design.</p><div id="premBar" hidden><p class="pnote">Premium preview. Guest links use the free design until your custom design is ready.</p><div class="row" style="margin-top:8px;justify-content:center"><button class="btn primary" id="buyPrem">Buy this design · ${CONFIG.PRICE_CUSTOM}</button><button class="btn" id="reqPrem">Details</button></div></div>
+      <p class="pnote" id="premOwn" hidden>Your purchased design. Guest links use this design.</p><div id="premBar" hidden><p class="pnote">Guest links use this design for free. Want it customised with your photos and colours?</p><div class="row" style="margin-top:8px;justify-content:center"><button class="btn primary" id="buyPrem">Customise this design · ${CONFIG.PRICE_CUSTOM}</button><button class="btn" id="reqPrem">Details</button></div></div>
       <div class="row">
         <button class="btn" id="preview">${I.eye} Preview as guest</button>
         <button class="btn" id="copyLink">${I.link} Copy invite link</button>
@@ -2731,7 +2731,7 @@ function refreshLive(){
   if(!document.getElementById("cardSlot")) return;
   const ev=cur(), lang=S.lang;
   const prem = curPrem();
-  document.getElementById("cardSlot").innerHTML = cardHTML(S.type, ev, lang==="si"?"si":"en", "", prem);
+  document.getElementById("cardSlot").innerHTML = cardHTML(S.type, ev, lang==="si"?"si":"en", "", prem&&{...prem,_noribbon:1});
   const own = !!prem && ownsDesign(S.type, prem);
   document.getElementById("premBar").hidden = !prem || own;
   document.getElementById("premOwn").hidden = !own;
@@ -2796,7 +2796,7 @@ function designItems(filter){
     if(filter&&filter!=="all"&&filter!=="feat"&&filter!==k) continue;
     const ev=T.sample;
     if(!hasTh(k)) out.push(`<button class="lp-tile" data-pick="${k}:0"><div class="pv" data-ui>${cardHTML(k,ev,"en","",null)}</div><div class="strip"><b>${T.tpl}</b><span class="free">${T.name} · Free</span></div></button>`);
-    PREMIUM[k].forEach((t,i)=>{ if(!t.img&&!t.layout) return; if(tplOff().includes(k+":"+(i+1))) return; out.push(`<button class="lp-tile" data-pick="${k}:${i+1}"><div class="pv" data-ui>${cardHTML(k,ev,"en","",{...t,_noribbon:1})}</div><div class="strip"><b>${esc(t.n)}</b><span>${T.name} · ${CONFIG.PRICE_CUSTOM}</span></div></button>`) });
+    PREMIUM[k].forEach((t,i)=>{ if(!t.img&&!t.layout) return; if(tplOff().includes(k+":"+(i+1))) return; out.push(`<button class="lp-tile" data-pick="${k}:${i+1}"><div class="pv" data-ui>${cardHTML(k,ev,"en","",{...t,_noribbon:1})}</div><div class="strip"><b>${esc(t.n)}</b><span class="free">${T.name} · Free</span></div></button>`) });
   }
   if(filter==="feat"){ const pickN=(k,n)=>out.filter(x=>x.includes(`data-pick="${k}:`)).slice(0,n); return [...pickN("wedding",4),...pickN("birthday",1),...pickN("homecoming",1),...pickN("dana",1),...pickN("party",1)].join("") }
   return out.join("");
@@ -3004,11 +3004,16 @@ function rsvpBlock(type,ev,lang,guest){
     ${ev.date?`<a class="btn sm" target="_blank" rel="noopener" href="${gcalLink(type,ev)}">${si?"දින දර්ශනයට එක් කරන්න":"Add to calendar"}</a>`:""}</div>
   </div>`;
 }
+/* The design the host picked travels in the link (p.d = design id). Older links had none: use the type's first design, since the plain card is no longer offered for it. */
+function guestDesign(type,d){
+  const L=PREMIUM[type]||[], t=(d&&L.find(x=>x.site===d))||L[0];
+  return t?{...t,_noribbon:1}:null;
+}
 function renderGuest(p,gallery){
   S.guestP=p;
   const type=TYPES[p.t]?p.t:"other";
   document.title = (p.e.title || [p.e.a,p.e.b].filter(Boolean).join(" & ") || "Invitation") + " · Aradhanawa";
-  document.getElementById("app").innerHTML = `<main class="gwrap t-${type}">${siteHTML(type,p.e,p.l,p.g,p.d?(PREMIUM[type].find(x=>x.site===p.d)||null):null,(gallery||[]).map(src=>`<img src="${src}" alt="" loading="lazy">`))}</main>`; lxArm();
+  document.getElementById("app").innerHTML = `<main class="gwrap t-${type}">${siteHTML(type,p.e,p.l,p.g,guestDesign(type,p.d),(gallery||[]).map(src=>`<img src="${src}" alt="" loading="lazy">`))}</main>`; lxArm();
   document.body.style.background = getComputedStyle(document.querySelector(".gwrap")).backgroundColor;
   initSites();
   guestLoader(p,type,document.querySelector(".gwrap .card"));
@@ -3266,7 +3271,8 @@ function fbSyncInvite(){
   fbInvT=setTimeout(()=>{
     const ev=S.ev[type]||{}, e={};
     for(const k in ev){ const v=ev[k]; if((typeof v==="string"&&v.length<2000)||typeof v==="number"||typeof v==="boolean") e[k]=v }
-    FBX.saveInvite({type,lang:S.lang,tpl:tplOf(type),title:ev.title||"",names:[ev.a,ev.b].filter(Boolean).join(" & "),date:ev.date||"",venue:ev.venue||"",ev:e,
+    const dz=tplOf(type)&&PREMIUM[type][tplOf(type)-1];
+    FBX.saveInvite({type,lang:S.lang,tpl:tplOf(type),design:(dz&&dz.site)||"",title:ev.title||"",names:[ev.a,ev.b].filter(Boolean).join(" & "),date:ev.date||"",venue:ev.venue||"",ev:e,
       guests:S.guests.slice(0,500).map(g=>({name:String(g.name||"").slice(0,80)}))}).catch(er=>console.warn("[fb] invite",er));
   },1500);
 }

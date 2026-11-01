@@ -163,7 +163,7 @@ export async function init(cfg, hooks = {}) {
     if (!FBX.user) return Promise.resolve();
     const u = FBX.user, p = FBX.profile || {};
     return F.setDoc(F.doc(db, "invitations", `${u.uid}_${inv.type}`), {
-      uid: u.uid, ownerName: p.name || "", ownerEmail: p.email || "", type: inv.type, lang: inv.lang || "", tpl: inv.tpl ?? 0,
+      uid: u.uid, ownerName: p.name || "", ownerEmail: p.email || "", type: inv.type, lang: inv.lang || "", tpl: inv.tpl ?? 0, design: inv.design || "",
       title: inv.title || "", names: inv.names || "", date: inv.date || "", venue: inv.venue || "",
       ev: inv.ev || {}, guests: inv.guests || [], guestCount: (inv.guests || []).length,
       updated: now() }, { merge: true });

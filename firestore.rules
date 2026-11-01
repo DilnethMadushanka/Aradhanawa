@@ -72,6 +72,22 @@ service cloud.firestore {
       allow delete: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
     }
 
+    // Short guest links (aradhanawa.com/i/{code}). Holds the same details the long #i= link carries.
+    // Anyone with the code may open one; nobody but admins can list them all.
+    match /links/{code} {
+      allow get: if true;
+      allow list: if isAdmin();
+      allow create: if signedIn() && code.matches('^[0-9A-Za-z]{8}$')
+        && request.resource.data.keys().hasOnly(["uid", "p", "created"])
+        && request.resource.data.uid == request.auth.uid
+        && isStr(request.resource.data.p, 30000) && isStr(request.resource.data.created, 40);
+      allow update: if signedIn() && resource.data.uid == request.auth.uid
+        && request.resource.data.keys().hasOnly(["uid", "p", "created"])
+        && request.resource.data.uid == request.auth.uid
+        && isStr(request.resource.data.p, 30000) && isStr(request.resource.data.created, 40);
+      allow delete: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
+    }
+
     // Guest replies from the invitation website. Guests don't sign in.
     match /rsvps/{id} {
       allow read: if isAdmin() || (signedIn() && resource.data.ownerUid == request.auth.uid);

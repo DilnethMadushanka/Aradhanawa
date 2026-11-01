@@ -13,6 +13,10 @@
   ],
   "rewrites": [
     {
+      "source": "/i/:code",
+      "destination": "/"
+    },
+    {
       "source": "/admin",
       "destination": "/"
     },

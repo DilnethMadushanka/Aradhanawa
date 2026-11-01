@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="description" content="Aradhanawa - Sri Lankan digital invitations for weddings, homecomings, birthdays and dana, sent on WhatsApp in Sinhala, Singlish or English."><meta name="theme-color" content="#FFF3E3"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<html lang="en"><head><meta charset="utf-8">
+<script>/* aradhanawa.com/i/<code> short guest link → /#s=<code> (keeps img/, fb.js etc. loading from the root) */ (function(){var m=location.pathname.match(/^\/i\/([0-9A-Za-z]{6,12})\/?$/);if(m)history.replaceState(null,"","/#s="+m[1])})();</script><meta name="description" content="Aradhanawa - Sri Lankan digital invitations for weddings, homecomings, birthdays and dana, sent on WhatsApp in Sinhala, Singlish or English."><meta name="theme-color" content="#FFF3E3"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
 <title>Aradhanawa · Digital Invitations Sri Lanka for WhatsApp</title>
 <link rel="canonical" href="https://www.aradhanawa.com/">
@@ -2258,8 +2259,58 @@ const b64 = s => btoa(unescape(encodeURIComponent(s))).replace(/\+/g,"-").replac
 const unb64 = s => decodeURIComponent(escape(atob(s.replace(/-/g,"+").replace(/_/g,"/"))));
 function inviteLink(guest){
   const payload = {t:S.type, l:S.lang==="si"?"si":"en", e:cur(), g:guest||""}; const cp=curPrem(); if(cp&&cp.site) payload.d=cp.site; if(FB_ON()&&window.FBX&&FBX.user) payload.o=FBX.user.uid;
-  return CONFIG.SITE + "#i=" + b64(JSON.stringify(payload));
+  const json=JSON.stringify(payload);
+  return shortLink(json) || (CONFIG.SITE + "#i=" + b64(json));
 }
+/* Short guest links: aradhanawa.com/i/Ab3dE9xk. The invitation details are saved in Firestore links/{code}
+   (code = hash of owner + details, so the same guest and details always get the same code). A short link is only
+   handed out once its doc is saved; until then (or when logged out / offline) the old long #i= link is used, and
+   old #i= links keep working. Vercel sends /i/<code> to the page, which turns it into #s=<code> and loads it. */
+const SHORT_LEN=8, B62="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+function shortCode(str){
+  let h1=0xdeadbeef, h2=0x41c6ce57;
+  for(let i=0;i<str.length;i++){ const c=str.charCodeAt(i); h1=Math.imul(h1^c,2654435761); h2=Math.imul(h2^c,1597334677) }
+  h1=Math.imul(h1^(h1>>>16),2246822507)^Math.imul(h2^(h2>>>13),3266489909);
+  h2=Math.imul(h2^(h2>>>16),2246822507)^Math.imul(h1^(h1>>>13),3266489909);
+  let n=(2097151&h2)*4294967296+(h1>>>0), out="";
+  for(let i=0;i<SHORT_LEN;i++){ out+=B62[n%62]; n=Math.floor(n/62) }
+  return out;
+}
+const SHORT={ok:null, want:null, busy:new Set(), off:false, t:0};
+const shortOk=()=>SHORT.ok||(SHORT.ok=new Set(store.get("shortok",[])));
+function shortLink(json){
+  if(SHORT.off||!FB_ON()||!window.FBX||!FBX.user||!FBX.saveLink) return "";
+  const code=shortCode(FBX.user.uid+"|"+json);
+  if(shortOk().has(code)) return CONFIG.SITE.replace(/[#?].*$/,"").replace(/\/?$/,"/") + "i/" + code;
+  if(SHORT.want) SHORT.want.set(code,json);
+  else if(!SHORT.busy.has(code)){ clearTimeout(SHORT.t); SHORT.t=setTimeout(flushShort,2000) }   // wait until typing stops
+  return "";
+}
+async function flushShort(){
+  if(!window.FBX||!FBX.user) return;
+  // Save only the links the create page shows right now (not every half-typed version).
+  SHORT.want=new Map(); try{ inviteLink(""); (S.guests||[]).forEach(g=>inviteLink(g.name)) }catch(e){}
+  const jobs=[...SHORT.want].filter(([c])=>!SHORT.busy.has(c)); SHORT.want=null; if(!jobs.length) return;
+  let added=0;
+  await Promise.all(jobs.map(async([code,json])=>{
+    SHORT.busy.add(code);
+    try{ await FBX.saveLink(code,json); shortOk().add(code); added++ }
+    catch(e){ console.warn("[fb] short link",e.code||e); if(e&&e.code==="permission-denied") SHORT.off=true }   // rules not published yet: keep long links
+    finally{ SHORT.busy.delete(code) }
+  }));
+  if(!added) return;
+  store.set("shortok",[...shortOk()].slice(-400));
+  refreshShareLinks();
+}
+function loadShort(code){
+  const cfg=window.ARADHANA_FIREBASE&&window.ARADHANA_FIREBASE.config;
+  if(!cfg||!/^[0-9A-Za-z]{6,12}$/.test(code)) return Promise.resolve(null);
+  const ctl=new AbortController(), tm=setTimeout(()=>ctl.abort(),8000);
+  return fetch(`https://firestore.googleapis.com/v1/projects/${encodeURIComponent(cfg.projectId)}/databases/(default)/documents/links/${code}?key=${encodeURIComponent(cfg.apiKey)}`,{signal:ctl.signal})
+    .then(r=>r.ok?r.json():null).then(d=>{ const p=JSON.parse(d.fields.p.stringValue); return p&&p.e?p:null })
+    .catch(()=>null).finally(()=>clearTimeout(tm));
+}
+const isGuestHash=h=>/^#[is]=/.test(h||"");
 
 /* ================= CARD ================= */
 function cardHTML(type, ev, lang, guest, prem){
@@ -2737,9 +2788,14 @@ function refreshLive(){
   document.getElementById("premOwn").hidden = !own;
   const hp=document.getElementById("heroPhone");
   if(hp){ const sc=hp.querySelector(".screen"), top=sc?sc.scrollTop:0; hp.innerHTML=phoneHTML(siteHTML(S.type,ev,lang==="si"?"si":"en","",prem,galleryFor(S.type))); hp.querySelector(".screen").scrollTop=top; initSites(hp) }
-  const msg = waMessage(S.type, ev, lang, "", inviteLink(""));
-  document.getElementById("bubble").innerHTML = waHTML(msg);
-  document.getElementById("sendAll").href = waLink("", msg);
+  refreshShareLinks();
+}
+function refreshShareLinks(){
+  const bubble=document.getElementById("bubble"), all=document.getElementById("sendAll"); if(!bubble||!all) return;
+  const msg = waMessage(S.type, cur(), S.lang, "", inviteLink(""));
+  bubble.innerHTML = waHTML(msg);
+  all.href = waLink("", msg);
+  refreshGuestLinks();
 }
 
 function bind(){
@@ -3732,6 +3788,9 @@ const PAGES = { login:()=>renderAuth("login"), register:()=>renderAuth("register
 function route(){
   const h=location.hash||"";
   if(h.startsWith("#i=")){ try{ const p=JSON.parse(unb64(h.slice(3))); if(p&&p.e){ guestGallery(p).then(g=>{ if(location.hash===h) renderGuest(p,g) }); return } }catch(e){} }
+  if(h.startsWith("#s=")){
+    loadShort(h.slice(3)).then(p=>p?guestGallery(p).then(g=>{ if(location.hash===h) renderGuest(p,g) }):(location.hash===h&&(history.replaceState(null,"","/"),route(),toast("This invitation link isn't available any more."))));
+    return }
   const [pg,sub,rest]=h.slice(1).split("/");
   if(PAGES[pg]){ PAGES[pg](sub,rest); return }
   if(pg==="make"){ location.replace("#create"); return }
@@ -3756,7 +3815,7 @@ function fbApplySettings(){ const st=(window.FBX&&FBX.settings)||{}; if(st.confi
 function fbChanged(why){
   if(why==="settings"){ fbApplySettings(); return }
   const h=location.hash||"", pg=h.slice(1).split("/")[0];
-  if(h.startsWith("#i=")) return;
+  if(isGuestHash(h)) return;
   if(why==="auth"){ fbSyncGalleries(); if(["login","register","admin","account"].includes(pg)) route(); else render(); return }
   if(why==="orders"&&S.page==="create"){ const a=document.activeElement; if(!(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))){ const y=scrollY; render(); scrollTo(0,y) } return }
   if(pg!=="admin"&&pg!=="account") return;
@@ -3774,7 +3833,7 @@ function fbStart(){
   lxCSS();
   if(!FB_ON()){ seedDB().catch(()=>{}).finally(route); return }
   // Guest invitation links open straight away; Firebase loads alongside for the RSVP save.
-  if((location.hash||"").startsWith("#i=")){ route(); fbStart(); return }
+  if(isGuestHash(location.hash)){ route(); fbStart(); return }
   Promise.race([fbStart(), new Promise(r=>setTimeout(r,8000))]).finally(()=>{ route(); payBackModal() });
 })();
 </script>

@@ -950,6 +950,14 @@ nav.top a{font-weight:600}
 .lx-open{display:inline-flex;align-items:center;gap:14px;border:2px solid var(--lx-wine);background:rgba(255,253,248,.35);color:var(--lx-wine);border-radius:999px;padding:15px 26px;font:700 14px "Cormorant Garamond",serif;letter-spacing:.26em;white-space:nowrap;text-transform:uppercase;cursor:pointer;animation:lxpulse 2.6s ease-in-out infinite}
 .lx-open svg{width:28px;height:18px}
 .lx-open:hover{background:var(--lx-wine);color:#FFF8EE}
+/* keep the cover text inside narrow screens (small phones, the phone-frame preview) */
+.lx-cover{grid-template-columns:minmax(0,1fr)}
+.lx-in{max-width:min(340px,100%);min-width:0}
+.lx-open{max-width:100%}
+.phone .lx-cover{padding-top:calc(min(100cqw,520px)*.49);padding-bottom:20px}
+.phone .lx-in{gap:8px}
+.phone .lx-open{letter-spacing:.14em;padding:13px 18px;gap:10px;white-space:normal;text-align:center}
+@media (max-width:360px){.lx-open{letter-spacing:.14em;padding:13px 18px;gap:10px;white-space:normal;text-align:center}}
 @keyframes lxpulse{50%{box-shadow:0 0 0 8px color-mix(in srgb,var(--lx-wine) 10%,transparent)}}
 .lx-sw{font-family:"Noto Serif Sinhala",serif;font-weight:700;font-size:24px;color:var(--c-gold);margin:6px 0 0}
 .lx-tag{font-size:15px;letter-spacing:.3em;text-transform:uppercase;line-height:2;color:#4A3F38;margin:0}

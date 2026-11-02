@@ -2971,7 +2971,7 @@ function bind(){
   $$("[data-df]").forEach(b=>b.onclick=()=>{ $$("[data-df]").forEach(x=>x.setAttribute("aria-pressed",x===b)); $("#drow").innerHTML=designItems(b.dataset.df); $("#drow").classList.toggle("all",b.dataset.df!=="all"); const dm=$("#dmore"); if(dm) dm.hidden=b.dataset.df!=="all" });
   $("#drow").addEventListener("click",e=>{ const d=e.target.closest("[data-pick]"); if(!d) return; const [k,i]=d.dataset.pick.split(":"); location.hash=`#design/${k}/${i}` });
   $$("[data-use]").forEach(b=>b.onclick=()=>{ const [k,i]=b.dataset.use.split(":"); S.type=k; S.tpl[k]=+i; save(); location.hash="#create" });
-  $$("[data-dprev]").forEach(b=>b.onclick=()=>{ const [k,i]=b.dataset.dprev.split(":"); const ot=S.type, op=S.tpl[k]; S.type=k; S.tpl[k]=+i; guestPreview("Nimal Uncle"); S.type=ot; S.tpl[k]=op });
+  $$("[data-dprev]").forEach(b=>b.onclick=()=>demoPreview(b.dataset.dprev));
   $$("[data-dfgo]").forEach(b=>b.onclick=()=>{ S.df=b.dataset.dfgo });
   const nm=document.querySelector(".nv-menu"); if(nm) nm.onclick=()=>{ const sh=document.getElementById("nvSheet"), o=sh.hidden; sh.hidden=!o; nm.setAttribute("aria-expanded",String(o)); document.querySelector(".lp-nav").classList.toggle("open",o) };
   $$("[data-top]").forEach(b=>b.onclick=e=>{ e.preventDefault(); scrollTo({top:0,behavior:"smooth"}) });
@@ -3038,6 +3038,12 @@ function customReq(name,plan){
     <div class="bubble" style="font-size:13px">${esc(txt)}</div>
     <div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><a class="btn wa" data-order="custom|${esc(name||"")}" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,txt)}">${I.wa} Ask first</a>${p?`<button class="btn primary" data-pay="custom|${esc(name||"")}|${esc(p.id)}">Pay ${esc(price)}</button>`:""}</div>
     <p class="note">Pay securely through Dialog Genie, then send your photos on WhatsApp.</p>`);
+}
+/* Open a design like a guest would, with the sample couple and photos, never the visitor's own saved draft. */
+function demoPreview(key){
+  const [k,i]=key.split(":"), keep={type:S.type,tpl:S.tpl[k],ev:S.ev[k],ph:S.photos&&S.photos[k],op:S.opener};
+  S.type=k; S.tpl[k]=+i; S.ev[k]=TYPES[k].sample; S.opener="theme"; if(S.photos) S.photos[k]=[];
+  try{ guestPreview("Nimal Uncle") } finally { S.type=keep.type; S.tpl[k]=keep.tpl; S.ev[k]=keep.ev; S.opener=keep.op; if(S.photos) S.photos[k]=keep.ph }
 }
 function guestPreview(guest){
   const lang=S.lang==="si"?"si":"en";
@@ -3983,7 +3989,7 @@ function route(){
 }
 addEventListener("hashchange",route);
 document.addEventListener("click",e=>{
-  const nd=e.target.closest("[data-nvdemo]"); if(nd){ const [k,i]=nd.dataset.nvdemo.split(":"); const ot=S.type, op=S.tpl[k]; S.type=k; S.tpl[k]=+i; guestPreview("Nimal Uncle"); S.type=ot; S.tpl[k]=op }
+  const nd=e.target.closest("[data-nvdemo]"); if(nd) demoPreview(nd.dataset.nvdemo);
   if(e.target.closest("#nvSheet a")||nd){ const sh=document.getElementById("nvSheet"), nm=document.querySelector(".nv-menu"); if(sh) sh.hidden=true; if(nm) nm.setAttribute("aria-expanded","false"); const nv=document.querySelector(".lp-nav"); if(nv) nv.classList.remove("open") }
   const o=e.target.closest("[data-order]"); if(o){ const [k,d]=o.dataset.order.split("|"); logOrder(k,d) }
   const pb=e.target.closest("[data-pay]"); if(pb){ const [k,d,pl]=pb.dataset.pay.split("|"); payNow(k,d,pb,pl) }

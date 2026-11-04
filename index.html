@@ -3649,7 +3649,7 @@ function shell(inner){
 
 /* ---------- login / register ---------- */
 function renderAuth(kind){
-  const reg = kind==="register";
+  const reg = kind==="register", forCreate = store.get("next","")==="#create";
   if(me()){ const nx=store.get("next",""); store.set("next",""); location.replace(nx||(me().role==="admin"?"#admin":"#account")); return }
   shell(`<main class="apage">
     <div class="aside">${pic(reg?"card-flatlay":"poruwa-couple","(max-width:820px) 100vw, 52vw","",reg?"50% 50%":"50% 32%",false)}
@@ -3657,7 +3657,7 @@ function renderAuth(kind){
       <span>${reg?"Save your events, keep your guest list in one place and order custom designs from our studio.":"Pick up where you left off with your events, guest links and designs."}</span></div></div>
     <div class="formside"><form class="aform" id="aform" novalidate>
       <div><span class="eyebrow">${reg?"Create account":"Log in"}</span><h1>${reg?"Join <em>Aradhanawa</em>":"Ayubowan"}</h1></div>
-      <p class="sub">${reg?"Free forever for 5 guests. No card needed.":"Log in with Google, or with your email and password."}</p>
+      <p class="sub">${forCreate?(reg?"Create a free account to make your invitation. Free forever for 5 guests, no card needed.":"Please log in to make your invitation. It's still free, and your card is saved to your account."):reg?"Free forever for 5 guests. No card needed.":"Log in with Google, or with your email and password."}</p>
       <button type="button" class="btn gbtn" data-google><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.6 5.4 2.7 13.3l7.9 6.1C12.5 13.6 17.8 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.6 5.9c4.4-4.1 7-10.1 7-17.6z"/><path fill="#FBBC05" d="M10.6 28.6c-.5-1.4-.8-3-.8-4.6s.3-3.2.8-4.6l-7.9-6.1C1 16.6 0 20.2 0 24s1 7.4 2.7 10.7l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.6-5.9c-2.1 1.4-4.9 2.3-8.3 2.3-6.2 0-11.5-4.2-13.4-9.9l-7.9 6.1C6.6 42.6 14.6 48 24 48z"/></svg>Continue with Google</button>
       <div class="or"><span>or ${reg?"sign up":"log in"} with email</span></div>
       ${reg?`<div class="af"><label for="f-name">Full name</label><input id="f-name" name="fullname" autocomplete="name" placeholder="Tharushi Fernando"></div>`:""}
@@ -3717,7 +3717,8 @@ function renderAuth(kind){
       if(users.some(u=>u.email===email)) return bad("email","An account with this email already exists. Try logging in.");
       users.push({id:"u"+Date.now().toString(36),name:v("fullname"),email,phone:v("phone"),pw:await hashPw(pw.value),role:"user",plan:"Free",created:new Date().toISOString()});
       DB.setUsers(users); store.set("session",email); toast("Account created. Welcome to Aradhanawa!");
-      location.hash="#account";
+      const nx=store.get("next",""); store.set("next","");
+      location.hash = nx || "#account";
     }else{
       const u=users.find(x=>x.email===email);
       if(!u||!u.pw||u.pw!==await hashPw(pw.value)) return bad("pw","Email or password is incorrect.");
@@ -3991,6 +3992,8 @@ function route(){
   if(PAGES[pg]){ PAGES[pg](sub,rest); return }
   if(pg==="make"){ location.replace("#create"); return }
   if(pg==="create"&&sub&&TYPES[sub]){ S.type=sub; save(); location.replace("#create"); return }
+  // Every invitation, free ones too, needs an account: send visitors to log in, then bring them back here.
+  if(pg==="create"&&!me()){ store.set("next","#create"); location.replace("#login"); return }
   const want=SITE_PAGES[pg]?pg:"home", el0=document.querySelector(".lp-main");
   if(!el0||S.page!==want||document.body.dataset.pg!==want){ S.page=want; render(); }
   const el=want==="home"&&pg&&document.getElementById(pg); if(el) el.scrollIntoView({behavior:"smooth"}); else if(!pg||SITE_PAGES[pg]) window.scrollTo(0,0);
@@ -4003,8 +4006,8 @@ document.addEventListener("click",e=>{
   const pb=e.target.closest("[data-pay]"); if(pb){ const [k,d,pl]=pb.dataset.pay.split("|"); payNow(k,d,pb,pl) }
   const bp=e.target.closest("[data-buy]"); if(bp) buyPlan(bp.dataset.buy);
   if(e.target.closest("[data-logout]")){ e.preventDefault();
-    if(FB_ON()){ if(fbNeed()) FBX.signOut().then(()=>{ toast("Logged out"); if(/^#(admin|account)/.test(location.hash)) location.hash="" },fbFail); return }
-    store.set("session",null); toast("Logged out"); if(/^#(admin|account)/.test(location.hash)) location.hash=""; else render() }
+    if(FB_ON()){ if(fbNeed()) FBX.signOut().then(()=>{ toast("Logged out"); if(/^#(admin|account|create)/.test(location.hash)) location.hash="" },fbFail); return }
+    store.set("session",null); toast("Logged out"); if(/^#(admin|account|create)/.test(location.hash)) location.hash=""; else render() }
 });
 
 /* Firebase: live data changes re-render the admin / account pages; sign-in changes move between pages. */
@@ -4014,7 +4017,7 @@ function fbChanged(why){
   if(why==="settings"){ fbApplySettings(); return }
   const h=location.hash||"", pg=h.slice(1).split("/")[0];
   if(isGuestHash(h)) return;
-  if(why==="auth"){ fbSyncGalleries(); if(["login","register","admin","account"].includes(pg)) route(); else render(); return }
+  if(why==="auth"){ fbSyncGalleries(); if(["login","register","admin","account","create"].includes(pg)) route(); else render(); return }
   if(why==="orders"&&S.page==="create"){ const a=document.activeElement; if(!(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))){ const y=scrollY; render(); scrollTo(0,y) } return }
   if(pg!=="admin"&&pg!=="account") return;
   const a=document.activeElement; if(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&a.closest(".adm,.acct")){ fbDirty=true; return }

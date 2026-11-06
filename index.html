@@ -3295,7 +3295,7 @@ function renderGuest(p,gallery){
   document.title = (p.e.title || [p.e.a,p.e.b].filter(Boolean).join(" & ") || "Invitation") + " · Aradhanawa";
   document.getElementById("app").innerHTML = `<main class="gwrap t-${type}">${siteHTML(type,p.e,p.l,p.g,guestDesign(type,p.d),(gallery||[]).map(src=>`<img src="${src}" alt="" loading="lazy">`))}</main>`; lxArm();
   document.body.style.background = getComputedStyle(document.querySelector(".gwrap")).backgroundColor;
-  initSites();
+  initSites(); window.scrollTo(0,0);
   guestLoader(p,type,document.querySelector(".gwrap .card"));
 }
 const GL_COPY={
@@ -4159,7 +4159,13 @@ function route(){
   const el=want==="home"&&pg&&document.getElementById(pg); if(el) el.scrollIntoView({behavior:"smooth"}); else if(!pg||SITE_PAGES[pg]) window.scrollTo(0,0);
 }
 addEventListener("hashchange",route);
+// Pages always open at the top: let the app (not the browser) decide scroll on reload / back / forward.
+try{ if("scrollRestoration" in history) history.scrollRestoration="manual" }catch(e){}
 document.addEventListener("click",e=>{
+  // A link to the page you're already on fires no hashchange, and the browser would jump to a same-named
+  // section instead (e.g. #designs). Route it ourselves so it goes back to the top like any other page open.
+  const ln=e.target.closest('a[href^="#"]');
+  if(ln&&!e.defaultPrevented&&!e.metaKey&&!e.ctrlKey&&!e.shiftKey&&e.button===0&&ln.getAttribute("href")===(location.hash||"#")&&!isGuestHash(location.hash)){ e.preventDefault(); route() }
   const nd=e.target.closest("[data-nvdemo]"); if(nd) demoPreview(nd.dataset.nvdemo);
   if(e.target.closest("#nvSheet a")||nd){ const sh=document.getElementById("nvSheet"), nm=document.querySelector(".nv-menu"); if(sh) sh.hidden=true; if(nm) nm.setAttribute("aria-expanded","false"); const nv=document.querySelector(".lp-nav"); if(nv) nv.classList.remove("open") }
   const o=e.target.closest("[data-order]"); if(o){ const [k,d]=o.dataset.order.split("|"); logOrder(k,d) }

@@ -570,7 +570,8 @@ footer.foot{border-top:1px solid var(--line);padding-block:22px;color:var(--mute
 .gload.gs.out{transform:none}
 .gs-under{position:absolute;inset:0;background:var(--gs-paper);transition:opacity .35s ease}
 .gs-f{position:absolute;inset:0;filter:drop-shadow(0 .5vmin .9vmin rgba(0,0,0,var(--gs-sh)));will-change:transform}
-.gs-p{position:absolute;inset:0;clip-path:var(--cp);overflow:hidden;animation:gsFade .8s ease both;background:repeating-linear-gradient(45deg,rgba(255,255,255,.035) 0 2px,transparent 2px 6px),var(--gs-paper)}
+.gs-p{position:absolute;inset:0;clip-path:var(--cp);overflow:hidden;animation:gsFade .8s ease both;background:repeating-linear-gradient(45deg,rgba(255,255,255,.035) 0 2px,transparent 2px 6px),linear-gradient(color-mix(in srgb,var(--gs-paper) 45%,transparent),color-mix(in srgb,var(--gs-paper) 45%,transparent)),var(--gs-silk,none) 50% 50%/240% auto no-repeat,var(--gs-paper)}
+.gs-seal .e{fill:var(--gs-em)}.gs-seal .s{fill:none;stroke:var(--gs-em);stroke-width:1.6}.gs-seal .v{fill:none;stroke:rgba(0,0,0,.35);stroke-width:.5}
 .gs-p::after{content:"";position:absolute;inset:0;pointer-events:none;background:var(--gs-tone)}
 .gs-f.l{--cp:polygon(0 0,52% var(--gs-c),0 100%);--gs-tone:linear-gradient(90deg,rgba(0,0,0,.015),rgba(0,0,0,.06));transform-origin:0 50%;z-index:1}
 .gs-f.r{--cp:polygon(100% 0,48% var(--gs-c),100% 100%);--gs-tone:linear-gradient(270deg,rgba(0,0,0,.015),rgba(0,0,0,.06));transform-origin:100% 50%;z-index:1}
@@ -580,7 +581,7 @@ footer.foot{border-top:1px solid var(--line);padding-block:22px;color:var(--mute
 .gs-emb{filter:drop-shadow(-.7px -.7px 0 var(--gs-hi)) drop-shadow(.9px 1.1px .7px var(--gs-lo))}
 .gs-gold{clip-path:circle(0 at 50% var(--gs-c));transition:clip-path 1.7s cubic-bezier(.45,0,.3,1) .25s;filter:drop-shadow(0 .8px .6px rgba(60,30,0,.35)) drop-shadow(0 0 5px color-mix(in srgb,var(--gs-gold) 45%,transparent))}
 .gs-art{position:absolute;overflow:visible}
-.gs-art .e{fill:var(--gs-paper)}
+.gs-art .e{fill:var(--gs-paper);fill-opacity:.8}
 .gs-art .s{fill:none;stroke:var(--gs-paper);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .gs-art .v{fill:none;stroke:var(--gs-lo);stroke-width:.7;stroke-linecap:round}
 .gs-gold .e{fill:url(#gsG)}.gs-gold .s{stroke:url(#gsG)}.gs-gold .v{stroke:color-mix(in srgb,var(--gs-gold) 55%,#000)}
@@ -3525,40 +3526,75 @@ function gsLeaf(x,y,a,l,w){ const t=`transform="translate(${gsN(x)} ${gsN(y)}) r
 function gsLotus(x,y,a,s){ const pt=(L,w,r)=>`<path class="e" transform="rotate(${r})" d="M0 0C${-w} ${gsN(-L*.35)} ${gsN(-w*.55)} ${gsN(-L*.8)} 0 ${-L}C${gsN(w*.55)} ${gsN(-L*.8)} ${w} ${gsN(-L*.35)} 0 0Z"/>`;
   return `<g transform="translate(${gsN(x)} ${gsN(y)}) rotate(${gsN(a)}) scale(${s})">${pt(20,9,-58)}${pt(20,9,58)}${pt(27,10,-30)}${pt(27,10,30)}${pt(32,10,0)}<path class="v" d="M0 -4V-26M-4 -5L-12 -22M4 -5L12 -22"/><path class="e" d="M-11 2C-6 7 6 7 11 2C6 4 -6 4 -11 2Z"/></g>` }
 function gsCurl(x,y,r,a0,dir){ let d=""; const T=Math.PI*2.4; for(let i=0;i<=40;i++){ const t=T*i/40, rr=r*(1-.82*i/40), a=a0+dir*t; d+=(i?"L":"M")+gsN(x+Math.cos(a)*rr)+" "+gsN(y+Math.sin(a)*rr) } return `<path class="s" d="${d}"/>` }
-function gsVine(){ /* one side panel, viewBox 0 0 140 600: hugs the screen edge at the top and bottom, bulges toward the seal in the middle */
+/* Small motifs drawn at the origin; classes: e = filled shape, s = thick stroke, v = fine line */
+const gsG_=(x,y,a,s,b)=>`<g transform="translate(${gsN(x)} ${gsN(y)}) rotate(${gsN(a)}) scale(${s})">${b}</g>`;
+function gsJasmine(x,y,a,s){ let o=""; for(let k=0;k<5;k++) o+=`<path class="e" transform="rotate(${k*72})" d="M0 0C-4.5 -4 -5 -10 0 -14C5 -10 4.5 -4 0 0Z"/>`; return gsG_(x,y,a,s,o+`<circle class="v" r="2"/>`) }
+function gsJasBud(x,y,a,s){ return gsG_(x,y,a,s,`<path class="e" d="M0 0C-3 -5 -2.5 -11 0 -15C2.5 -11 3 -5 0 0Z"/>`) }
+function gsRose(x,y,a,s){ let d=""; const n=9; for(let k=0;k<=n;k++){ const t=k/n*Math.PI*2, m=(k-.5)/n*Math.PI*2; d+=k?`Q${gsN(Math.cos(m)*15.5)} ${gsN(Math.sin(m)*15.5)} ${gsN(Math.cos(t)*12)} ${gsN(Math.sin(t)*12)}`:`M12 0` }
+  return gsG_(x,y,a,s,`<path class="e" d="${d}Z"/><path class="v" d="M0 1C-2 -1 0 -3 2 -1C4 2 0 5 -3 3C-7 0 -3 -6 2 -5C8 -3 7 5 1 7C-5 9 -10 3 -8 -3M-6 -9C0 -12 8 -9 10 -3"/>`) }
+function gsBalloon(x,y,a,s){ return gsG_(x,y,a,s,`<ellipse class="e" cx="0" cy="-14" rx="10.5" ry="13"/><path class="e" d="M-2.4 0L2.4 0L0 -2.2Z"/><path class="v" d="M-6 -21Q-7.5 -15 -4.5 -10"/>`) }
+function gsStar(x,y,s){ return gsG_(x,y,0,s,`<path class="e" d="M0 -7L1.5 -1.5L7 0L1.5 1.5L0 7L-1.5 1.5L-7 0L-1.5 -1.5Z"/>`) }
+function gsFan(x,y,a,s){ let r=""; for(let k=0;k<7;k++){ const t=Math.PI*(1+(k+.5)/7); r+=`M0 0L${gsN(Math.cos(t)*13)} ${gsN(Math.sin(t)*13)}` } return gsG_(x,y,a+90,s,`<path class="e" d="M-15 0A15 15 0 0 1 15 0Z"/><path class="v" d="${r}M-7 0A7 7 0 0 1 7 0"/><circle class="e" cy="0" r="2.4"/>`) }
+function gsFlute(x,y,a,s){ return gsG_(x,y,a,s,`<path class="e" d="M-5.5 -38H5.5L4.6 -20C4 -15 -4 -15 -4.6 -20Z"/><path class="e" d="M-.9 -16H.9V-1H-.9Z"/><ellipse class="e" cx="0" cy="0" rx="6.5" ry="1.8"/><path class="v" d="M-4.8 -31H4.8"/><circle class="v" cx="1" cy="-26" r=".8"/><circle class="v" cx="-1.5" cy="-22" r=".6"/>`) }
+function gsDiamond(x,y,s){ return gsG_(x,y,0,s,`<path class="e" d="M0 -6L4 0L0 6L-4 0Z"/>`) }
+function gsLantern(x,y,a,s){ return gsG_(x,y,a,s,`<path class="e" d="M-3 3H3V7H-3Z"/><path class="e" d="M0 7L11 18V26L0 37L-11 26V18Z"/><path class="v" d="M-11 18H11M-11 26H11M0 7V37M-5.5 12.5L5.5 31.5M5.5 12.5L-5.5 31.5"/><path class="s" style="stroke-width:1.6" d="M-6 34C-7 42 -4 48 -6 56M0 37C1 46 -2 52 0 60M6 34C7 42 4 48 6 56"/>`) }
+function gsPahana(x,y,a,s){ return gsG_(x,y,a,s,`<path class="e" d="M0 -23C4.5 -17 4.5 -11.5 0 -8.5C-4.5 -11.5 -4.5 -17 0 -23Z"/><path class="e" d="M-15 -7H15C13 0 7 3 0 3C-7 3 -13 0 -15 -7Z"/><path class="e" d="M-2 3H2L3.2 14H-3.2Z"/><path class="e" d="M-10 14H10L12.5 18.5H-12.5Z"/><path class="v" d="M-11 -4.5H11"/>`) }
+/* one motif per card design: leaf = small repeat along the vine, flower = feature, emblem = the seal and the centre of the bottom flap */
+const GS_MOTIF={
+  lotus:{leaf:(x,y,a,i)=>gsLeaf(x,y,a,26+(i%3)*5,8), flower:(x,y,a,s)=>gsLotus(x,y,a+90,s), em:s=>gsLotus(0,10*s/.6,0,s), curls:1, wax:"#8E1E2C"},
+  sage:{leaf:(x,y,a,i)=>i%3===2?gsJasBud(x,y,a+90,1.1):gsLeaf(x,y,a,30+(i%2)*6,9), flower:(x,y,a,s)=>gsJasmine(x,y,a,s*1.25)+gsJasmine(x+12*s,y+14*s,a+20,s*.8)+gsJasBud(x-10*s,y+14*s,a+150,s), em:s=>gsJasmine(0,0,18,s*1.25), wax:"#6E8A62"},
+  blush:{leaf:(x,y,a,i)=>gsLeaf(x,y,a,24+(i%3)*4,9)+(i%4===1?gsLeaf(x,y,a+(a>-90?-28:28),16,6):""), flower:(x,y,a,s)=>gsRose(x,y,a,s*1.15)+gsRose(x+8*s,y+22*s,a+40,s*.62), em:s=>gsRose(0,0,0,s*1.05), wax:"#BF7C84"},
+  maroon:{leaf:(x,y,a,i)=>i%2?gsCurl(x+(a>-90?8:-8),y-6,9,a>-90?Math.PI:0,a>-90?1:-1):gsLeaf(x,y,a,24,8), flower:(x,y,a,s)=>gsLotus(x,y,a+90,s*.9), em:s=>gsPahana(0,3*s,0,s*.8), curls:1, wax:"#9A2236"},
+  balloons:{leaf:(x,y,a,i)=>i%2?gsStar(x+(a>-90?14:-14),y,.8):`<circle class="e" cx="${gsN(x+(a>-90?12:-12))}" cy="${y}" r="2.6"/>`, flower:(x,y,a,s)=>gsBalloon(x,y,0,s*1.3), em:s=>gsBalloon(-7*s,15*s,-14,s*.68)+gsBalloon(7*s,15*s,14,s*.68)+gsBalloon(0,11*s,0,s*.76), wax:"#A48BCB",
+    side(){ const B=[[44,150,1.5],[86,232,1.8],[40,318,1.4],[92,400,1.6],[46,476,1.3]]; let o="";
+      B.forEach(([x,y,s],i)=>{ o+=`<path class="s" style="stroke-width:1.4" d="M${x} ${y}C${x+(i%2?-18:14)} ${y+40} ${10+i*3} ${(y+600)/2} ${8+i*2} 600"/>`+gsBalloon(x,y,i%2?8:-8,s) });
+      [[70,96],[110,170],[20,250],[120,320],[74,370],[20,420],[118,470],[70,540]].forEach(([x,y],i)=>o+=i%2?gsStar(x,y,.9):`<circle class="e" cx="${x}" cy="${y}" r="2.8"/>`); return o }},
+  glam:{leaf:(x,y,a,i)=>i%2?gsStar(x+(a>-90?12:-12),y,.9):`<circle class="e" cx="${gsN(x+(a>-90?10:-10))}" cy="${y}" r="2.2"/>`, flower:(x,y,a,s)=>gsBalloon(x,y,0,s*1.25), em:s=>gsFlute(-4*s,15*s,-16,s*.85)+gsFlute(4*s,15*s,16,s*.85)+gsStar(0,-14*s,s*.8), wax:"#C9A456", emInk:"#13204A",
+    side(){ const B=[[40,140,1.6],[90,250,1.9],[44,470,1.5]]; let o="";
+      B.forEach(([x,y,s],i)=>{ o+=`<path class="s" style="stroke-width:1.3" d="M${x} ${y}C${x+(i%2?-16:12)} ${y+50} ${12+i*4} ${(y+600)/2} ${10+i*3} 600"/>`+gsBalloon(x,y,i%2?8:-8,s) });
+      o+=gsFlute(70,380,-12,1.5)+gsFlute(92,384,12,1.5);
+      [[96,90],[20,210],[118,330],[60,300],[110,520],[24,560],[78,560]].forEach(([x,y],i)=>o+=i%2?`<circle class="e" cx="${x}" cy="${y}" r="2.4"/>`:gsStar(x,y,1.1)); return o }},
+  lanterns:{leaf:(x,y,a,i)=>i%2?gsStar(x+(a>-90?12:-12),y,.8):`<circle class="e" cx="${gsN(x+(a>-90?10:-10))}" cy="${y}" r="2.2"/>`, flower:(x,y,a,s)=>gsLantern(x,y-10,0,s*.9), em:s=>gsLantern(0,-19*s,0,s*.66), wax:"#C9542B",
+    side(){ const L=[[30,150,1.15],[78,250,1.45],[38,360,1.25],[84,450,1.3],[34,520,.9]]; let o="";
+      L.forEach(([x,y,s])=>{ o+=`<path class="s" style="stroke-width:1.2" d="M${x} 0V${y}"/>`+gsLantern(x,y,0,s) });
+      [[110,110],[60,200],[120,330],[10,440],[118,560]].forEach(([x,y],i)=>o+=gsStar(x,y,i%2?.7:1)); return o }}
+};
+function gsVine(m){ /* one side panel, viewBox 0 0 140 600: hugs the screen edge at the top and bottom, bulges toward the seal in the middle */
+  if(m.side) return m.side();
   const X=y=>12+58*Math.pow(Math.sin(Math.PI*(600-y)/600),1.3)+7*Math.sin(y/42);
   let st=""; for(let y=596;y>=4;y-=8) st+=(y===596?"M":"L")+gsN(X(y))+" "+y;
   let o=`<path class="s" d="${st}"/>`;
-  for(let i=0,y=566;y>24;i++,y-=34){ const s=i%2?1:-1, x=X(y); if(y>130&&y<170||y>410&&y<450) continue; o+=gsLeaf(x,y,s>0?-38:-150,26+(i%3)*5,8) }
-  o+=gsLotus(X(150)+6,150,62,1.05)+gsLotus(X(430)+6,430,66,1.15)+gsLotus(X(292)-4,292,-60,.7);
-  o+=gsCurl(X(220)+20,214,13,Math.PI,1)+gsCurl(X(500)+22,494,12,Math.PI,1)+gsCurl(X(360)+18,354,10,Math.PI,1);
+  for(let i=0,y=566;y>24;i++,y-=34){ const s=i%2?1:-1, x=X(y); if(y>130&&y<170||y>410&&y<450) continue; o+=m.leaf(x,y,s>0?-38:-150,i) }
+  o+=m.flower(X(150)+6,150,-28,1.05)+m.flower(X(430)+6,430,-24,1.15)+m.flower(X(292)-4,292,-150,.7);
+  if(m.curls) o+=gsCurl(X(220)+20,214,13,Math.PI,1)+gsCurl(X(500)+22,494,12,Math.PI,1)+gsCurl(X(360)+18,354,10,Math.PI,1);
   [[80,1],[255,0],[520,1]].forEach(([y,s])=>{ const x=X(y)+(s?18:-14); o+=`<circle class="e" cx="${gsN(x)}" cy="${y}" r="2.6"/><circle class="e" cx="${gsN(x+5)}" cy="${y+7}" r="1.8"/>` });
   return o }
-function gsSpray(){ /* bottom flap, viewBox 0 0 400 260: two sprays from the lower corners and a lotus in the middle */
-  const half=()=>{ let o=`<path class="s" d="M4 258C40 230 70 196 92 150S130 86 160 70"/>`;
-    [[30,236,-120],[52,214,-20],[70,192,-130],[84,168,-28],[98,140,-138],[112,118,-40],[128,96,-150],[146,80,-50]].forEach(([x,y,a],i)=>o+=gsLeaf(x,y,a,24-i,7));
-    return o+gsCurl(170,64,11,Math.PI,1)+`<circle class="e" cx="60" cy="246" r="2.6"/><circle class="e" cx="68" cy="252" r="1.8"/>` };
-  return `${half()}<g transform="translate(400 0) scale(-1 1)">${half()}</g>${gsLotus(200,150,0,1.5)}<path class="s" d="M200 152C200 176 192 190 176 198M200 152C200 176 208 190 224 198"/>${gsCurl(170,204,9,0,-1)}${gsCurl(230,204,9,Math.PI,1)}${gsLeaf(196,170,150,20,6)}${gsLeaf(204,170,30,20,6)}` }
+function gsSpray(m){ /* bottom flap, viewBox 0 0 400 260: two sprays from the lower corners and the design's emblem in the middle */
+  const half=()=>{ let o=`<path class="s" style="${m.side?"stroke-width:1.4":""}" d="M4 258C40 230 70 196 92 150S130 86 152 74"/>`;
+    [[30,236,-120],[52,214,-20],[70,192,-130],[84,168,-28],[98,140,-138],[112,118,-40],[128,96,-150]].forEach(([x,y,a],i)=>o+=m.leaf(x,y,a,i));
+    return o+m.flower(158,70,-40,.9)+`<circle class="e" cx="60" cy="246" r="2.6"/><circle class="e" cx="68" cy="252" r="1.8"/>` };
+  return `${half()}<g transform="translate(400 0) scale(-1 1)">${half()}</g><g transform="translate(200 150)">${m.em(1.6)}</g>` }
 function guestSealLoader(p,type,card){
   const si=p.l==="si", cs=card?getComputedStyle(card):null, v=k=>cs&&cs.getPropertyValue(k).trim(), ev=p.e||{};
   const pr=p.d&&PREMIUM[type]?PREMIUM[type].find(x=>x.site===p.d):null;
   const bg=(pr&&pr.bg)||v("--c-bg")||"#FBF7EF", gold=(pr&&pr.gold)||v("--c-gold")||"#B39256", ink=(pr&&pr.ink)||v("--c-ink")||"#7A1F2B";
-  const dark=geLum(bg)<.4, wax=(pr&&pr.wine)||(dark?`color-mix(in srgb,${bg} 55%,#B3263A)`:(geLum(ink)<.45?ink:"#8E1E2C"));
-  const paper=dark?bg:`color-mix(in srgb,${wax} 11%,#FFFAF4)`;
-  const ini=ev.a&&ev.b?`${ev.a[0]}${ev.b[0]}`:((ev.title||ev.a||"A")[0]);
+  /* the envelope matches the card design: its silk, colours, embossed motif and seal emblem */
+  const mk=pr&&GS_MOTIF[pr.site]?pr.site:"lotus", M=GS_MOTIF[mk], th=pr&&LX_TH[pr.site];
+  const dark=geLum(bg)<.4, wax=pr&&GS_MOTIF[pr.site]?M.wax:(dark?`color-mix(in srgb,${bg} 55%,#B3263A)`:(geLum(ink)<.45?ink:"#8E1E2C"));
+  const paper=pr&&GS_MOTIF[pr.site]?bg:dark?bg:`color-mix(in srgb,${wax} 11%,#FFFAF4)`, nameC=dark?gold:(pr&&GS_MOTIF[pr.site]?ink:wax);
   const pair=ev.a&&ev.b, nm=pair?`${esc(ev.a)}<i>&amp;</i>${esc(ev.b)}`:esc(ev.title||ev.a||"");
   const what=type!=="other"&&!ev.title&&TYPES[type]?TYPES[type].name.toLowerCase():"";
   const eyebrow=si?"ඔබට ආරාධනා":(nm&&what?`You are invited to the ${what} of`:"You are invited to");
   const D=/^\d{4}-\d\d-\d\d$/.test(ev.date||"")?ev.date.split("-").reverse().join(" . "):"";
   const gw=document.querySelector(".gwrap"); gw&&gw.classList.remove("in");
-  const el=document.createElement("div"); el.className="gload gs t-"+type+(si?" si":"");
-  el.style.cssText=`--g-bg:${bg};--gs-paper:${paper};--gs-gold:${gold};--gs-ink:${dark?ink:wax};--gs-name:${dark?gold:wax};--gs-btn:${dark?gold:wax};--gs-btnink:${dark?bg:"#FFF8F0"};--gs-hi:${dark?"rgba(255,255,255,.16)":"rgba(255,255,255,.9)"};--gs-lo:${dark?"rgba(0,0,0,.5)":"rgba(80,30,30,.2)"};--gs-sh:${dark?.45:.16}`;
-  const vine=gsVine(), spray=gsSpray();
+  const el=document.createElement("div"); el.className="gload gs gs-"+mk+" t-"+type+(si?" si":"");
+  el.style.cssText=`--g-bg:${bg};--gs-paper:${paper};--gs-gold:${gold};--gs-ink:${dark?ink:nameC};--gs-name:${nameC};--gs-btn:${dark?gold:wax};--gs-em:${M.emInk||"url(#gsG)"};${th?`--gs-silk:url("${th.bg}");`:""}--gs-btnink:${dark?bg:"#FFF8F0"};--gs-hi:${dark?"rgba(255,255,255,.16)":"rgba(255,255,255,.9)"};--gs-lo:${dark?"rgba(0,0,0,.55)":"rgba(80,30,30,.26)"};--gs-sh:${dark?.45:.16}`;
+  const vine=gsVine(M), spray=gsSpray(M);
   const art=k=>k==="l"?`<svg class="gs-art vl" viewBox="0 0 140 600" aria-hidden="true">${vine}</svg>`:k==="r"?`<svg class="gs-art vr" viewBox="0 0 140 600" aria-hidden="true">${vine}</svg>`:k==="b"?`<svg class="gs-art bt" viewBox="0 0 400 260" preserveAspectRatio="xMidYMid meet" aria-hidden="true">${spray}</svg>`:"";
   const flap=(k,extra="")=>`<div class="gs-f ${k}"><div class="gs-p">${art(k)?`<div class="gs-emb">${art(k)}</div><div class="gs-gold">${art(k)}</div>`:""}${extra}</div></div>`;
   const orn=`<svg viewBox="0 0 150 14" aria-hidden="true"><path d="M2 7H58M92 7H148" stroke="currentColor" stroke-width=".8"/><circle cx="56" cy="7" r="1.6" fill="currentColor"/><circle cx="94" cy="7" r="1.6" fill="currentColor"/><path d="M75 1C79 4 79 9 75 13C71 9 71 4 75 1ZM75 13C70 12 66 9 64 6C69 7 72 9 75 13ZM75 13C80 12 84 9 86 6C81 7 78 9 75 13Z" fill="currentColor"/></svg>`;
   const txt=`<div class="gs-txt">${p.g?`<span class="dear">${si?"":"Dear "}${esc(p.g)}</span>`:""}<small>${eyebrow}</small>${nm?`<b>${nm}</b>`:""}${D?`<span class="d">${esc(D)}</span>`:""}${orn}</div>`;
-  const wx=`<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M30 3C36 3 38 7 43 8S53 11 54 17 57 25 57 30 54 38 53 43 48 52 43 53 36 57 30 57 23 54 18 53 9 49 7 43 3 36 3 30 6 22 7 17 13 9 18 7 24 3 30 3Z" fill="url(#gsWax)"/><circle cx="30" cy="30" r="19.5" fill="none" stroke="#000" stroke-width="1.3" opacity=".28"/><circle cx="30" cy="30" r="20.3" fill="none" stroke="#fff" stroke-width=".5" opacity=".3"/>${Array.from({length:16},(_,i)=>{const a=i*Math.PI/8;return `<circle cx="${gsN(30+Math.cos(a)*23.5)}" cy="${gsN(30+Math.sin(a)*23.5)}" r=".9" fill="url(#gsG)"/>`}).join("")}<path d="M22 41C26 44 34 44 38 41" fill="none" stroke="url(#gsG)" stroke-width=".8"/><text x="30" y="35.5" text-anchor="middle" font-family="Cormorant Garamond,serif" font-style="italic" font-weight="700" font-size="${ini.length>1?16:20}" fill="url(#gsG)">${esc(ini)}</text></svg>`;
+  const wx=`<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M30 3C36 3 38 7 43 8S53 11 54 17 57 25 57 30 54 38 53 43 48 52 43 53 36 57 30 57 23 54 18 53 9 49 7 43 3 36 3 30 6 22 7 17 13 9 18 7 24 3 30 3Z" fill="url(#gsWax)"/><circle cx="30" cy="30" r="19.5" fill="none" stroke="#000" stroke-width="1.3" opacity=".28"/><circle cx="30" cy="30" r="20.3" fill="none" stroke="#fff" stroke-width=".5" opacity=".3"/>${Array.from({length:16},(_,i)=>{const a=i*Math.PI/8;return `<circle cx="${gsN(30+Math.cos(a)*23.5)}" cy="${gsN(30+Math.sin(a)*23.5)}" r=".9" fill="url(#gsG)"/>`}).join("")}<g class="gs-em" transform="translate(30 30)">${M.em(.92)}</g></svg>`;
   el.innerHTML=`<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="gsG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:color-mix(in srgb,${gold} 45%,#fff)"/><stop offset=".35" style="stop-color:${gold}"/><stop offset=".6" style="stop-color:color-mix(in srgb,${gold} 70%,#000)"/><stop offset=".8" style="stop-color:${gold}"/><stop offset="1" style="stop-color:color-mix(in srgb,${gold} 60%,#fff)"/></linearGradient><radialGradient id="gsWax" cx=".38" cy=".32" r=".75"><stop offset="0" style="stop-color:color-mix(in srgb,${wax} 70%,#fff)"/><stop offset=".55" style="stop-color:${wax}"/><stop offset="1" style="stop-color:color-mix(in srgb,${wax} 55%,#000)"/></radialGradient></defs></svg>
   <div class="gs-under"></div>${flap("l")}${flap("r")}${flap("b")}${flap("t",txt)}
   <button type="button" class="gs-seal" aria-label="${si?"මුද්‍රාව තට්ටු කර ආරාධනාව විවෘත කරන්න":"Tap the seal to open the invitation"}"><span class="gs-glow"></span><span class="h a">${wx}</span><span class="h b">${wx}</span></button>

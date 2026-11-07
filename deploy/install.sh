@@ -223,12 +223,14 @@ echo "Running on 127.0.0.1:$PORT."
 # ---------------------------------------------------------------- 6. nginx
 say "6/7  Nginx"
 SERVER_NAMES="_"
+LISTEN_V6=""
+[ -e /proc/net/if_inet6 ] && LISTEN_V6="listen [::]:80 default_server;"
 [ -n "$DOMAIN" ] && SERVER_NAMES="$DOMAIN www.$DOMAIN"
 cat > "$NGINX_SITE" <<EOF
 # Aradhanawa (written by deploy/install.sh; it is rewritten on every run)
 server {
     listen 80 default_server;
-    listen [::]:80 default_server;
+    $LISTEN_V6
     server_name $SERVER_NAMES;
 
     client_max_body_size 2m;

@@ -2,9 +2,12 @@
   "name": "aradhanawa",
   "private": true,
   "type": "module",
-  "description": "Static site + Vercel serverless functions for Genie Business payments (api/pay/*).",
-  "engines": { "node": ">=20" },
+  "description": "Static site + payment functions (api/pay/*). Runs on Vercel, or on any Linux server with deploy/server.js (see deploy/README.md).",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
+    "start": "node deploy/server.js",
     "test": "node --experimental-test-module-mocks --test test/*.test.js"
   },
   "dependencies": {

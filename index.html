@@ -1430,6 +1430,17 @@ nav.top a{font-weight:600}
 .lp-tile .strip b{font-weight:600;font-size:17px;letter-spacing:-.01em}
 .lp-tile .strip span{font-size:var(--s-small);color:var(--l-muted);white-space:nowrap}
 .lp-tile .strip span.free{color:var(--l-deep);font-weight:600}
+.ct-box{display:grid;place-items:center;align-content:center;gap:8px;text-align:center;border:2px dashed rgba(166,122,31,.55);border-radius:14px;background:rgba(255,255,255,.35);color:#5A4630;padding:18px 14px;width:100%;box-sizing:border-box}
+.lp-ctile .pv{background:transparent!important}
+.lp-ctile .ct-box{aspect-ratio:3/4;max-width:260px}
+.ct-box .ct-plus{width:52px;height:52px;border-radius:50%;border:1.5px solid rgba(166,122,31,.7);display:grid;place-items:center;font-size:30px;line-height:1;color:#A67A1F}
+.ct-box b{font-size:17px}
+.ct-box small{font-size:12.5px;color:#7A6550;line-height:1.4;max-width:190px}
+.tpl-custom .ct-box{aspect-ratio:auto;height:100%;min-height:120px;padding:12px 8px}
+.tpl-custom .ct-box b{font-size:14px}
+.tpl-custom .nm{flex-wrap:wrap;justify-content:flex-start}
+.tpl-custom .pill{background:rgba(166,122,31,.12);color:#7A5A16}
+@media (max-width:700px){.lp-ctile .ct-box small{display:none}}
 .lp-des .more{margin-top:40px;display:flex;justify-content:center}
 @media (max-width:1000px){.lp-tiles{grid-template-columns:repeat(3,minmax(0,1fr))}.lp-des .head{grid-template-columns:minmax(0,1fr)}.lp-des .flt{justify-content:flex-start}}
 @media (max-width:700px){.lp-tiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.lp-tile .pv{padding:10px}.lp-tile .strip{display:grid;padding:10px 12px}.lp-tile .strip b{font-size:15px}.lp-des .head{grid-template-columns:1fr}.lp-des .flt{justify-content:flex-start}}
@@ -1901,7 +1912,10 @@ const planById = id => livePlans().find(p=>p.id===id)||null;
  * an empty or missing price means the main Custom design plan's price. The payment API reads the same map. */
 const customBase = () => { const p=mainPlan("custom"); return p?p.price:CONFIG.PRICE_CUSTOM };
 const setPrice = name => { const v=name&&CONFIG.DESIGN_PRICES&&CONFIG.DESIGN_PRICES[name]; return v&&/\d/.test(v)?String(v):"" };   // only a price set for this design
-const designPrice = name => { const v=name&&CONFIG.DESIGN_PRICES&&CONFIG.DESIGN_PRICES[name]; return v&&/\d/.test(v)?String(v):customBase() };
+const designPrice = name => { const v=name&&CONFIG.DESIGN_PRICES&&CONFIG.DESIGN_PRICES[name]; return v&&/\d/.test(v)?String(v):name===CUSTOM_CARD?CUSTOM_CARD_PRICE:customBase() };
+/* "Customize card": a card our designer makes from scratch (Rs. 15,000 unless Admin → Templates sets another price).
+ * Every other paid design is a ready-made web template: paying unlocks it at once, with no studio work. */
+const CUSTOM_CARD="Customize card", CUSTOM_CARD_PRICE="Rs. 15,000";
 
 /* ================= SVG ART ================= */
 const svg = (vb, inner) => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${inner}</svg>`;
@@ -2689,7 +2703,7 @@ function lpDetail(){
       <div class="dt-card"><div class="dt-cardin">${cardHTML(k,ev,"en","Nimal Uncle",t?{...t,_noribbon:1}:null)}</div>
         <div class="dt-nav"><a href="#design/${k}/${prev}" aria-label="Previous design">←</a><span>${pos+1} / ${all.length}</span><a href="#design/${k}/${next}" aria-label="Next design">→</a></div></div>
       <div class="dt-info">${lpOrn()}<span class="lp-eb">${T.name} · ${esc(T.si)}</span><h1>${esc(name)}</h1>
-        <p class="dt-price"><b>Free</b> for every ${T.name.toLowerCase()}${t?` · customised with your photos for <b>${esc(designPrice(t&&t.n))}</b>`:""}</p>
+        <p class="dt-price">${t?`<b>Free</b> for ${CONFIG.FREE_GUESTS} guests · every guest for <b>${esc(designPrice(t.n))}</b>`:`<b>Free</b> for every ${T.name.toLowerCase()}`}</p>
         <ul class="dt-list">${(()=>{const W=k==="wedding",n=T.name.toLowerCase(),op=({wedding:"Magul Pahana",birthday:"birthday cake",homecoming:"door",dana:"lotus",party:"gift box"})[k]||"envelope";return [
           ["Personalised Guest Invitations",`Each guest's name will be individually included on the invitation (e.g., <i>&quot;Dear Nimal Uncle&quot;</i>).`],
           [W?"Traditional Opening Screen":"Opening Screen",`A beautifully designed ${op} opening screen displayed when guests access the invitation link.`],
@@ -2868,6 +2882,7 @@ function render(){
         <div class="tpls" data-ui>
           <button class="tpl" data-tpl="0" ${hasTh(S.type)?"hidden":""} aria-pressed="${!tplOf(S.type)}"><div class="sw t-${S.type}" style="background:var(--c-bg)">${T.art()}</div><div class="nm">${T.tpl}<span class="pill free">Free</span></div></button>
           ${PREMIUM[S.type].map((t,i)=>{ const own=ownsDesign(S.type,t); return `<button class="tpl ${own?"owned":""}" data-tpl="${i+1}" ${tplOff().includes(S.type+":"+(i+1))&&!own?"hidden":""} aria-pressed="${tplOf(S.type)===i+1}"><div class="sw t-${S.type}" style="${tplVars(t)}background:${t.bg}">${t.img?pic(t.img,"160px",t.n,t.pos):premArt(S.type,t,ev)}</div><div class="nm">${esc(t.n)}${own?`<span class="pill free">Yours</span>`:`<span class="pill free">${esc(setPrice(t.n)||"Free")}</span>`}</div></button>` }).join("")}
+          <button class="tpl tpl-custom" data-custom="${S.type}"><div class="sw ct-box"><span class="ct-plus" aria-hidden="true">+</span><b>Your own design</b></div><div class="nm">Customize card<span class="pill">${esc(designPrice(CUSTOM_CARD))}</span></div></button>
         </div>
       </section>
 
@@ -2919,7 +2934,7 @@ function render(){
 
     <aside class="stage" aria-label="Live preview">
       <div class="table" id="cardSlot" data-ui></div>
-      <p class="pnote" id="premOwn" hidden>Your purchased design. Guest links use this design.</p><div id="premBar" hidden><p class="pnote">Guest links use this design for free. Want it customised with your photos and colours?</p><div class="row" style="margin-top:8px;justify-content:center"><button class="btn primary" id="buyPrem">Customise this design · <span id="premPrice"></span></button><button class="btn" id="reqPrem">Details</button></div></div>
+      <p class="pnote" id="premOwn" hidden>Your purchased design. Guest links use this design.</p><div id="premBar" hidden><p class="pnote">Free for ${CONFIG.FREE_GUESTS} guests. Buy this design to send it to every guest.</p><div class="row" style="margin-top:8px;justify-content:center"><button class="btn primary" id="buyPrem">Buy this design · <span id="premPrice"></span></button><button class="btn" id="reqPrem">Details</button></div></div>
       <div class="opk"><span>Opening screen</span><div class="seg" role="group" aria-label="Opening screen when a guest opens the link">${[["theme",({wedding:"Magul pahana",birthday:"Birthday cake",homecoming:"Door",dana:"Lotus",party:"Gift box"})[S.type]||"Classic"],["env","Envelope"],["seal","Wax seal"]].map(([k,n])=>`<button type="button" data-opener="${k}" aria-pressed="${S.opener===k}">${n}</button>`).join("")}</div></div>
       <div class="row">
         <button class="btn" id="preview">${I.eye} Preview as guest</button>
@@ -3007,7 +3022,7 @@ function ownsDesign(type,t){
   const u=me(); if(!u||!t) return false;
   if(u.role==="admin") return true;
   const n=String(t.n||"").trim().toLowerCase(), em=String(u.email||"").toLowerCase();
-  return DB.orders().some(o=>o.kind==="custom" && o.status==="Done" && o.type===type
+  return DB.orders().some(o=>(o.kind==="custom"||o.kind==="template") && o.status==="Done" && o.type===type
     && String(o.design||"").trim().toLowerCase()===n
     && ((FB_ON()&&o.uid===u.id) || (!!em&&String(o.email||"").toLowerCase()===em)));
 }
@@ -3016,7 +3031,7 @@ function hasPlus(type){
   const u=me(); if(!u) return false;
   if(u.role==="admin"||u.plan==="Plus"||u.plan==="Staff") return true;
   const em=String(u.email||"").toLowerCase();
-  return DB.orders().some(o=>((o.kind==="plus" && o.status==="Done") || (o.kind==="custom" && (o.paid===true || o.status==="Done"))) && o.type===type
+  return DB.orders().some(o=>(((o.kind==="plus"||o.kind==="template") && o.status==="Done") || (o.kind==="custom" && (o.paid===true || o.status==="Done"))) && o.type===type
     && ((FB_ON()&&o.uid===u.id) || (!!em&&String(o.email||"").toLowerCase()===em)));
 }
 const curPrem = () => { const i=tplOf(S.type); return i ? PREMIUM[S.type][i-1] || PREMIUM[S.type][0] || null : null };
@@ -3068,7 +3083,7 @@ function bind(){
   $$("[data-glink]").forEach(b=>b.onclick=async()=>copy(await copyInvite(S.guests[+b.dataset.glink].name)));
   $$("[data-gprev]").forEach(b=>b.onclick=()=>guestPreview(S.guests[+b.dataset.gprev].name));
   $$("[data-tpl]").forEach(b=>b.onclick=()=>{ S.tpl[S.type]=+b.dataset.tpl; save(); $$("[data-tpl]").forEach(x=>x.setAttribute("aria-pressed",x===b)); refreshLive(); if(matchMedia("(max-width:920px)").matches){ const d=document.getElementById("h-det"), p=d&&d.closest(".panel"); if(p){ const hd=document.querySelector(".lp-nav,header.top"), off=(hd?hd.getBoundingClientRect().bottom:0)+8; scrollTo({top:p.getBoundingClientRect().top+scrollY-off,behavior:"smooth"}) } } });
-  $("#reqPrem").onclick=()=>{ const p=curPrem(); p&&customReq(p.n) };
+  $("#reqPrem").onclick=()=>{ const p=curPrem(); p&&templateReq(p.n) };
   $("#buyPrem").onclick=e=>{ const p=curPrem(); p&&payNow("custom",p.n,e.currentTarget) };
   $$("[data-upgrade]").forEach(b=>b.onclick=()=>b.dataset.upgrade==="plus"?upsell(true):customReq(""));
   $$("[data-df]").forEach(b=>b.onclick=()=>{ $$("[data-df]").forEach(x=>x.setAttribute("aria-pressed",x===b)); $("#drow").innerHTML=designItems(b.dataset.df); $("#drow").classList.toggle("all",b.dataset.df!=="all"); const dm=$("#dmore"); if(dm) dm.hidden=b.dataset.df!=="all" });
@@ -3091,6 +3106,11 @@ function shrink(file){ return new Promise((res,rej)=>{
   const r=new FileReader(); r.onerror=rej; r.onload=()=>{ const im=new Image(); im.onerror=rej; im.onload=()=>{
     const k=Math.min(1,800/Math.max(im.width,im.height)), c=document.createElement("canvas"); c.width=Math.round(im.width*k); c.height=Math.round(im.height*k);
     c.getContext("2d").drawImage(im,0,0,c.width,c.height); res(c.toDataURL("image/jpeg",.72)) }; im.src=r.result }; r.readAsDataURL(file) }) }
+/* A see-through "Customize card" tile at the end of each function's designs: a card made from scratch by our designer. */
+function customTile(k){
+  const T=TYPES[k];
+  return `<button class="lp-tile lp-ctile" data-custom="${k}" aria-label="Customize card for a ${esc(T.name.toLowerCase())}, ${esc(designPrice(CUSTOM_CARD))}"><div class="pv"><div class="ct-box"><span class="ct-plus" aria-hidden="true">+</span><b>Customize card</b><small>Your own design, made by our team with your photos, colours and wording</small></div></div><div class="strip"><b>Customize card</b><span class="free">${esc(T.name)} · ${esc(designPrice(CUSTOM_CARD))}</span></div></button>`;
+}
 function designItems(filter){
   const out=[];
   for(const [k,T] of Object.entries(TYPES)){
@@ -3098,6 +3118,7 @@ function designItems(filter){
     const ev=T.sample;
     if(!hasTh(k)) out.push(`<button class="lp-tile" data-pick="${k}:0"><div class="pv" data-ui>${cardHTML(k,ev,"en","",null)}</div><div class="strip"><b>${T.tpl}</b><span class="free">${T.name} · Free</span></div></button>`);
     PREMIUM[k].forEach((t,i)=>{ if(!t.img&&!t.layout) return; if(tplOff().includes(k+":"+(i+1))) return; out.push(`<button class="lp-tile" data-pick="${k}:${i+1}"><div class="pv" data-ui>${cardHTML(k,ev,"en","",{...t,_noribbon:1})}</div><div class="strip"><b>${esc(t.n)}</b><span class="free">${T.name} · ${esc(setPrice(t.n)||"Free")}</span></div></button>`) });
+    if(filter!=="feat") out.push(customTile(k));
   }
   if(filter==="feat"){ const pickN=(k,n)=>out.filter(x=>x.includes(`data-pick="${k}:`)).slice(0,n); return [...pickN("wedding",4),...pickN("birthday",1),...pickN("homecoming",1),...pickN("dana",1),...pickN("party",1)].join("") }
   return out.join("");
@@ -3130,7 +3151,7 @@ function upsell(direct,plan){
     const tp=designPrice(prem.n), ttxt=`Hi Aradhanawa! I'd like the "${prem.n}" design (${tp}) for my ${TYPES[S.type].name.toLowerCase()} invitation (${cur().date||""}).`;
     return modal(`<span class="eyebrow">Free limit reached</span>
     <h3>You've shared with ${CONFIG.FREE_GUESTS} guests</h3>
-    <p>The free plan covers ${CONFIG.FREE_GUESTS} personal links. Get the ${esc(prem.n)} design for ${esc(tp)} to send to everyone, see who's coming, and have our team customise it with your photos.</p>
+    <p>The free plan covers ${CONFIG.FREE_GUESTS} personal links. Buy the ${esc(prem.n)} design for ${esc(tp)} to send it to everyone and see who's coming. It unlocks as soon as you pay.</p>
     <div class="row" style="justify-content:flex-end;margin-top:6px"><button class="btn" data-x>Not now</button><button class="btn primary" data-pay="custom|${esc(prem.n)}|${esc(mc.id)}">Pay ${esc(tp)}</button></div>
     <p class="note">Secure payment through Dialog Genie. Prefer to talk first? <a target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,ttxt)}">Ask us on WhatsApp</a>. You can still copy the main invite link and paste it into a WhatsApp group.</p>`);
   }
@@ -3142,12 +3163,21 @@ function upsell(direct,plan){
     <div class="row" style="justify-content:flex-end;margin-top:6px"><button class="btn" data-x>Not now</button>${p?`<button class="btn primary" data-pay="plus||${esc(p.id)}">Pay ${esc(price)}</button>`:""}</div>
     <p class="note">Secure payment through Dialog Genie. Prefer to talk first? <a target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,txt)}">Ask us on WhatsApp</a>. You can still copy the main invite link and paste it into a WhatsApp group.</p>`);
 }
+/* Buying a ready-made web design: pay, and it unlocks at once (every guest, no studio work, no WhatsApp step). */
+function templateReq(name){
+  const p=mainPlan("custom"), price=designPrice(name);
+  modal(`<span class="eyebrow">${esc(TYPES[S.type].name)} design · ${esc(price)}</span><h3>${esc(name)}</h3>
+    <p>Free for ${CONFIG.FREE_GUESTS} guests. Buy it to send your invitation to every guest and see who's coming. The design unlocks as soon as you pay, so you can carry on right away.</p>
+    <div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button>${p?`<button class="btn primary" data-pay="custom|${esc(name)}|${esc(p.id)}">Pay ${esc(price)}</button>`:""}</div>
+    <p class="note">Secure payment through Dialog Genie.</p>`);
+}
 function customReq(name,plan){
+  if(name&&name!==CUSTOM_CARD&&!plan) return templateReq(name);
   const ev=cur(), p=plan||mainPlan("custom"), price=name&&(!plan||plan===mainPlan("custom"))?designPrice(name):p?p.price:CONFIG.PRICE_CUSTOM;
-  const txt=`Hi Aradhanawa! I'd like a custom ${TYPES[S.type].name.toLowerCase()} invitation${name?` using the "${name}" design`:""}.\nDate: ${ev.date||"-"}\nNames: ${[ev.a,ev.b,ev.title].filter(Boolean).join(", ")}\nI'll send my photos and colours here.`;
+  const txt=`Hi Aradhanawa! I'd like a custom ${TYPES[S.type].name.toLowerCase()} invitation${name&&name!==CUSTOM_CARD?` using the "${name}" design`:""}.\nDate: ${ev.date||"-"}\nNames: ${[ev.a,ev.b,ev.title].filter(Boolean).join(", ")}\nI'll send my photos and colours here.`;
   modal(`<span class="eyebrow">${esc(p&&p.id!=="custom"?p.name:"Custom design")} · ${esc(price)}</span>
     <h3>${name?esc(name):"Made just for you"}</h3>
-    <p>Our designer customises this template with your photos, colours and wording, in Sinhala or English. You get 2 rounds of changes and the finished card within 48 hours.</p>
+    <p>Our designer makes a card just for you with your photos, colours and wording, in Sinhala or English. You get 2 rounds of changes and the finished card within 48 hours.</p>
     <div class="bubble" style="font-size:13px">${esc(txt)}</div>
     <div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><a class="btn wa" data-order="custom|${esc(name||"")}" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,txt)}">${I.wa} Ask first</a>${p?`<button class="btn primary" data-pay="custom|${esc(name||"")}|${esc(p.id)}">Pay ${esc(price)}</button>`:""}</div>
     <p class="note">Pay securely through Dialog Genie, then send your photos on WhatsApp.</p>`);
@@ -3840,7 +3870,9 @@ const PAY_BACK = (()=>{ try{ const q=new URLSearchParams(location.search); const
   history.replaceState(null,"",location.pathname+location.hash); return {pay:p,kind:q.get("kind")||"",order:q.get("order")||""} }catch(e){ return null } })();
 function payBackModal(){
   if(!PAY_BACK) return; const {pay,kind,order}=PAY_BACK, ref=order.slice(-6).toUpperCase();
-  if(pay==="ok"&&kind==="custom"){
+  if(pay==="ok"&&kind==="template"){
+    modal(`<span class="eyebrow">Payment received</span><h3>Your design is ready</h3><p>Order <b>${esc(ref)}</b> is paid. The design is unlocked and you can send your invitation to every guest.</p><div class="row" style="justify-content:flex-end"><button class="btn" data-x>Done</button><a class="btn primary" href="#create" data-x>Continue my invitation</a></div>`);
+  } else if(pay==="ok"&&kind==="custom"){
     const txt=`Hi Aradhanawa! I paid for a custom design (order ${ref}). Here are my photos, colours and wording:`;
     modal(`<span class="eyebrow">Payment received</span><h3>Thank you! Now send us your photos</h3><p>Your order <b>${esc(ref)}</b> is paid. Send your photos, colours and wording on WhatsApp and our designer will start. The finished card is ready within 48 hours.</p>
       <div class="row" style="justify-content:flex-end"><button class="btn" data-x>Later</button><a class="btn wa" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,txt)}">${I.wa} Send photos</a></div>`);
@@ -4021,7 +4053,7 @@ function renderAdmin(tab,arg){
   const week=Date.now()-7*864e5;
   const orderHead=edit=>`<thead><tr><th>Customer</th><th>Design</th><th>Amount</th><th>Status</th><th>Date</th>${edit?"<th></th>":""}</tr></thead>`;
   const orderRows=(list,edit)=>list.map(o=>`<tr><td><b>${esc(o.name)}</b>${o.sample?` <span class="badge">Sample</span>`:""}<small>${esc(o.email||prettyPhone(o.phone)||"")}</small></td>
-    <td>${esc(o.design)}<small>${esc((TYPES[o.type]||TYPES.other).name)} · ${esc(o.planName&&o.planName!==o.design?o.planName:o.kind==="plus"?"Plan":o.kind==="service"?"Service":"Custom")}</small></td><td>${esc(o.amount)}${paidTag(o)}</td>
+    <td>${esc(o.design)}<small>${esc((TYPES[o.type]||TYPES.other).name)} · ${esc(o.planName&&o.planName!==o.design?o.planName:o.kind==="plus"?"Plan":o.kind==="service"?"Service":o.kind==="template"?"Template":"Custom")}</small></td><td>${esc(o.amount)}${paidTag(o)}</td>
     <td>${edit?`<select data-ostatus="${o.id}" aria-label="Order status">${["New","Awaiting payment","In progress","Done","Payment failed","Cancelled"].map(s=>`<option ${s===o.status?"selected":""}>${s}</option>`).join("")}</select>`:stBadge(o.status)}</td>
     <td>${fdt(o.created)}</td>${edit?`<td><div class="acts">${o.phone?`<a class="btn sm" target="_blank" rel="noopener" href="${waLink(o.phone,`Hi ${o.name}, this is Aradhanawa about your "${o.design}" order.`)}">${I.wa} Chat</a>`:""}</div></td>`:""}</tr>`).join("")
     || `<tr><td colspan="6" class="empty">No orders yet.</td></tr>`;
@@ -4086,6 +4118,7 @@ function renderAdmin(tab,arg){
   }
   if(tab==="templates"){
     body=`<div class="mh"><div><span class="eyebrow">Admin</span><h1>Templates</h1><p>Turn designs on or off, and set what customising each design costs. Leave a price empty to use the Custom design price (${esc(customBase())}). A design used for more than one function shares one price.</p></div></div>
+    <section class="tsec"><h2>Customize card <small>made from scratch, every function</small></h2><div class="trow"><span><label class="tprice"><small>Customize card price</small><input type="text" inputmode="numeric" data-dprice="${CUSTOM_CARD}" value="${esc((CONFIG.DESIGN_PRICES||{})[CUSTOM_CARD]||"")}" placeholder="${esc(CUSTOM_CARD_PRICE)}" aria-label="Customize card price"></label></span></div></section>
     ${Object.entries(TYPES).map(([k,T])=>`<section class="tsec"><h2>${T.name} <small>${1+PREMIUM[k].length} designs</small></h2><div class="tgrid">
       <div class="titem">${cardHTML(k,T.sample,"en","",null)}<div class="trow"><span><b>${esc(T.tpl)}</b><small>Free</small></span><input type="checkbox" class="sw-t" checked disabled aria-label="Free design is always on"></div></div>
       ${PREMIUM[k].map((t,i)=>{ const key=k+":"+(i+1), on=!off.includes(key); return `<div class="titem" data-off="${on?0:1}">${cardHTML(k,T.sample,"en","",{...t,_noribbon:1})}<div class="trow"><span><b>${esc(t.n)}</b><label class="tprice"><small>Custom price</small><input type="text" inputmode="numeric" data-dprice="${esc(t.n)}" value="${esc((CONFIG.DESIGN_PRICES||{})[t.n]||"")}" placeholder="${esc(customBase())}" aria-label="Custom design price for ${esc(t.n)}"></label></span><input type="checkbox" class="sw-t" data-tog="${key}" ${on?"checked":""} aria-label="Show ${esc(t.n)}"></div></div>` }).join("")}
@@ -4137,7 +4170,7 @@ function renderAdmin(tab,arg){
       if(raw&&!(+d>0)){ toast("Enter a price like Rs. 5,900, or leave it empty"); return }
       const v=raw?"Rs. "+(+d).toLocaleString("en-US",{maximumFractionDigits:2}):""; A.querySelectorAll("[data-dprice]").forEach(x=>{ if(x.dataset.dprice===n) x.value=v });
       const dp={...(CONFIG.DESIGN_PRICES||{}),[n]:v}; CONFIG.DESIGN_PRICES=dp; store.set("config",{...store.get("config",{}),DESIGN_PRICES:dp});
-      const msg=v?`${n}: ${v}`:`${n}: back to ${customBase()}`;
+      const msg=v?`${n}: ${v}`:`${n}: back to ${designPrice(n)}`;
       if(fb){ if(fbNeed()) FBX.saveSettings({DESIGN_PRICES:{[n]:v}}).then(()=>toast(msg),fbFail) } else toast(msg); return }
     if(t.dataset.tog){ let o=tplOff(); o=t.checked?o.filter(x=>x!==t.dataset.tog):[...o,t.dataset.tog]; store.set("tplOff",o); if(fb&&fbNeed()) FBX.setTplOff(o).catch(fbFail); t.closest(".titem").dataset.off=t.checked?0:1; toast(t.checked?"Design visible":"Design hidden") }
     if(t.dataset.pon){ const ps=plans().map((p,i)=>i===+t.dataset.pon?{...p,on:t.checked}:p); savePlans(ps,t.checked?"Plan shown on the site":"Plan hidden from the site") }
@@ -4240,6 +4273,7 @@ document.addEventListener("click",e=>{
   if(e.target.closest("#nvSheet a")||nd){ const sh=document.getElementById("nvSheet"), nm=document.querySelector(".nv-menu"); if(sh) sh.hidden=true; if(nm) nm.setAttribute("aria-expanded","false"); const nv=document.querySelector(".lp-nav"); if(nv) nv.classList.remove("open") }
   const o=e.target.closest("[data-order]"); if(o){ const [k,d]=o.dataset.order.split("|"); logOrder(k,d) }
   const pb=e.target.closest("[data-pay]"); if(pb){ const [k,d,pl]=pb.dataset.pay.split("|"); payNow(k,d,pb,pl) }
+  const ct=e.target.closest("[data-custom]"); if(ct&&TYPES[ct.dataset.custom]){ S.type=ct.dataset.custom; save(); customReq(CUSTOM_CARD) }
   const bp=e.target.closest("[data-buy]"); if(bp) buyPlan(bp.dataset.buy);
   if(e.target.closest("[data-logout]")){ e.preventDefault();
     if(FB_ON()){ if(fbNeed()) FBX.signOut().then(()=>{ toast("Logged out"); if(/^#(admin|account|create)/.test(location.hash)) location.hash="" },fbFail); return }

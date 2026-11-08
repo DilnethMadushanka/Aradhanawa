@@ -96,7 +96,7 @@ test("return before paying stays pending; after CONFIRMED marks Plus Done", asyn
   assert.deepEqual({ ...store.get("plus/u1_wedding"), updated: 0 }, { uid: "u1", type: "wedding", orderId: id, updated: 0 });
 });
 
-test("custom design: webhook settles to In progress; amount mismatch never pays", async () => {
+test("web template: webhook settles to Done at once; amount mismatch never pays", async () => {
   const { default: create } = await import("../api/pay/create.js");
   const { default: hook } = await import("../api/pay/webhook.js");
   let res = fakeRes();
@@ -110,9 +110,26 @@ test("custom design: webhook settles to In progress; amount mismatch never pays"
   res = fakeRes(); await hook({ method: "POST", headers: {}, body: { transactionId: tx, localId: id } }, res);
   assert.equal(res.body.result, "paid");
   const o = store.get("orders/" + id);
-  assert.equal(o.status, "In progress"); assert.equal(o.design, "Confetti Pop");
+  assert.equal(o.kind, "template"); assert.equal(o.status, "Done"); assert.equal(o.design, "Confetti Pop");
   // a bought template unlocks every guest for that function, like Plus
   assert.deepEqual({ ...store.get("plus/u1_birthday"), updated: 0 }, { uid: "u1", type: "birthday", orderId: id, updated: 0 });
+});
+
+test("Customize card: Rs. 15,000 by default, a custom order the studio finishes", async () => {
+  const { default: create } = await import("../api/pay/create.js");
+  let res = fakeRes();
+  await create({ method: "POST", headers: { authorization: "Bearer good" }, body: { kind: "custom", type: "wedding", design: "Customize card" } }, res);
+  assert.equal(res.code, 200, JSON.stringify(res.body));
+  assert.equal(lastCreate.amount, 1500000);
+  const id = res.body.orderId, tx = store.get("orders/" + id).payRef;
+  assert.equal(store.get("orders/" + id).kind, "custom");
+  txs.get(tx).state = "CONFIRMED"; txs.get(tx).amount = 1500000;
+  assert.equal((await pay.settle(id)).result, "paid");
+  assert.equal(store.get("orders/" + id).status, "In progress");
+  // a plain "Custom design" (no design name) stays a custom order too
+  res = fakeRes();
+  await create({ method: "POST", headers: { authorization: "Bearer good" }, body: { kind: "custom", type: "party" } }, res);
+  assert.equal(store.get("orders/" + res.body.orderId).kind, "custom");
 });
 
 test("failed payment is recorded; bad ids are ignored", async () => {

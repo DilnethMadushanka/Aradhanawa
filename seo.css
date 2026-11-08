@@ -25,10 +25,11 @@ p{margin:0}
 .wm-ic{width:32px;height:32px;color:var(--deep)}
 .wm b{font-size:22px;font-weight:600;letter-spacing:-.03em}
 .wm span{font-size:15px;color:var(--muted)}
+.wm-logo{display:block;height:42px;width:auto}
 .nav nav{margin-left:auto;display:flex;align-items:center;gap:22px}
 .nav nav a:not(.btn){text-decoration:none}
 .nav nav a:not(.btn):hover{text-decoration:underline;text-underline-offset:.25em}
-@media (max-width:640px){.wm span,.nav nav a:not(.btn){display:none}.wm b{font-size:19px}}
+@media (max-width:640px){.wm span,.nav nav a:not(.btn){display:none}.wm b{font-size:19px}.wm-logo{height:34px}}
 
 .hero{background:var(--bg);padding-block:clamp(28px,5vw,72px)}
 .hero .in{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:center}

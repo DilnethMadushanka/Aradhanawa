@@ -43,7 +43,7 @@ html.aw-ld-lock,html.aw-ld-lock body{overflow:hidden}
 }
 #aw-loader .aw-ld-p.l1,#aw-loader .aw-ld-p.r1{animation-delay:.35s,1.15s,.35s}
 #aw-loader .aw-ld-p.l2,#aw-loader .aw-ld-p.r2{animation-delay:.55s,1.25s,.55s}
-#aw-loader .aw-ld-water{fill:none;stroke:#C29A55;stroke-width:1;stroke-linecap:round;stroke-dasharray:70;stroke-dashoffset:70;animation:aw-ld-draw 1.2s ease forwards}
+#aw-loader .aw-ld-water{fill:none;stroke:#C29A55;stroke-width:1;stroke-linecap:round;stroke-dasharray:240;stroke-dashoffset:240;animation:aw-ld-draw 1.2s ease forwards}
 #aw-loader .aw-ld-water.b{animation-delay:.3s;opacity:.55}
 #aw-loader .aw-ld-dot{fill:#C29A55;opacity:0;animation:aw-ld-sparkle 2.4s ease-in-out infinite}
 #aw-loader .aw-ld-dot:nth-of-type(2){animation-delay:.8s}
@@ -51,8 +51,8 @@ html.aw-ld-lock,html.aw-ld-lock body{overflow:hidden}
 
 /* wordmark */
 #aw-loader .aw-ld-name{
-  margin:18px 0 0;font:700 clamp(26px,7vw,40px)/1 "Cinzel Decorative","Cormorant Garamond",Georgia,serif;
-  letter-spacing:.08em;text-indent:.08em;color:#9C7534;
+  margin:18px 0 0;font:500 clamp(26px,7vw,40px)/1 "Cinzel","Cormorant Garamond",Georgia,serif;
+  letter-spacing:.08em;text-indent:.08em;text-transform:uppercase;color:#9C7534;
   background:linear-gradient(100deg,#8A6526 0%,#C29A55 35%,#F1DDAF 50%,#C29A55 65%,#8A6526 100%);
   background-size:250% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
   opacity:0;transform:translateY(8px);

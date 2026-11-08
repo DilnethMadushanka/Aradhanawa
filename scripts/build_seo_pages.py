@@ -163,10 +163,8 @@ PAGES = [
 
 FONTS = "https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@1,600&family=Noto+Sans+Sinhala:wght@400..700&display=swap"
 
-LOTUS = ('<svg class="wm-ic" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18.5" fill="none" stroke="currentColor"/>'
-         '<g fill="#EBD29A" stroke="currentColor" stroke-width=".9">'
-         + "".join(f'<path transform="rotate({i*45} 20 20)" d="M20 17C17.5 13.5 18 9 20 6C22 9 22.5 13.5 20 17Z"/>' for i in range(8))
-         + '</g><circle cx="20" cy="20" r="3" fill="currentColor"/></svg>')
+# The Aradhanawa logo (side-view lotus + ARADHANAWA wordmark). Source SVGs live in /img/logo/.
+LOGO = '<img class="wm-logo" src="/img/logo/aradhanawa-logo.svg" alt="Aradhanawa" width="167" height="33">'
 
 e = html.escape
 
@@ -190,7 +188,7 @@ LEGAL_LINKS = '<a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="
 
 def footer():
     return f"""<footer class="foot"><div class="in">
-  <a class="wm" href="/">{LOTUS}<b>Aradhanawa</b></a>
+  <a class="wm" href="/">{LOGO}</a>
   <nav aria-label="Footer">{''.join(f'<a href="/{q["slug"]}">{e(q["nav"])}</a>' for q in PAGES)}<a href="/#pricing">Pricing</a>{LEGAL_LINKS}</nav>
   <p>Sri Lankan digital invitations · WhatsApp <a href="{wa_link('Hi Aradhanawa!')}" target="_blank" rel="noopener">+94 76 448 7857</a></p>
 </div></footer>"""
@@ -198,7 +196,7 @@ def footer():
 
 def header(cta="/#create"):
     return f"""<header class="nav"><div class="in">
-  <a class="wm" href="/" aria-label="Aradhanawa home">{LOTUS}<b>Aradhanawa</b><span lang="si">ආරාධනාව</span></a>
+  <a class="wm" href="/" aria-label="Aradhanawa home">{LOGO}<span lang="si">ආරාධනාව</span></a>
   <nav aria-label="Main"><a href="/#designs">Designs</a><a href="/#pricing">Pricing</a><a class="btn sm" href="{cta}">Create free</a></nav>
 </div></header>"""
 
@@ -406,6 +404,7 @@ def simple_page(slug, title, desc, h1, body, noindex=False, canonical=True):
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="{FONTS}">
+<meta property="og:image" content="{SITE}/img/og/aradhanawa-brand.jpg">
 <link rel="stylesheet" href="/seo.css">
 {ICONS}
 </head>

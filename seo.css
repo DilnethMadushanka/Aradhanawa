@@ -85,3 +85,12 @@ h1{font-size:var(--s-head)}
 .foot nav{display:flex;flex-wrap:wrap;gap:8px 20px}
 .foot nav a{text-decoration:none;color:var(--ink)}
 .foot nav a:hover{text-decoration:underline}
+
+/* Legal pages (/terms, /privacy, /refunds) and the 404 page */
+.doc h1{font-size:clamp(2rem,1.4rem + 2.4vw,3rem);margin:10px 0 8px}
+.doc h2{font-size:1.3rem;letter-spacing:-.02em;margin:32px 0 10px}
+.doc p,.doc li{color:var(--ink);max-width:70ch}
+.doc p+p{margin-top:12px}
+.doc ul{padding-left:20px;display:grid;gap:8px;margin:10px 0 0}
+.doc a{color:var(--em);text-underline-offset:.2em}
+.hero.lost .in{grid-template-columns:minmax(0,1fr);gap:16px}

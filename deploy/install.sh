@@ -10,6 +10,8 @@
 #   PORT=3000              local port for the Node server (Nginx talks to it)
 #   GENIE_API_KEY=...      Genie Business secret key (or type it when asked; kept in /opt/aradhanawa/.env)
 #   FIREBASE_SA_FILE=...   path to the Firebase service account JSON (default /root/firebase-service-account.json)
+#   EMAIL=you@example.com  Let's Encrypt sends HTTPS certificate expiry warnings here (asked once, kept in .env)
+#   FIREWALL=no            skip the ufw firewall (by default only SSH, 80 and 443 are open)
 #
 # Safe to run again: it pulls the latest code, keeps the existing .env values, and restarts the service.
 
@@ -123,6 +125,14 @@ elif [ -n "$DOMAIN_OK" ]; then SITE_URL="https://$DOMAIN"
 else SITE_URL="http://$SERVER_IP"
 fi
 
+EMAIL="${EMAIL:-$(env_get EMAIL)}"
+if [ -z "$EMAIL" ] && [ -n "$DOMAIN" ] && can_ask; then
+  echo "Email for HTTPS certificate warnings (Let's Encrypt writes only if renewal fails). Press Enter to skip."
+  read -r -p "EMAIL: " EMAIL </dev/tty || EMAIL=""
+fi
+EMAIL="$(printf '%s' "$EMAIL" | tr -d '[:space:]')"
+case "$EMAIL" in ""|*@*.*) ;; *) warn "'$EMAIL' does not look like an email address. Skipping it."; EMAIL="" ;; esac
+
 GENIE_API_KEY="${GENIE_API_KEY:-$(env_get GENIE_API_KEY)}"
 if [ -z "$GENIE_API_KEY" ] && can_ask; then
   echo "Genie Business API key (secret) for online payments."
@@ -155,13 +165,14 @@ TMP_ENV="$(mktemp "$APP_HOME/.env.XXXXXX")"
   echo "PORT=$PORT"
   echo "SITE_URL=$SITE_URL"
   echo "DOMAIN=$DOMAIN"
+  echo "EMAIL=$EMAIL"
   echo "GENIE_API_KEY=$GENIE_API_KEY"
   echo "GENIE_MODE=$GENIE_MODE"
   echo "GENIE_API_BASE=$GENIE_API_BASE"
   echo "FIREBASE_SERVICE_ACCOUNT=$FIREBASE_SERVICE_ACCOUNT"
   # Keep any extra lines someone added by hand.
   if [ -f "$ENV_FILE" ]; then
-    { grep -v -E '^(#|NODE_ENV=|PORT=|SITE_URL=|DOMAIN=|GENIE_API_KEY=|GENIE_MODE=|GENIE_API_BASE=|FIREBASE_SERVICE_ACCOUNT=)' "$ENV_FILE" || true; } | { grep -E '^[A-Za-z_][A-Za-z0-9_]*=' || true; }
+    { grep -v -E '^(#|NODE_ENV=|PORT=|SITE_URL=|DOMAIN=|EMAIL=|GENIE_API_KEY=|GENIE_MODE=|GENIE_API_BASE=|FIREBASE_SERVICE_ACCOUNT=)' "$ENV_FILE" || true; } | { grep -E '^[A-Za-z_][A-Za-z0-9_]*=' || true; }
   fi
 } > "$TMP_ENV"
 chown root:root "$TMP_ENV"
@@ -274,11 +285,37 @@ else
     apt-get update -qq
     DEBIAN_FRONTEND=noninteractive apt-get install -y -qq certbot python3-certbot-nginx >/dev/null
   fi
-  if certbot --nginx --non-interactive --agree-tos --register-unsafely-without-email \
+  if [ -n "$EMAIL" ]; then
+    CERT_CONTACT=(--email "$EMAIL" --no-eff-email)
+    # An account made earlier without an email gets this one added (harmless if it is already set).
+    if [ -d /etc/letsencrypt/accounts ]; then certbot update_account --non-interactive --email "$EMAIL" --no-eff-email >/dev/null 2>&1 || true; fi
+  else
+    CERT_CONTACT=(--register-unsafely-without-email)
+    warn "No EMAIL given: you will not be warned if the HTTPS certificate fails to renew. Run again with EMAIL=you@example.com."
+  fi
+  if certbot --nginx --non-interactive --agree-tos "${CERT_CONTACT[@]}" \
        --keep-until-expiring --redirect "${CERT_DOMAINS[@]}"; then
     SCHEME="https"; HOSTNAME_SHOWN="$DOMAIN"
   else
     warn "HTTPS setup failed. The site still works on http. Run this again later."
+  fi
+fi
+
+# ---------------------------------------------------------------- firewall
+# Only SSH, HTTP and HTTPS from outside. The Node server listens on 127.0.0.1 only, so it is never exposed.
+FW_STATE="off"
+if [ "${FIREWALL:-yes}" != "no" ]; then
+  if ! command -v ufw >/dev/null 2>&1; then
+    apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get install -y -qq ufw >/dev/null || warn "Could not install ufw."
+  fi
+  if command -v ufw >/dev/null 2>&1; then
+    # Allow every port sshd listens on (not just 22) before turning the firewall on, so this session is never cut off.
+    SSH_PORTS="$( { ss -Htlnp 2>/dev/null | awk '/sshd/ {n=split($4,a,":"); print a[n]}'; } | sort -u)"
+    [ -n "$SSH_PORTS" ] || SSH_PORTS="22"
+    for p in $SSH_PORTS; do ufw allow "$p/tcp" >/dev/null; done
+    ufw allow 80/tcp >/dev/null
+    ufw allow 443/tcp >/dev/null
+    ufw --force enable >/dev/null && FW_STATE="on (SSH $(echo $SSH_PORTS | tr ' ' ','), 80, 443)"
   fi
 fi
 
@@ -292,6 +329,7 @@ else
   echo "  Installed, but Nginx answered $code. Check: journalctl -u $APP_NAME -n 50"
 fi
 echo "  Payments ready: $PAY_READY      SITE_URL: $SITE_URL"
+echo "  Firewall:       $FW_STATE"
 echo "  Update later:   run the same command again"
 echo "  Logs:           journalctl -u $APP_NAME -f"
 echo "  Settings file:  $ENV_FILE"

@@ -12,6 +12,8 @@
  *   galleries/{uid_type}   uid, type, photos [data:image/jpeg URLs], updated   (public read: guest links show these)
  *   links/{code}           uid, p (guest link details as JSON), created   (short guest links aradhanawa.com/i/{code}; public get)
  *   rsvps/{id}             inviteId, ownerUid, type, event, guest, name, coming, count, msg, created
+ *   plus/{uid_type}        uid, type, orderId, updated   (Plus for one function; written by api/pay/* or an admin;
+ *                          firestore.rules reads it to let that invitation hold more than FREE_GUESTS guests)
  *   settings/site          config {FREE_GUESTS, STUDIO_WA, PRICE_PLUS, PRICE_CUSTOM, PLANS [{id, kind, name, price, details, on}], MUSIC}, tplOff []
  */
 const V = "10.12.2";
@@ -34,7 +36,7 @@ export async function init(cfg, hooks = {}) {
     on: true,
     user: null,
     profile: null,
-    data: { users: [], orders: [], invitations: [], rsvps: [], admins: [] },
+    data: { users: [], orders: [], invitations: [], rsvps: [], admins: [], plus: [] },
     settings: null,
   };
 
@@ -42,7 +44,7 @@ export async function init(cfg, hooks = {}) {
   let unsubs = [];
   const stop = () => { unsubs.forEach(u => u()); unsubs = [] };
   const listen = (key, q) => unsubs.push(F.onSnapshot(q,
-    s => { FBX.data[key] = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => String(b.created || b.updated || "").localeCompare(String(a.created || a.updated || ""))); changed(key) },
+    s => { FBX.data[key] = s.docs.map(d => ({ id: d.id, ...d.data() })).sort((a, b) => String(b.created || b.updated || "").localeCompare(String(a.created || a.updated || ""))); changed(key); if (["orders", "users", "plus"].includes(key)) queueSyncPlus() },
     e => console.warn("[fb]", key, e.code || e)));
 
   // Site settings are public: prices, WhatsApp number and hidden templates apply to every visitor.
@@ -82,6 +84,7 @@ export async function init(cfg, hooks = {}) {
       listen("invitations", F.collection(db, "invitations"));
       listen("rsvps", F.collection(db, "rsvps"));
       listen("admins", F.collection(db, "admins"));
+      listen("plus", F.collection(db, "plus"));
     } else {
       listen("orders", F.query(F.collection(db, "orders"), F.where("uid", "==", u.uid)));
       listen("invitations", F.query(F.collection(db, "invitations"), F.where("uid", "==", u.uid)));
@@ -95,7 +98,7 @@ export async function init(cfg, hooks = {}) {
     A.onAuthStateChanged(auth, async u => {
       FBX.user = u;
       FBX.profile = u ? await loadProfile(u) : null;
-      FBX.data = { users: [], orders: [], invitations: [], rsvps: [], admins: [] };
+      FBX.data = { users: [], orders: [], invitations: [], rsvps: [], admins: [], plus: [] };
       if (u) startListeners(u, FBX.profile.role === "admin"); else stop();
       if (first) { first = false; res(FBX) } else changed("auth");
     });
@@ -144,7 +147,37 @@ export async function init(cfg, hooks = {}) {
   FBX.addOrder = o => F.addDoc(F.collection(db, "orders"), {
     kind: o.kind, design: o.design, type: o.type, name: o.name || "", email: o.email || "", phone: o.phone || "",
     amount: o.amount || "", status: "New", created: now(), uid: FBX.user ? FBX.user.uid : null });
-  FBX.setOrderStatus = (id, status) => F.updateDoc(F.doc(db, "orders", id), { status, updated: now() });
+  FBX.setOrderStatus = async (id, status) => {
+    await F.updateDoc(F.doc(db, "orders", id), { status, updated: now() });
+    const o = FBX.data.orders.find(x => x.id === id);
+    if (!o || o.kind !== "plus") return;
+    const uid = plusUid(o); if (!uid) return;
+    const pid = `${uid}_${o.type || "other"}`;
+    if (status === "Done") return F.setDoc(F.doc(db, "plus", pid), { uid, type: o.type || "other", orderId: id, updated: now() });
+    // Taken off Done: remove Plus unless another finished Plus order covers the same function.
+    const other = FBX.data.orders.some(x => x.id !== id && x.kind === "plus" && x.status === "Done" && (x.type || "other") === (o.type || "other") && plusUid(x) === uid);
+    if (!other) return F.deleteDoc(F.doc(db, "plus", pid)).catch(() => {});
+  };
+  /* Server-side guest limit: firestore.rules lets an invitation hold more than FREE_GUESTS guests only when
+   * plus/{uid_type} exists. Paid orders get it from api/pay/*. For orders an admin marked Done by hand (or that
+   * were finished before this existed), the admin dashboard writes the missing ones. It only ever adds. */
+  const plusUid = o => o.uid || ((FBX.data.users.find(u => o.email && String(u.email || "").toLowerCase() === String(o.email).toLowerCase()) || {}).id) || "";
+  let syncT = null;
+  function queueSyncPlus() {
+    if (!FBX.profile || FBX.profile.role !== "admin") return;
+    clearTimeout(syncT);
+    syncT = setTimeout(() => {
+      const have = new Set(FBX.data.plus.map(p => p.id));
+      for (const o of FBX.data.orders) {
+        if (o.kind !== "plus" || o.status !== "Done") continue;
+        const uid = plusUid(o); if (!uid) continue;
+        const pid = `${uid}_${o.type || "other"}`;
+        if (have.has(pid)) continue;
+        have.add(pid);
+        F.setDoc(F.doc(db, "plus", pid), { uid, type: o.type || "other", orderId: o.id, updated: now() }).catch(e => console.warn("[fb] plus", e.code || e));
+      }
+    }, 1500);
+  }
   FBX.deleteOrder = id => F.deleteDoc(F.doc(db, "orders", id));
   FBX.setUserPlan = (uid, plan) => F.updateDoc(F.doc(db, "users", uid), { plan });
   FBX.deleteUser = uid => F.deleteDoc(F.doc(db, "users", uid));   // profile only; the sign-in itself is removed in Firebase console → Authentication

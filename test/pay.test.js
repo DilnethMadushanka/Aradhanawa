@@ -92,6 +92,8 @@ test("return before paying stays pending; after CONFIRMED marks Plus Done", asyn
   assert.equal(res.loc, `https://www.aradhanawa.com/?pay=ok&kind=plus&order=${id}#account`);
   const o = store.get("orders/" + id);
   assert.equal(o.paid, true); assert.equal(o.status, "Done");
+  // Plus record that firestore.rules checks before allowing more than the free guests
+  assert.deepEqual({ ...store.get("plus/u1_wedding"), updated: 0 }, { uid: "u1", type: "wedding", orderId: id, updated: 0 });
 });
 
 test("custom design: webhook settles to In progress; amount mismatch never pays", async () => {

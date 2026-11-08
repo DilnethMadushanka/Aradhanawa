@@ -6,6 +6,8 @@
  *
  * Settings come from the environment (systemd loads them from /opt/aradhanawa/.env):
  *   PORT (default 3000), HOST (default 127.0.0.1), GENIE_API_KEY, FIREBASE_SERVICE_ACCOUNT, SITE_URL, GENIE_MODE
+ * Also: one canonical host (aradhanawa.com -> www.aradhanawa.com when SITE_URL is www), security headers, and a
+ * per-IP rate limit on /api/ (API_RATE_LIMIT requests per minute, default 30).
  * Run locally: node deploy/server.js
  */
 import http from "node:http";
@@ -19,6 +21,43 @@ const API_DIR = path.join(ROOT, "api");
 const PORT = +process.env.PORT || 3000;
 const HOST = process.env.HOST || "127.0.0.1";
 const BODY_LIMIT = 1024 * 1024;
+
+/* One canonical host. SITE_URL decides it (https://www.aradhanawa.com): a request for the other spelling of the same
+ * domain (aradhanawa.com) gets a 301 there, so Google sees one site. Other hosts (the server IP, localhost) are left alone. */
+let CANON = null;
+try {
+  const u = new URL(process.env.SITE_URL || "");
+  const bare = u.hostname.replace(/^www\./, "");
+  if (u.protocol === "https:" && bare.includes(".") && !/^[\d.]+$/.test(bare)) CANON = { origin: u.origin, host: u.host, alt: new Set([bare, "www." + bare].filter(h => h !== u.host)) };
+} catch {}
+export function canonicalRedirect(host, pathAndQuery) {
+  if (!CANON || !host) return null;
+  return CANON.alt.has(String(host).toLowerCase().replace(/:\d+$/, "")) ? CANON.origin + pathAndQuery : null;
+}
+
+/* Sent with every response. No full Content-Security-Policy yet: the page uses inline scripts, Firebase, Google Maps
+ * and Genie, and a wrong policy would break login or payments. frame-ancestors stops other sites framing the page. */
+const SECURITY_HEADERS = {
+  "X-Content-Type-Options": "nosniff",
+  "X-Frame-Options": "SAMEORIGIN",
+  "Content-Security-Policy": "frame-ancestors 'self'",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+  "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=(self)",
+  "Cross-Origin-Opener-Policy": "same-origin-allow-popups",   // Google login opens a popup
+};
+const HSTS = "max-age=31536000";
+
+/* Small in-memory rate limit for /api/ (payments). Enough to stop a script hammering Genie or Firestore. */
+const RATE = Math.max(1, +process.env.API_RATE_LIMIT || 30), WINDOW = 60_000;
+const hits = new Map();
+export function rateLimited(ip, now = Date.now()) {
+  let h = hits.get(ip);
+  if (!h || now - h.start >= WINDOW) { h = { start: now, n: 0 }; hits.set(ip, h) }
+  h.n++;
+  if (hits.size > 10_000) for (const [k, v] of hits) if (now - v.start >= WINDOW) hits.delete(k);
+  return h.n > RATE ? Math.ceil((h.start + WINDOW - now) / 1000) : 0;
+}
+const clientIp = req => String(req.headers["x-real-ip"] || req.socket.remoteAddress || "");
 
 /* Same as vercel.json "rewrites" */
 const REWRITES = [
@@ -40,7 +79,7 @@ const isBlocked = rel => {
 
 const TYPES = {
   ".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8", ".js": "text/javascript; charset=utf-8",
-  ".json": "application/json; charset=utf-8", ".xml": "application/xml; charset=utf-8", ".txt": "text/plain; charset=utf-8",
+  ".json": "application/json; charset=utf-8", ".webmanifest": "application/manifest+json; charset=utf-8", ".xml": "application/xml; charset=utf-8", ".txt": "text/plain; charset=utf-8",
   ".webp": "image/webp", ".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".gif": "image/gif",
   ".svg": "image/svg+xml", ".ico": "image/x-icon", ".mp3": "audio/mpeg", ".mp4": "video/mp4", ".webm": "video/webm",
   ".woff2": "font/woff2", ".woff": "font/woff", ".pdf": "application/pdf",
@@ -94,7 +133,6 @@ async function serveStatic(req, res, url) {
     "Content-Type": TYPES[path.extname(file).toLowerCase()] || "application/octet-stream",
     "Cache-Control": status === 200 ? cacheControl(p, file) : "no-store",
     "Last-Modified": stat.mtime.toUTCString(), ETag: etag, "Accept-Ranges": "bytes",
-    "X-Content-Type-Options": "nosniff",
   };
   if (status === 200 && req.headers["if-none-match"] === etag) { res.writeHead(304, headers); return res.end() }
 
@@ -194,9 +232,17 @@ async function serveApi(req, res, url) {
 const server = http.createServer(async (req, res) => {
   let url;
   try { url = new URL(req.url, "http://localhost") } catch { res.writeHead(400); return res.end("Bad request") }
+  for (const [k, v] of Object.entries(SECURITY_HEADERS)) res.setHeader(k, v);
+  if (req.headers["x-forwarded-proto"] === "https") res.setHeader("Strict-Transport-Security", HSTS);
   try {
     if (url.pathname === "/healthz") { res.writeHead(200, { "Content-Type": "text/plain", "Cache-Control": "no-store" }); return res.end("ok") }
-    if (url.pathname === "/api" || url.pathname.startsWith("/api/")) return await serveApi(req, res, url);
+    const to = url.pathname.startsWith("/api/") ? null : canonicalRedirect(req.headers.host, url.pathname + url.search);
+    if (to) { res.writeHead(301, { Location: to }); return res.end() }
+    if (url.pathname === "/api" || url.pathname.startsWith("/api/")) {
+      const wait = req.method === "OPTIONS" ? 0 : rateLimited(clientIp(req));
+      if (wait) { res.writeHead(429, { "Content-Type": "application/json; charset=utf-8", "Retry-After": String(wait) }); return res.end('{"error":"Too many requests. Please wait a minute and try again."}') }
+      return await serveApi(req, res, url);
+    }
     return await serveStatic(req, res, url);
   } catch (e) {
     console.error("[server]", req.method, req.url, e);

@@ -17,4 +17,6 @@ Online payments: Dialog Genie Business (`api/pay/*`, Vercel serverless). Setup s
 
 Short guest links: login wela inna kenekuta guest link eka `aradhanawa.com/i/Ab3dE9xk` widihata enawa (details Firestore `links/{code}` eke save wenawa). Save wenakan, logout wela innakota, nathnam `firestore.rules` publish karala nathnam parana digu `#i=` link eka enawa. Parana `#i=` links okkoma thawa wada.
 
-Production ekata ilaga steps: server-side 5-guest limit (danata browser eke witharai).
+Guest limit eka server eketh check karanawa: `firestore.rules` eken Free kenekuta invitation ekakata `FREE_GUESTS` (default 5) ta wada guests save karanna denne na. Plus plan eka, nathnam `plus/{uid_type}` doc eka (paid Plus order ekakin hari admin Done kalama hari hadenawa) thiyenna one. Rules wenas kalama Firebase console eke publish karanna, passe admin dashboard eka ekak open karanna (parana Done Plus orders walata `plus` docs hadanawa). Danata thiyena sima: parana digu `#i=` links okkoma browser eke hadana nisa ewa server eken nawaththanna ba.
+
+Legal pages (`/terms`, `/privacy`, `/refunds`), `404.html`, favicon saha `site.webmanifest` hadanne `scripts/build_seo_pages.py` eken. Wenas karanna one nam e script eke `LEGAL` list eka edit karala aye run karanna.

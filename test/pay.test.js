@@ -148,6 +148,23 @@ test("plans from Admin → Prices: chosen by id, hidden or deleted plans can't b
   }
 });
 
+test("Admin → Templates design price is used for that design only", async () => {
+  const { default: create } = await import("../api/pay/create.js");
+  store.set("settings/site", { config: { PLANS: [
+    { id: "custom", kind: "custom", name: "Custom design", price: "Rs. 4,900", on: true },
+    { id: "rush", kind: "custom", name: "Rush custom", price: "Rs. 9,000", on: true },
+  ], DESIGN_PRICES: { "Poruwa Royal": "Rs. 6,500", "Lotus Mandala": "", "Bad": "free" } } });
+  const buy = async body => { const res = fakeRes(); await create({ method: "POST", headers: { authorization: "Bearer good" }, body }, res); assert.equal(res.code, 200, JSON.stringify(res.body)); return store.get("orders/" + res.body.orderId) };
+  let o = await buy({ kind: "custom", type: "wedding", design: "Poruwa Royal", amount: 1 });
+  assert.equal(lastCreate.amount, 650000); assert.equal(o.amount, "Rs. 6,500");
+  o = await buy({ plan: "custom", type: "wedding", design: "Lotus Mandala" });   // empty price: main plan price
+  assert.equal(lastCreate.amount, 490000);
+  await buy({ kind: "custom", type: "wedding", design: "Bad" });                  // not a price: main plan price
+  assert.equal(lastCreate.amount, 490000);
+  await buy({ plan: "rush", type: "wedding", design: "Poruwa Royal" });          // another custom plan keeps its own price
+  assert.equal(lastCreate.amount, 900000);
+});
+
 test("a paid service order waits for the studio (In progress)", async () => {
   const id = [...store].filter(([k, d]) => k.startsWith("orders/") && d.kind === "service")[0][0].split("/")[1];
   txs.get(store.get("orders/" + id).payRef).state = "CONFIRMED";

@@ -16,6 +16,19 @@ service cloud.firestore {
     }
     function isStr(v, max) { return v is string && v.size() <= max; }
 
+    // Free guest links per function: settings/site config.FREE_GUESTS (Admin → Settings), 5 if it is not set.
+    function freeGuests() {
+      return exists(/databases/$(database)/documents/settings/site)
+        ? get(/databases/$(database)/documents/settings/site).data.get("config", {}).get("FREE_GUESTS", 5) : 5;
+    }
+    // More guests need Plus: an admin, a Plus/Staff plan on the profile, or plus/{uid_type} for this function.
+    function hasPlus(type) {
+      return isAdmin()
+        || (exists(/databases/$(database)/documents/users/$(request.auth.uid))
+            && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.get("plan", "Free") in ["Plus", "Staff"])
+        || exists(/databases/$(database)/documents/plus/$(request.auth.uid + "_" + type));
+    }
+
     // Public site settings: prices, studio WhatsApp, hidden templates.
     match /settings/{id} {
       allow read: if true;
@@ -58,8 +71,15 @@ service cloud.firestore {
       allow read: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
       allow create, update: if signedIn() && request.resource.data.uid == request.auth.uid
         && id == request.auth.uid + "_" + request.resource.data.type
-        && request.resource.data.guests.size() <= 500;
+        && request.resource.data.guests.size() <= 500
+        && (request.resource.data.guests.size() <= freeGuests() || hasPlus(request.resource.data.type));
       allow delete: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
+    }
+
+    // Plus for one function (doc id = uid_type). Written by api/pay/* (server) or an admin. Owners may read theirs.
+    match /plus/{id} {
+      allow read: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
+      allow write: if isAdmin();
     }
 
     // Gallery photos shown on the guest invitation link (doc id = uid_type). Anyone with the link may read them.

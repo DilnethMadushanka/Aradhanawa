@@ -118,6 +118,12 @@ export async function settle(orderId) {
       status: o.kind === "plus" ? "Done" : "In progress",
     };
     await ref.update(upd);
+    // Lets firestore.rules accept more than the free number of guests on this function's invitation.
+    if (o.kind === "plus" && o.uid) {
+      const type = o.type || "other";
+      await db().doc(`plus/${o.uid}_${type}`).set({ uid: o.uid, type, orderId: ref.id, updated: now() })
+        .catch(e => console.error("[pay] plus doc", ref.id, e));
+    }
     return { result: "paid", order: { ...o, ...upd } };
   }
   if (PAID_STATES.includes(state)) {

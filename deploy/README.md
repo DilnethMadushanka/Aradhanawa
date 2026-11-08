@@ -36,6 +36,22 @@ curl -fsSL https://raw.githubusercontent.com/dilnethmadushanka/aradhanawa/main/d
 
 Let's Encrypt HTTPS certificate eka danawa, `SITE_URL` eka `https://www.aradhanawa.com` karanawa. Firebase console → Authentication → Settings → **Authorized domains** eke domain eka thiyenna one (Google login ekata).
 
+### HTTPS warning email
+
+Certificate eka renew wenna bari unoth Let's Encrypt email ekak ewanawa. Eka parak:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/dilnethmadushanka/aradhanawa/main/deploy/install.sh | EMAIL=you@example.com bash
+```
+
+## Server eka karana dewal
+
+- `aradhanawa.com` → `https://www.aradhanawa.com` ta 301 redirect (`SITE_URL` eka www nam). Google ekata eka site ekai penenne.
+- Security headers (HSTS, X-Frame-Options, Referrer-Policy, ...) Node server eken.
+- `/api/` ekata IP ekakata minute ekakata requests 30 (`API_RATE_LIMIT` eken wenas karanna puluwan).
+- Firewall (`ufw`): SSH, 80, 443 witharai open. Epa nam `FIREWALL=no`.
+- Backups: DigitalOcean → droplet → **Backups** eka on karanna (sathiyakata parak, droplet price eken ~20%). Firestore data Google eke thiyena nisa e backup ekata one na.
+
 ## Useful commands
 
 - Logs: `journalctl -u aradhanawa -f`

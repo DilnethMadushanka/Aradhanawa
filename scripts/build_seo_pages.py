@@ -180,10 +180,33 @@ def ld(obj):
     return '<script type="application/ld+json">' + json.dumps(obj, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/") + "</script>"
 
 
+ICONS = """<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/img/icons/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">"""
+
+LEGAL_LINKS = '<a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/refunds">Refunds</a>'
+
+
+def footer():
+    return f"""<footer class="foot"><div class="in">
+  <a class="wm" href="/">{LOTUS}<b>Aradhanawa</b></a>
+  <nav aria-label="Footer">{''.join(f'<a href="/{q["slug"]}">{e(q["nav"])}</a>' for q in PAGES)}<a href="/#pricing">Pricing</a>{LEGAL_LINKS}</nav>
+  <p>Sri Lankan digital invitations · WhatsApp <a href="{wa_link('Hi Aradhanawa!')}" target="_blank" rel="noopener">+94 76 448 7857</a></p>
+</div></footer>"""
+
+
+def header(cta="/#create"):
+    return f"""<header class="nav"><div class="in">
+  <a class="wm" href="/" aria-label="Aradhanawa home">{LOTUS}<b>Aradhanawa</b><span lang="si">ආරාධනාව</span></a>
+  <nav aria-label="Main"><a href="/#designs">Designs</a><a href="/#pricing">Pricing</a><a class="btn sm" href="{cta}">Create free</a></nav>
+</div></header>"""
+
+
 def page(p):
     url = f"{SITE}/{p['slug']}"
     create = f"/#create/{p['type']}"
-    img = f"{SITE}/img/{p['img']}-960.webp"
+    img = f"{SITE}/img/og/{p['img']}.jpg"   # JPG 1200x630: WhatsApp and Facebook link previews don't reliably show WebP
     others = [q for q in PAGES if q is not p]
     schema = [
         {"@context": "https://schema.org", "@type": "Service", "name": p["title"].split(" | ")[0],
@@ -218,19 +241,20 @@ def page(p):
 <meta property="og:description" content="{e(p['desc'])}">
 <meta property="og:url" content="{url}">
 <meta property="og:image" content="{img}">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:locale" content="en_LK">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="{FONTS}">
 <link rel="stylesheet" href="/seo.css">
+{ICONS}
 {''.join(ld(s) for s in schema)}
 </head>
 <body>
-<header class="nav"><div class="in">
-  <a class="wm" href="/" aria-label="Aradhanawa home">{LOTUS}<b>Aradhanawa</b><span lang="si">ආරාධනාව</span></a>
-  <nav aria-label="Main"><a href="/#designs">Designs</a><a href="/#pricing">Pricing</a><a class="btn sm" href="{create}">Create free</a></nav>
-</div></header>
+{header(create)}
 <main>
   <section class="hero"><div class="in">
     <div class="copy">
@@ -278,14 +302,148 @@ def page(p):
     <div class="more">{more}</div>
   </div></section>
 </main>
-<footer class="foot"><div class="in">
-  <a class="wm" href="/">{LOTUS}<b>Aradhanawa</b></a>
-  <nav aria-label="Footer">{''.join(f'<a href="/{q["slug"]}">{e(q["nav"])}</a>' for q in PAGES)}<a href="/#pricing">Pricing</a></nav>
-  <p>Sri Lankan digital invitations · WhatsApp <a href="{wa_link('Hi Aradhanawa!')}" target="_blank" rel="noopener">+94 76 448 7857</a></p>
-</div></footer>
+{footer()}
 </body>
 </html>
 """
+
+
+# ---------------------------------------------------------------- legal pages + 404
+# Plain-language drafts. Read them before relying on them, and change anything that does not match how you work.
+UPDATED = "8 November 2026"
+CONTACT = f'<a href="{wa_link("Hi Aradhanawa!")}" target="_blank" rel="noopener">WhatsApp +94 76 448 7857</a>'
+
+LEGAL = [
+    dict(slug="terms", title="Terms of use | Aradhanawa", h1="Terms of use",
+         desc="The terms for using Aradhanawa digital invitations: accounts, your content, payments and guest links.",
+         body=f"""
+<p>These terms apply when you use aradhanawa.com to make and send digital invitations. By creating an account or an invitation you agree to them. If you do not agree, please do not use the site.</p>
+<h2>1. The service</h2>
+<p>Aradhanawa lets you make an invitation for a wedding, homecoming, engagement, birthday, party or dana and send each guest a personal link, usually on WhatsApp. Each function gets one free design and {FREE_GUESTS} free personal guest links. Paid options are listed on the <a href="/#pricing">pricing page</a>.</p>
+<h2>2. Your account</h2>
+<p>You need an account to create an invitation. Give a real name and a working email or Google account, keep your password private, and tell us quickly if you think someone else is using your account. You must be at least 18, or have a parent's or guardian's permission.</p>
+<h2>3. Your content</h2>
+<p>You own the names, wording, photos and other details you add. You give us permission to store them and show them to the people you send links to, only so the invitation works. You confirm that you have the right to use any photo you upload, and that your invitation is not unlawful, hateful, misleading or someone else's private information shared without permission. We may remove content or close an account that breaks these rules.</p>
+<h2>4. Guest links</h2>
+<p>Anyone who has a guest link can open that invitation, so share links only with the people you mean to invite. Guests do not need an account. Replies a guest sends (RSVP) are passed to you.</p>
+<h2>5. Prices and payment</h2>
+<p>Prices are shown in Sri Lankan rupees before you pay. Online payments are handled by Dialog Genie Business; we never see or store your card number. Plus covers one function. A custom design is started after payment and is delivered as described on the pricing page. Refunds follow our <a href="/refunds">refund policy</a>.</p>
+<h2>6. Availability</h2>
+<p>We work hard to keep the site and your links online, but we cannot promise it will never be down or that nothing will go wrong. Please keep your own copy of important details (date, time, venue) and check your invitation before you send it.</p>
+<h2>7. Limits on our responsibility</h2>
+<p>To the extent the law allows, Aradhanawa is not responsible for indirect losses, such as a guest who does not see a message, and our total responsibility for a paid order is limited to the amount you paid for it. Nothing in these terms takes away rights you have under Sri Lankan consumer law.</p>
+<h2>8. Changes</h2>
+<p>We may update these terms. The date at the top shows the latest version. If a change is important we will tell you on the site.</p>
+<h2>9. Law</h2>
+<p>These terms are governed by the laws of Sri Lanka.</p>
+<h2>Contact</h2>
+<p>Questions about these terms: {CONTACT}.</p>
+"""),
+    dict(slug="privacy", title="Privacy policy | Aradhanawa", h1="Privacy policy",
+         desc="What Aradhanawa collects when you make or open a digital invitation, why, who it is shared with and how to delete it.",
+         body=f"""
+<p>This policy explains what personal information aradhanawa.com collects, why, and what you can do about it. We follow the Personal Data Protection Act, No. 9 of 2022, of Sri Lanka.</p>
+<h2>What we collect</h2>
+<ul>
+<li><b>Your account:</b> name, email address, WhatsApp number if you give it, and your Google profile photo if you log in with Google. Passwords are handled by Google Firebase Authentication; we never see them.</li>
+<li><b>Your invitations:</b> the event details you type (names, date, time, venue, messages), the guest names you add and any photos you upload to the gallery.</li>
+<li><b>Guest replies:</b> when a guest RSVPs we store their name, whether they are coming, how many people and any message.</li>
+<li><b>Orders and payments:</b> what you bought, the amount and the payment status. Card details go straight to Dialog Genie Business and are not stored by us.</li>
+<li><b>Basic technical data:</b> our server keeps short-lived logs (IP address, browser, pages requested) to keep the site secure and working.</li>
+</ul>
+<h2>Why we use it</h2>
+<p>To run your account, show your invitation to the guests you send it to, pass guest replies to you, take payments, answer your questions, and keep the service safe. We do not sell your information and we do not use it for advertising.</p>
+<h2>Who can see it</h2>
+<ul>
+<li><b>Your guests:</b> anyone with a guest link can see that invitation and its gallery photos. They cannot see your guest list or other guests' replies.</li>
+<li><b>Service providers:</b> Google Firebase (login and database), DigitalOcean (web hosting), Dialog Genie Business (payments), and Google Fonts and Google Maps (fonts and venue maps on the page). Some of these may store data outside Sri Lanka.</li>
+<li><b>The law:</b> if we are required to by law.</li>
+</ul>
+<h2>How long we keep it</h2>
+<p>We keep your account and invitations until you delete them or ask us to. Order records are kept as long as needed for accounting. Server logs are deleted within a few weeks.</p>
+<h2>Your choices</h2>
+<p>You can edit or delete an invitation from your account at any time. To get a copy of your information, correct it, or delete your account and everything in it, message us at {CONTACT} and we will do it within 30 days.</p>
+<h2>Children</h2>
+<p>The site is meant for adults. A child's name may appear on an invitation (for example a birthday) only when a parent or guardian creates it.</p>
+<h2>Cookies and storage</h2>
+<p>We use your browser's storage to keep you logged in and remember your draft invitation. We do not use advertising cookies.</p>
+<h2>Changes</h2>
+<p>If we change this policy we will update the date at the top.</p>
+<h2>Contact</h2>
+<p>Privacy questions or requests: {CONTACT}.</p>
+"""),
+    dict(slug="refunds", title="Refund policy | Aradhanawa", h1="Refund policy",
+         desc="When Aradhanawa refunds a Plus or custom design payment, and how to ask for one.",
+         body=f"""
+<p>We want you to be happy with your invitation. This page explains when we give your money back.</p>
+<h2>Aradhanawa Plus ({PRICE_PLUS} per function)</h2>
+<p>If Plus does not work for you, ask within 7 days of paying and before the function date, and we will refund it in full. After the function has taken place, Plus is not refundable.</p>
+<h2>Custom design ({PRICE_CUSTOM})</h2>
+<ul>
+<li>Before we start work on your design: full refund.</li>
+<li>After we have sent the first version: 50% refund, if you decide not to go ahead.</li>
+<li>After you have approved the final design: no refund.</li>
+</ul>
+<h2>Payment problems</h2>
+<p>If you were charged twice, or charged but your order did not go through, we will refund the extra payment in full as soon as we confirm it.</p>
+<h2>How to ask</h2>
+<p>Message us at {CONTACT} with the email on your account and the date you paid. Approved refunds go back to the card or account you paid with, normally within 7 to 14 working days, depending on your bank.</p>
+"""),
+]
+
+
+def simple_page(slug, title, desc, h1, body, noindex=False, canonical=True):
+    url = f"{SITE}/{slug}"
+    return f"""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>{e(title)}</title>
+<meta name="description" content="{e(desc)}">
+{'<meta name="robots" content="noindex">' if noindex else ''}{f'<link rel="canonical" href="{url}">' if canonical else ''}
+<meta name="theme-color" content="#FFF3E3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="{FONTS}">
+<link rel="stylesheet" href="/seo.css">
+{ICONS}
+</head>
+<body>
+{header()}
+<main>
+{body}
+</main>
+{footer()}
+</body>
+</html>
+"""
+
+
+def legal_page(d):
+    body = f"""  <article class="band doc"><div class="in narrow">
+    <nav class="crumb" aria-label="Breadcrumb"><a href="/">Home</a> / <span>{e(d['h1'])}</span></nav>
+    <h1>{e(d['h1'])}</h1>
+    <p class="note">Last updated {UPDATED}</p>
+{d['body']}
+  </div></article>"""
+    return simple_page(d["slug"], d["title"], d["desc"], d["h1"], body)
+
+
+def not_found_page():
+    more = "".join(f'<a href="/{q["slug"]}"><b>{e(q["nav"])} invitations</b><span lang="si">{e(q["si"])}</span></a>' for q in PAGES)
+    body = f"""  <section class="hero lost"><div class="in narrow">
+    <p class="eyebrow" lang="si">පිටුව හමු නොවීය</p>
+    <h1>This page is not <em>here</em></h1>
+    <p class="lead">The link may be old or mistyped. If someone sent you an invitation, ask them to send the link again.</p>
+    <div class="cta"><a class="btn" href="/">Go to the home page</a><a class="link" href="{e(wa_link('Hi Aradhanawa! A link did not open for me.'))}" target="_blank" rel="noopener">Ask us on WhatsApp</a></div>
+  </div></section>
+  <section class="band"><div class="in">
+    <h2 class="sm">Make an invitation</h2>
+    <div class="more">{more}</div>
+  </div></section>"""
+    # Served at any missing URL, so links must be absolute (they are) and there is no canonical.
+    return simple_page("404", "Page not found | Aradhanawa", "This page could not be found.", "Page not found", body, noindex=True, canonical=False)
 
 
 def main():
@@ -295,7 +453,20 @@ def main():
         os.makedirs(d, exist_ok=True)
         with open(os.path.join(d, "index.html"), "w", encoding="utf-8") as f:
             f.write(page(p))
-    urls = [(SITE + "/", "1.0")] + [(f"{SITE}/{p['slug']}", "0.8") for p in PAGES]
+    for d in LEGAL:
+        os.makedirs(os.path.join(root, d["slug"]), exist_ok=True)
+        with open(os.path.join(root, d["slug"], "index.html"), "w", encoding="utf-8") as f:
+            f.write(legal_page(d))
+    with open(os.path.join(root, "404.html"), "w", encoding="utf-8") as f:
+        f.write(not_found_page())
+    with open(os.path.join(root, "site.webmanifest"), "w", encoding="utf-8") as f:
+        json.dump({"name": "Aradhanawa", "short_name": "Aradhanawa", "start_url": "/", "display": "standalone",
+                   "background_color": "#FFF3E3", "theme_color": "#FFF3E3",
+                   "icons": [{"src": "/img/icons/icon-192.png", "sizes": "192x192", "type": "image/png"},
+                             {"src": "/img/icons/icon-512.png", "sizes": "512x512", "type": "image/png"}]}, f, indent=2)
+        f.write("\n")
+    urls = ([(SITE + "/", "1.0")] + [(f"{SITE}/{p['slug']}", "0.8") for p in PAGES]
+            + [(f"{SITE}/{d['slug']}", "0.3") for d in LEGAL])
     with open(os.path.join(root, "sitemap.xml"), "w", encoding="utf-8") as f:
         f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')
         for u, pr in urls:
@@ -303,7 +474,7 @@ def main():
         f.write("</urlset>\n")
     with open(os.path.join(root, "robots.txt"), "w", encoding="utf-8") as f:
         f.write(f"User-agent: *\nAllow: /\nDisallow: /admin\n\nSitemap: {SITE}/sitemap.xml\n")
-    print(f"Wrote {len(PAGES)} pages, sitemap.xml, robots.txt")
+    print(f"Wrote {len(PAGES)} pages, {len(LEGAL)} legal pages, 404.html, site.webmanifest, sitemap.xml, robots.txt")
 
 
 if __name__ == "__main__":

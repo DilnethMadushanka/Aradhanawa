@@ -2,10 +2,11 @@
  *
  * Does what Vercel did for this repo, with no extra npm packages:
  *   - serves the static site from the repo root, with vercel.json's cleanUrls, rewrites and img/ cache header
- *   - runs the Vercel-style functions in api/ (api/pay/create, return, webhook) with the same req/res helpers
+ *   - runs the Vercel-style functions in api/ (api/pay/create, return, webhook; api/photos/upload, delete) with the same req/res helpers
  *
  * Settings come from the environment (systemd loads them from /opt/aradhanawa/.env):
- *   PORT (default 3000), HOST (default 127.0.0.1), GENIE_API_KEY, FIREBASE_SERVICE_ACCOUNT, SITE_URL, GENIE_MODE
+ *   PORT (default 3000), HOST (default 127.0.0.1), GENIE_API_KEY, FIREBASE_SERVICE_ACCOUNT, SITE_URL, GENIE_MODE,
+ *   R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET, R2_PUBLIC_URL (gallery photos, api/photos/*)
  * Also: one canonical host (aradhanawa.com -> www.aradhanawa.com when SITE_URL is www), security headers, and a
  * per-IP rate limit on /api/ (API_RATE_LIMIT requests per minute, default 30).
  * Run locally: node deploy/server.js

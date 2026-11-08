@@ -1667,7 +1667,8 @@ nav.top a{font-weight:600}
 .dt-info h1{font-size:clamp(40px,5.4vw,76px);letter-spacing:-.04em;line-height:1}
 .dt-price{margin-top:16px !important;font-size:var(--s-lead);color:#6E5D48}.dt-price b{color:#2A1E12}
 .dt-list{margin:26px 0 34px;padding:0;list-style:none;display:grid;gap:12px}
-.dt-list li{position:relative;padding-left:26px;line-height:1.45}
+.dt-list li{position:relative;padding-left:26px;line-height:1.5}
+.dt-list li b{font-weight:700;color:inherit}
 .dt-list li::before{content:"";position:absolute;left:4px;top:.5em;width:8px;height:8px;background:#C9993A;transform:rotate(45deg)}
 .dt-acts{display:flex;flex-wrap:wrap;gap:22px 30px;align-items:center}
 .lp-nav .wm .wm-t{display:grid}
@@ -2679,7 +2680,14 @@ function lpDetail(){
         <div class="dt-nav"><a href="#design/${k}/${prev}" aria-label="Previous design">←</a><span>${pos+1} / ${all.length}</span><a href="#design/${k}/${next}" aria-label="Next design">→</a></div></div>
       <div class="dt-info">${lpOrn()}<span class="lp-eb">${T.name} · ${esc(T.si)}</span><h1>${esc(name)}</h1>
         <p class="dt-price"><b>Free</b> for every ${T.name.toLowerCase()}${t?` · customised with your photos for <b>${esc(designPrice(t&&t.n))}</b>`:""}</p>
-        <ul class="dt-list"><li>Each guest's name on the card, like <i>Dear Nimal Uncle</i></li><li>A ${({wedding:"magul pahana",birthday:"birthday cake",homecoming:"door",dana:"lotus",party:"gift box"})[k]||"envelope"} opening screen when the link opens</li><li>Date, ${k==="wedding"?"poruwa nekath, reception, ":""}map and reply form</li><li>WhatsApp message in Sinhala, Singlish or English</li>${t?`<li>Optional: our team can change the photos and colours for you</li>`:""}${k==="wedding"?`<li>Jayamangala gatha plays as the card opens</li>`:""}</ul>
+        <ul class="dt-list">${(()=>{const W=k==="wedding",n=T.name.toLowerCase(),op=({wedding:"Magul Pahana",birthday:"birthday cake",homecoming:"door",dana:"lotus",party:"gift box"})[k]||"envelope";return [
+          ["Personalised Guest Invitations",`Each guest's name will be individually included on the invitation (e.g., <i>&quot;Dear Nimal Uncle&quot;</i>).`],
+          [W?"Traditional Opening Screen":"Opening Screen",`A beautifully designed ${op} opening screen displayed when guests access the invitation link.`],
+          [`${T.name} Details`,W?"Complete information, including the wedding date, Poruwa ceremony (Poruwa Nekath), reception details, location map, and RSVP form.":`Complete information, including the ${n} date, time, venue, location map, and RSVP form.`],
+          ["WhatsApp Invitation Message","A customised invitation message available in Sinhala, Singlish, or English."],
+          t?["Photo and Colour Customisation",`Our team can personalise the photographs and colour scheme to match your preferred ${n} theme (optional).`]:null,
+          W?["Traditional Wedding Music","The Jayamangala Gatha will play automatically when guests open the invitation."]:null
+        ].filter(Boolean).map(([h,d])=>`<li><b>${h}:</b> ${d}</li>`).join("")})()}</ul>
         <div class="dt-acts">${lpNakath("md",{tag:"button",attrs:`type="button" data-use="${k}:${i}"`,si:"මෙම කාඩ්පත තෝරන්න",en:"Use this design"})}
           <button type="button" class="lp-hghost" data-dprev="${k}:${i}">Open it like a guest</button></div>
       </div></div></section>`;

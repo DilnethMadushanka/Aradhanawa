@@ -32,13 +32,19 @@ export function plansFrom(c) {
   ];
 }
 /* A plan id picks that plan. Without one (older pages), the first plan of the kind is used. Hidden plans can't be bought. */
-export async function planFor({ plan, kind } = {}) {
+/* Admin → Templates can give one design its own customising price (config.DESIGN_PRICES, keyed by design name).
+ * It applies when a named design is bought with the main Custom design plan; other custom plans keep their price. */
+export async function planFor({ plan, kind, design } = {}) {
   let c = {};
   try { const s = await db().doc("settings/site").get(); c = (s.exists && s.data().config) || {} }
   catch (e) { console.warn("[pay] settings", e.message) }
   const on = plansFrom(c).filter(p => p.on);
   const p = plan ? on.find(x => x.id === String(plan)) : on.find(x => x.kind === kind);
-  return p ? { ...p, label: p.price, cents: toCents(p.price) } : null;
+  if (!p) return null;
+  const mainCustom = on.find(x => x.kind === "custom");
+  const dp = c.DESIGN_PRICES && typeof c.DESIGN_PRICES === "object" && design ? c.DESIGN_PRICES[String(design)] : "";
+  const price = p.kind === "custom" && p === mainCustom && toCents(dp) ? str(dp, 40) : p.price;
+  return { ...p, price, label: price, cents: toCents(price) };
 }
 export async function priceFor(kind) {
   const p = await planFor({ kind });
@@ -55,7 +61,7 @@ export async function userFromRequest(req) {
 export async function startCheckout(user, body) {
   body = body || {};
   if (!body.plan && !KINDS.includes(body.kind)) throw fail(400, "Unknown product.");
-  const plan = await planFor({ plan: body.plan, kind: body.kind });
+  const plan = await planFor({ plan: body.plan, kind: body.kind, design: str(body.design, 120) });
   if (!plan) throw fail(400, "This price plan is not available any more. Please refresh the page.");
   const { kind, label, cents } = plan;
   if (!cents) throw fail(500, "Price is not set.");

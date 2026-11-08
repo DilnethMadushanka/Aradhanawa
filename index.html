@@ -330,6 +330,10 @@ footer.foot{border-top:1px solid var(--line);padding-block:22px;color:var(--mute
 .site .s-step output{font-family:var(--f-display);font-size:34px;font-weight:800;min-width:2ch;text-align:center;color:var(--c-gold)}
 .site .s-foot{padding:26px 22px 100px;text-align:center;font-size:12.5px;color:var(--c-soft)}
 .site .s-foot a{color:var(--c-gold)}
+.site .s-buy{margin:0 auto 22px;max-width:340px;padding:20px 18px;border:1px solid color-mix(in srgb,var(--c-gold) 55%,transparent);border-radius:16px;background:color-mix(in srgb,var(--c-bg) 88%,#fff);display:grid;gap:6px;justify-items:center;color:var(--c-ink)}
+.site .s-buy b{font-size:16px}
+.site .s-buy span{font-size:13px;color:var(--c-soft)}
+.site .s-buy .s-btn{margin-top:8px;color:var(--c-bg)}
 .site .snav{position:sticky;bottom:calc(14px + env(safe-area-inset-bottom,0px));margin:-80px auto 18px;width:max-content;display:flex;gap:4px;padding:6px;border-radius:999px;background:var(--c-ink);box-shadow:0 10px 30px -10px rgba(0,0,0,.55);z-index:5}
 .site .snav button{width:42px;height:42px;border-radius:50%;border:0;background:transparent;color:var(--c-bg);display:grid;place-items:center;cursor:pointer}
 .site .snav button svg{width:19px;height:19px}
@@ -2186,7 +2190,7 @@ function lxSite(type, ev, lang, guest, prem, gallery, base){
     <p class="s-p">${type==="wedding"?L(`request the honour of your presence at the marriage of <b>${nm2}</b>.`,`<b>${nm2}</b> ගේ විවාහ මංගල්‍යයට ඔබගේ පැමිණීම ගෞරවයෙන් ඉල්ලා සිටිමු.`):L(`invite you to celebrate with <b>${nm2}</b>.`,`<b>${nm2}</b> සමඟ සතුට බෙදාගන්න ඔබට ආරාධනා කරමු.`)}</p>`:`<p class="s-p">${type==="wedding"?L(`We joyfully invite you to celebrate the marriage of <b>${nm2}</b>.`,`<b>${nm2}</b> ගේ විවාහ මංගල්‍යයට ඔබට සාදරයෙන් ආරාධනා කරමු.`):L(`We joyfully invite you to celebrate with <b>${nm2}</b>.`,`<b>${nm2}</b> සමඟ සතුට බෙදාගන්න ඔබට ආරාධනා කරමු.`)}</p>`}
     ${D?`<p class="lx-date">${esc(D)}</p>`:""}
   </section>
-  ${lxRest(type,ev,lang,base)}
+  ${lxRest(type,ev,lang,{...base,prem})}
   ${fabs}
 </div>`;
 }
@@ -2220,6 +2224,12 @@ function lxVenueArt(church,src){
     : `<path d="M60 150V66h160v84"/><path d="M52 66h176M60 58h160l-10-12H70z"/><path d="M80 66v84M100 66v84M120 66v84M160 66v84M180 66v84M200 66v84"/><path d="M128 150v-30h24v30"/><path d="M118 46l22-22 22 22"/><path d="M40 150h200"/>`;
   return `<svg class="lx-vart" viewBox="0 0 280 160" aria-hidden="true"><g ${g}>${body}${palm(34)}${palm(250)}<path d="M20 152c40-6 80 6 120 0s80-6 120 0" opacity=".6"/></g></svg>`;
 }
+/* Footer box on every guest card: lets a guest get the same design for their own event. */
+function buyCTA(type,prem,L){
+  const list=(PREMIUM[type]||[]), i=prem&&prem.n?list.findIndex(x=>x.n===prem.n)+1:0;
+  const href=CONFIG.SITE.split("#")[0]+"#design/"+type+"/"+Math.max(0,i);
+  return `<div class="s-buy"><b>${L("Love this invitation?","මෙම ආරාධනාවට කැමතිද?")}</b><span>${L("Get this card for your own event","ඔබේ උත්සවයටත් මෙම කාඩ්පත ලබා ගන්න")}</span><a class="s-btn" href="${esc(href)}" target="_blank" rel="noopener">${L("Get this card","මෙම කාඩ්පත ගන්න")}</a></div>`;
+}
 function lxRest(type,ev,lang,base){
   const si=lang==="si", L=(e,s)=>si?s:e, id=base.id, list=lxEvents(type,ev,L);
   const first=(type==="wedding"?(ev.church||ev.nekath||ev.time):ev.time)||"00:00";
@@ -2252,7 +2262,7 @@ function lxRest(type,ev,lang,base){
   ${gal.replace('class="s-sec"','class="s-sec lx-plain"').replace(/<h2 class="s-h">[^<]*<\/h2>/,`<h2 class="s-h">${L("Our gallery","අපගේ ඡායාරූප")}</h2>`)}
   ${vs.length?`<section class="s-sec lx-plain" id="${id}-loc"><span class="s-eb">${L("The setting","උත්සව ස්ථානය")}</span><h2 class="s-h">${type==="wedding"?L("Wedding venue","මංගල ස්ථානය"):L("Venue","ස්ථානය")}</h2>${heart}${venues}</section>`:""}
   ${rsvp.replace('class="s-sec"','class="s-sec lx-plain lx-rsvp"').replace('<span class="s-eb">RSVP</span>',`<span class="s-eb">${L("Kindly reply","කරුණාකර දන්වන්න")}</span>`).replace(L("Joyfully yes","සතුටින් එනවා"),L("Joyfully accept","සතුටින් එනවා")).replace(L("Sorry, can't","එන්න බැහැ"),L("Regretfully decline","කණගාටුයි, එන්න බැහැ")).replace(/(<form class="s-form")/,`<p class="s-p">${L("We joyfully await your presence. Please let us know if you will be joining us.","ඔබගේ පැමිණීම සතුටින් බලාපොරොත්තු වෙමු.")}</p>$1`)}
-  <footer class="s-foot">${L("Made with","නිර්මාණය")} <a href="${CONFIG.SITE.split("#")[0]}" target="_blank" rel="noopener">Aradhanawa.com</a>${MUSIC_CREDIT[musicFor(type)]?`<br><small>${L("Music","සංගීතය")}: ${MUSIC_CREDIT[musicFor(type)]}</small>`:""}</footer>`;
+  <footer class="s-foot">${buyCTA(type,base.prem,L)}${L("Made with","නිර්මාණය")} <a href="${CONFIG.SITE.split("#")[0]}" target="_blank" rel="noopener">Aradhanawa.com</a>${MUSIC_CREDIT[musicFor(type)]?`<br><small>${L("Music","සංගීතය")}: ${MUSIC_CREDIT[musicFor(type)]}</small>`:""}</footer>`;
 }
 
 const corner = c => `<svg class="corner %POS%" viewBox="0 0 42 42" aria-hidden="true"><path d="M4 38V14Q4 4 14 4H38" fill="none" stroke="${c}" stroke-width="1.4"/><path d="M10 30Q10 10 30 10" fill="none" stroke="${c}" stroke-width="1" opacity=".6"/><circle cx="10" cy="10" r="2.6" fill="${c}"/><path d="M16 16q6-2 8 4q-6 2-8-4z" fill="${c}" opacity=".8"/></svg>`;
@@ -3217,7 +3227,7 @@ function siteHTML(type, ev, lang, guest, prem, gallery){
     </form>
   </section>`:""}
 
-  <footer class="s-foot">${L("Made with","නිර්මාණය")} <a href="${CONFIG.SITE.split("#")[0]}" target="_blank" rel="noopener">Aradhanawa.com</a></footer>
+  <footer class="s-foot">${buyCTA(type,prem,L)}${L("Made with","නිර්මාණය")} <a href="${CONFIG.SITE.split("#")[0]}" target="_blank" rel="noopener">Aradhanawa.com</a></footer>
   <nav class="snav" aria-label="${L("Invitation sections","කොටස්")}">${sections.map(([k,ic,lb],i)=>`<button type="button" data-go="${id}-${k}" aria-label="${lb}" ${i===0?'aria-current="true"':""}>${ic}</button>`).join("")}${musicFor(type)?`<button type="button" class="s-mus" data-music aria-pressed="true" aria-label="${L("Play or mute music","සංගීතය වාදනය / නවත්වන්න")}"><svg class="m-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg><svg class="m-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg></button>`:""}</nav>
 </div>`;
   if(prem&&LX_TH[prem.site]){ lxCSS(); const a=html.indexOf(`<section class="s-sec" id="${id}-date">`), b=html.indexOf(`<nav class="snav"`); const secs=[...sections]; secs.splice(1,0,["details",I.eye,L("Details","විස්තර")]); return lxSite(type,ev,lang,guest,prem,gallery,{id,th:prem.site,sections:secs,rest:html.slice(a,b)}) }
@@ -3258,7 +3268,9 @@ function initSites(scope){
 }
 function tick(){
   document.querySelectorAll("[data-t]").forEach(el=>{
-    let ms=new Date(el.dataset.t)-new Date(); if(isNaN(ms)||ms<0) ms=0;
+    let ms=new Date(el.dataset.t)-new Date(); if(isNaN(ms)) ms=0;
+    // once the day has passed, hide the boxes so guests don't see a stuck 0 00 00 00
+    if(el.classList.contains("s-cd")) el.hidden=ms<0; if(ms<0) ms=0;
     const v={d:Math.floor(ms/864e5),h:Math.floor(ms/36e5)%24,m:Math.floor(ms/6e4)%60,s:Math.floor(ms/1e3)%60};
     el.querySelectorAll("[data-u]").forEach(b=>{b.textContent=String(v[b.dataset.u]).padStart(b.dataset.u==="d"?1:2,"0")});
   });

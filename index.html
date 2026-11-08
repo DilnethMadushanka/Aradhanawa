@@ -1895,6 +1895,7 @@ const planById = id => livePlans().find(p=>p.id===id)||null;
 /* Price for customising one design (Admin → Templates). CONFIG.DESIGN_PRICES maps the design name to a price;
  * an empty or missing price means the main Custom design plan's price. The payment API reads the same map. */
 const customBase = () => { const p=mainPlan("custom"); return p?p.price:CONFIG.PRICE_CUSTOM };
+const setPrice = name => { const v=name&&CONFIG.DESIGN_PRICES&&CONFIG.DESIGN_PRICES[name]; return v&&/\d/.test(v)?String(v):"" };   // only a price set for this design
 const designPrice = name => { const v=name&&CONFIG.DESIGN_PRICES&&CONFIG.DESIGN_PRICES[name]; return v&&/\d/.test(v)?String(v):customBase() };
 
 /* ================= SVG ART ================= */
@@ -2848,7 +2849,7 @@ function render(){
         <div class="phead"><div><span class="eyebrow">Step 2</span><h2 id="h-tpl">Choose a design</h2><p class="sub">Tap a design to preview it with your details. Every design is free, and the one you pick is what your guests see. Want your own photos and colours? Our team can customise it.</p></div></div>
         <div class="tpls" data-ui>
           <button class="tpl" data-tpl="0" ${hasTh(S.type)?"hidden":""} aria-pressed="${!tplOf(S.type)}"><div class="sw t-${S.type}" style="background:var(--c-bg)">${T.art()}</div><div class="nm">${T.tpl}<span class="pill free">Free</span></div></button>
-          ${PREMIUM[S.type].map((t,i)=>{ const own=ownsDesign(S.type,t); return `<button class="tpl ${own?"owned":""}" data-tpl="${i+1}" ${tplOff().includes(S.type+":"+(i+1))&&!own?"hidden":""} aria-pressed="${tplOf(S.type)===i+1}"><div class="sw t-${S.type}" style="${tplVars(t)}background:${t.bg}">${t.img?pic(t.img,"160px",t.n,t.pos):premArt(S.type,t,ev)}</div><div class="nm">${esc(t.n)}${own?`<span class="pill free">Yours</span>`:`<span class="pill free">Free</span>`}</div></button>` }).join("")}
+          ${PREMIUM[S.type].map((t,i)=>{ const own=ownsDesign(S.type,t); return `<button class="tpl ${own?"owned":""}" data-tpl="${i+1}" ${tplOff().includes(S.type+":"+(i+1))&&!own?"hidden":""} aria-pressed="${tplOf(S.type)===i+1}"><div class="sw t-${S.type}" style="${tplVars(t)}background:${t.bg}">${t.img?pic(t.img,"160px",t.n,t.pos):premArt(S.type,t,ev)}</div><div class="nm">${esc(t.n)}${own?`<span class="pill free">Yours</span>`:`<span class="pill free">${esc(setPrice(t.n)||"Free")}</span>`}</div></button>` }).join("")}
         </div>
       </section>
 
@@ -3078,7 +3079,7 @@ function designItems(filter){
     if(filter&&filter!=="all"&&filter!=="feat"&&filter!==k) continue;
     const ev=T.sample;
     if(!hasTh(k)) out.push(`<button class="lp-tile" data-pick="${k}:0"><div class="pv" data-ui>${cardHTML(k,ev,"en","",null)}</div><div class="strip"><b>${T.tpl}</b><span class="free">${T.name} · Free</span></div></button>`);
-    PREMIUM[k].forEach((t,i)=>{ if(!t.img&&!t.layout) return; if(tplOff().includes(k+":"+(i+1))) return; out.push(`<button class="lp-tile" data-pick="${k}:${i+1}"><div class="pv" data-ui>${cardHTML(k,ev,"en","",{...t,_noribbon:1})}</div><div class="strip"><b>${esc(t.n)}</b><span class="free">${T.name} · Free</span></div></button>`) });
+    PREMIUM[k].forEach((t,i)=>{ if(!t.img&&!t.layout) return; if(tplOff().includes(k+":"+(i+1))) return; out.push(`<button class="lp-tile" data-pick="${k}:${i+1}"><div class="pv" data-ui>${cardHTML(k,ev,"en","",{...t,_noribbon:1})}</div><div class="strip"><b>${esc(t.n)}</b><span class="free">${T.name} · ${esc(setPrice(t.n)||"Free")}</span></div></button>`) });
   }
   if(filter==="feat"){ const pickN=(k,n)=>out.filter(x=>x.includes(`data-pick="${k}:`)).slice(0,n); return [...pickN("wedding",4),...pickN("birthday",1),...pickN("homecoming",1),...pickN("dana",1),...pickN("party",1)].join("") }
   return out.join("");

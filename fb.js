@@ -150,7 +150,7 @@ export async function init(cfg, hooks = {}) {
   FBX.setOrderStatus = async (id, status) => {
     await F.updateDoc(F.doc(db, "orders", id), { status, updated: now() });
     const o = FBX.data.orders.find(x => x.id === id);
-    if (!o || (o.kind !== "plus" && o.kind !== "custom")) return;
+    if (!o || !["plus", "custom", "template"].includes(o.kind)) return;
     const uid = plusUid(o); if (!uid) return;
     const pid = `${uid}_${o.type || "other"}`;
     if (unlocksGuests({ ...o, status })) return F.setDoc(F.doc(db, "plus", pid), { uid, type: o.type || "other", orderId: id, updated: now() });
@@ -162,7 +162,7 @@ export async function init(cfg, hooks = {}) {
    * plus/{uid_type} exists. Paid orders get it from api/pay/*. For orders an admin marked Done by hand (or that
    * were finished before this existed), the admin dashboard writes the missing ones. It only ever adds. */
   /* Unlimited guests come with a finished Plus order, or with a bought template (a custom order that is paid or Done). */
-  const unlocksGuests = o => (o.kind === "plus" && o.status === "Done") || (o.kind === "custom" && (o.paid === true || o.status === "Done"));
+  const unlocksGuests = o => ((o.kind === "plus" || o.kind === "template") && o.status === "Done") || (o.kind === "custom" && (o.paid === true || o.status === "Done"));
   const plusUid = o => o.uid || ((FBX.data.users.find(u => o.email && String(u.email || "").toLowerCase() === String(o.email).toLowerCase()) || {}).id) || "";
   let syncT = null;
   function queueSyncPlus() {

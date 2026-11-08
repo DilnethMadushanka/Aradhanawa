@@ -7,6 +7,11 @@ export const TYPES = ["wedding", "homecoming", "birthday", "party", "dana", "oth
 const DEFAULT_PRICE = { plus: "Rs. 990", custom: "Rs. 4,900" };
 export const KINDS = ["plus", "custom", "service"];   // what a plan unlocks: unlimited guests, a custom design, or a service the studio fulfils
 export const ST = { AWAIT: "Awaiting payment", FAILED: "Payment failed" };
+/* The "Customize card" tile: our designer makes a card from scratch. Its price is CUSTOM_CARD_PRICE (default below),
+ * or a DESIGN_PRICES entry with this name. Any other design name bought with the main Custom design plan is a ready-made
+ * web template: it is recorded as kind "template", finished at once, and needs nothing from the studio. */
+export const CUSTOM_CARD = "Customize card";
+const CUSTOM_CARD_PRICE = "Rs. 15,000";
 
 const now = () => new Date().toISOString();
 const str = (v, max) => String(v == null ? "" : v).trim().slice(0, max);
@@ -42,9 +47,10 @@ export async function planFor({ plan, kind, design } = {}) {
   const p = plan ? on.find(x => x.id === String(plan)) : on.find(x => x.kind === kind);
   if (!p) return null;
   const mainCustom = on.find(x => x.kind === "custom");
-  const dp = c.DESIGN_PRICES && typeof c.DESIGN_PRICES === "object" && design ? c.DESIGN_PRICES[String(design)] : "";
+  let dp = c.DESIGN_PRICES && typeof c.DESIGN_PRICES === "object" && design ? c.DESIGN_PRICES[String(design)] : "";
+  if (String(design || "") === CUSTOM_CARD && !toCents(dp)) dp = toCents(c.CUSTOM_CARD_PRICE) ? c.CUSTOM_CARD_PRICE : CUSTOM_CARD_PRICE;
   const price = p.kind === "custom" && p === mainCustom && toCents(dp) ? str(dp, 40) : p.price;
-  return { ...p, price, label: price, cents: toCents(price) };
+  return { ...p, price, label: price, cents: toCents(price), main: p === mainCustom };
 }
 export async function priceFor(kind) {
   const p = await planFor({ kind });
@@ -63,10 +69,11 @@ export async function startCheckout(user, body) {
   if (!body.plan && !KINDS.includes(body.kind)) throw fail(400, "Unknown product.");
   const plan = await planFor({ plan: body.plan, kind: body.kind, design: str(body.design, 120) });
   if (!plan) throw fail(400, "This price plan is not available any more. Please refresh the page.");
-  const { kind, label, cents } = plan;
+  const { label, cents } = plan;
   if (!cents) throw fail(500, "Price is not set.");
   const type = TYPES.includes(body.type) ? body.type : "other";
-  const design = (kind === "custom" && str(body.design, 120)) || plan.name;
+  const design = (plan.kind === "custom" && str(body.design, 120)) || plan.name;
+  const kind = plan.kind === "custom" && plan.main && design !== plan.name && design !== CUSTOM_CARD ? "template" : plan.kind;
 
   const prof = (await db().doc(`users/${user.uid}`).get()).data() || {};
   const ref = db().collection("orders").doc();
@@ -120,13 +127,13 @@ export async function settle(orderId) {
   if (PAID_STATES.includes(state) && amountOk && currencyOk && localOk) {
     const upd = {
       paid: true, paidAt: now(), payState: state, updated: now(),
-      // Plus is ready at once. A custom design or a service still needs the studio, so the admin marks it Done later.
-      status: o.kind === "plus" ? "Done" : "In progress",
+      // Plus and a ready-made template are ready at once. A custom design or a service still needs the studio, so the admin marks it Done later.
+      status: o.kind === "plus" || o.kind === "template" ? "Done" : "In progress",
     };
     await ref.update(upd);
     // Lets firestore.rules accept more than the free number of guests on this function's invitation.
     // Buying a template (a custom design) unlocks every guest too, the same as Plus.
-    if ((o.kind === "plus" || o.kind === "custom") && o.uid) {
+    if ((o.kind === "plus" || o.kind === "custom" || o.kind === "template") && o.uid) {
       const type = o.type || "other";
       await db().doc(`plus/${o.uid}_${type}`).set({ uid: o.uid, type, orderId: ref.id, updated: now() })
         .catch(e => console.error("[pay] plus doc", ref.id, e));

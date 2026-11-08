@@ -3049,7 +3049,7 @@ function bind(){
   $$("[data-gdel]").forEach(b=>b.onclick=()=>{S.guests.splice(+b.dataset.gdel,1); save(); render()});
   $$("[data-glink]").forEach(b=>b.onclick=async()=>copy(await copyInvite(S.guests[+b.dataset.glink].name)));
   $$("[data-gprev]").forEach(b=>b.onclick=()=>guestPreview(S.guests[+b.dataset.gprev].name));
-  $$("[data-tpl]").forEach(b=>b.onclick=()=>{ S.tpl[S.type]=+b.dataset.tpl; save(); $$("[data-tpl]").forEach(x=>x.setAttribute("aria-pressed",x===b)); refreshLive(); if(matchMedia("(max-width:920px)").matches) document.getElementById("cardSlot").scrollIntoView({behavior:"smooth",block:"center"}) });
+  $$("[data-tpl]").forEach(b=>b.onclick=()=>{ S.tpl[S.type]=+b.dataset.tpl; save(); $$("[data-tpl]").forEach(x=>x.setAttribute("aria-pressed",x===b)); refreshLive(); if(matchMedia("(max-width:920px)").matches){ const d=document.getElementById("h-det"), p=d&&d.closest(".panel"); if(p){ const hd=document.querySelector(".lp-nav,header.top"), off=(hd?hd.getBoundingClientRect().bottom:0)+8; scrollTo({top:p.getBoundingClientRect().top+scrollY-off,behavior:"smooth"}) } } });
   $("#reqPrem").onclick=()=>{ const p=curPrem(); p&&customReq(p.n) };
   $("#buyPrem").onclick=e=>{ const p=curPrem(); p&&payNow("custom",p.n,e.currentTarget) };
   $$("[data-upgrade]").forEach(b=>b.onclick=()=>b.dataset.upgrade==="plus"?upsell(true):customReq(""));

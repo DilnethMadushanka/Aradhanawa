@@ -3011,12 +3011,12 @@ function ownsDesign(type,t){
     && String(o.design||"").trim().toLowerCase()===n
     && ((FB_ON()&&o.uid===u.id) || (!!em&&String(o.email||"").toLowerCase()===em)));
 }
-/* Plus lifts the guest limit: admin-given plan, or a paid Plus order for this function. */
+/* Plus lifts the guest limit: admin-given plan, a paid Plus order, or a bought template (custom order) for this function. */
 function hasPlus(type){
   const u=me(); if(!u) return false;
   if(u.role==="admin"||u.plan==="Plus"||u.plan==="Staff") return true;
   const em=String(u.email||"").toLowerCase();
-  return DB.orders().some(o=>o.kind==="plus" && o.status==="Done" && o.type===type
+  return DB.orders().some(o=>((o.kind==="plus" && o.status==="Done") || (o.kind==="custom" && (o.paid===true || o.status==="Done"))) && o.type===type
     && ((FB_ON()&&o.uid===u.id) || (!!em&&String(o.email||"").toLowerCase()===em)));
 }
 const curPrem = () => { const i=tplOf(S.type); return i ? PREMIUM[S.type][i-1] || PREMIUM[S.type][0] || null : null };
@@ -3124,6 +3124,16 @@ function buyPlan(id){
     <p class="note">Secure payment through Dialog Genie. We'll contact you on WhatsApp after you pay.</p>`);
 }
 function upsell(direct,plan){
+  // On a paid template, the guest-limit popup sells that template at its own price (Admin → Templates); buying it unlocks every guest.
+  const prem=!direct&&!plan?curPrem():null, mc=prem&&mainPlan("custom");
+  if(prem&&mc&&!ownsDesign(S.type,prem)){
+    const tp=designPrice(prem.n), ttxt=`Hi Aradhanawa! I'd like the "${prem.n}" design (${tp}) for my ${TYPES[S.type].name.toLowerCase()} invitation (${cur().date||""}).`;
+    return modal(`<span class="eyebrow">Free limit reached</span>
+    <h3>You've shared with ${CONFIG.FREE_GUESTS} guests</h3>
+    <p>The free plan covers ${CONFIG.FREE_GUESTS} personal links. Get the ${esc(prem.n)} design for ${esc(tp)} to send to everyone, see who's coming, and have our team customise it with your photos.</p>
+    <div class="row" style="justify-content:flex-end;margin-top:6px"><button class="btn" data-x>Not now</button><button class="btn primary" data-pay="custom|${esc(prem.n)}|${esc(mc.id)}">Pay ${esc(tp)}</button></div>
+    <p class="note">Secure payment through Dialog Genie. Prefer to talk first? <a target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,ttxt)}">Ask us on WhatsApp</a>. You can still copy the main invite link and paste it into a WhatsApp group.</p>`);
+  }
   const p=plan||mainPlan("plus"), price=p?p.price:CONFIG.PRICE_PLUS;
   const txt=`Hi Aradhanawa! I'd like Aradhanawa Plus for my ${TYPES[S.type].name.toLowerCase()} invitation (${cur().date||""}).`;
   modal(`<span class="eyebrow">${direct?"Aradhanawa Plus":"Free limit reached"}</span>

@@ -125,7 +125,8 @@ export async function settle(orderId) {
     };
     await ref.update(upd);
     // Lets firestore.rules accept more than the free number of guests on this function's invitation.
-    if (o.kind === "plus" && o.uid) {
+    // Buying a template (a custom design) unlocks every guest too, the same as Plus.
+    if ((o.kind === "plus" || o.kind === "custom") && o.uid) {
       const type = o.type || "other";
       await db().doc(`plus/${o.uid}_${type}`).set({ uid: o.uid, type, orderId: ref.id, updated: now() })
         .catch(e => console.error("[pay] plus doc", ref.id, e));

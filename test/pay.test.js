@@ -111,6 +111,8 @@ test("custom design: webhook settles to In progress; amount mismatch never pays"
   assert.equal(res.body.result, "paid");
   const o = store.get("orders/" + id);
   assert.equal(o.status, "In progress"); assert.equal(o.design, "Confetti Pop");
+  // a bought template unlocks every guest for that function, like Plus
+  assert.deepEqual({ ...store.get("plus/u1_birthday"), updated: 0 }, { uid: "u1", type: "birthday", orderId: id, updated: 0 });
 });
 
 test("failed payment is recorded; bad ids are ignored", async () => {

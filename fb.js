@@ -150,17 +150,19 @@ export async function init(cfg, hooks = {}) {
   FBX.setOrderStatus = async (id, status) => {
     await F.updateDoc(F.doc(db, "orders", id), { status, updated: now() });
     const o = FBX.data.orders.find(x => x.id === id);
-    if (!o || o.kind !== "plus") return;
+    if (!o || (o.kind !== "plus" && o.kind !== "custom")) return;
     const uid = plusUid(o); if (!uid) return;
     const pid = `${uid}_${o.type || "other"}`;
-    if (status === "Done") return F.setDoc(F.doc(db, "plus", pid), { uid, type: o.type || "other", orderId: id, updated: now() });
+    if (unlocksGuests({ ...o, status })) return F.setDoc(F.doc(db, "plus", pid), { uid, type: o.type || "other", orderId: id, updated: now() });
     // Taken off Done: remove Plus unless another finished Plus order covers the same function.
-    const other = FBX.data.orders.some(x => x.id !== id && x.kind === "plus" && x.status === "Done" && (x.type || "other") === (o.type || "other") && plusUid(x) === uid);
+    const other = FBX.data.orders.some(x => x.id !== id && unlocksGuests(x) && (x.type || "other") === (o.type || "other") && plusUid(x) === uid);
     if (!other) return F.deleteDoc(F.doc(db, "plus", pid)).catch(() => {});
   };
   /* Server-side guest limit: firestore.rules lets an invitation hold more than FREE_GUESTS guests only when
    * plus/{uid_type} exists. Paid orders get it from api/pay/*. For orders an admin marked Done by hand (or that
    * were finished before this existed), the admin dashboard writes the missing ones. It only ever adds. */
+  /* Unlimited guests come with a finished Plus order, or with a bought template (a custom order that is paid or Done). */
+  const unlocksGuests = o => (o.kind === "plus" && o.status === "Done") || (o.kind === "custom" && (o.paid === true || o.status === "Done"));
   const plusUid = o => o.uid || ((FBX.data.users.find(u => o.email && String(u.email || "").toLowerCase() === String(o.email).toLowerCase()) || {}).id) || "";
   let syncT = null;
   function queueSyncPlus() {
@@ -169,7 +171,7 @@ export async function init(cfg, hooks = {}) {
     syncT = setTimeout(() => {
       const have = new Set(FBX.data.plus.map(p => p.id));
       for (const o of FBX.data.orders) {
-        if (o.kind !== "plus" || o.status !== "Done") continue;
+        if (!unlocksGuests(o)) continue;
         const uid = plusUid(o); if (!uid) continue;
         const pid = `${uid}_${o.type || "other"}`;
         if (have.has(pid)) continue;

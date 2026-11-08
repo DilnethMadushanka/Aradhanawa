@@ -3258,7 +3258,9 @@ function initSites(scope){
 }
 function tick(){
   document.querySelectorAll("[data-t]").forEach(el=>{
-    let ms=new Date(el.dataset.t)-new Date(); if(isNaN(ms)||ms<0) ms=0;
+    let ms=new Date(el.dataset.t)-new Date(); if(isNaN(ms)) ms=0;
+    // once the day has passed, hide the boxes so guests don't see a stuck 0 00 00 00
+    if(el.classList.contains("s-cd")) el.hidden=ms<0; if(ms<0) ms=0;
     const v={d:Math.floor(ms/864e5),h:Math.floor(ms/36e5)%24,m:Math.floor(ms/6e4)%60,s:Math.floor(ms/1e3)%60};
     el.querySelectorAll("[data-u]").forEach(b=>{b.textContent=String(v[b.dataset.u]).padStart(b.dataset.u==="d"?1:2,"0")});
   });

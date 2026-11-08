@@ -88,3 +88,64 @@ Square app icon for "Aradhanawa". A gold line-art lotus sitting inside a soft ar
 Typographic logo of the Sinhala word "ආරාධනාව", hand-lettered in a bold, elegant calligraphic style inspired by traditional ola-leaf script. Deep ink green #1D2A24 letters with one small gold #C29A55 lotus bud dotting the final letter. Flat vector, centered, ivory #FBF8F2 background, no other text.
 
 Tips: generate on a plain background, then trace to SVG (Illustrator Image Trace or vectorizer.ai). AI tools often misspell Sinhala, so if letters come out wrong, generate the emblem only and type "ආරාධනාව" yourself in Noto Serif Sinhala Bold.
+
+---
+
+## Halloween designs (Pumpkin Patch, Haunted Night)
+
+Danata `img/` eke thiyenne me prompts walin hadapu AI images. Aluth ewa danawanam AI eken hadala **same file name ekata** `img/` ekata save karanna (WebP, size eka pahala thiyenawa). Transparent kiyala image eke checkerboard ekak (kotu) pennuwoth `python3 scripts/strip_checker.py in.jpg img/th-pumpkin-l.webp 900 1612` run karanna, eken kotu tika ain wenawa. Side art eka image eke palalen 30% ta wada nam text eka uda wahenawa, eka nisa art eka podi karanna. Card image eka save kalata passe `python3 scripts/card_sides.py th-pumpkin-card th-haunted-card` run karanna: eken 480 size ekai, card eke hollana side strips (`cardl`, `cardr`) dekai hadenawa.
+Hama prompt ekakatama anthimata: `no text, no letters, no watermark, no logos`. Gory dewal epa, cute-spooky widihata.
+
+### Pumpkin Patch (light, autumn)
+
+**`th-pumpkin-card-960.webp`** (960 x 1383, 9:13) — card background, meda kotasa his
+```
+Portrait Halloween invitation card background, warm cream paper texture, a cluster of glossy orange and white pumpkins with green curly vines in both lower corners, red and golden autumn maple leaves scattered in the top corners, the whole middle area plain cream and empty for text, soft watercolour illustration, cosy autumn mood, 9:13
+```
+
+**`th-pumpkin-bg.webp`** (900 x 1612, 9:16) — guest site background
+```
+Seamless soft cream paper background with a very faint pattern of tiny autumn maple leaves in pale orange, thin burnt-orange double border line, minimal, lots of empty space, watercolour texture, 9:16
+```
+
+**`th-pumpkin-l.webp`** (900 x 1612, transparent PNG/WebP) — left side art (right side eka `th-pumpkin-r.webp`, mirror karala save karanna)
+```
+A hanging pumpkin vine with orange, red and golden autumn maple leaves and curly tendrils running down the left edge, a pile of orange and white pumpkins at the bottom left corner, watercolour illustration, isolated on a transparent background, everything kept inside the left third of the image, 9:16
+```
+
+**`th-pumpkin-hero-960.webp`** (960 x 717, 4:3) — guest site eke photo eka
+```
+Cosy Halloween pumpkin patch at golden hour, a hay bale stacked with glowing carved jack-o'-lanterns and white pumpkins, warm string lights above, falling autumn leaves, small candles, soft orange sunset sky, warm watercolour illustration, 4:3
+```
+
+**`th-pumpkin-venue.webp`** (900 x 672, 4:3) — venue line art
+```
+Fine single-colour line drawing of a cosy country house with a pitched roof and a round window, a few pumpkins by the door, burnt orange ink on cream paper, minimal architectural sketch, lots of white space, 4:3
+```
+
+### Haunted Night (dark, spooky)
+
+**`th-haunted-card-960.webp`** (960 x 1383, 9:13) — card background, meda kotasa his
+```
+Portrait spooky Halloween invitation card background, deep purple night sky with stars, a glowing full moon in the top right, a spider web in the top left corner, small black bats flying, glowing jack-o'-lanterns, iron fence and tombstones silhouetted along the bottom with low purple mist, the middle area dark and empty for text, cute not gory, digital illustration, 9:13
+```
+
+**`th-haunted-bg.webp`** (900 x 1612, 9:16) — guest site background
+```
+Deep purple to indigo night sky with tiny stars, delicate spider webs in both top corners, a few small bat silhouettes, soft lavender mist at the very bottom, mostly empty dark space, digital painting, 9:16
+```
+
+**`th-haunted-l.webp`** (900 x 1612, transparent) — left side art (right side eka `th-haunted-r.webp`, mirror karala)
+```
+A spider web with a small spider in the top left corner, black bats flying down the left edge, two cute translucent ghosts, a tombstone and glowing carved jack-o'-lanterns at the bottom left, isolated on a transparent background, everything kept inside the left third of the image, cute spooky illustration, 9:16
+```
+
+**`th-haunted-hero-960.webp`** (960 x 717, 4:3) — guest site eke photo eka
+```
+A haunted Victorian mansion on a hill under a huge glowing full moon, warm yellow windows, bats flying, a bare twisted tree, purple mist rolling over tombstones, glowing jack-o'-lanterns in the foreground, a small friendly ghost, cute spooky storybook illustration, deep purple and orange palette, 4:3
+```
+
+**`th-haunted-venue.webp`** (900 x 672, 4:3) — venue line art
+```
+Fine single-colour line drawing of a gothic haunted house with pointed arched windows, an iron fence on both sides, a crescent moon and three small bats, violet ink on pale lavender paper, minimal architectural sketch, lots of white space, 4:3
+```

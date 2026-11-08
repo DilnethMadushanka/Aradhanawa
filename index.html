@@ -649,6 +649,17 @@ footer.foot{border-top:1px solid var(--line);padding-block:22px;color:var(--mute
 @keyframes glflame{to{transform:scale(1);opacity:1}}
 @keyframes glflick{from{transform:scale(1,1) skewX(-3deg)}to{transform:scale(.92,1.08) skewX(3deg)}}
 @keyframes glburst{0%{opacity:1;transform:translate(0,0) rotate(0)}100%{opacity:0;transform:translate(var(--x),var(--y)) rotate(var(--r))}}
+/* Halloween opener: the jack-o'-lantern lights up and bats fly out */
+.gl-pk .body{transform-box:fill-box;transform-origin:50% 100%}
+.gload:not(.go) .gl-pk .body{animation:glwiggle 2.4s ease-in-out 1s infinite}
+.gl-pk .face{fill:#3A1405;transition:fill .5s ease .25s}
+.gload.go .gl-pk .face{fill:#FFD45A}
+.gl-pk .lit{opacity:0;transition:opacity .7s ease .25s}
+.gload.go .gl-pk .lit{opacity:1}
+.gl-pk .bt{opacity:0;transform-box:fill-box;transform-origin:50% 50%}
+.gload.go .gl-pk .bt{animation:hwbat 1.7s cubic-bezier(.2,.7,.3,1) var(--d) forwards}
+@keyframes hwbat{0%{opacity:0;transform:translate(0,0) scale(.2)}20%{opacity:1}100%{opacity:0;transform:translate(var(--x),var(--y)) scale(1.3)}}
+@media (prefers-reduced-motion:reduce){.gl-pk *{animation:none!important}}
 @keyframes glwiggle{0%,80%,100%{transform:rotate(0)}84%{transform:rotate(-5deg)}88%{transform:rotate(5deg)}92%{transform:rotate(-3deg)}}
 @media (prefers-reduced-motion:reduce){.gload *,.gload *::before{animation-duration:.01s!important;animation-delay:0s!important;transition-duration:.01s!important;transition-delay:0s!important}}
 .guest{min-height:100%;display:grid;place-items:center;padding-block:28px;gap:18px}
@@ -706,6 +717,7 @@ footer.foot{border-top:1px solid var(--line);padding-block:22px;color:var(--mute
 .t-party{--c-bg:#16193F;--c-ink:#FFFFFF;--c-gold:#F6C64F;--c-soft:#BFC4F2}
 .t-dana{--c-bg:#FCF8EF;--c-ink:#3A2410;--c-gold:#C7701D;--c-soft:#7C5A36}
 .t-other{--c-bg:#F7F3EA;--c-ink:#1D3A31;--c-gold:#A9864A;--c-soft:#5E6E66}
+.t-halloween{--c-bg:#1C1230;--c-ink:#FFF1DE;--c-gold:#F28C28;--c-soft:#C9B8E8}
 .t-dana .names,.t-birthday .names{color:var(--c-ink)}
 
 @media (prefers-reduced-motion:no-preference){
@@ -1155,6 +1167,9 @@ nav.top a{font-weight:600}
 .cx-spark .cpt i,.cx-ember .cpt i{top:auto;bottom:-4%;width:calc(1.6cqw * var(--s));height:calc(1.6cqw * var(--s));border-radius:50%;animation-name:crise}
 .cx-spark .cpt i{background:radial-gradient(#FFF6C8,#FFC85A 45%,transparent 70%)}
 .cx-ember .cpt i{background:radial-gradient(#FFE7A8,#E2A33A 45%,transparent 70%)}
+/* Halloween: falling autumn leaves (Pumpkin Patch), rising ghostly wisps (Haunted Night) */
+.cx-leaf .cpt i{border-radius:10% 70% 10% 70%;background:linear-gradient(135deg,#F2A03A,#C9471E)}.cx-leaf .cpt i:nth-child(3n){background:linear-gradient(135deg,#E8C25A,#B3741E)}
+.cx-wisp .cpt i{top:auto;bottom:-4%;width:calc(2cqw * var(--s));height:calc(2cqw * var(--s));border-radius:50%;animation-name:crise;background:radial-gradient(#F4EEFF,#B9A6FF 40%,transparent 70%)}.cx-wisp .cpt i:nth-child(3n){background:radial-gradient(#FFE7A8,#F28C28 45%,transparent 70%)}
 @keyframes crise{0%{opacity:0;transform:translate3d(0,0,0) scale(.6)}15%{opacity:1}50%{transform:translate3d(var(--w),-72cqw,0) scale(1.2)}85%{opacity:.9}100%{opacity:0;transform:translate3d(calc(var(--w) * -.5),-150cqw,0) scale(.8)}}
 /* border: thin gold double frame that draws in, then a band of light keeps running round it */
 .card.thc .frame{z-index:1;inset:3.2cqw;border-color:color-mix(in srgb,var(--c-gold) 85%,transparent);opacity:1;clip-path:inset(0 50% 100% 50%);animation:lfopen 1.6s cubic-bezier(.6,0,.2,1) .2s forwards}
@@ -1191,6 +1206,8 @@ nav.top a{font-weight:600}
 .fx-spark .lx-petals i,.fx-ember .lx-petals i{top:auto;bottom:-4%;width:calc(5px * var(--s));height:calc(5px * var(--s));border-radius:50%;box-shadow:none;animation-name:lxrise}
 .fx-spark .lx-petals i{background:radial-gradient(#FFF6C8,#FFC85A 45%,transparent 70%)}
 .fx-ember .lx-petals i{background:radial-gradient(#FFE7A8,#E2A33A 45%,transparent 70%)}
+.fx-leaf .lx-petals i{border-radius:10% 70% 10% 70%;background:linear-gradient(135deg,#F2A03A,#C9471E);box-shadow:none}.fx-leaf .lx-petals i:nth-child(3n){background:linear-gradient(135deg,#E8C25A,#B3741E)}.fx-leaf .lx-petals i:nth-child(4n){background:linear-gradient(135deg,#D9572B,#8E2A12)}
+.fx-wisp .lx-petals i{top:auto;bottom:-4%;width:calc(7px * var(--s));height:calc(7px * var(--s));border-radius:50%;box-shadow:none;animation-name:lxrise;background:radial-gradient(#F4EEFF,#B9A6FF 40%,transparent 70%)}.fx-wisp .lx-petals i:nth-child(3n){background:radial-gradient(#FFE7A8,#F28C28 45%,transparent 70%)}
 @keyframes lxrise{0%{opacity:0;transform:translate3d(0,0,0) scale(.6)}15%{opacity:1}50%{transform:translate3d(var(--w),-50vh,0) scale(1.2)}70%{opacity:.4}85%{opacity:1}100%{opacity:0;transform:translate3d(calc(var(--w) * -.5),-105vh,0) scale(.8)}}
 /* dark themes: text that sits on the background (not in ivory cards) turns light */
 .th-dark .lx-cover .lx-names,.th-dark .lx-hero .lx-names{color:var(--c-ink);text-shadow:0 2px 18px rgba(0,0,0,.35)}
@@ -1894,7 +1911,7 @@ const CONFIG = {
   PRICE_CUSTOM: "Rs. 4,900",
   MUSIC: "audio/jayamangala-gatha.mp3",   // wedding background music (put your MP3 here)
   // background music for the other functions. Empty means no music for that function.
-  MUSIC_HOMECOMING: "audio/homecoming.mp3", MUSIC_BIRTHDAY: "audio/birthday.mp3", MUSIC_PARTY: "", MUSIC_DANA: "", MUSIC_OTHER: "",
+  MUSIC_HOMECOMING: "audio/homecoming.mp3", MUSIC_BIRTHDAY: "audio/birthday.mp3", MUSIC_PARTY: "", MUSIC_DANA: "", MUSIC_OTHER: "", MUSIC_HALLOWEEN: "",
   // Base URL for share links. On a static host (Netlify, GitHub Pages, Vercel) the page itself is used.
   SITE: (location.protocol.startsWith("http") && !/claude|anthropic|usercontent/.test(location.hostname))
           ? location.origin + location.pathname : "https://aradhanawa.com/"
@@ -1990,6 +2007,18 @@ function birthdayArt(){
     <path d="M-80 140H80" stroke="#8A4A2B" stroke-width="2"/>
   </g>
   ${[[30,110],[290,100],[120,20],[200,14],[300,140],[16,150]].map(([x,y],i)=>`<rect x="${x}" y="${y}" width="6" height="3" rx="1" transform="rotate(${i*37} ${x} ${y})" fill="${["#E5533A","#2F8F6B","#5B6CD6","#F2A93B"][i%4]}"/>`).join("")}`)
+}
+function hwPumpkin(x,y,r,c,face){ const h=r*.82, L=[[-.62,.5],[.62,.5],[-.34,.58],[.34,.58],[0,.5]];
+  return `<g transform="translate(${x} ${y})">${L.map(([d,w])=>`<ellipse cx="${(d*r).toFixed(1)}" rx="${(w*r).toFixed(1)}" ry="${h.toFixed(1)}" fill="${c}" stroke="#7A2C08" stroke-opacity=".5"/>`).join("")}
+  <path d="M-2 ${-h+1}Q-3 ${-h-8} 4 ${-h-11}L5 ${-h-8}Q1 ${-h-6} 2 ${-h+1}Z" fill="#4E5A26"/>
+  ${face?`<g fill="#FFD45A"><path d="M${-r*.45} ${-h*.1}H${-r*.18}L${-r*.32} ${-h*.42}Z"/><path d="M${r*.45} ${-h*.1}H${r*.18}L${r*.32} ${-h*.42}Z"/><path d="M${-r*.55} ${h*.22}Q0 ${h*.75} ${r*.55} ${h*.22}L${r*.3} ${h*.36}L${r*.12} ${h*.26}L0 ${h*.4}L${-r*.12} ${h*.26}L${-r*.3} ${h*.36}Z"/></g>`:""}</g>`}
+const HW_BAT="M0-4C3-10 6-10 7-4C12-12 22-14 30-8C26-6 24-2 25 3C21 0 17 1 15 5C12 2 8 2 6 6C4 3 2 2 0 4C-2 2-4 3-6 6C-8 2-12 2-15 5C-17 1-21 0-25 3C-24-2-26-6-30-8C-22-14-12-12-7-4C-6-10-3-10 0-4Z";
+function halloweenArt(){
+  return svg("0 0 320 160",`<circle cx="262" cy="40" r="26" fill="#F6E7B8"/><circle cx="262" cy="40" r="36" fill="#F6E7B8" opacity=".15"/>
+  ${[[60,30,.8,-8],[100,52,.55,10],[214,26,.6,6],[290,84,.45,-10]].map(([x,y,s,r])=>`<path class="sway" transform="translate(${x} ${y}) rotate(${r}) scale(${s})" d="${HW_BAT}" fill="var(--c-soft)" opacity=".85"/>`).join("")}
+  <circle cx="160" cy="120" r="60" fill="#F28C28" opacity=".12"/>
+  ${hwPumpkin(160,116,34,"#E9711F",1)}${hwPumpkin(104,130,20,"#C85512",0)}${hwPumpkin(214,130,22,"#F0E3CC",0)}
+  <path d="M40 150H280" stroke="var(--c-gold)" stroke-width="1.4" stroke-dasharray="1 4" stroke-linecap="round"/>`)
 }
 function lantern(x,y,c,s,d){return `<g transform="translate(${x} ${y}) scale(${s})"><g class="sway" style="animation-delay:${d}s">
 <line x1="0" y1="-22" x2="0" y2="-14" stroke="var(--c-soft)" stroke-width="1"/>
@@ -2128,7 +2157,7 @@ function lpMedal(){
   const pet=(n,r1,r2,w)=>Array.from({length:n},(_,i)=>`<path transform="rotate(${i*360/n} 50 50)" d="M50 ${50-r1}C${50-w} ${50-r1-(r2-r1)*.45} ${50-w*.6} ${50-r2+4} 50 ${50-r2}C${50+w*.6} ${50-r2+4} ${50+w} ${50-r1-(r2-r1)*.45} 50 ${50-r1}Z"/>`).join("");
   return `<svg class="lp-medal" viewBox="0 0 100 100" aria-hidden="true"><g class="rot" fill="#EBD29A" fill-opacity=".6" stroke="currentColor" stroke-width="1"><circle cx="50" cy="50" r="47" fill="none"/><circle cx="50" cy="50" r="43" fill="none" stroke-dasharray="1.5 3"/>${pet(16,26,41,6)}${pet(8,12,27,8)}<circle cx="50" cy="50" r="11" fill="#EBD29A" fill-opacity=".9"/><circle cx="50" cy="50" r="5" fill="currentColor"/></g></svg>`;
 }
-const MUSIC_KEY={wedding:"MUSIC",homecoming:"MUSIC_HOMECOMING",birthday:"MUSIC_BIRTHDAY",party:"MUSIC_PARTY",dana:"MUSIC_DANA",other:"MUSIC_OTHER"};
+const MUSIC_KEY={wedding:"MUSIC",homecoming:"MUSIC_HOMECOMING",birthday:"MUSIC_BIRTHDAY",party:"MUSIC_PARTY",dana:"MUSIC_DANA",other:"MUSIC_OTHER",halloween:"MUSIC_HALLOWEEN"};
 /* credit lines that a track's free licence asks for, shown in the invitation footer */
 const MUSIC_CREDIT={"audio/homecoming.mp3":"“Until We Meet Again” by Arthur Vyncke"};
 const musicFor = type => CONFIG[MUSIC_KEY[type]||"MUSIC"]||"";
@@ -2171,6 +2200,7 @@ function lxSite(type, ev, lang, guest, prem, gallery, base){
     homecoming:[L("Welcome home","නිවසට සාදරයෙන්"),L("A new home, a new beginning, celebrated with you","නව නිවසක, නව ආරම්භයක් ඔබ සමඟ")],
     birthday:[L("Let's celebrate","අපි සමරමු"),L("Cake, laughter and the people we love","කේක්, සිනහව සහ අපේ ආදරණීයයන්")],
     party:[L("You're invited","ඔබට ආරාධනා"),L("An evening of good friends, music and memories","මිතුරන්, සංගීතය සහ මතකයන් පිරි සැන්දෑවක්")],
+    halloween:[L("Trick or treat","හැලොවීන් රාත්‍රිය"),L("A spooky night of costumes, treats and frights","ඇඳුම්, රසකැවිලි සහ බිය පිරි රාත්‍රියක්")],
     dana:[L("With blessings","ආශීර්වාද සහිතව"),L("May the merit bring peace to all","මෙම පින සැමට සාමය ගෙනේවා")],
     other:[L("You are cordially invited","ඔබට සාදරයෙන් ආරාධනා"),L("Please join us for a special day","විශේෂ දිනයකට අප සමඟ එක්වන්න")]})[type]||[];
   const D = fDate(ev.date, lang);
@@ -2272,7 +2302,7 @@ function lxRest(type,ev,lang,base){
     <span class="s-eb">${L("Celebrate with us","අප සමඟ එක්වන්න")}</span>
     <h2 class="s-h">${type==="wedding"?L("Wedding events","මංගල උත්සව"):L("The celebration","උත්සවය")}</h2>${heart}
     <div class="lx-evs">${cards}</div>
-    ${ev.dress?`<p class="s-p">${L("Dress code","ඇඳුම")}: <b>${esc(ev.dress)}</b></p>`:""}
+    ${ev.dress?`<p class="s-p">${type==="halloween"?L("Costume","ඇඳුම"):L("Dress code","ඇඳුම")}: <b>${esc(ev.dress)}</b></p>`:""}
     ${ev.note?`<p class="s-p">${esc(ev.note)}</p>`:""}
     ${ev.date?`<a class="s-row lx-save" target="_blank" rel="noopener" href="${gcalLink(type,ev)}"><i>${I.cal}</i><span><b>${L("Save the date","දිනය සුරකින්න")}</b><small>${L("Add the day to your calendar","ඔබගේ දින දර්ශනයට එක් කරන්න")}</small></span>›</a>`:""}
   </section>
@@ -2303,6 +2333,10 @@ const TYPES = {
     fields:["title","a","date","time","venue","map","dress","rsvp","rsvpBy","note"],
     labels:{title:"Party name",a:"Hosted by"},
     sample:{title:"Batch Reunion 2026",a:"Royal College 2010 Batch",date:days(21),time:"19:00",venue:"Mount Lavinia Hotel",map:"",dress:"Smart casual",rsvp:"0761234567",note:"DJ and dinner buffet"}},
+  halloween:{ name:"Halloween", si:"හැලොවීන්", tpl:"Jack-o'-lantern", art:halloweenArt,
+    fields:["title","a","date","time","venue","map","dress","rsvp","rsvpBy","note"],
+    labels:{title:"Party name",a:"Hosted by",dress:"Costume theme"},
+    sample:{title:"Spooky Halloween Night",a:"The Fernando family",date:(()=>{ const d=new Date(), y=d.getMonth()>9?d.getFullYear()+1:d.getFullYear(); return `${y}-10-31` })(),time:"19:00",venue:"Our home, 12 Lake Drive, Colombo 05",map:"",dress:"Spooky costumes please",rsvp:"0771234567",note:"Trick-or-treat for the kids, spooky snacks and a costume contest"}},
   dana:{ name:"Almsgiving", si:"දානය", tpl:"Pahana", art:danaArt,
     fields:["title","a","b","date","time","venue","map","rsvp","rsvpBy","note"],
     labels:{title:"Dana / pinkama name",a:"Hosted by (family)",b:"In memory of (optional)"},
@@ -2336,6 +2370,7 @@ const PREMIUM = {
   party:[
     {n:"Vesak Lanterns", img:"vesak-lanterns", mode:"bg", veil:"linear-gradient(to bottom,rgba(16,18,52,.25),rgba(16,18,52,.82) 46%)", justify:"flex-end", bg:"#16193F", gold:"#F6C64F", soft:"#D9DCFF", ink:"#FFFFFF"},
     {n:"Colombo Streets", img:"tuktuk", mode:"top", pos:"50% 30%", bg:"#13314A", gold:"#F6B23D", soft:"#CFE6F2", ink:"#FFFFFF"}],
+  halloween:[],
   dana:[
     {n:"Bodhi Leaf", bg:"#F4F1E6", gold:"#3F6B3A", soft:"#5B5A3A", ink:"#2E2A1A"},
     {n:"Dagaba White", bg:"#EFF2F4", gold:"#8B6D3A", soft:"#5B5F66", ink:"#2A2C30"}],
@@ -2376,7 +2411,8 @@ const LX_TH = {
   lotus:{bg:"img/ivory-silk-900.webp", l:"img/ivory-lotus-l.webp", r:"img/ivory-lotus-r.webp", hero:"ivory-couple", venue:"img/venue-lineart-900.webp", mo:"sway", fx:"petal"},
   sage:{p:"th-sage", mo:"sway", fx:"jasmine"}, blush:{p:"th-blush", mo:"sway", fx:"rose"},
   balloons:{p:"th-balloons", mo:"bob", fx:"confetti"}, glam:{p:"th-glam", mo:"bob", fx:"gold", dark:1},
-  lanterns:{p:"th-lanterns", mo:"swing", fx:"spark", dark:1, glow:1}, maroon:{p:"th-maroon", mo:"swing", fx:"ember", dark:1, glow:1}
+  lanterns:{p:"th-lanterns", mo:"swing", fx:"spark", dark:1, glow:1}, maroon:{p:"th-maroon", mo:"swing", fx:"ember", dark:1, glow:1},
+  pumpkin:{p:"th-pumpkin", mo:"sway", fx:"leaf"}, haunted:{p:"th-haunted", mo:"swing", fx:"wisp", dark:1, glow:1}
 };
 for(const k in LX_TH){ const t=LX_TH[k]; if(t.p) Object.assign(t,{bg:`img/${t.p}-bg.webp`, l:`img/${t.p}-l.webp`, r:`img/${t.p}-r.webp`, hero:`${t.p}-hero`, venue:`img/${t.p}-venue.webp`}) }
 const TH_DESIGN = {
@@ -2385,9 +2421,11 @@ const TH_DESIGN = {
   balloons:{n:"Pastel Balloons", img:"th-balloons-card", mode:"bg", veil:"rgba(255,255,255,0)", site:"balloons", bg:"#FCF6EE", gold:"#D49A5B", soft:"#7B6A80", ink:"#6A4A8C"},
   glam:{n:"Midnight Gold", img:"th-glam-card", mode:"bg", veil:"rgba(8,14,40,.25)", site:"glam", bg:"#13204A", gold:"#E3C27A", soft:"#D9DDF0", ink:"#FFF6E2", wine:"#1B2A5A"},
   lanterns:{n:"Lantern Night", img:"th-lanterns-card", mode:"bg", veil:"rgba(12,8,40,.2)", site:"lanterns", bg:"#1E1848", gold:"#F2B54A", soft:"#DCD6F5", ink:"#FFF4DE", wine:"#3A2A7A"},
-  maroon:{n:"Kandyan Maroon", img:"th-maroon-card", mode:"bg", veil:"rgba(40,6,14,.2)", site:"maroon", bg:"#4A0E1C", gold:"#E2B65A", soft:"#EBCBA5", ink:"#FFF1DC", wine:"#6E1426"}
+  maroon:{n:"Kandyan Maroon", img:"th-maroon-card", mode:"bg", veil:"rgba(40,6,14,.2)", site:"maroon", bg:"#4A0E1C", gold:"#E2B65A", soft:"#EBCBA5", ink:"#FFF1DC", wine:"#6E1426"},
+  pumpkin:{n:"Pumpkin Patch", img:"th-pumpkin-card", mode:"bg", veil:"rgba(255,255,255,0)", site:"pumpkin", bg:"#FBF1E4", gold:"#C8651B", soft:"#7A5A44", ink:"#8A3A12"},
+  haunted:{n:"Haunted Night", img:"th-haunted-card", mode:"bg", veil:"rgba(14,8,32,.25)", site:"haunted", bg:"#1A1233", gold:"#F2A33A", soft:"#D8CFF2", ink:"#FFF1DE", wine:"#3B2466"}
 };
-[["wedding","blush"],["homecoming","sage"],["homecoming","blush"],["birthday","balloons"],["birthday","glam"],["party","lanterns"],["party","glam"],["other","blush"],["other","maroon"]].forEach(([k,t])=>PREMIUM[k].push({...TH_DESIGN[t]}));
+[["wedding","blush"],["homecoming","sage"],["homecoming","blush"],["birthday","balloons"],["birthday","glam"],["party","lanterns"],["party","glam"],["other","blush"],["other","maroon"],["halloween","pumpkin"],["halloween","haunted"]].forEach(([k,t])=>PREMIUM[k].push({...TH_DESIGN[t]}));
 /* For now the site only offers the animated themed designs. Older designs stay in the code but are not listed. */
 for(const k in PREMIUM) PREMIUM[k]=PREMIUM[k].filter(t=>LX_TH[t.site]);
 const hasTh = k => PREMIUM[k].length>0;
@@ -2554,6 +2592,11 @@ function cardHTML(type, ev, lang, guest, prem){
       <div class="big">${esc(ev.title||"Party")}</div>`;
       body=`<div class="rule"></div><div class="dets"><b>${esc(D)}</b>
       <div class="dgrid">${det(L("Time","වේලාව"),fTime(ev.time,lang))}${det(L("Dress code","ඇඳුම"),ev.dress)}</div>${venue}</div>`;break;
+    case "halloween":
+      head=`<div class="eb">${esc(ev.a||"")}${ev.a?`<br>`:""}${L("invites you to a spooky night","භයානක රාත්‍රියකට ආරාධනා කරයි")}</div>
+      <div class="big">${esc(ev.title||"Halloween")}</div>`;
+      body=`<div class="rule"></div><div class="dets"><b>${esc(D)}</b>
+      <div class="dgrid">${det(L("Time","වේලාව"),fTime(ev.time,lang))}${det(L("Costume","ඇඳුම"),ev.dress)}</div>${venue}</div>`;break;
     case "dana":
       head=`<div class="eb">${L("With devotion, you are invited to a","ශ්‍රද්ධාවෙන් යුතුව ඔබට ආරාධනා කරමු")}</div>
       <div class="big">${esc(ev.title||"Dana")}</div>
@@ -2628,6 +2671,12 @@ function waMessage(type, ev, lang, guest, link){
            sl:["🎉 *Party Time!* 🎉","",greet,"",`${ev.a} organize karana *${ev.title}* ekata oyath enna ona!`]}[lang];
       mid=[`${when}: ${D}`,opt(T,`${time}: ${T}`),opt(ev.dress,{en:`👔 Dress code: ${ev.dress}`,si:`👔 ඇඳුම: ${ev.dress}`,sl:`👔 Dress code: ${ev.dress}`}[lang])];
       close={en:"Let's make it a night to remember! ✨",si:"අමතක නොවන රාත්‍රියක් කරමු! ✨",sl:"Patta night ekak karamu! ✨"}[lang];break;
+    case "halloween":
+      top={en:["🎃 *Halloween Party!* 🦇","",greet,"",`${ev.a?ev.a+" invites":"You're invited"} you to *${ev.title}*. Come in costume if you dare!`],
+           si:["🎃 *හැලොවීන් සාදය* 🦇","",greet,"",`${ev.a?ev.a+" විසින් සංවිධානය කරන ":""}*${ev.title}* සඳහා ඔබට ආරාධනා කරමු. භයානක ඇඳුමකින් එන්න!`],
+           sl:["🎃 *Halloween Party!* 🦇","",greet,"",`${ev.a?ev.a+" organize karana ":""}*${ev.title}* ekata oyath enna! Bayanaka costume ekak dagena enna.`]}[lang];
+      mid=[`${when}: ${D}`,opt(T,`${time}: ${T}`),opt(ev.dress,{en:`🧙 Costume: ${ev.dress}`,si:`🧙 ඇඳුම: ${ev.dress}`,sl:`🧙 Costume eka: ${ev.dress}`}[lang])];
+      close={en:"Trick or treat, see you there! 👻",si:"ඔබව එහිදී හමුවෙමු! 👻",sl:"Trick or treat! Anivaryen enna! 👻"}[lang];break;
     case "dana":
       top={en:["🪔 *Almsgiving Invitation* 🪔","",greet,"",`${ev.a} respectfully invites you to the *${ev.title}*${ev.b?` in loving memory of *${ev.b}*`:""}.`],
            si:["🪔 *දාන ආරාධනය* 🪔","",greet,"",`${ev.b?`පින්වත් *${ev.b}* සිහිකොට `:""}${ev.a} විසින් පවත්වනු ලබන *${ev.title}* සඳහා ඔබට ගෞරවයෙන් ආරාධනා කරමු.`],
@@ -2707,7 +2756,7 @@ function lpDetail(){
         <div class="dt-nav"><a href="#design/${k}/${prev}" aria-label="Previous design">←</a><span>${pos+1} / ${all.length}</span><a href="#design/${k}/${next}" aria-label="Next design">→</a></div></div>
       <div class="dt-info">${lpOrn()}<span class="lp-eb">${T.name} · ${esc(T.si)}</span><h1>${esc(name)}</h1>
         <p class="dt-price">${t?`<b>Free</b> for ${CONFIG.FREE_GUESTS} guests · every guest for <b>${esc(designPrice(t.n))}</b>`:`<b>Free</b> for every ${T.name.toLowerCase()}`}</p>
-        <ul class="dt-list">${(()=>{const W=k==="wedding",n=T.name.toLowerCase(),op=({wedding:"Magul Pahana",birthday:"birthday cake",homecoming:"door",dana:"lotus",party:"gift box"})[k]||"envelope";return [
+        <ul class="dt-list">${(()=>{const W=k==="wedding",n=T.name.toLowerCase(),op=({wedding:"Magul Pahana",birthday:"birthday cake",homecoming:"door",dana:"lotus",party:"gift box",halloween:"jack-o'-lantern"})[k]||"envelope";return [
           ["Personalised Guest Invitations",`Each guest's name will be individually included on the invitation (e.g., <i>&quot;Dear Nimal Uncle&quot;</i>).`],
           [W?"Traditional Opening Screen":"Opening Screen",`A beautifully designed ${op} opening screen displayed when guests access the invitation link.`],
           [`${T.name} Details`,W?"Complete information, including the wedding date, Poruwa ceremony (Poruwa Nekath), reception details, location map, and RSVP form.":`Complete information, including the ${n} date, time, venue, location map, and RSVP form.`],
@@ -2731,7 +2780,7 @@ const NV_IC={
 const NV_WA='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.2a9.7 9.7 0 0 0-8.3 14.8L2.3 21.8l4.9-1.3A9.7 9.7 0 1 0 12 2.2zm0 17.7a8 8 0 0 1-4.1-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 1 1 12 19.9zm4.4-6c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.5.1l-.8 1c-.1.2-.3.2-.5.1a6.6 6.6 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.5-.4h-.5a.9.9 0 0 0-.7.3 2.8 2.8 0 0 0-.9 2.1 4.9 4.9 0 0 0 1 2.6 11.2 11.2 0 0 0 4.3 3.8c1.6.7 2.2.7 3 .6.5-.1 1.4-.6 1.6-1.1.2-.6.2-1 .1-1.1l-.5-.2z"/></svg>';
 function nvDesigns(){
   const out=[], seen=new Set();
-  for(const k of ["wedding","homecoming","birthday","party","other","dana"]) (PREMIUM[k]||[]).forEach((t,i)=>{ if((t.img||t.layout)&&!tplOff().includes(k+":"+(i+1))&&!seen.has(t.n)){ seen.add(t.n); out.push([k,i+1,t]) } });
+  for(const k of ["wedding","homecoming","birthday","party","halloween","other","dana"]) (PREMIUM[k]||[]).forEach((t,i)=>{ if((t.img||t.layout)&&!tplOff().includes(k+":"+(i+1))&&!seen.has(t.n)){ seen.add(t.n); out.push([k,i+1,t]) } });
   return out;
 }
 function nvSheet(u,PG){
@@ -2775,6 +2824,7 @@ function lpParse(t){
   if((m=t.match(/^(.+?)\s*(?:&|\+|and|saha|සහ)\s*(.+)$/i))) return {type:"wedding",ev:{a:m[1].trim(),b:m[2].trim()}};
   if((m=t.match(/^(.+?)\s+turns?\s+(\d{1,3})/i))) return {type:"birthday",ev:{a:m[1].trim(),age:m[2]}};
   if((m=t.match(/^(.*?)\s*(?:dana|daana|දානය|pinkama)/i))){ const h=(m[1]||"").trim().replace(/^the\s+/i,""); return {type:"dana",ev:{a:h?"The "+h.replace(/^./,c=>c.toUpperCase()):"",title:"Sanghika Dana"}} }
+  if(/hall?owe+n|pumpkin|spooky|හැලොවීන්/i.test(t)) return {type:"halloween",ev:{title:t.replace(/^./,c=>c.toUpperCase()),a:""}};
   if(/party|reunion|night|bash|get.?together/i.test(t)) return {type:"party",ev:{title:t.replace(/^./,c=>c.toUpperCase()),a:""}};
   if(/homecoming/i.test(t)) return {type:"homecoming",ev:{a:"Kasun",b:"Tharushi"}};
   return {type:"other",ev:{title:t||"Engagement Ceremony"}};
@@ -2937,7 +2987,7 @@ function render(){
     <aside class="stage" aria-label="Live preview">
       <div class="table" id="cardSlot" data-ui></div>
       <p class="pnote" id="premOwn" hidden>Your purchased design. Guest links use this design.</p><div id="premBar" hidden><p class="pnote">Free for ${CONFIG.FREE_GUESTS} guests. Buy this design to send it to every guest.</p><div class="row" style="margin-top:8px;justify-content:center"><button class="btn primary" id="buyPrem">Buy this design · <span id="premPrice"></span></button><button class="btn" id="reqPrem">Details</button></div></div>
-      <div class="opk"><span>Opening screen</span><div class="seg" role="group" aria-label="Opening screen when a guest opens the link">${[["theme",({wedding:"Magul pahana",birthday:"Birthday cake",homecoming:"Door",dana:"Lotus",party:"Gift box"})[S.type]||"Classic"],["env","Envelope"],["seal","Wax seal"]].map(([k,n])=>`<button type="button" data-opener="${k}" aria-pressed="${S.opener===k}">${n}</button>`).join("")}</div></div>
+      <div class="opk"><span>Opening screen</span><div class="seg" role="group" aria-label="Opening screen when a guest opens the link">${[["theme",({wedding:"Magul pahana",birthday:"Birthday cake",homecoming:"Door",dana:"Lotus",party:"Gift box",halloween:"Pumpkin"})[S.type]||"Classic"],["env","Envelope"],["seal","Wax seal"]].map(([k,n])=>`<button type="button" data-opener="${k}" aria-pressed="${S.opener===k}">${n}</button>`).join("")}</div></div>
       <div class="row">
         <button class="btn" id="preview">${I.eye} Preview as guest</button>
         <button class="btn" id="copyLink">${I.link} Copy invite link</button>
@@ -3216,7 +3266,7 @@ function guestPreview(guest){
 
 
 /* ================= INVITATION SITE (scrolling mini-website) ================= */
-const SAMPLE_GAL = {wedding:["poruwa-couple","card-flatlay","galle-fort","kandyan-pattern"],homecoming:["tea-bungalow","galle-fort","card-flatlay"],birthday:["birthday-table","tuktuk"],party:["vesak-lanterns","tuktuk","galle-fort"],dana:[],other:["perahera","kandyan-pattern","card-flatlay"]};
+const SAMPLE_GAL = {wedding:["poruwa-couple","card-flatlay","galle-fort","kandyan-pattern"],homecoming:["tea-bungalow","galle-fort","card-flatlay"],birthday:["birthday-table","tuktuk"],party:["vesak-lanterns","tuktuk","galle-fort"],halloween:["th-pumpkin-hero","th-haunted-hero"],dana:[],other:["perahera","kandyan-pattern","card-flatlay"]};
 function galleryFor(type){
   const own=(S.photos&&S.photos[type])||[];
   if(own.length) return own.map(src=>`<img src="${src}" alt="" loading="lazy">`);
@@ -3253,7 +3303,7 @@ function siteHTML(type, ev, lang, guest, prem, gallery){
     ${target?`<h2 class="s-h">${L("Counting down","සුබ මොහොත ළඟයි")}</h2>
     <div class="s-cd" data-t="${target}"><div><b data-u="d">0</b><small>${L("days","දින")}</small></div><div><b data-u="h">0</b><small>${L("hours","පැය")}</small></div><div><b data-u="m">0</b><small>${L("mins","මිනිත්තු")}</small></div><div><b data-u="s">0</b><small>${L("secs","තත්පර")}</small></div></div>`:""}
     <div class="s-evs">${evs.filter(e=>e[0]).map(([t,n])=>`<div class="s-ev"><span class="t">${fTime(t,lang)}</span><span class="n">${esc(n)}</span>${ev.venue?`<span class="w">${esc(ev.venue)}</span>`:""}</div>`).join("")}
-      ${ev.dress?`<div class="s-ev"><span class="n">${L("Dress code","ඇඳුම")}</span><span class="w">${esc(ev.dress)}</span></div>`:""}</div>
+      ${ev.dress?`<div class="s-ev"><span class="n">${type==="halloween"?L("Costume","ඇඳුම"):L("Dress code","ඇඳුම")}</span><span class="w">${esc(ev.dress)}</span></div>`:""}</div>
     ${ev.note?`<p class="s-p">${esc(ev.note)}</p>`:""}
     ${ev.date?`<a class="s-row" target="_blank" rel="noopener" href="${gcalLink(type,ev)}"><i>${I.cal}</i><span><b>${L("Save the date","දිනය සුරකින්න")}</b><small>${L("Add it to your calendar","ඔබගේ දින දර්ශනයට එක් කරන්න")}</small></span>›</a>`:""}
   </section>
@@ -3393,6 +3443,7 @@ const GL_COPY={
   homecoming:{en:["Tap to open the door","Welcome home"],si:["දොර විවෘත කරන්න තට්ටු කරන්න","සාදරයෙන් පිළිගනිමු"],t:2900},
   dana:{en:["Tap the lotus","Sadhu! Sadhu! Sadhu!"],si:["නෙළුම තට්ටු කරන්න","සාධු! සාධු! සාධු!"],t:3000},
   party:{en:["Tap to open the gift","Let's celebrate!"],si:["තෑග්ග විවෘත කරන්න තට්ටු කරන්න","අපි සමරමු!"],t:2800},
+  halloween:{en:["Tap the pumpkin to light it","Trick or treat!"],si:["වට්ටක්කා පහන දල්වන්න තට්ටු කරන්න","හැලොවීන් සුබ පැතුම්!"],t:3000},
   other:{en:["Tap the seal to open","You are invited"],si:["මුද්‍රාව තට්ටු කරන්න","ඔබට ආරාධනා"],t:3000}};
 function glConfetti(n=36,C=["#F2C14E","#E86A92","#5BC0EB","#9BC53D","#FFFFFF","#F78C35"]){ let o=""; for(let i=0;i<n;i++){ const a=(i/n)*Math.PI*2+(i%3)*.2, d=110+((i*53)%120); o+=`<i style="--c:${C[i%C.length]};--x:${Math.round(Math.cos(a)*d)}px;--y:${Math.round(Math.sin(a)*d-60)}px;--r:${(i*47)%540}deg;--d:${(.15+(i%6)*.04).toFixed(2)}s"></i>` } return `<div class="gl-cf">${o}</div>` }
 /* shared pieces for the opener scenes */
@@ -3533,6 +3584,24 @@ function glScene(type,ini,si){
       ${pet([0],.25,"lpI",92,1)}
       </g></svg>`;
   }
+  if(type==="halloween"){
+    /* a carved jack-o'-lantern: tap it, the face lights up and bats fly out */
+    const lobes=[[-58,48],[58,48],[-32,55],[32,55],[0,48]];
+    const bats=[[-90,-120,.1],[80,-140,.2],[-40,-170,.3],[120,-90,.15],[-130,-60,.25],[30,-190,.05]];
+    return `<div class="gl-glow"></div>${glDust(14)}<svg class="gl-obj gl-pk" viewBox="0 0 200 232" aria-hidden="true"><defs>${GL_SHADOW}${GL_FIRE}
+      <radialGradient id="pkB" cx=".38" cy=".32" r=".8"><stop offset="0" stop-color="#FFB15C"/><stop offset=".55" stop-color="#E9711F"/><stop offset="1" stop-color="#9A3A0C"/></radialGradient></defs>
+      <ellipse cx="100" cy="212" rx="78" ry="8" fill="url(#glSh)"/>
+      <circle class="lit" cx="100" cy="150" r="110" fill="url(#glHalo)"/>
+      <g class="body">${lobes.map(([d,w])=>`<ellipse cx="${100+d}" cy="150" rx="${w}" ry="58" fill="url(#pkB)" stroke="#7A2C08" stroke-opacity=".55" stroke-width="1.4"/>`).join("")}
+        <ellipse cx="72" cy="122" rx="9" ry="20" fill="#fff" opacity=".2"/>
+        <path d="M95 94C93 78 100 66 114 62L116 70C106 74 103 82 105 94Z" fill="#4E5A26" stroke="#2E3812" stroke-width="1.2"/>
+        <path d="M104 80c12-8 26-4 24 6c-2 6-10 4-8-2" fill="none" stroke="#5E6B2C" stroke-width="2.2" stroke-linecap="round"/>
+        <g class="face" stroke="#7A2C08" stroke-width="1"><path d="M62 140H86L74 116Z"/><path d="M138 140H114L126 116Z"/><path d="M95 152H105L100 143Z"/>
+          <path d="M60 162Q100 205 140 162L128 168L120 178L110 170L100 182L90 170L80 178L72 168Z"/></g>
+        <g class="lit">${glFlame(100,134,0,.9)}</g></g>
+      ${bats.map(([x,y,d],i)=>`<g transform="translate(${92+i*3} 150) scale(${(.55+(i%3)*.15).toFixed(2)})"><path class="bt" style="--x:${x}px;--y:${y}px;--d:${(.35+d).toFixed(2)}s" d="${HW_BAT}" fill="#1A0F2A"/></g>`).join("")}
+    </svg>`;
+  }
   if(type==="party"){
     /* jewel-toned gift box with gold foil ribbon and bow */
     return `<div class="gl-glow"></div>${glSparkles(14)}${glDust(10)}<svg class="gl-obj gl-gift" viewBox="0 0 200 232" aria-hidden="true"><defs>${GL_GOLD}${GL_SHADOW}
@@ -3628,8 +3697,19 @@ function gsFlute(x,y,a,s){ return gsG_(x,y,a,s,`<path class="e" d="M-5.5 -38H5.5
 function gsDiamond(x,y,s){ return gsG_(x,y,0,s,`<path class="e" d="M0 -6L4 0L0 6L-4 0Z"/>`) }
 function gsLantern(x,y,a,s){ return gsG_(x,y,a,s,`<path class="e" d="M-3 3H3V7H-3Z"/><path class="e" d="M0 7L11 18V26L0 37L-11 26V18Z"/><path class="v" d="M-11 18H11M-11 26H11M0 7V37M-5.5 12.5L5.5 31.5M5.5 12.5L-5.5 31.5"/><path class="s" style="stroke-width:1.6" d="M-6 34C-7 42 -4 48 -6 56M0 37C1 46 -2 52 0 60M6 34C7 42 4 48 6 56"/>`) }
 function gsPahana(x,y,a,s){ return gsG_(x,y,a,s,`<path class="e" d="M0 -23C4.5 -17 4.5 -11.5 0 -8.5C-4.5 -11.5 -4.5 -17 0 -23Z"/><path class="e" d="M-15 -7H15C13 0 7 3 0 3C-7 3 -13 0 -15 -7Z"/><path class="e" d="M-2 3H2L3.2 14H-3.2Z"/><path class="e" d="M-10 14H10L12.5 18.5H-12.5Z"/><path class="v" d="M-11 -4.5H11"/>`) }
+function gsPumpkin(x,y,a,s,face){ return gsG_(x,y,a,s,`<ellipse class="e" cx="-6" cy="0" rx="7.5" ry="9.5"/><ellipse class="e" cx="6" cy="0" rx="7.5" ry="9.5"/><ellipse class="e" cx="0" cy="0" rx="7.5" ry="10"/><path class="v" d="M0 -9.5V9.5M-6 -8.5Q-10 0 -6 8.5M6 -8.5Q10 0 6 8.5"/><path class="e" d="M-1.2 -9.5L-.6 -14.5L2.6 -16L2.2 -14L1 -9.5Z"/>${face?`<path class="v" style="stroke-width:1" d="M-7 -1H-3L-5 -5Z M7 -1H3L5 -5Z M-7 3Q0 9 7 3"/>`:""}`) }
+function gsBat(x,y,a,s){ return gsG_(x,y,a,s*.55,`<path class="e" d="${HW_BAT}"/>`) }
+function gsMoon(x,y,s){ return gsG_(x,y,-20,s,`<path class="e" d="M3 -13A13 13 0 1 0 3 13A10 10 0 1 1 3 -13Z"/>`) }
+function gsWeb(x,y,a,s){ let o=""; const A=[0,22.5,45,67.5,90].map(d=>d*Math.PI/180); A.forEach(t=>o+=`M0 0L${gsN(Math.cos(t)*40)} ${gsN(Math.sin(t)*40)}`);
+  [12,22,32].forEach(r=>{ A.forEach((t,i)=>{ const p=[gsN(Math.cos(t)*r),gsN(Math.sin(t)*r)]; if(!i) o+=`M${p[0]} ${p[1]}`; else { const m=(t+A[i-1])/2; o+=`Q${gsN(Math.cos(m)*r*.85)} ${gsN(Math.sin(m)*r*.85)} ${p[0]} ${p[1]}` } }) });
+  return gsG_(x,y,a,s,`<path class="v" d="${o}"/>`) }
 /* one motif per card design: leaf = small repeat along the vine, flower = feature, emblem = the seal and the centre of the bottom flap */
 const GS_MOTIF={
+  pumpkin:{leaf:(x,y,a,i)=>i%3===2?gsCurl(x+(a>-90?8:-8),y-6,8,a>-90?Math.PI:0,a>-90?1:-1):gsLeaf(x,y,a,24+(i%2)*6,10), flower:(x,y,a,s)=>gsPumpkin(x,y,0,s*1.5)+gsPumpkin(x+16*s,y+14*s,8,s*.9), em:s=>gsPumpkin(0,2*s,0,s*1.45,1), curls:1, wax:"#D9771F"},
+  haunted:{leaf:(x,y,a,i)=>i%2?gsStar(x+(a>-90?12:-12),y,.8):`<circle class="e" cx="${gsN(x+(a>-90?10:-10))}" cy="${y}" r="2"/>`, flower:(x,y,a,s)=>gsBat(x,y,a+90+30,s*1.1), em:s=>gsMoon(-3*s,-2*s,s*.95)+gsBat(4*s,8*s,-8,s*.5), wax:"#6B3FA0",
+    side(){ let o=gsWeb(0,0,0,2.4)+gsMoon(96,120,1.6);
+      [[40,220,1.4,-12],[100,300,1,10],[30,390,1.1,6],[96,470,1.3,-8],[50,560,.9,12]].forEach(([x,y,s,r])=>o+=gsBat(x,y,r,s));
+      [[120,190],[16,300],[124,400],[70,520],[10,470]].forEach(([x,y],i)=>o+=gsStar(x,y,i%2?.7:1)); return o }},
   lotus:{leaf:(x,y,a,i)=>gsLeaf(x,y,a,26+(i%3)*5,8), flower:(x,y,a,s)=>gsLotus(x,y,a+90,s), em:s=>gsLotus(0,10*s/.6,0,s), curls:1, wax:"#8E1E2C"},
   sage:{leaf:(x,y,a,i)=>i%3===2?gsJasBud(x,y,a+90,1.1):gsLeaf(x,y,a,30+(i%2)*6,9), flower:(x,y,a,s)=>gsJasmine(x,y,a,s*1.25)+gsJasmine(x+12*s,y+14*s,a+20,s*.8)+gsJasBud(x-10*s,y+14*s,a+150,s), em:s=>gsJasmine(0,0,18,s*1.25), wax:"#6E8A62"},
   blush:{leaf:(x,y,a,i)=>gsLeaf(x,y,a,24+(i%3)*4,9)+(i%4===1?gsLeaf(x,y,a+(a>-90?-28:28),16,6):""), flower:(x,y,a,s)=>gsRose(x,y,a,s*1.15)+gsRose(x+8*s,y+22*s,a+40,s*.62), em:s=>gsRose(0,0,0,s*1.05), wax:"#BF7C84"},
@@ -3724,6 +3804,10 @@ function guestLoader(p,type,card){
 
 /* ================= AI IMAGE PROMPTS ================= */
 const PROMPTS = [
+  {img:"th-pumpkin-card", t:"Halloween: Pumpkin Patch card", u:"Pumpkin Patch Halloween card background (960 x 1383, keep the middle empty)",
+   p:"Portrait Halloween invitation card background, warm cream paper texture, a cluster of glossy orange and white pumpkins with green curly vines in both lower corners, red and golden autumn maple leaves scattered in the top corners, the whole middle area plain cream and empty for text, soft watercolour illustration, cosy autumn mood, 9:13"},
+  {img:"th-haunted-card", t:"Halloween: Haunted Night card", u:"Haunted Night Halloween card background (960 x 1383, keep the middle empty)",
+   p:"Portrait spooky Halloween invitation card background, deep purple night sky with stars, a glowing full moon in the top right, a spider web in the top left corner, small black bats flying, glowing jack-o'-lanterns, iron fence and tombstones silhouetted along the bottom with low purple mist, the middle area dark and empty for text, cute not gory, digital illustration, 9:13"},
   {img:"card-flatlay", t:"Wedding card flat lay", u:"Wedding landing hero, Rathu Ran premium card",
    p:"Luxury Sri Lankan wedding invitation card flat lay, deep maroon card with gold foil liyawela border and a small poruwa illustration, surrounded by fresh jasmine flowers, betel leaves (bulath kola), a small brass pahana and a strand of pol mal on ivory raw silk, soft daylight from the left, top-down editorial product photography, 16:9"},
   {img:"poruwa-couple", t:"Poruwa ceremony illustration", u:"Wedding card header art",

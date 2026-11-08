@@ -1,4 +1,5 @@
-/* Draws the starter art for the two Halloween designs (Pumpkin Patch, Haunted Night) and saves it as WebP in img/.
+/* NOTE: the AI images are in img/ now; running this again overwrites them with the drawn stand-ins.
+ * Draws the starter art for the two Halloween designs (Pumpkin Patch, Haunted Night) and saves it as WebP in img/.
  * The files are stand-ins until AI images are made from image-prompts.md (section "Halloween"): save new images
  * with the same names and sizes and they replace these. Run: NODE_PATH=$(npm root -g) node scripts/halloween_art.mjs && python3 scripts/card_sides.py  (needs playwright + python3 Pillow) */
 import { createRequire } from "node:module";

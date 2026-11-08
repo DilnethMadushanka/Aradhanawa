@@ -93,7 +93,7 @@ Tips: generate on a plain background, then trace to SVG (Illustrator Image Trace
 
 ## Halloween designs (Pumpkin Patch, Haunted Night)
 
-Danata thiyena images code eken adala starter art. AI eken hadala **same file name ekata** `img/` ekata save karanna (WebP, size eka pahala thiyenawa). Card image eka save kalata passe `python3 scripts/card_sides.py th-pumpkin-card th-haunted-card` run karanna: eken 480 size ekai, card eke hollana side strips (`cardl`, `cardr`) dekai hadenawa.
+Danata `img/` eke thiyenne me prompts walin hadapu AI images. Aluth ewa danawanam AI eken hadala **same file name ekata** `img/` ekata save karanna (WebP, size eka pahala thiyenawa). Transparent kiyala image eke checkerboard ekak (kotu) pennuwoth `python3 scripts/strip_checker.py in.jpg img/th-pumpkin-l.webp 900 1612` run karanna, eken kotu tika ain wenawa. Side art eka screen eke pahala/udin 30% ta wada palala nam text ekata uda wenawa, eka nisa podi karanna. Card image eka save kalata passe `python3 scripts/card_sides.py th-pumpkin-card th-haunted-card` run karanna: eken 480 size ekai, card eke hollana side strips (`cardl`, `cardr`) dekai hadenawa.
 Hama prompt ekakatama anthimata: `no text, no letters, no watermark, no logos`. Gory dewal epa, cute-spooky widihata.
 
 ### Pumpkin Patch (light, autumn)

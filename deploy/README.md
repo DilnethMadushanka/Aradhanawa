@@ -52,6 +52,28 @@ curl -fsSL https://raw.githubusercontent.com/dilnethmadushanka/aradhanawa/main/d
 - Firewall (`ufw`): SSH, 80, 443 witharai open. Epa nam `FIREWALL=no`.
 - Backups: DigitalOcean → droplet → **Backups** eka on karanna (sathiyakata parak, droplet price eken ~20%). Firestore data Google eke thiyena nisa e backup ekata one na.
 
+## Gallery photos: Cloudflare R2
+
+R2 set karala nathnam photos parana widiyatama Firestore eke (data URL) save wenawa. R2 dammama aluth photos R2 bucket ekata upload wela, Firestore eke thiyenne link eka witharai (photo ekakata 1 MB limit eka nathi wenawa, page eka ikman wenawa).
+
+1. Cloudflare → **R2 Object Storage** → **Create bucket**. Name: `aradhanawa-photos`, Location: Automatic, Storage class: Standard → Create.
+2. Bucket eka → **Settings** → **Public access**:
+   - `aradhanawa.com` Cloudflare DNS eke nam: **Custom Domains** → **Connect Domain** → `media.aradhanawa.com` (honda option eka).
+   - Nathnam: **R2.dev subdomain** → **Allow** (testing walata hari, Cloudflare kiyanne production ekata custom domain ekak danna kiyala).
+   - Penna address eka (`https://media.aradhanawa.com` hari `https://pub-....r2.dev`) copy karaganna.
+3. R2 overview page eka → **Manage API tokens** (Account details yata) → **Create Account API token**: Permissions **Object Read & Write**, Specify bucket → `aradhanawa-photos` → Create. **Access Key ID** saha **Secret Access Key** copy karaganna (secret eka ekaparai pennanne).
+4. Server eke `nano /opt/aradhanawa/.env` → yatatama me lines dala (oyage values ekka) → `systemctl restart aradhanawa`:
+   ```
+   R2_ACCOUNT_ID=<R2 overview eke Account ID>
+   R2_ACCESS_KEY_ID=<Access Key ID>
+   R2_SECRET_ACCESS_KEY=<Secret Access Key>
+   R2_BUCKET=aradhanawa-photos
+   R2_PUBLIC_URL=https://media.aradhanawa.com
+   ```
+   `install.sh` aye run kalath me lines thiyagannawa.
+
+Check karanna: site ekata log wela gallery photo ekak danna. Bucket eke `gallery/<uid>/<type>/` folder eke photo eka penna one. Error nam `journalctl -u aradhanawa -f` eke `[photos]` kiyala balanna.
+
 ## Useful commands
 
 - Logs: `journalctl -u aradhanawa -f`

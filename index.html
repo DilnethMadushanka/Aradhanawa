@@ -3061,7 +3061,7 @@ function bind(){
   $$("[data-top]").forEach(b=>b.onclick=e=>{ e.preventDefault(); scrollTo({top:0,behavior:"smooth"}) });
   if(S.df&&document.querySelector(`[data-df="${S.df}"]`)){ const d=S.df; S.df=null; document.querySelector(`[data-df="${d}"]`).click() }
   $$("[data-demo]").forEach(b=>b.onclick=()=>guestPreview(""));
-  $$("[data-pdel]").forEach(b=>b.onclick=()=>{ S.photos[S.type].splice(+b.dataset.pdel,1); save(); render() });
+  $$("[data-pdel]").forEach(b=>b.onclick=()=>{ const [gone]=S.photos[S.type].splice(+b.dataset.pdel,1); r2Delete(gone); save(); render() });
   const pf=$("#pfile"); pf&&(pf.onchange=async()=>{
     const list=S.photos[S.type]||(S.photos[S.type]=[]);
     for(const file of [...pf.files].slice(0,6-list.length)){ try{ list.push(await shrink(file)) }catch(e){ toast("That file could not be read as an image.") } }
@@ -3698,17 +3698,38 @@ function fbSyncInvite(){
   },1500);
 }
 /* Gallery photos for guest links. Photos live in this browser (S.photos); a copy goes to Firestore galleries/{uid_type}
-   so the guest link can show them. Guests read it over the public REST API, so the page doesn't wait for Firebase sign-in. */
+   so the guest link can show them. Guests read it over the public REST API, so the page doesn't wait for Firebase sign-in.
+   When the server has Cloudflare R2 set up (api/photos/upload), each photo is uploaded there once and S.photos keeps its
+   public URL instead of the data: URL, so Firestore only holds short links. Without R2 the data: URLs go to Firestore as before. */
 const IMG_OK = s => typeof s==="string" && s.length<400000 && /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(s);
+const URL_OK = s => typeof s==="string" && s.length<500 && /^https:\/\/[A-Za-z0-9.-]+(\/[A-Za-z0-9._~-]+)*\/gallery\/[A-Za-z0-9_-]+\/[a-z]+\/[A-Za-z0-9_-]+\.(jpg|png|webp)$/.test(s);
+const PHOTO_OK = s => IMG_OK(s) || URL_OK(s);
+const R2 = {off:false};
+async function r2Upload(type,list){   // swaps each data: URL in list for its R2 URL. True when something changed.
+  let changed=false;
+  for(const x of list.slice()){
+    if(R2.off||!IMG_OK(x)) continue;
+    const r=await fetch("/api/photos/upload",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+await FBX.idToken()},body:JSON.stringify({type,data:x})});
+    if([404,405,503].includes(r.status)){ R2.off=true; break }   // no R2 on this server: keep the data: URLs
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok||!URL_OK(j.url)) throw new Error(j.error||"Photo upload failed ("+r.status+")");
+    const i=list.indexOf(x); if(i>=0){ list[i]=j.url; changed=true }
+  }
+  return changed;
+}
+function r2Delete(url){
+  if(!URL_OK(url)||!FB_ON()||!window.FBX||!FBX.user) return;
+  FBX.idToken().then(tok=>fetch("/api/photos/delete",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+tok},body:JSON.stringify({url})})).catch(()=>{});
+}
 const strHash = s => { let h=5381; for(let i=0;i<s.length;i+=7) h=((h<<5)+h+s.charCodeAt(i))|0; return (h>>>0).toString(36)+"."+s.length };
 function reshrink(src,max,q){ return new Promise(res=>{ const im=new Image(); im.onerror=()=>res(src); im.onload=()=>{
   const k=Math.min(1,max/Math.max(im.width,im.height)), c=document.createElement("canvas"); c.width=Math.round(im.width*k); c.height=Math.round(im.height*k);
   c.getContext("2d").drawImage(im,0,0,c.width,c.height); res(c.toDataURL("image/jpeg",q)) }; im.src=src }) }
 async function galleryPayload(list){
   const size=a=>a.reduce((n,x)=>n+x.length,0);
-  let out=list.filter(x=>typeof x==="string"&&/^data:image\//.test(x));
-  for(const [max,q] of [[720,.68],[600,.6],[480,.55],[400,.5]]){ if(size(out)<850000&&out.every(IMG_OK)) break; out=await Promise.all(out.map(x=>reshrink(x,max,q))) }   // Firestore docs max out at 1 MB
-  out=out.filter(IMG_OK); while(out.length&&size(out)>900000) out.pop();
+  let out=list.filter(x=>URL_OK(x)||(typeof x==="string"&&/^data:image\//.test(x)));
+  for(const [max,q] of [[720,.68],[600,.6],[480,.55],[400,.5]]){ if(size(out)<850000&&out.every(PHOTO_OK)) break; out=await Promise.all(out.map(x=>URL_OK(x)?x:reshrink(x,max,q))) }   // Firestore docs max out at 1 MB
+  out=out.filter(PHOTO_OK); while(out.length&&size(out)>900000) out.pop();
   return out;
 }
 const fbGalT={};
@@ -3716,7 +3737,10 @@ function fbSyncGallery(type){
   if(!FB_ON()||!window.FBX||!FBX.user||type==="dana") return;
   clearTimeout(fbGalT[type]);
   fbGalT[type]=setTimeout(async()=>{
-    const list=(S.photos&&S.photos[type])||[], key="galsync:"+FBX.user.uid+"_"+type, sig=strHash(list.join("|"));
+    const list=(S.photos&&S.photos[type])||[], key="galsync:"+FBX.user.uid+"_"+type;
+    try{ if(await r2Upload(type,list)) try{localStorage.setItem("aradhana:photos",JSON.stringify(S.photos))}catch(e){} }
+    catch(er){ console.warn("[r2] upload",er) }   // falls back to sending the data: URLs to Firestore
+    const sig=strHash(list.join("|"));
     if(store.get(key,"")===sig) return;
     if(!list.length&&!store.get(key,"")) return;
     try{ await FBX.saveGallery(type,await galleryPayload(list)); store.set(key,sig) }
@@ -3732,7 +3756,7 @@ function guestGallery(p){
   const ctl=new AbortController(), tm=setTimeout(()=>ctl.abort(),4000);
   return GUEST_GAL[id]=fetch(`https://firestore.googleapis.com/v1/projects/${encodeURIComponent(cfg.projectId)}/databases/(default)/documents/galleries/${encodeURIComponent(id)}?key=${encodeURIComponent(cfg.apiKey)}`,{signal:ctl.signal})
     .then(r=>r.ok?r.json():null)
-    .then(d=>(((d&&d.fields&&d.fields.photos&&d.fields.photos.arrayValue&&d.fields.photos.arrayValue.values)||[]).map(v=>v.stringValue).filter(IMG_OK).slice(0,6)))
+    .then(d=>(((d&&d.fields&&d.fields.photos&&d.fields.photos.arrayValue&&d.fields.photos.arrayValue.values)||[]).map(v=>v.stringValue).filter(PHOTO_OK).slice(0,6)))
     .catch(()=>[]).finally(()=>clearTimeout(tm));
 }
 async function hashPw(p){

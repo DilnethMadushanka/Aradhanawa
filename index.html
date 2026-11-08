@@ -1897,6 +1897,104 @@ body:has(.lp){background:#fff}
   .hx-env,.hx-card,.hx-flap,.hx-seal,.hx-clip,.lp .hx-txt h1 em{animation:none}
   .hx-seal{opacity:0}.hx-flap{transform:rotateX(178deg);z-index:0}.hx-clip{clip-path:none;z-index:6}.hx-card{transform:translateY(-45cqw) scale(1.06)}.hx-env{transform:translateY(10cqw) scale(.94)}
 }
+/* ===== Premium pass: one serif voice, paper texture, framed gallery, live phone, photo, lamp-lit CTA, lotus footer ===== */
+.lp{background:#F7EEDD url("img/paper-texture.webp") 0 0/640px repeat}
+.lp h2,.lp h3,.lp-phead h1,.lp-detail h1{font-family:"Cormorant Garamond","Noto Serif Sinhala",Georgia,serif;font-weight:600;letter-spacing:-.012em}
+.lp-feat h2,.lp-des h2,.lp-steps h2,.lp-real h2{font-size:clamp(38px,5vw,70px);line-height:1.02}
+.lp-phead h1{font-weight:500;letter-spacing:-.015em}
+/* gallery */
+.lp-feat .lp-tiles{display:flex;flex-wrap:wrap;justify-content:center;gap:22px;max-width:1180px;margin-inline:auto}
+.lp-feat .lp-tile{flex:0 1 calc((100% - 44px)/3)}
+.lp-tile{position:relative;overflow:hidden;background:#FFFBF3;border:1px solid rgba(166,122,31,.4);outline:1px solid rgba(166,122,31,.22);outline-offset:-8px;box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 14px 34px -26px rgba(110,70,20,.55);transition:transform .45s cubic-bezier(.2,.7,.2,1),box-shadow .45s}
+.lp-tile .pv{padding:26px 26px 22px;background:radial-gradient(ellipse at 50% 30%,#FFFDF8,transparent 70%)}
+.lp-tile .pv .card{box-shadow:0 18px 30px -18px rgba(90,60,20,.45)}
+.lp-tile::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 35%,rgba(255,240,200,.55) 48%,transparent 60%);transform:translateX(-110%);transition:transform .9s ease;pointer-events:none}
+.lp-tile:hover{transform:translateY(-6px);box-shadow:0 30px 50px -28px rgba(110,70,20,.6)}
+.lp-tile:hover::after{transform:translateX(110%)}
+.lp-tile .strip{background:transparent;border-top:1px solid rgba(166,122,31,.3);padding:14px 20px 16px}
+.lp-tile .strip b{font:600 21px/1.1 "Cormorant Garamond",Georgia,serif;letter-spacing:0}
+@media (max-width:900px){.lp-feat .lp-tile{flex-basis:calc((100% - 22px)/2)}}
+@media (max-width:700px){.lp-feat .lp-tiles{gap:10px}.lp-feat .lp-tile{flex-basis:calc((100% - 10px)/2)}.lp-tile{outline-offset:-5px}.lp-tile .pv{padding:12px}.lp-tile .strip{padding:10px 12px}.lp-tile .strip b{font-size:17px}}
+/* steps */
+.lp-steps li{background:rgba(255,251,243,.85);box-shadow:0 18px 40px -32px rgba(110,70,20,.6)}
+.lp-steps h3{font-size:30px;letter-spacing:-.01em}
+.lp-steps .no{background:radial-gradient(circle at 35% 30%,#4A3520,#2A1E12);box-shadow:0 0 0 3px #FFFBF3,0 0 0 4px rgba(166,122,31,.5)}
+/* real-life photo */
+.lp-real::before,.lp-bands::before{grid-column:1/-1;margin:0 0 8px!important}
+.lp-real{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(28px,5vw,80px);align-items:center;max-width:1280px;margin:0 auto;padding:clamp(56px,7vw,110px) var(--m)}
+.rl-ph{margin:0;position:relative;padding:12px;background:#FFFBF3;border:1px solid rgba(166,122,31,.45);box-shadow:0 40px 70px -40px rgba(90,55,15,.7)}
+.rl-ph::after{content:"";position:absolute;inset:5px;border:1px solid rgba(166,122,31,.3);pointer-events:none}
+.rl-ph img{display:block;width:100%;height:auto;aspect-ratio:1600/1074;object-fit:cover}
+.rl-txt .lp-orn{margin:0 0 18px;max-width:180px;justify-content:flex-start}.rl-txt .lp-orn i:first-child{display:none}
+.rl-txt p{margin:20px 0 0;font-size:18px;line-height:1.55;color:#6E5D48;max-width:46ch}
+.rl-txt ul{list-style:none;margin:22px 0 28px;padding:0;display:grid;gap:10px;font-size:16px;color:#4A3B2A}
+.rl-txt li{display:flex;gap:12px;align-items:center}
+.rl-txt li::before{content:"";flex:none;width:9px;height:9px;background:#B3852B;transform:rotate(45deg)}
+.rl-txt li b{color:#2A1E12}
+@media (max-width:900px){.lp-real{grid-template-columns:1fr}.rl-ph{padding:7px}}
+/* try */
+.lp-try .tryh{font:italic 600 clamp(22px,2.4vw,30px)/1.1 "Cormorant Garamond",serif;color:#8A6420;letter-spacing:0}
+.lp-try input{font:600 clamp(52px,8.4vw,140px)/1.05 "Cormorant Garamond","Noto Serif Sinhala",Georgia,serif;letter-spacing:-.02em}
+.lp-try .ans .kind{font-family:"Cormorant Garamond","Noto Serif Sinhala",serif;font-size:26px}
+.lp-try .msg{border:1px solid rgba(60,120,60,.18);box-shadow:0 16px 30px -24px rgba(30,70,30,.6)}
+.lp-try .cardwrap .card{box-shadow:0 34px 60px -30px rgba(90,55,15,.65)}
+@media (max-width:820px){.lp-try input{font-size:13vw}}
+/* features with live phone */
+.lp-bands{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,380px);gap:clamp(24px,4vw,64px);align-items:start;padding:clamp(40px,5vw,72px) var(--m)}
+.bd-list{border-top:1px solid rgba(166,122,31,.35)}
+.lp-bands .lp-band{padding:26px 22px;min-height:0;transition:background .45s,color .45s}
+.lp-band h3{font-size:clamp(28px,3.1vw,48px);font-weight:600;letter-spacing:-.01em;line-height:1.05}
+.lp-band.on{background:linear-gradient(90deg,rgba(243,221,168,.75),rgba(255,248,238,.4))}
+.bd-ph{position:sticky;top:110px}
+.bd-dev{position:relative;width:100%;max-width:330px;margin:0 auto;aspect-ratio:9/18.5;border-radius:46px;padding:11px;background:linear-gradient(145deg,#4A3826,#1C140C 60%,#3B2B1B);box-shadow:0 0 0 1px #8A6420,0 50px 80px -40px rgba(60,35,10,.75)}
+.bd-dev::before{content:"";position:absolute;top:22px;left:50%;width:30%;height:22px;margin-left:-15%;border-radius:20px;background:#120C07;z-index:3}
+.bd-scr{position:relative;height:100%;border-radius:36px;overflow:hidden;background:#F6F0E4 url("img/ivory-silk-900.webp") center/cover;display:grid;place-items:center;text-align:center}
+.bd-scr .lo{position:absolute;top:0;height:100%;width:auto;opacity:.95;pointer-events:none}
+.bd-scr .lo.l{left:-38%}.bd-scr .lo.r{right:-38%}
+.bd-in{position:relative;display:grid;justify-items:center;gap:12px;padding:0 34px;color:#7A1F2B;font-family:"Cormorant Garamond",serif}
+.bd-in .k{font-size:12px;letter-spacing:.34em;text-transform:uppercase;color:#B39256;font-weight:600}
+.bd-in .n{font-size:38px;line-height:1;font-style:italic;font-weight:600}
+.bd-in .n i{display:block;font-size:24px;color:#B39256;margin:4px 0}
+.bd-in .d{font-size:17px;color:#4A3F38}
+.bd-in .si{font-family:"Noto Serif Sinhala",serif;font-style:normal;letter-spacing:0;text-transform:none}
+.bd-in .n.si{font-size:30px;font-weight:700}
+.bd-in .dear,.bd-in .cd,.bd-in .map,.bd-in .mus{display:none;animation:bdIn .5s cubic-bezier(.2,.7,.2,1)}
+.bd-in .dear{font:italic 600 21px/1.1 "Cormorant Garamond",serif;color:#7A1F2B;margin:0}
+.bd-in .cd{grid-auto-flow:column;grid-template-rows:auto auto;gap:0 14px;padding:10px 14px;border:1px solid rgba(179,146,86,.55);border-radius:14px;background:rgba(255,253,248,.8)}
+.bd-in .cd b{font-size:26px;line-height:1;font-variant-numeric:tabular-nums}
+.bd-in .cd small{font:600 9px/1.4 "Inter Tight",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#6E625A}
+.bd-in .map{align-items:center;gap:6px;padding:9px 16px;border-radius:999px;background:#7A1F2B;color:#FFF3E3;font:600 12px/1.2 "Inter Tight",sans-serif;max-width:100%}
+.bd-in .map svg{width:15px;height:15px;flex:none}
+.bd-in .mus{align-items:center;gap:3px;font:600 11px/1 "Inter Tight",sans-serif;letter-spacing:.06em;color:#6E625A}
+.bd-in .mus i{width:3px;height:12px;background:#B39256;border-radius:2px;animation:bdEq .9s ease-in-out infinite alternate}
+.bd-in .mus i:nth-child(2){animation-delay:.3s}.bd-in .mus i:nth-child(3){animation-delay:.6s;margin-right:6px}
+.bd-dev .si{display:none}
+.bd-dev.f0 .dear{display:block}.bd-dev.f1 .cd{display:grid}.bd-dev.f3 .map{display:inline-flex}.bd-dev.f4 .mus{display:inline-flex}
+.bd-dev.f2 .si{display:block}.bd-dev.f2 .en{display:none}
+.bd-in .dear .si{font-size:.8em;font-weight:600}
+@keyframes bdIn{from{opacity:0;transform:translateY(8px) scale(.96)}}
+@keyframes bdEq{to{transform:scaleY(.35)}}
+@media (max-width:900px){.lp-bands{grid-template-columns:1fr}.lp-bands::before{order:-2}.bd-ph{position:static;order:-1}.bd-dev{max-width:220px;border-radius:38px}.bd-scr{border-radius:29px}.bd-in{gap:9px;padding:0 24px}.bd-in .n{font-size:30px}}
+/* lamp-lit CTA */
+.lp-cta{background:#140D07 url("img/pahana-glow-1920.webp") center 62%/cover no-repeat;color:#F7E3B0;padding:clamp(56px,7vw,110px) var(--m);position:relative;isolation:isolate}
+.lp-cta::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(ellipse at 50% 45%,rgba(20,12,6,.25),rgba(20,12,6,.72) 75%)}
+.lp-cta h2 span{color:#F7E3B0;font-family:"Cormorant Garamond",serif;font-weight:500;letter-spacing:-.02em;font-size:clamp(70px,10vw,150px);text-shadow:0 4px 40px rgba(0,0,0,.45)}
+.lp-cta h2 .q2{font-style:italic;color:transparent;background:linear-gradient(100deg,#C9993A,#F3DDA8 45%,#E9C46E 55%,#C9993A) 0 0/200% 100%;-webkit-background-clip:text;background-clip:text;padding:0 .08em;text-shadow:none}
+.lp-cta .ch .lp-btn{background:linear-gradient(180deg,#F3DDA8,#C9993A);color:#2A1E12;border:0;font-weight:600;box-shadow:0 10px 30px -10px rgba(233,196,110,.6)}
+.lp-cta .ch .lp-btn:hover{filter:brightness(1.07)}
+.lp-cta .ch .or,.lp-cta .mid p{color:rgba(247,227,176,.8)}
+.lp-main > section.lp-cta + footer::before,.lp-main > section.lp-cta::before{display:none}
+@media (max-width:700px){.lp-cta{background-image:url("img/pahana-glow-960.webp");background-position:30% 60%}.lp-cta h2 span{font-size:19vw}}
+/* lotus footer */
+.lp-foot{background:#2D2113 url("img/lotus-line-2000.webp") center bottom/100% auto no-repeat;grid-template-rows:auto auto auto auto;gap:0;padding:56px var(--m) max(150px,25vw)}
+.lp-foot .top{align-items:flex-start}
+.lp-foot .top b{font-family:"Noto Serif Sinhala",serif;color:#EBD29A}
+.lp-foot .big{justify-self:start;display:inline-flex;align-items:center;gap:14px;margin:36px 0 34px;padding:14px 26px 14px 18px;font:600 clamp(22px,2.6vw,32px)/1 "Cormorant Garamond",serif;letter-spacing:.02em;color:#2A1E12;background:linear-gradient(180deg,#F3DDA8,#C9993A);border-radius:999px;box-shadow:0 12px 30px -14px rgba(233,196,110,.7)}
+.lp-foot .big::before{content:"";width:30px;height:30px;flex:none;border-radius:50%;background:#2A1E12 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23F3DDA8' d='M12 3a9 9 0 0 0-7.8 13.4L3 21l4.7-1.2A9 9 0 1 0 12 3zm4.6 12.6c-.2.6-1.1 1.1-1.6 1.2-.4.1-1 .1-1.6-.1-3-1-4.9-3.6-5.1-3.9-.1-.2-1.2-1.6-1.2-3s.7-2.1 1-2.4c.3-.3.6-.3.8-.3h.6c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.4.6c-.1.2-.3.3-.1.6.2.3.7 1.1 1.5 1.8 1 .9 1.8 1.2 2.1 1.3.3.1.4.1.6-.1l.8-1c.2-.3.4-.2.6-.1l1.9.9c.3.1.4.2.5.3.1.2.1.7-.1 1.2z'/%3E%3C/svg%3E") center/18px no-repeat}
+.lp-foot .big:hover{text-decoration:none;filter:brightness(1.07)}
+.lp-foot .meta{position:relative;padding-top:22px;border-top:1px solid rgba(235,210,154,.22)}
+.lp-foot .meta,.lp-foot .meta a{color:rgba(247,227,176,.82)}
+@media (max-width:700px){.lp-foot{background-image:url("img/lotus-line-1000.webp");background-size:200% auto;padding-bottom:190px}.lp-foot .big{font-size:22px}}
 </style>
 </head><body>
 <link rel="stylesheet" href="loader.css"><div id="aw-loader" role="status" aria-live="polite" aria-label="Aradhanawa loading"><div class="aw-ld-frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="aw-ld-box"><svg class="aw-ld-lotus" viewBox="0 0 120 84" aria-hidden="true"><defs><linearGradient id="aw-ld-gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBF1DC"/><stop offset=".55" stop-color="#EBD3A0"/><stop offset="1" stop-color="#C9A25E"/></linearGradient><radialGradient id="aw-ld-halo"><stop offset="0" stop-color="#F3DFB2" stop-opacity=".9"/><stop offset="1" stop-color="#F3DFB2" stop-opacity="0"/></radialGradient></defs><circle class="aw-ld-glow" cx="60" cy="46" r="40"/><circle class="aw-ld-dot" cx="38" cy="14" r="1.3"/><circle class="aw-ld-dot" cx="84" cy="10" r="1"/><circle class="aw-ld-dot" cx="96" cy="26" r="1.2"/><ellipse class="aw-ld-water" cx="60" cy="65.8" rx="49.7" ry="6.8"/><path class="aw-ld-p l2" d="M60 64C39.1 66.2 19.5 53 10.3 31C22.6 28.8 34.5 31.4 42.4 37.6Z"/><path class="aw-ld-p r2" d="M60 64C80.9 66.2 100.5 53 109.7 31C97.4 28.8 85.5 31.4 77.6 37.6Z"/><path class="aw-ld-p l1" d="M60 64C41.5 59.6 28.8 38.5 31 12.1C42.4 16 52.1 24 57.4 33.2Z"/><path class="aw-ld-p r1" d="M60 64C78.5 59.6 91.2 38.5 89 12.1C77.6 16 67.9 24 62.6 33.2Z"/><path class="aw-ld-p c" d="M60 64C45 50.8 43.3 24.4 60 4.6C76.7 24.4 75 50.8 60 64Z"/></svg><p class="aw-ld-name">Aradhanawa</p><div class="aw-ld-si" lang="si">ආරාධනාව</div><div class="aw-ld-rule" aria-hidden="true"><span></span><b></b><span></span></div><div class="aw-ld-tag">Digital invitations</div></div><div class="aw-ld-bar" aria-hidden="true"><i></i></div></div><script src="loader.js" defer></script>
@@ -2862,6 +2960,20 @@ const LP_BANDS=[
   {h:"Take guests straight to the venue",fb:"#FFF3E3",fi:"#2A1E12",c:()=>`One tap opens Google Maps for ${esc(TYPES.wedding.sample.venue)}, one more adds the day to their calendar.`},
   {h:"Play the Jayamangala gatha as it opens",fb:"var(--l-surface)",fi:"#1E1418",music:1,c:()=>`Playing now. The Lotus Mandala design starts the gatha when a guest taps Open, and every guest can mute it.`}];
 
+// Features: a phone next to the switches that changes as each one is turned on.
+function lpPhone(){
+  const ev=TYPES.wedding.sample, on=LP_BANDS.map((b,i)=>b.on?" f"+i:"").join("");
+  return `<div class="bd-ph" aria-hidden="true"><div class="bd-dev${on}" id="bdPhone"><div class="bd-scr">
+    <img class="lo l" src="img/ivory-lotus-l.webp" alt=""><img class="lo r" src="img/ivory-lotus-r.webp" alt="">
+    <div class="bd-in"><span class="k en">The wedding of</span><span class="k si">විවාහ මංගල්‍යය</span>
+      <span class="n en">${esc(ev.a)} <i>&amp;</i> ${esc(ev.b)}</span><span class="n si">කසුන් <i>&amp;</i> තරුෂි</span>
+      <span class="d">${esc(fDate(ev.date,"en"))}</span>
+      <span class="dear"><span class="en">Dear Nimal Uncle</span><span class="si">ආදරණීය නිමල් මාමා</span></span>
+      <span class="cd" data-t="${ev.date}T09:41"><b data-u="d">0</b><small>days</small><b data-u="h">0</b><small>hours</small><b data-u="m">0</b><small>min</small></span>
+      <span class="map"><svg viewBox="0 0 24 24"><path d="M12 22s7-7.2 7-12.5A7 7 0 0 0 5 9.5C5 14.8 12 22 12 22z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="9.5" r="2.4" fill="currentColor"/></svg>${esc(ev.venue)}</span>
+      <span class="mus"><i></i><i></i><i></i> Jayamangala gatha</span>
+    </div></div></div></div>`;
+}
 // Hero: flat-lay desk with a tablet showing an invitation opening. Set HERO_VIDEO to an mp4 path to play a video on the tablet instead.
 const HERO_VIDEO="img/hero-tablet.mp4";
 function lpHero(){
@@ -2919,9 +3031,10 @@ function render(){
   </section>
 `,
     bands:()=>`<section class="lp-bands" id="features" data-f="paper">
-    ${LP_BANDS.map((b,i)=>`<div class="lp-band ${b.on?"on":""}" style="--fb:${b.fb};--fi:${b.fi}">
+    <div class="bd-list">${LP_BANDS.map((b,i)=>`<div class="lp-band ${b.on?"on":""}" style="--fb:${b.fb};--fi:${b.fi}">
       <div>${i===0?`<h2 style="font-size:inherit;letter-spacing:inherit"><span class="sr">What it does: </span></h2>`:""}<h3>${b.h}</h3><p class="cq">${b.c()}</p></div>
-      <button type="button" class="tg" role="switch" aria-checked="${!!b.on}" aria-label="${b.h}" data-band="${i}" ${b.music?"data-bandmusic":""} data-ui></button></div>`).join("")}
+      <button type="button" class="tg" role="switch" aria-checked="${!!b.on}" aria-label="${b.h}" data-band="${i}" ${b.music?"data-bandmusic":""} data-ui></button></div>`).join("")}</div>
+    ${lpPhone()}
   </section>
 `,
     make:()=>`<section class="lp-ch lp-paper lp-make" id="make" data-f="paper">
@@ -3027,7 +3140,7 @@ function render(){
     foot:()=>`<footer class="lp-foot" data-f="accent">
     <div class="top"><div><img class="lp-foot-logo" src="/img/logo/aradhanawa-logo-light.svg" alt="Aradhanawa" width="167" height="33"><b lang="si">ආරාධනාව</b><span>Digital invitations made in Sri Lanka, sent on WhatsApp.</span><span>We answer on WhatsApp the same day.</span></div><a href="#" data-top>Back to top</a></div>
     <span></span>
-    <a class="big" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,"Hi Aradhanawa! I have a question about invitations.")}">+${CONFIG.STUDIO_WA.replace(/^(\d{2})(\d{2})(\d{3})(\d+)$/,"$1 $2 $3 $4")}</a>
+    <a class="big" aria-label="Chat with us on WhatsApp" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,"Hi Aradhanawa! I have a question about invitations.")}">+${CONFIG.STUDIO_WA.replace(/^(\d{2})(\d{2})(\d{3})(\d+)$/,"$1 $2 $3 $4")}</a>
     <div class="meta"><nav aria-label="Footer"><a href="#login">Log in</a><a href="#register">Register</a><a href="#pricing">Pricing &amp; questions</a><a href="#designs">Designs</a><a href="#create">Create</a><a href="/wedding-invitations">Wedding invitations</a><a href="/homecoming-invitations">Homecoming</a><a href="/engagement-invitations">Engagement</a><a href="/birthday-invitations">Birthday</a><a href="/party-invitations">Party</a><a href="/dana-invitations">Dana</a><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/refunds">Refunds</a></nav><span>Designs drawn and photographed for Aradhanawa</span><span>Colombo, ${new Date().getFullYear()}</span></div>
   </footer>
 `,
@@ -3035,13 +3148,19 @@ function render(){
       ${lpOrn()}<div class="head"><div><span class="lp-eb">Card templates</span><h2>Pick a card, <em>make it yours</em></h2><p>Every function has a free design. Custom designs are drawn for you by our team.</p></div>
       <a class="lp-hghost" href="#designs">See all ${(designItems().match(/data-pick=/g)||[]).length} designs →</a></div>
       <div class="lp-tiles all" id="drow">${designItems("feat")}</div></section>`,
+    real:()=>`<section class="lp-real" id="guests" data-f="paper">
+      <figure class="rl-ph rv"><img src="img/guest-phone-960.webp" srcset="img/guest-phone-960.webp 960w, img/guest-phone-1600.webp 1600w" sizes="(max-width:900px) 92vw, 52vw" width="1600" height="1074" loading="lazy" decoding="async" alt="A guest at a wedding holding a phone that shows an Aradhanawa invitation"></figure>
+      <div class="rl-txt rv" style="--d:120ms">${lpOrn()}<span class="lp-eb">What your guests see</span><h2>A real invitation, <em>opened in WhatsApp</em></h2>
+        <p>Each guest taps their link and the card opens with their own name, the nekath, the venue map and a reply form. No app, no printing, no courier.</p>
+        <ul><li><b>Their name</b> on the card</li><li><b>One tap</b> to the venue</li><li><b>Replies</b> straight to your WhatsApp</li></ul>
+        <a class="lp-hghost" href="#designs">See the card designs</a></div></section>`,
     phead:()=>`<section class="lp-phead" data-f="paper">${lpOrn()}<span class="lp-eb">${LP_PH[PG][0]}</span><h1>${LP_PH[PG][1]}</h1><p>${LP_PH[PG][2]}</p></section>`,
     detail:()=>lpDetail(),
     steps:()=>`<section class="lp-steps g" id="how" data-f="paper">${lpOrn()}<span class="lp-eb">How it works</span><h2>Four steps, <em>ten minutes</em></h2>
-      <ol>${[["Pick","the function and a card","Wedding, homecoming, birthday, dana, party or anything else."],["Fill","names, date and nekath","Venue, map, poruwa time, reception and a note for guests."],["Add","your guests","Each guest gets a link that opens with their own name on the card."],["Send","on WhatsApp","The message is written for you in Sinhala, Singlish or English."]].map(([a,b,c],i)=>`<li><span class="no">${i+1}</span><h3>${a} <em>${b}</em></h3><p>${c}</p></li>`).join("")}</ol>
+      <ol>${[["Pick","the function and a card","Wedding, homecoming, birthday, dana, party or anything else."],["Fill","names, date and nekath","Venue, map, poruwa time, reception and a note for guests."],["Add","your guests","Each guest gets a link that opens with their own name on the card."],["Send","on WhatsApp","The message is written for you in Sinhala, Singlish or English."]].map(([a,b,c],i)=>`<li class="rv" style="--d:${i*90}ms"><span class="no">${i+1}</span><h3>${a} <em>${b}</em></h3><p>${c}</p></li>`).join("")}</ol>
       <div class="st-go">${lpNakath()}</div></section>`
   };
-  const ORDER={home:["hero","feat","steps","try","bands","cta","foot"],designs:["phead","des","cta","foot"],design:["detail","foot"],create:["phead","make","foot"],pricing:["phead","price","faq","cta","foot"]}[PG]||["hero","foot"];
+  const ORDER={home:["hero","feat","steps","real","try","bands","cta","foot"],designs:["phead","des","cta","foot"],design:["detail","foot"],create:["phead","make","foot"],pricing:["phead","price","faq","cta","foot"]}[PG]||["hero","foot"];
   document.getElementById("app").innerHTML = `<div class="lp pg-${PG}">${lpNav()}<main class="lp-main">${ORDER.map(k=>SEC[k]()).join("")}</main></div>`;
   document.body.dataset.pg=PG;
   document.body.classList.remove("has-bar");
@@ -3056,7 +3175,7 @@ function lpBind(){
     const H=$("#howH"), F=$("#howF"); H.style.opacity=F.style.opacity=0; setTimeout(()=>{ H.textContent=LP_STAGES[i][1]; F.innerHTML=lpFrag(i); H.style.opacity=F.style.opacity=1 },200);
     document.querySelectorAll("[data-st]").forEach(b=>b.setAttribute("aria-current",String(+b.dataset.st===i))) };
   if(R) R.addEventListener("input",()=>set(R.value)); document.querySelectorAll("[data-st]").forEach(b=>b.onclick=()=>set(b.dataset.st));
-  document.querySelectorAll("[data-band]").forEach(t=>t.onclick=()=>{ const on=t.getAttribute("aria-checked")!=="true"; t.setAttribute("aria-checked",on); t.closest(".lp-band").classList.toggle("on",on);
+  document.querySelectorAll("[data-band]").forEach(t=>t.onclick=()=>{ const on=t.getAttribute("aria-checked")!=="true"; t.setAttribute("aria-checked",on); t.closest(".lp-band").classList.toggle("on",on); const ph=document.getElementById("bdPhone"); if(ph) ph.classList.toggle("f"+t.dataset.band,on);
     if(t.hasAttribute("data-bandmusic")){ if(on) lxPlay(); else lxStop() } });
   document.querySelectorAll("[data-ctapick]").forEach(b=>b.onclick=()=>{ if(b.dataset.ctapick){ S.type=b.dataset.ctapick; save() } location.hash="#create" });
 

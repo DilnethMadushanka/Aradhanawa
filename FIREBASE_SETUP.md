@@ -23,7 +23,7 @@ Me keys public wenna puluwan (Firebase web config). Data arakshawa karanne rules
 - **Email/Password** → Enable → Save.
 
 **Authentication → Settings → Authorized domains** ekata add karanna:
-- `aradhanawa.com` (saha `www.aradhanawa.com`)
+- `aradhanawa.lk` (saha `www.aradhanawa.lk`)
 - Vercel domain eka (e.g. `aradhanawa.vercel.app`)
 
 ## 4. Database eka hadanna

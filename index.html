@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
-<script>/* aradhanawa.com/i/<code> short guest link → /#s=<code> (keeps img/, fb.js etc. loading from the root) */ (function(){var m=location.pathname.match(/^\/i\/([0-9A-Za-z]{6,12})\/?$/);if(m)history.replaceState(null,"","/#s="+m[1])})();</script><meta name="description" content="Aradhanawa - Sri Lankan digital invitations for weddings, homecomings, birthdays and dana, sent on WhatsApp in Sinhala, Singlish or English."><meta name="theme-color" content="#FFF3E3"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<script>/* aradhanawa.lk/i/<code> short guest link → /#s=<code> (keeps img/, fb.js etc. loading from the root) */ (function(){var m=location.pathname.match(/^\/i\/([0-9A-Za-z]{6,12})\/?$/);if(m)history.replaceState(null,"","/#s="+m[1])})();</script><meta name="description" content="Aradhanawa - Sri Lankan digital invitations for weddings, homecomings, birthdays and dana, sent on WhatsApp in Sinhala, Singlish or English."><meta name="theme-color" content="#FFF3E3"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
 <title>Aradhanawa · Digital Invitations Sri Lanka for WhatsApp</title>
-<link rel="canonical" href="https://www.aradhanawa.com/">
+<link rel="canonical" href="https://www.aradhanawa.lk/">
 <link rel="icon" href="/favicon.ico" sizes="32x32"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/img/icons/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest">
-<meta property="og:type" content="website"><meta property="og:site_name" content="Aradhanawa"><meta property="og:title" content="Aradhanawa · Sri Lankan digital invitations"><meta property="og:description" content="Wedding, homecoming, birthday, party and dana invitations, sent on WhatsApp in Sinhala, Singlish or English."><meta property="og:url" content="https://www.aradhanawa.com/"><meta property="og:image" content="https://www.aradhanawa.com/img/og/card-flatlay.jpg"><meta property="og:image:type" content="image/jpeg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:locale" content="en_LK"><meta name="twitter:card" content="summary_large_image">
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.aradhanawa.com/#org","name":"Aradhanawa","alternateName":"ආරාධනාව","url":"https://www.aradhanawa.com/","logo":"https://www.aradhanawa.com/img/logo/aradhanawa-logo-512.png","contactPoint":{"@type":"ContactPoint","telephone":"+94764487857","contactType":"customer support","areaServed":"LK","availableLanguage":["en","si"]}},{"@type":"WebSite","@id":"https://www.aradhanawa.com/#site","name":"Aradhanawa","url":"https://www.aradhanawa.com/","inLanguage":["en","si"],"publisher":{"@id":"https://www.aradhanawa.com/#org"}}]}</script>
+<meta property="og:type" content="website"><meta property="og:site_name" content="Aradhanawa"><meta property="og:title" content="Aradhanawa · Sri Lankan digital invitations"><meta property="og:description" content="Wedding, homecoming, birthday, party and dana invitations, sent on WhatsApp in Sinhala, Singlish or English."><meta property="og:url" content="https://www.aradhanawa.lk/"><meta property="og:image" content="https://www.aradhanawa.lk/img/og/card-flatlay.jpg"><meta property="og:image:type" content="image/jpeg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:locale" content="en_LK"><meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"Organization","@id":"https://www.aradhanawa.lk/#org","name":"Aradhanawa","alternateName":"ආරාධනාව","url":"https://www.aradhanawa.lk/","logo":"https://www.aradhanawa.lk/img/logo/aradhanawa-logo-512.png","contactPoint":{"@type":"ContactPoint","telephone":"+94764487857","contactType":"customer support","areaServed":"LK","availableLanguage":["en","si"]}},{"@type":"WebSite","@id":"https://www.aradhanawa.lk/#site","name":"Aradhanawa","url":"https://www.aradhanawa.lk/","inLanguage":["en","si"],"publisher":{"@id":"https://www.aradhanawa.lk/#org"}}]}</script>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -2003,7 +2003,7 @@ body:has(.lp){background:#fff}
 <div id="layer"></div>
 
 <script src="firebase-config.js"></script>
-<script>/* aradhanawa.com/admin → dashboard */ if(/^\/admin\/?$/.test(location.pathname)) history.replaceState(null,"","/#admin"+(location.hash.startsWith("#/")?location.hash.slice(1):""));</script>
+<script>/* aradhanawa.lk/admin → dashboard */ if(/^\/admin\/?$/.test(location.pathname)) history.replaceState(null,"","/#admin"+(location.hash.startsWith("#/")?location.hash.slice(1):""));</script>
 <script>
 /* ================= CONFIG ================= */
 const CONFIG = {
@@ -2016,7 +2016,7 @@ const CONFIG = {
   MUSIC_HOMECOMING: "audio/homecoming.mp3", MUSIC_BIRTHDAY: "audio/birthday.mp3", MUSIC_PARTY: "", MUSIC_DANA: "", MUSIC_OTHER: "", MUSIC_HALLOWEEN: "",
   // Base URL for share links. On a static host (Netlify, GitHub Pages, Vercel) the page itself is used.
   SITE: (location.protocol.startsWith("http") && !/claude|anthropic|usercontent/.test(location.hostname))
-          ? location.origin + location.pathname : "https://aradhanawa.com/"
+          ? location.origin + location.pathname : "https://aradhanawa.lk/"
 };
 /* Price plans (Admin → Prices). Saved as CONFIG.PLANS in Firestore settings/site; the payment API reads the same list,
  * so the price paid is always the one set here. Before any plan is saved, Plus and Custom design are shown. */
@@ -2592,7 +2592,7 @@ function inviteLink(guest){
   const json=JSON.stringify(payload);
   return shortLink(json) || (CONFIG.SITE + "#i=" + b64(json));
 }
-/* Short guest links: aradhanawa.com/i/Ab3dE9xk. The invitation details are saved in Firestore links/{code}
+/* Short guest links: aradhanawa.lk/i/Ab3dE9xk. The invitation details are saved in Firestore links/{code}
    (code = hash of owner + details, so the same guest and details always get the same code). A short link is only
    handed out once its doc is saved; until then (or when logged out / offline) the old long #i= link is used, and
    old #i= links keep working. Vercel sends /i/<code> to the page, which turns it into #s=<code> and loads it. */
@@ -2936,7 +2936,7 @@ function lpTry(){
   const r=lpParse(inp.value), T=TYPES[r.type], ev={...T.sample,...r.ev};
   const lang=S.lang==="si"?"si":S.lang;
   document.getElementById("tryKind").innerHTML=`${T.name} <span>· ${esc(T.si)}</span>`;
-  document.getElementById("tryMsg").innerHTML=waHTML(waMessage(r.type,ev,lang,"Nimal Uncle","https://aradhanawa.com/…"));
+  document.getElementById("tryMsg").innerHTML=waHTML(waMessage(r.type,ev,lang,"Nimal Uncle","https://aradhanawa.lk/…"));
   const pr=(PREMIUM[r.type]||[]).find(t=>/-card$/.test(t.img||"")); /* show a themed design, not the plain card */
   document.getElementById("tryCard").innerHTML=cardHTML(r.type,ev,lang==="si"?"si":"en","Nimal Uncle",pr?{...pr,_noribbon:1}:null);
   inp.dataset.type=r.type; inp._ev=r.ev;
@@ -2950,7 +2950,7 @@ function lpFrag(i){
   const ev=TYPES.wedding.sample;
   if(i===0) return `<div class="fx" data-ui><div class="chips">${Object.entries(TYPES).map(([k,t])=>`<span class="${k==="wedding"?"on":""}">${t.name}<small>${t.si}</small></span>`).join("")}</div><div class="meta"><span>Free design: Rathu Ran</span><span>+ 11 more</span></div></div>`;
   if(i===1) return `<div class="fx" data-ui><div class="two"><label>Groom<span class="in">${esc(ev.a)}</span></label><label>Bride<span class="in">${esc(ev.b)}</span></label></div><div class="two"><label>Poruwa nekath<span class="in">9.41 AM</span></label><label>Reception<span class="in">11.30 AM</span></label></div><label>Venue<span class="in">${esc(ev.venue)}</span></label></div>`;
-  if(i===2) return `<div class="fx" data-ui><div class="bub">${waHTML(waMessage("wedding",ev,"sl","Nimal Uncle","aradhanawa.com/…").split("\n").slice(0,9).join("\n"))}</div><div class="meta"><span>Singlish · සිංහල · English</span><span>Copy</span></div></div>`;
+  if(i===2) return `<div class="fx" data-ui><div class="bub">${waHTML(waMessage("wedding",ev,"sl","Nimal Uncle","aradhanawa.lk/…").split("\n").slice(0,9).join("\n"))}</div><div class="meta"><span>Singlish · සිංහල · English</span><span>Copy</span></div></div>`;
   return `<div class="fx" data-ui>${[["Nimal Uncle","077 111 2233",1],["Ruwani","071 222 3344",1],["Saman Aiya","075 333 4455",0],["Chamari Akka","070 444 5566",0]].map(([n,p,d])=>`<div class="gr"><b>${n}</b><small>${p}</small><span class="s ${d?"done":""}">${d?"Sent":"Send"}</span></div>`).join("")}<div class="meta"><span>4 of 5 free links used</span><span>Dear Nimal Uncle,</span></div></div>`;
 }
 const LP_BANDS=[

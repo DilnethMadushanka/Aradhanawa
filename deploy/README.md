@@ -31,10 +31,10 @@ Payments nathuwath site eka wada. Keys dannakan payment button eka error ekak de
 Domain eke DNS A record eka (`@` saha `www`) droplet IP ekata maru karala, tikak inna, passe:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/dilnethmadushanka/aradhanawa/main/deploy/install.sh | DOMAIN=aradhanawa.com bash
+curl -fsSL https://raw.githubusercontent.com/dilnethmadushanka/aradhanawa/main/deploy/install.sh | DOMAIN=aradhanawa.lk bash
 ```
 
-Let's Encrypt HTTPS certificate eka danawa, `SITE_URL` eka `https://www.aradhanawa.com` karanawa. Firebase console → Authentication → Settings → **Authorized domains** eke domain eka thiyenna one (Google login ekata).
+Let's Encrypt HTTPS certificate eka danawa, `SITE_URL` eka `https://www.aradhanawa.lk` karanawa. Firebase console → Authentication → Settings → **Authorized domains** eke domain eka thiyenna one (Google login ekata).
 
 ### HTTPS warning email
 
@@ -46,7 +46,7 @@ curl -fsSL https://raw.githubusercontent.com/dilnethmadushanka/aradhanawa/main/d
 
 ## Server eka karana dewal
 
-- `aradhanawa.com` → `https://www.aradhanawa.com` ta 301 redirect (`SITE_URL` eka www nam). Google ekata eka site ekai penenne.
+- `aradhanawa.lk` → `https://www.aradhanawa.lk` ta 301 redirect (`SITE_URL` eka www nam). Google ekata eka site ekai penenne.
 - Security headers (HSTS, X-Frame-Options, Referrer-Policy, ...) Node server eken.
 - `/api/` ekata IP ekakata minute ekakata requests 30 (`API_RATE_LIMIT` eken wenas karanna puluwan).
 - Firewall (`ufw`): SSH, 80, 443 witharai open. Epa nam `FIREWALL=no`.
@@ -58,9 +58,9 @@ R2 set karala nathnam photos parana widiyatama Firestore eke (data URL) save wen
 
 1. Cloudflare → **R2 Object Storage** → **Create bucket**. Name: `aradhanawa-photos`, Location: Automatic, Storage class: Standard → Create.
 2. Bucket eka → **Settings** → **Public access**:
-   - `aradhanawa.com` Cloudflare DNS eke nam: **Custom Domains** → **Connect Domain** → `media.aradhanawa.com` (honda option eka).
+   - `aradhanawa.lk` Cloudflare DNS eke nam: **Custom Domains** → **Connect Domain** → `media.aradhanawa.lk` (honda option eka).
    - Nathnam: **R2.dev subdomain** → **Allow** (testing walata hari, Cloudflare kiyanne production ekata custom domain ekak danna kiyala).
-   - Penna address eka (`https://media.aradhanawa.com` hari `https://pub-....r2.dev`) copy karaganna.
+   - Penna address eka (`https://media.aradhanawa.lk` hari `https://pub-....r2.dev`) copy karaganna.
 3. R2 overview page eka → **Manage API tokens** (Account details yata) → **Create Account API token**: Permissions **Object Read & Write**, Specify bucket → `aradhanawa-photos` → Create. **Access Key ID** saha **Secret Access Key** copy karaganna (secret eka ekaparai pennanne).
 4. Server eke `nano /opt/aradhanawa/.env` → yatatama me lines dala (oyage values ekka) → `systemctl restart aradhanawa`:
    ```
@@ -68,7 +68,7 @@ R2 set karala nathnam photos parana widiyatama Firestore eke (data URL) save wen
    R2_ACCESS_KEY_ID=<Access Key ID>
    R2_SECRET_ACCESS_KEY=<Secret Access Key>
    R2_BUCKET=aradhanawa-photos
-   R2_PUBLIC_URL=https://media.aradhanawa.com
+   R2_PUBLIC_URL=https://media.aradhanawa.lk
    ```
    `install.sh` aye run kalath me lines thiyagannawa.
 

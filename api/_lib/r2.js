@@ -4,7 +4,7 @@
  *   R2_ACCESS_KEY_ID      R2 API token → Access Key ID
  *   R2_SECRET_ACCESS_KEY  R2 API token → Secret Access Key
  *   R2_BUCKET             bucket name, e.g. aradhanawa-photos
- *   R2_PUBLIC_URL         public address of the bucket, e.g. https://pub-xxxx.r2.dev or https://media.aradhanawa.com
+ *   R2_PUBLIC_URL         public address of the bucket, e.g. https://pub-xxxx.r2.dev or https://media.aradhanawa.lk
  * Photos are stored at gallery/{uid}/{type}/{random}.{ext} and guests load them straight from R2_PUBLIC_URL. */
 import crypto from "node:crypto";
 

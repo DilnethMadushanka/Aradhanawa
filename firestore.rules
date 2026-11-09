@@ -92,7 +92,7 @@ service cloud.firestore {
       allow delete: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
     }
 
-    // Short guest links (aradhanawa.com/i/{code}). Holds the same details the long #i= link carries.
+    // Short guest links (aradhanawa.lk/i/{code}). Holds the same details the long #i= link carries.
     // Anyone with the code may open one; nobody but admins can list them all.
     match /links/{code} {
       allow get: if true;

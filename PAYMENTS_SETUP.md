@@ -18,7 +18,7 @@ Vercel → aradhanawa project → **Settings → Environment Variables** → Pro
 |---|---|
 | `GENIE_API_KEY` | Genie dashboard → **Connect** → `aradhanawa` app → **API Key (secret)** → Copy. (`eyJ...` walin patan ganna eka. Public Key eka nemei.) |
 | `FIREBASE_SERVICE_ACCOUNT` | Firebase console → ⚙ **Project settings → Service accounts → Generate new private key** → download wena JSON file eke **mulu content eka** paste karanna. |
-| `SITE_URL` | `https://www.aradhanawa.com` (optional, default eka meka) |
+| `SITE_URL` | `https://www.aradhanawa.lk` (optional, default eka meka) |
 
 Danata passe **Deployments → latest → Redeploy** karanna (env vars ganne aluth deploy walata witharai).
 

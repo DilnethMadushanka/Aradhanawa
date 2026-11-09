@@ -1284,6 +1284,66 @@ nav.top a{font-weight:600}
   .gwrap .lx-evs,.gwrap .lx-vc,.gwrap .site.lotus .lx-save,.gwrap .lx-map{max-width:560px}
   .gwrap .site.lotus .s-gal{max-width:560px;grid-auto-rows:170px}
 }
+/* ---- Ran Nelum (traditional layout: .site.nt) ---- */
+.site.nt{--nt-gold:linear-gradient(180deg,#D9AE58,#9C6E24);background-color:var(--c-bg)}
+.nt-cover{padding:56px 22px 72px}
+.nt-mfull{position:absolute;left:50%;top:50%;width:min(150cqw,760px);transform:translate(-50%,-50%);opacity:.16;pointer-events:none}
+.nt-cover .lx-in{gap:12px;max-width:360px}
+.nt-lotus{width:min(84cqw,330px);height:auto;overflow:visible;display:block}
+.nt-lotus.big{width:min(88cqw,360px);margin-bottom:6px}
+.nt-lotus .pt{transform-box:view-box;transform-origin:200px 112px;animation:ntbloom 1.6s cubic-bezier(.3,.8,.3,1) both}
+.nt-lotus .pt:nth-of-type(n+3){animation-delay:.12s}.nt-lotus .pt:nth-of-type(n+5){animation-delay:.24s}.nt-lotus .pt:nth-of-type(n+7){animation-delay:.36s}
+@keyframes ntbloom{from{transform:scale(.2);opacity:0}}
+.nt-lotus .sc path{stroke-dasharray:420;stroke-dashoffset:420;animation:ntdraw 2.2s .3s ease-out forwards}
+.nt-lotus .lv{opacity:0;animation:ntfade 1s 1.6s ease forwards}
+@keyframes ntdraw{to{stroke-dashoffset:0}}@keyframes ntfade{to{opacity:1}}
+.nt-greet{margin:0;font:400 40px/1.2 "Pinyon Script","Noto Serif Sinhala",cursive;background:var(--nt-gold);-webkit-background-clip:text;background-clip:text;color:transparent;padding:0 .12em}
+.site.nt.si .nt-greet{font:700 32px/1.4 "Noto Serif Sinhala",serif}
+.nt-names{margin:0;font:400 50px/1.1 "Pinyon Script","Noto Serif Sinhala",cursive;color:var(--c-ink);display:grid;justify-items:center}
+.nt-names span{font:italic 600 20px/1.6 "Cormorant Garamond","Noto Serif Sinhala",serif;color:var(--c-gold)}
+.nt-sub{margin:0;font:600 17px/1.4 "Cormorant Garamond","Noto Serif Sinhala",serif;letter-spacing:.14em;text-transform:uppercase;color:var(--c-gold)}
+.nt-dear{margin:0;font:italic 500 19px/1.5 "Cormorant Garamond","Noto Serif Sinhala",serif;color:var(--c-soft)}
+.site.nt.si .nt-dear{font-style:normal;font-size:16px}
+.nt-open{margin-top:10px;border:0;cursor:pointer;padding:14px 30px;border-radius:999px;background:linear-gradient(180deg,#E3BF72,#B98A3C);color:#fff;font:600 15px/1 "Plus Jakarta Sans","Noto Sans Sinhala",sans-serif;letter-spacing:.06em;box-shadow:0 12px 26px -12px rgba(140,90,20,.7),inset 0 1px 0 rgba(255,255,255,.5);animation:ntpulse 2.6s ease-in-out infinite}
+@keyframes ntpulse{50%{box-shadow:0 12px 26px -12px rgba(140,90,20,.7),0 0 0 9px rgba(217,174,88,.16)}}
+.nt-lang{display:inline-flex;padding:3px;border-radius:999px;background:rgba(255,251,247,.92);border:1px solid color-mix(in srgb,var(--c-gold) 35%,transparent);box-shadow:0 6px 16px -10px rgba(120,80,30,.5);pointer-events:auto}
+.nt-lang button{border:0;background:none;cursor:pointer;min-width:44px;padding:8px 12px;border-radius:999px;font:600 13px/1 "Plus Jakarta Sans","Noto Sans Sinhala",sans-serif;color:var(--c-soft)}
+.nt-lang button[aria-pressed="true"]{background:linear-gradient(180deg,#E3BF72,#B98A3C);color:#fff}
+.nt-cover .nt-lang{margin-top:14px}
+.site.lotus > .nt-top{position:sticky;top:12px;z-index:8;height:0;display:flex;align-items:flex-start;justify-content:flex-end;padding:0 12px;pointer-events:none}
+.nt-hero{position:relative;overflow:hidden;text-align:center;padding:calc(min(100cqw,520px)*.3) 18px 30px}
+.nt-in{position:relative;z-index:2;display:grid;justify-items:center;gap:12px;max-width:440px;margin:0 auto}
+.nt-sw{font:700 16px/1 "Noto Serif Sinhala",serif;color:var(--c-gold);letter-spacing:.06em;padding:6px 14px;border-radius:999px;background:radial-gradient(closest-side,color-mix(in srgb,var(--c-bg) 92%,transparent),transparent)}
+.nt-fam{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:end;gap:6px;width:100%;margin-top:10px}
+.nt-fam > div{display:grid;gap:3px;justify-items:center}
+.nt-fam small{font:500 14px/1.4 "Cormorant Garamond","Noto Serif Sinhala",serif;color:var(--c-soft)}
+.site.nt.si .nt-fam small{font-size:12.5px}
+.nt-fam b{font:400 36px/1.2 "Pinyon Script","Noto Serif Sinhala",cursive;color:var(--c-ink);margin-top:6px;overflow-wrap:anywhere}
+.nt-and{font:italic 500 28px/1 "Cormorant Garamond",serif;color:var(--c-gold);padding-bottom:10px}
+.nt-one{margin:6px 0 0;font:400 48px/1.15 "Pinyon Script","Noto Serif Sinhala",cursive;color:var(--c-ink)}
+.nt-couple{position:relative;margin:4px 0 0;width:min(100%,400px);padding-bottom:20%}
+.nt-couple > img{display:block;width:100%;aspect-ratio:4/3.4;object-fit:cover;object-position:50% 30%;mix-blend-mode:multiply;-webkit-mask-image:radial-gradient(ellipse 52% 54% at 50% 46%,#000 52%,transparent 100%);mask-image:radial-gradient(ellipse 52% 54% at 50% 46%,#000 52%,transparent 100%)}
+.nt-couple .nt-lotus{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:104%;filter:drop-shadow(0 6px 10px rgba(150,100,30,.18))}
+.nt-line{margin:0;font:500 19px/1.5 "Cormorant Garamond","Noto Serif Sinhala",serif;color:var(--c-soft);max-width:30ch}
+.site.nt.si .nt-line{font-size:16px}
+.nt-date{display:grid;gap:8px;justify-items:center;width:100%;margin-top:6px}
+.nt-date .y{font:600 26px/1 "Cormorant Garamond",serif;letter-spacing:.32em;padding-left:.32em;background:var(--nt-gold);-webkit-background-clip:text;background-clip:text;color:transparent}
+.nt-date .r{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:14px;width:min(100%,340px)}
+.nt-date .r span{padding:9px 0;border-block:1px solid color-mix(in srgb,var(--c-gold) 55%,transparent);font:600 13px/1.2 "Cormorant Garamond","Noto Serif Sinhala",serif;letter-spacing:.2em;text-transform:uppercase;color:var(--c-soft)}
+.site.nt.si .nt-date .r span{letter-spacing:.04em}
+.nt-date .r b{font:600 58px/1 "Cormorant Garamond",serif;color:var(--c-ink)}
+.nt-date .t{margin:0;font:500 16px/1.4 "Cormorant Garamond","Noto Serif Sinhala",serif;color:var(--c-soft)}.nt-date .t b{color:var(--c-ink)}
+.nt-date .v{margin:0;font:italic 600 18px/1.4 "Cormorant Garamond","Noto Serif Sinhala",serif;color:var(--c-ink)}
+.site.lotus > .nt-navw{position:sticky;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:7;display:flex;justify-content:center;margin-top:-64px;pointer-events:none}
+.nt-nav{pointer-events:auto;display:flex;align-items:center;gap:2px;padding:6px;border-radius:999px;background:rgba(255,251,247,.9);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid color-mix(in srgb,var(--c-gold) 30%,transparent);box-shadow:0 14px 30px -16px rgba(110,70,20,.55)}
+.nt-nav button{width:42px;height:42px;border:0;border-radius:50%;background:none;color:color-mix(in srgb,var(--c-gold) 85%,#5a4020);display:grid;place-items:center;cursor:pointer;transition:background .25s,color .25s}
+.nt-nav button svg{width:19px;height:19px}
+.nt-nav button[aria-current="true"]{background:linear-gradient(180deg,#E3BF72,#B98A3C);color:#fff;box-shadow:0 6px 12px -6px rgba(140,90,20,.8)}
+.nt-nav .nt-mus{margin-left:4px;border:1px solid color-mix(in srgb,var(--c-gold) 45%,transparent)}
+.nt-nav .nt-mus.on{animation:lxring 1.8s ease-out infinite}
+.site.nt .s-foot{padding-bottom:96px}
+@media (min-width:900px){.gwrap .site.nt > .nt-navw{width:auto}.gwrap .site.nt > .nt-top{width:min(100%,960px);padding:0 28px}.gwrap .nt-greet{font-size:58px}.gwrap .nt-fam b{font-size:44px}}
+@media (prefers-reduced-motion:reduce){.nt-lotus *,.nt-open,.nt-mus{animation:none!important;opacity:1!important;stroke-dashoffset:0!important}}
 @media (prefers-reduced-motion:reduce){.lx-bq g,.lx-dust i,.lx-open,.lx-down span,.lx-fab.on{animation:none!important}}
 /* card thumbnail. The vine strips use % (of the card width): cqw on the card itself would measure the page, not the card. */
 .card.L-lotus{background:var(--lx-l) left top/17% auto repeat-y,var(--lx-r) right top/17% auto repeat-y,linear-gradient(118deg,rgba(255,255,255,0) 18%,rgba(255,255,255,.55) 32%,rgba(255,255,255,0) 46%),linear-gradient(165deg,#F9F4EB,#EDE2CF 52%,#F7F0E4)}
@@ -2224,14 +2284,14 @@ function lxStrip(){
   ${lxLotus(40,124,1.05,"w")}${lxLotus(26,334,.95,"p")}${lxBud(70,250,.9,18,0)}${lxLotus(48,548,1.15,"w")}</svg>`;
 }
 const lxUri = svgStr => `url("data:image/svg+xml,${encodeURIComponent(svgStr.replace(/\s+/g," "))}")`;
-function lxMandala(cls){
+function lxMandala(cls,full){
   const ring=(n,fn)=>{let o="";for(let i=0;i<n;i++)o+=`<g transform="rotate(${(i*360/n).toFixed(2)})">${fn(i)}</g>`;return o};
   let g=`<circle r="14"/><circle r="22"/>`+ring(12,()=>`<path d="M0-24C6-30 6-40 0-46C-6-40-6-30 0-24Z"/>`);
   g+=`<circle r="50"/><circle r="54" stroke-dasharray="2 3"/>`+ring(36,()=>`<circle cy="-59" r="1.8"/>`);
   g+=`<circle r="64"/>`+ring(16,()=>`<path d="M0-66C13-76 13-94 0-106C-13-94-13-76 0-66Z"/><circle cy="-84" r="4"/><circle cy="-84" r="1.4"/>`);
   g+=`<circle r="112" stroke-dasharray="3 4"/><circle r="118"/>`+ring(24,()=>`<path d="M0-120C11-128 15-146 0-160C-15-146-11-128 0-120Z"/><path d="M0-128C5-134 6-142 0-149C-6-142-5-134 0-128Z"/>`);
   g+=`<circle r="164"/>`+ring(48,()=>`<path d="M-9-166Q0-180 9-166"/>`)+ring(24,()=>`<path d="M0-168L7-188L0-202L-7-188Z"/><circle cy="-209" r="2.6"/>`);
-  return `<svg class="${cls||"lx-mandala"}" viewBox="-214 0 428 216" aria-hidden="true"><g fill="none" stroke="var(--c-gold)" stroke-width="1.25">${g}<animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="140s" repeatCount="indefinite"/></g></svg>`;
+  return `<svg class="${cls||"lx-mandala"}" viewBox="${full?"-214 -214 428 428":"-214 0 428 216"}" aria-hidden="true"><g fill="none" stroke="var(--c-gold)" stroke-width="1.25">${g}<animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="140s" repeatCount="indefinite"/></g></svg>`;
 }
 function lxMono(type,ev){
   const [a,b]=initials(type,ev);
@@ -2296,6 +2356,7 @@ function lxBouquet(side){
 function lxSite(type, ev, lang, guest, prem, gallery, base){
   const si=lang==="si", L=(e,s)=>si?s:e;
   const TH = LX_TH[prem.site]||LX_TH.lotus, couple=(type==="wedding"||type==="homecoming");
+  if(TH.lay==="trad") return ntSite(type,ev,lang,guest,prem,gallery,base,TH);
   const names = couple ? [ev.a||"Groom", ev.b||"Bride"] : type==="birthday" ? [ev.a||L("Birthday","උපන්දිනය")] : [ev.title||TYPES[type].name];
   const eyebrow = type==="wedding" ? L("The wedding of","විවාහ මංගල්‍යය") : type==="homecoming" ? L("The homecoming of","හෝම්කමිං උත්සවය") : type==="birthday" ? (ev.age?L(`Turning ${esc(ev.age)}`,`වයස ${esc(ev.age)} සපිරේ`):L("Birthday celebration","උපන්දින සාදය")) : (ev.a?esc(ev.a)+" "+L("invites you to","ආරාධනා කරයි"):L("You are invited to","ඔබට ආරාධනා"));
   const TX = ({wedding:[L("Together with their families","දෙපාර්ශවයේ දෙමාපියන් සමඟ"),L("With the blessings of our families, we begin our forever","දෙපාර්ශවයේ ආශීර්වාදය ඇතිව අපි නව ජීවිතයක් අරඹමු"),L("Wedding details","විවාහ විස්තර")],
@@ -2379,6 +2440,74 @@ function buyCTA(type,prem,L){
   const href=CONFIG.SITE.split("#")[0]+"#design/"+type+"/"+Math.max(0,i);
   return `<div class="s-buy"><b>${L("Love this invitation?","මෙම ආරාධනාවට කැමතිද?")}</b><span>${L("Get this card for your own event","ඔබේ උත්සවයටත් මෙම කාඩ්පත ලබා ගන්න")}</span><a class="s-btn" href="${esc(href)}" target="_blank" rel="noopener">${L("Get this card","මෙම කාඩ්පත ගන්න")}</a></div>`;
 }
+/* ---- Ran Nelum: traditional layout. Gold lotus on a scroll, mandala crest, the two families side by side,
+   a Sinhala / English switch and an icon bar at the bottom. Turned on by lay:"trad" in LX_TH. ---- */
+let NT_N=0;
+function ntLotus(cls){
+  const g="ntg"+(++NT_N), r=v=>Math.round(v*10)/10;
+  const petal=(h,w)=>`M0 0C${w} ${r(-h*.22)} ${r(w*.6)} ${r(-h*.7)} 0 ${-h}C${r(-w*.6)} ${r(-h*.7)} ${-w} ${r(-h*.22)} 0 0Z`;
+  const P=(a,h,w,f)=>`<g class="pt"><g transform="translate(200 112) rotate(${a})"><path d="${petal(h,w)}" fill="url(#${g}${f||""})" stroke="#8A6020" stroke-width="1"/><path d="M0-8V${r(-h*.78)}" stroke="#FFF3D0" stroke-width="1.1" opacity=".7"/></g></g>`;
+  const lf=(x,y,a,k)=>`<path transform="translate(${x} ${y}) rotate(${a}) scale(${k})" d="M0 0C6-6 6-16 0-23C-6-16-6-6 0 0Z" fill="url(#${g})" stroke="#8A6020" stroke-width="1"/>`;
+  const side=`<g class="sc" fill="none" stroke="url(#${g})" stroke-linecap="round"><path d="M196 121C166 124 151 141 119 138C93 135 86 112 104 106C118 101 129 116 117 122C111 125 104 121 107 115" stroke-width="4"/><path d="M152 134C122 151 82 153 59 141C41 131 44 112 60 113C73 114 73 128 62 128" stroke-width="3.2"/><path d="M60 141C42 151 24 149 12 141" stroke-width="2"/><path d="M132 136C124 122 130 106 146 101" stroke-width="2"/><path d="M96 147C92 160 104 166 112 160" stroke-width="1.6"/></g>
+    <g class="lv">${lf(146,101,62,.8)}${lf(130,116,-30,.55)}${lf(84,132,-70,.6)}${lf(100,146,200,.5)}${lf(36,146,-100,.5)}<circle cx="8" cy="141" r="3" fill="url(#${g})"/><circle cx="114" cy="161" r="2.4" fill="url(#${g})"/><circle cx="170" cy="138" r="2.2" fill="url(#${g})"/></g>`;
+  return `<svg class="${cls||"nt-lotus"}" viewBox="0 0 400 170" aria-hidden="true"><defs><linearGradient id="${g}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F6E1A2"/><stop offset=".45" stop-color="#D9AE58"/><stop offset="1" stop-color="#A9772C"/></linearGradient><linearGradient id="${g}l" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBEFC8"/><stop offset="1" stop-color="#DDB46A"/></linearGradient></defs>
+    ${side}<g transform="translate(400 0) scale(-1 1)">${side}</g>
+    ${P(-74,54,19)}${P(74,54,19)}${P(-52,70,22)}${P(52,70,22)}${P(-26,84,24)}${P(26,84,24)}${P(0,96,26)}${P(-14,52,19,"l")}${P(14,52,19,"l")}
+    <path d="M168 112Q200 132 232 112Q218 124 200 124Q182 124 168 112Z" fill="url(#${g})" stroke="#8A6020" stroke-width=".8"/>${[-3,-2,-1,0,1,2,3].map(i=>`<circle cx="${200+i*7}" cy="${r(128-Math.abs(i)*.6)}" r="1.8" fill="#B9893A"/>`).join("")}</svg>`;
+}
+function ntSite(type,ev,lang,guest,prem,gallery,base,TH){
+  const si=lang==="si", L=(e,s)=>si?s:e, id=base.id, couple=type==="wedding"||type==="homecoming";
+  const groom=ev.a||L("Groom","මනාලයා"), bride=ev.b||L("Bride","මනාලිය");
+  const names=couple?[groom,bride]:[ev.title||ev.a||L(TYPES[type].name,TYPES[type].si)];
+  const dt=ev.date?new Date(ev.date+"T00:00:00"):null, ok=dt&&!isNaN(dt);
+  const f=o=>{try{return dt.toLocaleDateString(si?"si-LK":"en-GB",o)}catch(e){return ""}};
+  const greet=L("With love, we invite you","ඔබට සාදර ආරාධනා");
+  const dear=guest?`${L("Dear","ආදරණීය")} ${esc(guest)},`:L("Dear family and friends,","ආදරණීය ඥාතී මිතුරු ඔබ සැමට,");
+  const sw=`<div class="nt-lang" role="group" aria-label="${L("Language","භාෂාව")}"><button type="button" data-lxlang="si" aria-pressed="${si}">සිං</button><button type="button" data-lxlang="en" aria-pressed="${!si}">EN</button></div>`;
+  const col=(par,kid,nm)=>`<div>${par?(si?`<small>${esc(par)}</small><small>${kid[1]}</small>`:`<small>${kid[0]}</small><small>${esc(par)}</small>`):""}<b>${esc(nm)}</b></div>`;
+  const fam=couple
+    ? `<div class="nt-fam">${col(ev.pb,["Beloved daughter of","ගේ ආදරණීය දියණිය"],bride)}<span class="nt-and" aria-hidden="true">&amp;</span>${col(ev.pg,["Beloved son of","ගේ ආදරණීය පුත්"],groom)}</div>`
+    : `<h2 class="nt-one">${esc(names[0])}</h2>`;
+  const art=gallery&&gallery[0]&&!ev.hero ? gallery[0] : `<img src="img/${esc(TH.hero)}-960.webp" srcset="img/${esc(TH.hero)}-480.webp 480w, img/${esc(TH.hero)}-960.webp 960w" sizes="(max-width:520px) 92vw, 440px" alt="">`;
+  const line=type==="wedding"?L("joyfully invite you to celebrate their wedding","විවාහ මංගල්‍යයට ඔබගේ පැමිණීම ප්‍රිය සේ බලාපොරොත්තු වෙමු")
+    : type==="homecoming"?L("warmly invite you to celebrate their homecoming","හෝම්කමිං උත්සවයට ඔබට සාදරයෙන් ආරාධනා කරමු")
+    : L("warmly invite you to celebrate with us","අප සමඟ සතුට බෙදාගන්න ඔබට සාදරයෙන් ආරාධනා කරමු");
+  const times=type==="wedding"?[[ev.nekath,L("Poruwa ceremony","පෝරුව චාරිත්‍රය")],[ev.time,L("Reception","මංගල සාදය")]]:[[ev.time,L("Starts at","ආරම්භය")]];
+  const date=ok?`<div class="nt-date"><span class="y">${dt.getFullYear()}</span><div class="r"><span>${f({month:"long"})}</span><b>${dt.getDate()}</b><span>${f({weekday:"long"})}</span></div>
+    ${times.filter(t=>t[0]).map(([t,n])=>`<p class="t">${n} <b>${fTime(t,lang)}</b></p>`).join("")}${ev.venue?`<p class="v">${esc(ev.venue)}</p>`:""}</div>`:"";
+  const dust=Array.from({length:10},(_,i)=>`<i style="left:${(i*37+11)%96}%;top:${(i*53+7)%90}%;animation-delay:${(i*.7).toFixed(1)}s"></i>`).join("");
+  const petals=Array.from({length:10},(_,i)=>`<i style="left:${(i*41+7)%94}%;--d:${(11+i%4*3)}s;--w:${(i%3-1)*40}px;animation-delay:-${(i*2.3).toFixed(1)}s;--s:${(.7+(i%3)*.2).toFixed(1)}"></i>`).join("");
+  const nav=base.sections.filter(s=>s[0]!=="details").map(([k,ic,lb],i)=>`<button type="button" data-go="${id}-${k}" aria-label="${lb}" ${i===0?'aria-current="true"':""}>${ic}</button>`).join("");
+  const mus=musicFor(type)?`<button type="button" class="nt-mus" data-music aria-pressed="false" aria-label="${L("Mute or unmute music","සංගීතය නවත්වන්න / වාදනය")}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></button>`:"";
+  return `<div class="site lotus nt th-${prem.site} mo-${TH.mo} fx-${TH.fx} locked t-${type} ${si?"si":""}" style="${tplVars(prem)}--lx-wine:${prem.wine||prem.ink}" data-site="${id}">
+  <div class="lx-bgfx" aria-hidden="true"><img src="${TH.bg}" alt=""><img class="fl l" src="${TH.l}" alt=""><img class="fl r" src="${TH.r}" alt=""><div class="lx-petals">${petals}</div></div>
+  <section class="lx-cover nt-cover">${lxMandala("nt-mfull",1)}<div class="lx-dust">${dust}</div>
+    <div class="lx-in">${ntLotus("nt-lotus big")}<p class="nt-greet">${greet}</p>
+    <h1 class="nt-names">${names.map(esc).join(`<span>${couple?L("&amp;","සහ"):""}</span>`)}</h1>
+    ${ok?`<p class="nt-sub">${esc(fDate(ev.date,lang))}</p>`:""}<p class="nt-dear">${dear}</p>
+    <button type="button" class="nt-open" data-open>${L("Open invitation","ආරාධනාව විවෘත කරන්න")}</button>${sw}</div>
+  </section>
+  <div class="nt-top">${sw}</div>
+  <section class="nt-hero" id="${id}-home">${lxMandala()}
+    <div class="nt-in">${couple?`<span class="nt-sw">ස්වස්ති සිද්ධම්</span>`:""}<h2 class="nt-greet">${greet}</h2><p class="nt-dear">${dear}</p>${fam}
+    <figure class="nt-couple">${art}${ntLotus()}</figure>
+    <p class="nt-line">${line}</p>${date}</div>
+  </section>
+  ${lxRest(type,ev,lang,{...base,prem})}
+  <div class="nt-navw"><nav class="nt-nav" aria-label="${L("Invitation sections","කොටස්")}">${nav}${mus}</nav></div>
+</div>`;
+}
+/* Sinhala / English switch on the guest page and previews: draw the same site again in the other language */
+const SITE_ARGS=new Map();
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-lxlang]"); if(!b) return;
+  const site=b.closest(".site"), a=site&&SITE_ARGS.get(site.dataset.site); if(!a||a[2]===b.dataset.lxlang) return;
+  const box=document.createElement("div"); box.innerHTML=siteHTML(a[0],a[1],b.dataset.lxlang,a[3],a[4],a[5]);
+  const nu=box.firstElementChild; if(!site.classList.contains("locked")) nu.classList.remove("locked");
+  site.replaceWith(nu); if(S.guestP&&nu.closest(".gwrap")) S.guestP.l=b.dataset.lxlang;
+  const au=document.getElementById("lxAudio"), on=!!au&&!au.paused&&!au.muted; nu.querySelectorAll("[data-music]").forEach(m=>{ m.classList.toggle("on",on); m.setAttribute("aria-pressed",String(!on)) });
+  initSites(nu.parentNode);
+});
 function lxRest(type,ev,lang,base){
   const si=lang==="si", L=(e,s)=>si?s:e, id=base.id, list=lxEvents(type,ev,L);
   const first=(type==="wedding"?(ev.church||ev.nekath||ev.time):ev.time)||"00:00";
@@ -2514,6 +2643,7 @@ const LX_TH = {
   sage:{p:"th-sage", mo:"sway", fx:"jasmine"}, blush:{p:"th-blush", mo:"sway", fx:"rose"},
   balloons:{p:"th-balloons", mo:"bob", fx:"confetti"}, glam:{p:"th-glam", mo:"bob", fx:"gold", dark:1},
   lanterns:{p:"th-lanterns", mo:"swing", fx:"spark", dark:1, glow:1}, maroon:{p:"th-maroon", mo:"swing", fx:"ember", dark:1, glow:1},
+  nelum:{p:"th-nelum", mo:"sway", fx:"petal", lay:"trad"},
   pumpkin:{p:"th-pumpkin", mo:"sway", fx:"leaf"}, haunted:{p:"th-haunted", mo:"swing", fx:"wisp", dark:1, glow:1}
 };
 for(const k in LX_TH){ const t=LX_TH[k]; if(t.p) Object.assign(t,{bg:`img/${t.p}-bg.webp`, l:`img/${t.p}-l.webp`, r:`img/${t.p}-r.webp`, hero:`${t.p}-hero`, venue:`img/${t.p}-venue.webp`}) }
@@ -2524,10 +2654,11 @@ const TH_DESIGN = {
   glam:{n:"Midnight Gold", img:"th-glam-card", mode:"bg", veil:"rgba(8,14,40,.25)", site:"glam", bg:"#13204A", gold:"#E3C27A", soft:"#D9DDF0", ink:"#FFF6E2", wine:"#1B2A5A"},
   lanterns:{n:"Lantern Night", img:"th-lanterns-card", mode:"bg", veil:"rgba(12,8,40,.2)", site:"lanterns", bg:"#1E1848", gold:"#F2B54A", soft:"#DCD6F5", ink:"#FFF4DE", wine:"#3A2A7A"},
   maroon:{n:"Kandyan Maroon", img:"th-maroon-card", mode:"bg", veil:"rgba(40,6,14,.2)", site:"maroon", bg:"#4A0E1C", gold:"#E2B65A", soft:"#EBCBA5", ink:"#FFF1DC", wine:"#6E1426"},
+  nelum:{n:"Ran Nelum", img:"th-nelum-card", mode:"bg", veil:"rgba(255,255,255,0)", site:"nelum", bg:"#FAEEE9", gold:"#B98A3C", soft:"#7D6560", ink:"#7A5216", wine:"#B06A60"},
   pumpkin:{n:"Pumpkin Patch", img:"th-pumpkin-card", mode:"bg", veil:"rgba(255,255,255,0)", site:"pumpkin", bg:"#FBF1E4", gold:"#C8651B", soft:"#7A5A44", ink:"#8A3A12"},
   haunted:{n:"Haunted Night", img:"th-haunted-card", mode:"bg", veil:"rgba(14,8,32,.25)", site:"haunted", bg:"#1A1233", gold:"#F2A33A", soft:"#D8CFF2", ink:"#FFF1DE", wine:"#3B2466"}
 };
-[["wedding","blush"],["homecoming","sage"],["homecoming","blush"],["birthday","balloons"],["birthday","glam"],["party","lanterns"],["party","glam"],["other","blush"],["other","maroon"],["halloween","pumpkin"],["halloween","haunted"]].forEach(([k,t])=>PREMIUM[k].push({...TH_DESIGN[t]}));
+[["wedding","blush"],["homecoming","sage"],["homecoming","blush"],["birthday","balloons"],["birthday","glam"],["party","lanterns"],["party","glam"],["other","blush"],["other","maroon"],["halloween","pumpkin"],["halloween","haunted"],["wedding","nelum"],["homecoming","nelum"]].forEach(([k,t])=>PREMIUM[k].push({...TH_DESIGN[t]}));
 /* For now the site only offers the animated themed designs. Older designs stay in the code but are not listed. */
 for(const k in PREMIUM) PREMIUM[k]=PREMIUM[k].filter(t=>LX_TH[t.site]);
 const hasTh = k => PREMIUM[k].length>0;
@@ -3404,6 +3535,7 @@ const orn = () => `<svg class="s-orn" viewBox="0 0 120 24" aria-hidden="true"><p
 let SITE_N=0;
 function siteHTML(type, ev, lang, guest, prem, gallery){
   const si=lang==="si", L=(e,s)=>si?s:e, T=TYPES[type], id="st"+(++SITE_N);
+  SITE_ARGS.set(id,[type,ev,lang,guest,prem,gallery]); if(SITE_ARGS.size>40) SITE_ARGS.delete(SITE_ARGS.keys().next().value);
   const loc=si?"si-LK":"en-GB";
   const dt=ev.date?new Date(ev.date+"T00:00:00"):null, ok=dt&&!isNaN(dt);
   const f=o=>{try{return dt.toLocaleDateString(loc,o)}catch(e){return ""}};
@@ -3481,7 +3613,7 @@ function syncRsvp(f){
   f.querySelector("output").textContent=f.dataset.n;
 }
 function lxReveal(site){
-  const els=site.querySelectorAll(".lx-hero .lx-in > *,.s-sec .s-eb,.s-sec .s-h,.s-sec .lx-heart,.s-sec .s-p,.lx-parents > div,.lx-date,.lx-photo,.lx-cd > div,.lx-evc,.lx-save,.lx-vc,.lx-map,.lx-ghost,.s-gal figure,.lx-rsvp .s-form");
+  const els=site.querySelectorAll(".lx-hero .lx-in > *,.s-sec .s-eb,.s-sec .s-h,.s-sec .lx-heart,.s-sec .s-p,.lx-parents > div,.lx-date,.lx-photo,.lx-cd > div,.lx-evc,.lx-save,.lx-vc,.lx-map,.lx-ghost,.s-gal figure,.lx-rsvp .s-form,.nt-in > *");
   els.forEach((e,i)=>{ e.classList.add("lx-rv"); e.style.setProperty("--rd",(Math.min([...e.parentNode.children].indexOf(e),6)*90)+"ms") });
   if(!("IntersectionObserver" in window)){ els.forEach(e=>e.classList.add("in")); return }
   const io=new IntersectionObserver(es=>es.forEach(x=>{ if(x.isIntersecting){ x.target.classList.add("in"); io.unobserve(x.target) } }),{root:site.closest(".screen")||null,rootMargin:"0px 0px -8% 0px",threshold:.12});
@@ -3491,7 +3623,7 @@ function initSites(scope){
   (scope||document).querySelectorAll(".site:not([data-ready])").forEach(site=>{
     site.dataset.ready="1"; if(site.classList.contains("lotus")) lxReveal(site);
     site.querySelectorAll("[data-rsvp]").forEach(syncRsvp);
-    const root=site.closest(".screen")||null, nav=site.querySelectorAll(".snav button[data-go]");
+    const root=site.closest(".screen")||null, nav=site.querySelectorAll(".snav button[data-go],.nt-nav button[data-go]");
     if(!("IntersectionObserver" in window)) return;
     const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) nav.forEach(b=>b.setAttribute("aria-current", b.dataset.go===e.target.id)) }),{root,rootMargin:"-45% 0px -50% 0px"});
     nav.forEach(b=>{const t=document.getElementById(b.dataset.go); t&&io.observe(t)});

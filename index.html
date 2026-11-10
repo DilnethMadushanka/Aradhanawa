@@ -2674,6 +2674,7 @@ const store = {
   get(k,d){try{const v=localStorage.getItem("aradhana:"+k);return v?JSON.parse(v):d}catch(e){return d}},
   set(k,v){try{localStorage.setItem("aradhana:"+k,JSON.stringify(v))}catch(e){}}
 };
+const SAMPLE_GUESTS = () => [{name:"Nimal Uncle",phone:"0771112233"},{name:"Ruwani",phone:"0712223344"}];
 const S = {
   type: store.get("type","wedding"),
   lang: store.get("msglang","si"),  // sl = Singlish, si = Sinhala, en = English
@@ -2682,7 +2683,7 @@ const S = {
   edited: store.get("edited",{}),
   tpl: store.get("tpl",{}),
   photos: store.get("photos",{}),
-  guests: store.get("guests",[{name:"Nimal Uncle",phone:"0771112233"},{name:"Ruwani",phone:"0712223344"}]),
+  guests: store.get("guests",SAMPLE_GUESTS()),
 };
 for(const k in TYPES) if(!S.ev[k]) S.ev[k] = {...TYPES[k].sample};
 const save = () => { fbSyncInvite(); fbSyncGallery(S.type); store.set("type",S.type); store.set("msglang",S.lang); store.set("opener",S.opener); store.set("ev",S.ev); store.set("edited",S.edited); store.set("guests",S.guests); store.set("tpl",S.tpl); try{localStorage.setItem("aradhana:photos",JSON.stringify(S.photos))}catch(e){ toast("Photo storage is full in this browser. Remove a photo or use smaller ones.") } };
@@ -3188,7 +3189,7 @@ function render(){
 
       <section class="panel" aria-labelledby="h-det">
         <div class="phead"><div><span class="eyebrow">Step 3</span><h2 id="h-det">Event details</h2></div></div>
-        ${!S.edited[S.type]?`<div class="sample"><span>These are sample details. Replace them with yours.</span><button class="linkbtn" id="clearSample">Clear all fields</button></div>`:""}
+        ${!S.edited[S.type]?`<div class="sample"><span>These are sample details. Replace them with yours.</span><button class="linkbtn" id="clearSample">Clear all fields</button></div>`:`<div class="sample"><span>Making a different ${esc(T.name.toLowerCase())} invitation?</span><button class="linkbtn" id="newCard">Start a new card</button></div>`}
         <form class="form" id="evform" autocomplete="off" data-ui>
           ${T.fields.map(f=>{const d=FIELD[f]; const lbl=(T.labels&&T.labels[f])||d.label; const id=`f-${S.type}-${f}`;
             return `<div class="fld ${d.full?"full":""}"><label for="${id}">${lbl}</label>${d.area?`<textarea id="${id}" name="${f}" rows="2">${esc(ev[f])}</textarea>`:`<input id="${id}" name="${f}" type="${d.type||"text"}" value="${esc(ev[f])}" ${d.ph?`placeholder="${d.ph}"`:""} ${f==="rsvp"?'inputmode="tel"':""}>`}</div>`}).join("")}
@@ -3372,7 +3373,8 @@ function bind(){
     if(!S.edited[S.type]){S.edited[S.type]=true; const s=document.querySelector(".sample"); s&&s.remove()}
     save(); refreshLive(); refreshGuestLinks();
   });
-  const cs=$("#clearSample"); cs&&(cs.onclick=()=>{ const keep={date:cur().date}; S.ev[S.type]={...Object.fromEntries(TYPES[S.type].fields.map(f=>[f,""])),...keep}; S.edited[S.type]=true; save(); render(); });
+  const cs=$("#clearSample"); cs&&(cs.onclick=()=>{ newCard(S.type,{date:cur().date}); render(); });
+  const nc=$("#newCard"); nc&&(nc.onclick=()=>newCardAsk(S.type,()=>{ render(); toast("New card started") }));
   $("#copyMsg").onclick=async()=>{ await copyInvite(""); copy(waMessage(S.type,cur(),S.lang,"",inviteLink("")),$("#bubble")) };
   $("#copyLink").onclick=async()=>copy(await copyInvite(""));
   $("#preview").onclick=()=>guestPreview("");
@@ -3394,7 +3396,12 @@ function bind(){
   $$("[data-upgrade]").forEach(b=>b.onclick=()=>b.dataset.upgrade==="plus"?upsell(true):customReq(""));
   $$("[data-df]").forEach(b=>b.onclick=()=>{ $$("[data-df]").forEach(x=>x.setAttribute("aria-pressed",x===b)); $("#drow").innerHTML=designItems(b.dataset.df); $("#drow").classList.toggle("all",b.dataset.df!=="all"); const dm=$("#dmore"); if(dm) dm.hidden=b.dataset.df!=="all" });
   $("#drow").addEventListener("click",e=>{ const d=e.target.closest("[data-pick]"); if(!d) return; const [k,i]=d.dataset.pick.split(":"); location.hash=`#design/${k}/${i}` });
-  $$("[data-use]").forEach(b=>b.onclick=()=>{ const [k,i]=b.dataset.use.split(":"); S.type=k; S.tpl[k]=+i; save(); location.hash="#create" });
+  $$("[data-use]").forEach(b=>b.onclick=()=>{ const [k,i]=b.dataset.use.split(":"), go=()=>{ S.type=k; S.tpl[k]=+i; save(); location.hash="#create" };
+    if(!hasCard(k)) return go();
+    modal(`<span class="eyebrow">${esc(TYPES[k].name)}</span><h3>Use this design for which card?</h3><p>You already have a ${esc(TYPES[k].name.toLowerCase())} invitation. Put this design on it, or start a new card with empty details and no photos.</p>
+      <div class="row" style="justify-content:flex-end"><button class="btn" data-keep>Use on my card</button><button class="btn primary" data-fresh>Start a new card</button></div>`);
+    document.querySelector("[data-keep]").onclick=()=>{ document.getElementById("layer").innerHTML=""; go() };
+    document.querySelector("[data-fresh]").onclick=()=>newCardAsk(k,go) });
   $$("[data-dprev]").forEach(b=>b.onclick=()=>demoPreview(b.dataset.dprev));
   $$("[data-dfgo]").forEach(b=>b.onclick=()=>{ S.df=b.dataset.dfgo });
   const nm=document.querySelector(".nv-menu"); if(nm) nm.onclick=()=>{ const sh=document.getElementById("nvSheet"), o=sh.hidden; sh.hidden=!o; nm.setAttribute("aria-expanded",String(o)); document.querySelector(".lp-nav").classList.toggle("open",o) };
@@ -4167,6 +4174,52 @@ function fbSyncGallery(type){
   },1200);
 }
 function fbSyncGalleries(){ for(const k in TYPES) fbSyncGallery(k) }
+/* One card per event type is kept in this browser (details in S.ev, gallery photos in S.photos). Starting a new card
+   empties both, so nothing from the last card (its photos above all) shows on the new one or on its guest links. */
+const hasCard = k => !!(S.edited[k] || (S.photos[k]||[]).length);
+function newCard(type,keep){
+  const gone=S.photos[type]||[];
+  S.ev[type]={...Object.fromEntries(TYPES[type].fields.map(f=>[f,""])),...(keep||{})};
+  S.photos[type]=[]; S.edited[type]=true; save();
+  gone.forEach(r2Delete);   // the gallery doc stops listing them on the next sync, so nothing uses them any more
+}
+function newCardAsk(type,done){
+  const n=TYPES[type].name.toLowerCase(), ph=(S.photos[type]||[]).length;
+  modal(`<span class="eyebrow">New card</span><h3>Start a new ${esc(n)} card?</h3><p>This clears the details${ph?` and the ${ph} gallery photo${ph>1?"s":""}`:""} of your current ${esc(n)} invitation so the new card starts empty. Guest links you already sent for it will no longer show its photos.</p>
+    <div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><button class="btn primary" data-go>Start a new card</button></div>`);
+  document.querySelector("[data-go]").onclick=()=>{ document.getElementById("layer").innerHTML=""; newCard(type); done&&done() };
+}
+/* Cards in this browser belong to the account that made them. When a different account logs in here, it starts from
+   clean cards instead of seeing (and syncing to its own guest links) the last account's details and photos. Cards the
+   account already saved are then loaded back from Firestore: details from invitations/{uid_type}, photos from galleries. */
+let cardRestore=false;
+function cardOwner(){
+  if(!FB_ON()||!window.FBX||!FBX.user) return;
+  const uid=FBX.user.uid; let owner=store.get("owner","");
+  if(!owner) try{ for(let i=0;i<localStorage.length;i++){ const m=/^aradhana:galsync:([A-Za-z0-9]+)_/.exec(localStorage.key(i)||""); if(m){ owner=m[1]; break } } }catch(e){}   // browsers from before the owner key
+  if(owner&&owner!==uid){
+    for(const k in TYPES) S.ev[k]={...TYPES[k].sample};
+    S.edited={}; S.tpl={}; S.photos={}; S.guests=SAMPLE_GUESTS();
+  }
+  store.set("owner",uid); save();
+  cardRestore=true; cardRestoreInvites();
+  for(const k in TYPES){ if(k==="dana"||hasCard(k)) continue;
+    delete GUEST_GAL[uid+"_"+k];
+    guestGallery({o:uid,t:k}).then(list=>{
+      if(!list.length||!FBX.user||FBX.user.uid!==uid||(S.photos[k]||[]).length) return;
+      S.photos[k]=list.slice(); store.set("galsync:"+uid+"_"+k,strHash(list.join("|"))); save(); if(S.page==="create") render();
+    });
+  }
+}
+function cardRestoreInvites(){
+  if(!cardRestore||!window.FBX||!FBX.user) return;
+  const uid=FBX.user.uid, invs=DB.invitations().filter(x=>x.uid===uid&&TYPES[x.type]);
+  if(!invs.length) return;
+  cardRestore=false; let n=0;
+  for(const x of invs){ const k=x.type; if(S.edited[k]) continue;
+    S.ev[k]={...Object.fromEntries(TYPES[k].fields.map(f=>[f,""])),...(x.ev||{})}; if(typeof x.tpl==="number") S.tpl[k]=x.tpl; S.edited[k]=true; n++ }
+  if(n){ save(); if(S.page==="create") render() }
+}
 const GUEST_GAL={};
 function guestGallery(p){
   const cfg=window.ARADHANA_FIREBASE&&window.ARADHANA_FIREBASE.config, t=TYPES[p.t]?p.t:"other";
@@ -4646,7 +4699,8 @@ function fbChanged(why){
   if(why==="settings"){ fbApplySettings(); return }
   const h=location.hash||"", pg=h.slice(1).split("/")[0];
   if(isGuestHash(h)) return;
-  if(why==="auth"){ fbSyncGalleries(); if(["login","register","admin","account","create"].includes(pg)) route(); else render(); return }
+  if(why==="invitations") cardRestoreInvites();
+  if(why==="auth"){ cardOwner(); fbSyncGalleries(); if(["login","register","admin","account","create"].includes(pg)) route(); else render(); return }
   if(why==="orders"&&S.page==="create"){ const a=document.activeElement; if(!(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))){ const y=scrollY; render(); scrollTo(0,y) } return }
   if(pg!=="admin"&&pg!=="account") return;
   const a=document.activeElement; if(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&a.closest(".adm,.acct")){ fbDirty=true; return }
@@ -4655,7 +4709,7 @@ function fbChanged(why){
 document.addEventListener("focusout",()=>{ if(!fbDirty) return; setTimeout(()=>{ const a=document.activeElement; if(fbDirty&&!(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))){ fbDirty=false; route() } },200) });
 function fbStart(){
   return import("./fb.js").then(m=>{ fbErrText=m.errText; return m.init(window.ARADHANA_FIREBASE,{onChange:fbChanged,onError:e=>toast(fbErrText(e))}) })
-    .then(()=>{ fbApplySettings(); fbSyncGalleries() }).catch(e=>console.error("[fb] could not start",e));
+    .then(()=>{ fbApplySettings(); cardOwner(); fbSyncGalleries() }).catch(e=>console.error("[fb] could not start",e));
 }
 
 (function boot(){

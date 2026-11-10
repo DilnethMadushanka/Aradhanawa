@@ -996,6 +996,7 @@ nav.top a{font-weight:600}
 .titem .card{max-width:none;box-shadow:none}
 .titem[data-off="1"] .card{opacity:.35;filter:grayscale(.6)}
 .titem .trow{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.titem .trow.mrow{flex-direction:column;align-items:stretch;gap:6px}.titem .mrow select{width:100%;padding:7px 8px;border:1px solid var(--line);border-radius:0;background:var(--surface);color:inherit;font:inherit;font-size:13px}
 .titem .trow b{font-family:var(--f-display);font-size:15.5px;font-weight:700;line-height:1.15}
 .titem .trow small{display:block;color:var(--muted);font-size:12px}
 .titem .tprice{display:block;margin-top:4px}
@@ -2322,9 +2323,17 @@ function lpMedal(){
 const MUSIC_KEY={wedding:"MUSIC",homecoming:"MUSIC_HOMECOMING",birthday:"MUSIC_BIRTHDAY",party:"MUSIC_PARTY",dana:"MUSIC_DANA",other:"MUSIC_OTHER",halloween:"MUSIC_HALLOWEEN"};
 /* credit lines that a track's free licence asks for, shown in the invitation footer */
 const MUSIC_CREDIT={"audio/homecoming.mp3":"“Until We Meet Again” by Arthur Vyncke"};
-const musicFor = type => CONFIG[MUSIC_KEY[type]||"MUSIC"]||"";
+/* songs that ship with the site. Admin → Music adds uploaded ones (CONFIG.MUSIC_LIB [{name, url, credit}]). */
+const BUILTIN_MUSIC=[{name:"Jayamangala Gatha",url:"audio/jayamangala-gatha.mp3"},{name:"Until We Meet Again",url:"audio/homecoming.mp3",credit:MUSIC_CREDIT["audio/homecoming.mp3"]},{name:"Birthday",url:"audio/birthday.mp3"}];
+const musicLib = () => [...BUILTIN_MUSIC,...(Array.isArray(CONFIG.MUSIC_LIB)?CONFIG.MUSIC_LIB:[]).filter(t=>t&&t.url)];
+const musicCredit = src => MUSIC_CREDIT[src]||((musicLib().find(t=>t.url===src)||{}).credit)||"";
+/* one card design: "wedding:0" is the free design of a function, "wedding:3" its 3rd premium design (same keys as tplOff) */
+const designKey = (type,prem) => { const i=prem&&prem.n?(PREMIUM[type]||[]).findIndex(x=>x.n===prem.n):-1; return type+":"+(i+1) };
+/* a design's own song (CONFIG.MUSIC_DESIGNS[key]: a URL, or "none" for silence) wins over the function's song */
+const musicForKey = key => { const d=(CONFIG.MUSIC_DESIGNS||{})[key]; if(d==="none") return ""; if(d) return d; return CONFIG[MUSIC_KEY[String(key).split(":")[0]]||"MUSIC"]||"" };
+const musicFor = (type,prem) => musicForKey(designKey(type,prem));
 /* the music of the invitation on screen: the preview layer first, then the guest page */
-function lxSrc(){ const s=document.querySelector("#layer .site")||document.querySelector(".gwrap .site"); const m=s&&s.className.match(/\bt-(\w+)/); return musicFor(m?m[1]:"wedding") }
+function lxSrc(){ const s=document.querySelector("#layer .site")||document.querySelector(".gwrap .site"); if(s&&s.dataset.dk) return musicForKey(s.dataset.dk); const m=s&&s.className.match(/\bt-(\w+)/); return musicFor(m?m[1]:"wedding") }
 function lxAudio(){
   let a=document.getElementById("lxAudio");
   if(!a){ a=document.createElement("audio"); a.id="lxAudio"; a.loop=true; a.preload="none"; a.src=lxSrc(); document.body.appendChild(a);
@@ -2373,9 +2382,9 @@ function lxSite(type, ev, lang, guest, prem, gallery, base){
   const nm2 = names.length>1 ? `${esc(names[0])} ${L("and","සහ")} ${esc(names[1])}` : esc(names[0]);
   const fabs = `<div class="lx-fabs"><div class="lx-sheet" hidden>${base.sections.map(([k,ic,lb])=>`<button type="button" data-go="${base.id}-${k}">${ic}<span>${lb}</span></button>`).join("")}</div>
     <button type="button" class="lx-fab" data-lxmenu aria-label="${L("Menu","මෙනුව")}" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 7h14M5 12h14M5 17h14"/></svg></button>
-    ${musicFor(type)?`<button type="button" class="lx-fab" data-music aria-pressed="false" aria-label="${L("Mute or unmute music","සංගීතය නවත්වන්න / වාදනය")}"><svg class="m-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg><svg class="m-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg></button>`:""}</div>`;
+    ${musicFor(type,prem)?`<button type="button" class="lx-fab" data-music aria-pressed="false" aria-label="${L("Mute or unmute music","සංගීතය නවත්වන්න / වාදනය")}"><svg class="m-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg><svg class="m-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg></button>`:""}</div>`;
   const petals = Array.from({length:TH.fx==="confetti"||TH.fx==="gold"?14:10},(_,i)=>`<i style="left:${(i*41+7)%94}%;--d:${(11+i%4*3)}s;--w:${(i%3-1)*40}px;animation-delay:-${(i*2.3).toFixed(1)}s;--s:${(.7+(i%3)*.2).toFixed(1)}"></i>`).join("");
-  return `<div class="site lotus th-${prem.site} mo-${TH.mo} fx-${TH.fx} ${TH.dark?"th-dark":""} ${TH.glow?"th-glow":""} locked t-${type} ${si?"si":""}" style="${tplVars(prem)}--lx-wine:${prem.wine||prem.ink}" data-site="${base.id}">
+  return `<div class="site lotus th-${prem.site} mo-${TH.mo} fx-${TH.fx} ${TH.dark?"th-dark":""} ${TH.glow?"th-glow":""} locked t-${type} ${si?"si":""}" style="${tplVars(prem)}--lx-wine:${prem.wine||prem.ink}" data-site="${base.id}" data-dk="${designKey(type,prem)}">
   <div class="lx-bgfx" aria-hidden="true"><img src="${TH.bg}" alt=""><img class="fl l" src="${TH.l}" alt=""><img class="fl r" src="${TH.r}" alt=""><div class="lx-petals">${petals}</div></div>
   <section class="lx-cover">${lxMandala()}${lxBouquet("l")}${lxBouquet("r")}<div class="lx-dust">${dust}</div>
     <div class="lx-in"><span class="lx-eb">${eyebrow}</span>${lxRule()}
@@ -2478,8 +2487,8 @@ function ntSite(type,ev,lang,guest,prem,gallery,base,TH){
   const dust=Array.from({length:10},(_,i)=>`<i style="left:${(i*37+11)%96}%;top:${(i*53+7)%90}%;animation-delay:${(i*.7).toFixed(1)}s"></i>`).join("");
   const petals=Array.from({length:10},(_,i)=>`<i style="left:${(i*41+7)%94}%;--d:${(11+i%4*3)}s;--w:${(i%3-1)*40}px;animation-delay:-${(i*2.3).toFixed(1)}s;--s:${(.7+(i%3)*.2).toFixed(1)}"></i>`).join("");
   const nav=base.sections.filter(s=>s[0]!=="details").map(([k,ic,lb],i)=>`<button type="button" data-go="${id}-${k}" aria-label="${lb}" ${i===0?'aria-current="true"':""}>${ic}</button>`).join("");
-  const mus=musicFor(type)?`<button type="button" class="nt-mus" data-music aria-pressed="false" aria-label="${L("Mute or unmute music","සංගීතය නවත්වන්න / වාදනය")}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></button>`:"";
-  return `<div class="site lotus nt th-${prem.site} mo-${TH.mo} fx-${TH.fx} locked t-${type} ${si?"si":""}" style="${tplVars(prem)}--lx-wine:${prem.wine||prem.ink}" data-site="${id}">
+  const mus=musicFor(type,prem)?`<button type="button" class="nt-mus" data-music aria-pressed="false" aria-label="${L("Mute or unmute music","සංගීතය නවත්වන්න / වාදනය")}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></button>`:"";
+  return `<div class="site lotus nt th-${prem.site} mo-${TH.mo} fx-${TH.fx} locked t-${type} ${si?"si":""}" style="${tplVars(prem)}--lx-wine:${prem.wine||prem.ink}" data-site="${id}" data-dk="${designKey(type,prem)}">
   <div class="lx-bgfx" aria-hidden="true"><img src="${TH.bg}" alt=""><img class="fl l" src="${TH.l}" alt=""><img class="fl r" src="${TH.r}" alt=""><div class="lx-petals">${petals}</div></div>
   <section class="lx-cover nt-cover">${lxMandala("nt-mfull",1)}<div class="lx-dust">${dust}</div>
     <div class="lx-in">${ntLotus("nt-lotus big")}<p class="nt-greet">${greet}</p>
@@ -2540,7 +2549,7 @@ function lxRest(type,ev,lang,base){
   ${gal.replace('class="s-sec"','class="s-sec lx-plain"').replace(/<h2 class="s-h">[^<]*<\/h2>/,`<h2 class="s-h">${L("Our gallery","අපගේ ඡායාරූප")}</h2>`)}
   ${vs.length?`<section class="s-sec lx-plain" id="${id}-loc"><span class="s-eb">${L("The setting","උත්සව ස්ථානය")}</span><h2 class="s-h">${type==="wedding"?L("Wedding venue","මංගල ස්ථානය"):L("Venue","ස්ථානය")}</h2>${heart}${venues}</section>`:""}
   ${rsvp.replace('class="s-sec"','class="s-sec lx-plain lx-rsvp"').replace('<span class="s-eb">RSVP</span>',`<span class="s-eb">${L("Kindly reply","කරුණාකර දන්වන්න")}</span>`).replace(L("Joyfully yes","සතුටින් එනවා"),L("Joyfully accept","සතුටින් එනවා")).replace(L("Sorry, can't","එන්න බැහැ"),L("Regretfully decline","කණගාටුයි, එන්න බැහැ")).replace(/(<form class="s-form")/,`<p class="s-p">${L("We joyfully await your presence. Please let us know if you will be joining us.","ඔබගේ පැමිණීම සතුටින් බලාපොරොත්තු වෙමු.")}</p>$1`)}
-  <footer class="s-foot">${buyCTA(type,base.prem,L)}${L("Made with","නිර්මාණය")} <a href="${CONFIG.SITE.split("#")[0]}" target="_blank" rel="noopener">Aradhanawa.com</a>${MUSIC_CREDIT[musicFor(type)]?`<br><small>${L("Music","සංගීතය")}: ${MUSIC_CREDIT[musicFor(type)]}</small>`:""}</footer>`;
+  <footer class="s-foot">${buyCTA(type,base.prem,L)}${L("Made with","නිර්මාණය")} <a href="${CONFIG.SITE.split("#")[0]}" target="_blank" rel="noopener">Aradhanawa.com</a>${musicCredit(musicFor(type,base.prem))?`<br><small>${L("Music","සංගීතය")}: ${esc(musicCredit(musicFor(type,base.prem)))}</small>`:""}</footer>`;
 }
 
 const corner = c => `<svg class="corner %POS%" viewBox="0 0 42 42" aria-hidden="true"><path d="M4 38V14Q4 4 14 4H38" fill="none" stroke="${c}" stroke-width="1.4"/><path d="M10 30Q10 10 30 10" fill="none" stroke="${c}" stroke-width="1" opacity=".6"/><circle cx="10" cy="10" r="2.6" fill="${c}"/><path d="M16 16q6-2 8 4q-6 2-8-4z" fill="${c}" opacity=".8"/></svg>`;
@@ -3548,7 +3557,7 @@ function siteHTML(type, ev, lang, guest, prem, gallery){
   sections.push(["loc",I.pin,L("Location","ස්ථානය")]);
   if(ev.rsvp) sections.push(["rsvp",I.mail,L("Reply","පිළිතුර")]);
   const mapHref = ev.map || (ev.venue?`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ev.venue)}`:"");
-  const html = `<div class="site t-${type} ${si?"si":""}" ${prem?`style="${tplVars(prem)}"`:""} data-site="${id}">
+  const html = `<div class="site t-${type} ${si?"si":""}" ${prem?`style="${tplVars(prem)}"`:""} data-site="${id}" data-dk="${designKey(type,prem)}">
   <section class="s-hero" id="${id}-home">${cardHTML(type,ev,lang,guest,prem)}<span class="s-hint">${L("Scroll for details","විස්තර සඳහා පහළට")} ↓</span></section>
 
   <section class="s-sec" id="${id}-date">
@@ -3592,7 +3601,7 @@ function siteHTML(type, ev, lang, guest, prem, gallery){
   </section>`:""}
 
   <footer class="s-foot">${buyCTA(type,prem,L)}${L("Made with","නිර්මාණය")} <a href="${CONFIG.SITE.split("#")[0]}" target="_blank" rel="noopener">Aradhanawa.com</a></footer>
-  <nav class="snav" aria-label="${L("Invitation sections","කොටස්")}">${sections.map(([k,ic,lb],i)=>`<button type="button" data-go="${id}-${k}" aria-label="${lb}" ${i===0?'aria-current="true"':""}>${ic}</button>`).join("")}${musicFor(type)?`<button type="button" class="s-mus" data-music aria-pressed="true" aria-label="${L("Play or mute music","සංගීතය වාදනය / නවත්වන්න")}"><svg class="m-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg><svg class="m-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg></button>`:""}</nav>
+  <nav class="snav" aria-label="${L("Invitation sections","කොටස්")}">${sections.map(([k,ic,lb],i)=>`<button type="button" data-go="${id}-${k}" aria-label="${lb}" ${i===0?'aria-current="true"':""}>${ic}</button>`).join("")}${musicFor(type,prem)?`<button type="button" class="s-mus" data-music aria-pressed="true" aria-label="${L("Play or mute music","සංගීතය වාදනය / නවත්වන්න")}"><svg class="m-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg><svg class="m-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg></button>`:""}</nav>
 </div>`;
   if(prem&&LX_TH[prem.site]){ lxCSS(); const a=html.indexOf(`<section class="s-sec" id="${id}-date">`), b=html.indexOf(`<nav class="snav"`); const secs=[...sections]; secs.splice(1,0,["details",I.eye,L("Details","විස්තර")]); return lxSite(type,ev,lang,guest,prem,gallery,{id,th:prem.site,sections:secs,rest:html.slice(a,b)}) }
   return html;
@@ -4383,6 +4392,7 @@ function renderAccount(){
 
 /* ---------- admin ---------- */
 const AI = {
+  music:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>`,
   chart:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V11M10 20V4M16 20v-7M22 20H2"/></svg>`,
   users:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.6a3.5 3.5 0 0 1 0 6.8M21.5 20a6.5 6.5 0 0 0-4-6"/></svg>`,
   bag:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 8h14l-1 13H6z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>`,
@@ -4402,7 +4412,7 @@ function renderAdmin(tab,arg){
   const u=me();
   if(!u){ store.set("next","#admin"+(tab?"/"+tab:"")); location.replace("#login"); return }
   if(u.role!=="admin"){ store.set("next",""); location.replace("#account"); toast("That page is for admins only"); return }
-  const TABS=[["overview",AI.chart,"Overview"],["users",AI.users,"Users"],["orders",AI.bag,"Orders"],["invitations",AI.mail,"Invitations"],["rsvps",AI.check,"RSVPs"],["templates",AI.grid,"Templates"],["prices",AI.bag,"Prices"],["prompts",AI.grid,"Image prompts"],["settings",AI.gear,"Settings"]];
+  const TABS=[["overview",AI.chart,"Overview"],["users",AI.users,"Users"],["orders",AI.bag,"Orders"],["invitations",AI.mail,"Invitations"],["rsvps",AI.check,"RSVPs"],["templates",AI.grid,"Templates"],["music",AI.music,"Music"],["prices",AI.bag,"Prices"],["prompts",AI.grid,"Image prompts"],["settings",AI.gear,"Settings"]];
   tab = TABS.some(t=>t[0]===tab) ? tab : "overview";
   const users=DB.users(), orders=DB.orders(), off=tplOff(), invs=DB.invitations(), rsvps=DB.rsvps(), fb=FB_ON();
   const typeName=t=>(TYPES[t]||TYPES.other).name, coming=list=>list.filter(r=>r.coming).reduce((a,r)=>a+(+r.count||0),0);
@@ -4482,6 +4492,34 @@ function renderAdmin(tab,arg){
       ${PREMIUM[k].map((t,i)=>{ const key=k+":"+(i+1), on=!off.includes(key); return `<div class="titem" data-off="${on?0:1}">${cardHTML(k,T.sample,"en","",{...t,_noribbon:1})}<div class="trow"><span><b>${esc(t.n)}</b><label class="tprice"><small>Custom price</small><input type="text" inputmode="numeric" data-dprice="${esc(t.n)}" value="${esc((CONFIG.DESIGN_PRICES||{})[t.n]||"")}" placeholder="${esc(customBase())}" aria-label="Custom design price for ${esc(t.n)}"></label></span><input type="checkbox" class="sw-t" data-tog="${key}" ${on?"checked":""} aria-label="Show ${esc(t.n)}"></div></div>` }).join("")}
     </div></section>`).join("")}`;
   }
+  if(tab==="music"){
+    const lib=musicLib(), md=CONFIG.MUSIC_DESIGNS||{}, nUp=lib.length-BUILTIN_MUSIC.length;
+    const opts=(cur,first)=>first+lib.map(t=>`<option value="${esc(t.url)}" ${cur===t.url?"selected":""}>${esc(t.name)}</option>`).join("")
+      +(cur&&cur!=="none"&&!lib.some(t=>t.url===cur)?`<option value="${esc(cur)}" selected>${esc(cur)}</option>`:"");
+    const uses=url=>Object.entries(MUSIC_KEY).filter(([,k])=>CONFIG[k]===url).length+Object.values(md).filter(v=>v===url).length;
+    const dsel=(key,name)=>`<div class="trow mrow"><b>${esc(name)}</b>
+      <select data-mdk="${key}" aria-label="Music for ${esc(name)}">${opts(md[key]||"",`<option value="" ${!md[key]?"selected":""}>Function's song</option><option value="none" ${md[key]==="none"?"selected":""}>No music</option>`)}</select></div>`;
+    body=`<div class="mh"><div><span class="eyebrow">Admin</span><h1>Music</h1><p>Upload MP3 songs, then choose which one plays on each function and on each card design. The song starts when a guest opens the invitation, and every guest can mute it.</p></div></div>
+    <form class="box" id="mform"><h2>Add a song</h2><div class="sform">
+      <div class="af"><label for="m-file">MP3 file</label><input id="m-file" name="file" type="file" accept="audio/mpeg,.mp3"><small>12 MB at most. ${fb?"Saved in Cloudflare R2.":"Uploading needs Firebase. In demo mode, use a link."}</small></div>
+      <div class="af"><label for="m-url">Or an MP3 link</label><input id="m-url" name="url" placeholder="https://…/song.mp3 or audio/song.mp3"><small>Use this when the file is already online.</small></div>
+      <div class="af"><label for="m-name">Song name</label><input id="m-name" name="name" maxlength="80" placeholder="Jayamangala Gatha (slow)"><small>Empty uses the file name.</small></div>
+      <div class="af"><label for="m-credit">Credit line (optional)</label><input id="m-credit" name="credit" maxlength="120" placeholder="“Song name” by Artist"><small>Shown in the invitation footer when the song's licence asks for it.</small></div>
+    </div><div class="row" style="margin-top:18px"><button class="btn primary" type="submit" id="m-go">Add song</button></div></form>
+    <div class="box"><h2>Songs <small style="color:var(--muted);font-weight:500">${lib.length}</small></h2><div class="tblwrap"><table class="tbl"><thead><tr><th>Song</th><th>Listen</th><th>Used by</th><th></th></tr></thead><tbody>
+      ${lib.map((t,i)=>{ const n=uses(t.url), own=i>=BUILTIN_MUSIC.length; return `<tr><td><b>${esc(t.name||t.url)}</b><small>${own?"Uploaded":"Built in"}${t.credit?" · "+esc(t.credit):""}</small></td>
+        <td><audio controls preload="none" src="${esc(t.url)}" style="max-width:240px;height:36px"></audio></td><td>${n?`${n} ${n>1?"places":"place"}`:`<span style="color:var(--muted)">Not used</span>`}</td>
+        <td><div class="acts">${own?`<button class="btn sm" data-mdel="${i-BUILTIN_MUSIC.length}">Delete</button>`:""}</div></td></tr>` }).join("")}
+    </tbody></table></div>${nUp?"":`<p class="sub" style="margin:14px 0 0;color:var(--muted)">No uploaded songs yet. Add one above.</p>`}</div>
+    <div class="box"><h2>Each function</h2><p class="sub" style="margin:-4px 0 14px;color:var(--muted)">Plays on every design of that function, unless the design has its own song below.</p><div class="sform">
+      ${Object.entries(MUSIC_KEY).map(([t,k])=>`<div class="af"><label for="mf-${k}">${esc(TYPES[t].name)}</label><select id="mf-${k}" data-mfn="${k}">${opts(CONFIG[k]||"",`<option value="" ${!CONFIG[k]?"selected":""}>No music</option>`)}</select></div>`).join("")}
+    </div></div>
+    <h2 style="margin:26px 0 4px">Each card design</h2><p class="sub" style="margin:0 0 6px;color:var(--muted)">Give a design its own song, or turn music off for it. “Function's song” uses the choice above.</p>
+    ${Object.entries(TYPES).map(([k,T])=>`<section class="tsec"><h2>${T.name} <small>${1+PREMIUM[k].length} designs</small></h2><div class="tgrid">
+      <div class="titem">${cardHTML(k,T.sample,"en","",null)}${dsel(k+":0",T.tpl)}</div>
+      ${PREMIUM[k].map((t,i)=>`<div class="titem">${cardHTML(k,T.sample,"en","",{...t,_noribbon:1})}${dsel(k+":"+(i+1),t.n)}</div>`).join("")}
+    </div></section>`).join("")}`;
+  }
   if(tab==="prices"){
     const ps=plans();
     body=`<div class="mh"><div><span class="eyebrow">Admin</span><h1>Prices</h1><p>Plans and prices shown on the site. The payment page charges exactly the price saved here.</p></div>
@@ -4499,13 +4537,12 @@ function renderAdmin(tab,arg){
     <div class="two" style="grid-template-columns:repeat(auto-fill,minmax(300px,1fr))">${PROMPTS.map((p,i)=>`<div class="box">${p.img?`<figure style="margin:0 0 12px">${pic(p.img,"320px",p.t)}</figure>`:""}<div class="bh"><h2>${esc(p.t)}</h2><button class="btn sm" data-prompt="${i}">${I.copy} Copy</button></div><p id="pr-${i}" style="margin:0 0 8px">${esc(p.p)}</p><small style="color:var(--muted)">Use for: ${esc(p.u)}</small></div>`).join("")}</div>`;
   }
   if(tab==="settings"){
-    body=`<div class="mh"><div><span class="eyebrow">Admin</span><h1>Settings</h1><p>Limits, music and the studio WhatsApp number used across the site.</p></div></div>
+    body=`<div class="mh"><div><span class="eyebrow">Admin</span><h1>Settings</h1><p>Limits and the studio WhatsApp number used across the site.</p></div></div>
     <form class="box" id="sform"><h2>Plans and contact</h2><div class="sform">
       <div class="af"><label for="s-free">Free guest links per event</label><input id="s-free" name="FREE_GUESTS" type="number" min="1" max="50" value="${CONFIG.FREE_GUESTS}"></div>
       <div class="af"><label for="s-wa">Studio WhatsApp</label><input id="s-wa" name="STUDIO_WA" value="${esc(CONFIG.STUDIO_WA)}"><small>International format, for example 94771234567</small></div>
       <div class="af"><label>Prices</label><small>Add, change or delete plans and prices in <a href="#admin/prices">Admin → Prices</a>.</small></div>
-      ${Object.entries(MUSIC_KEY).map(([t,k])=>`<div class="af"><label for="s-${k}">Music: ${esc(TYPES[t].name)}</label><input id="s-${k}" name="${k}" value="${esc(CONFIG[k]||"")}"></div>`).join("")}
-      <div class="af" style="grid-column:1/-1"><small>Background music for each function: an MP3 path or URL, for example audio/jayamangala-gatha.mp3. Leave empty for no music.</small></div>
+      <div class="af"><label>Music</label><small>Upload songs and pick them for each function and card design in <a href="#admin/music">Admin → Music</a>.</small></div>
     </div><div class="row" style="margin-top:18px"><button class="btn primary" type="submit">Save settings</button></div></form>
     ${fb?`<div class="box"><h2>Admins</h2><p class="sub" style="margin:-4px 0 14px;color:var(--muted)">These Google accounts can open this dashboard. Owners listed in firebase-config.js and firestore.rules can't be removed here.</p>
       <div class="tblwrap"><table class="tbl"><tbody>
@@ -4530,6 +4567,8 @@ function renderAdmin(tab,arg){
       const dp={...(CONFIG.DESIGN_PRICES||{}),[n]:v}; CONFIG.DESIGN_PRICES=dp; store.set("config",{...store.get("config",{}),DESIGN_PRICES:dp});
       const msg=v?`${n}: ${v}`:`${n}: back to ${designPrice(n)}`;
       if(fb){ if(fbNeed()) FBX.saveSettings({DESIGN_PRICES:{[n]:v}}).then(()=>toast(msg),fbFail) } else toast(msg); return }
+    if(t.dataset.mfn){ const k=t.dataset.mfn, nm=(musicLib().find(x=>x.url===t.value)||{}).name; saveMusic({[k]:t.value},{[k]:t.value},t.value?`${nm||"Song"} plays on ${TYPES[Object.keys(MUSIC_KEY).find(x=>MUSIC_KEY[x]===k)].name} cards`:"Music off for that function"); return }
+    if(t.dataset.mdk){ const k=t.dataset.mdk, v=t.value; saveMusic({MUSIC_DESIGNS:{...(CONFIG.MUSIC_DESIGNS||{}),[k]:v}},{MUSIC_DESIGNS:{[k]:v}},v==="none"?"Music off for that design":v?"Song set for that design":"That design uses the function's song"); return }
     if(t.dataset.tog){ let o=tplOff(); o=t.checked?o.filter(x=>x!==t.dataset.tog):[...o,t.dataset.tog]; store.set("tplOff",o); if(fb&&fbNeed()) FBX.setTplOff(o).catch(fbFail); t.closest(".titem").dataset.off=t.checked?0:1; toast(t.checked?"Design visible":"Design hidden") }
     if(t.dataset.pon){ const ps=plans().map((p,i)=>i===+t.dataset.pon?{...p,on:t.checked}:p); savePlans(ps,t.checked?"Plan shown on the site":"Plan hidden from the site") }
     if(t.id==="rfilter"||t.id==="rsearch") filterR();
@@ -4551,6 +4590,14 @@ function renderAdmin(tab,arg){
     if(b.dataset.udel){ const x=DB.users().find(y=>y.id===b.dataset.udel); if(!x) return;
       modal(`<span class="eyebrow">Delete user</span><h3>Delete ${esc(x.name)}?</h3><p>This removes the account from this browser. Their orders stay in the list.</p><div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><button class="btn primary" id="cdel">Delete</button></div>`);
       document.getElementById("cdel").onclick=()=>{ document.getElementById("layer").innerHTML=""; if(fb){ if(fbNeed()) FBX.deleteUser(x.id).then(()=>toast("User profile deleted. Remove their sign-in in Firebase → Authentication too."),fbFail); return } DB.setUsers(DB.users().filter(y=>y.id!==x.id)); toast("User deleted"); re() } }
+    if(b.dataset.mdel){ const up=(CONFIG.MUSIC_LIB||[]).slice(), x=up[+b.dataset.mdel]; if(!x) return;
+      modal(`<span class="eyebrow">Delete song</span><h3>Delete ${esc(x.name||"this song")}?</h3><p>Functions and designs that play it go back to no music or the function's song. Guest links already sent stop playing it.</p><div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><button class="btn primary" id="cdel">Delete</button></div>`);
+      document.getElementById("cdel").onclick=()=>{ document.getElementById("layer").innerHTML="";
+        const loc={MUSIC_LIB:up.filter(y=>y!==x)}, rem={...loc}, dz={...(CONFIG.MUSIC_DESIGNS||{})}, dr={};
+        for(const k of Object.values(MUSIC_KEY)) if(CONFIG[k]===x.url){ loc[k]=""; rem[k]="" }
+        for(const k in dz) if(dz[k]===x.url){ dz[k]=""; dr[k]="" }
+        if(Object.keys(dr).length){ loc.MUSIC_DESIGNS=dz; rem.MUSIC_DESIGNS=dr }
+        saveMusic(loc,rem,"Song deleted"); musicDelete(x.url); re() } }
     if(b.hasAttribute("data-padd")) planForm(-1);
     if(b.dataset.pedit) planForm(+b.dataset.pedit);
     if(b.dataset.pup){ const ps=[...plans()], i=+b.dataset.pup; [ps[i-1],ps[i]]=[ps[i],ps[i-1]]; savePlans(ps,"Order saved") }
@@ -4561,10 +4608,52 @@ function renderAdmin(tab,arg){
     if(b.hasAttribute("data-clearsample")){ DB.setUsers(DB.users().filter(x=>!x.sample)); DB.setOrders(DB.orders().filter(x=>!x.sample)); toast("Sample data removed"); re() }
   });
   const sf=document.getElementById("sform");
-  if(sf) sf.onsubmit=e=>{ e.preventDefault(); const c={}; for(const k of ["FREE_GUESTS","STUDIO_WA",...Object.values(MUSIC_KEY)]){ const v=sf.elements[k].value.trim(); if(k.startsWith("MUSIC")){ c[k]=v; const a=document.getElementById("lxAudio"); if(a) a.remove(); continue } if(v) c[k]=k==="FREE_GUESTS"?Math.max(1,+v||5):k==="STUDIO_WA"?intlPhone(v):v } store.set("config",{...store.get("config",{}),...c}); Object.assign(CONFIG,c);
+  if(sf) sf.onsubmit=e=>{ e.preventDefault(); const c={}; for(const k of ["FREE_GUESTS","STUDIO_WA"]){ const v=sf.elements[k].value.trim(); if(v) c[k]=k==="FREE_GUESTS"?Math.max(1,+v||5):k==="STUDIO_WA"?intlPhone(v):v } store.set("config",{...store.get("config",{}),...c}); Object.assign(CONFIG,c);
     if(fb){ if(fbNeed()) FBX.saveSettings(c).then(()=>toast("Settings saved for every visitor"),fbFail) } else toast("Settings saved") };
+  const mf=document.getElementById("mform");
+  if(mf) mf.onsubmit=async e=>{ e.preventDefault();
+    const file=mf.elements.file.files[0], link=mf.elements.url.value.trim(), credit=mf.elements.credit.value.trim(), go=document.getElementById("m-go");
+    let name=mf.elements.name.value.trim(), url="";
+    if(!file&&!link) return toast("Choose an MP3 file or paste a link");
+    if(file){
+      if(!/\.mp3$/i.test(file.name)&&!/audio\/(mpeg|mp3)/.test(file.type)) return toast("Choose an MP3 file");
+      if(file.size>12*1024*1024) return toast("That song is too large (12 MB at most)");
+      if(!fb||!window.FBX||!FBX.user) return toast("Uploading needs Firebase login. Paste a link instead.");
+      go.disabled=true; go.textContent="Uploading…";
+      try{ url=await musicUpload(file) }catch(er){ toast(er.message||"Upload failed"); go.disabled=false; go.textContent="Add song"; return }
+      if(!name) name=file.name.replace(/\.mp3$/i,"").replace(/[-_]+/g," ").trim();
+    } else {
+      if(!/^(https:\/\/[^\s"'<>]+|audio\/[A-Za-z0-9._-]+\.mp3)$/.test(link)) return toast("Paste an https:// link to an MP3, or a path like audio/song.mp3");
+      url=link; if(!name) name=decodeURIComponent(link.split("/").pop().split("?")[0]).replace(/\.mp3$/i,"").replace(/[-_]+/g," ").trim()||"Song";
+    }
+    if(musicLib().some(t=>t.url===url)){ toast("That song is already in the list"); return re() }
+    const list=[...(CONFIG.MUSIC_LIB||[]),{name:name.slice(0,80),url,...(credit?{credit:credit.slice(0,120)}:{})}];
+    saveMusic({MUSIC_LIB:list},{MUSIC_LIB:list},`${name} added. Pick it for a function or a design below.`); re() };
   const af2=document.getElementById("aform2");
   if(af2) af2.onsubmit=e=>{ e.preventDefault(); const em=af2.elements.em.value.trim().toLowerCase(); if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) return toast("Enter a valid email"); if(fbNeed()) FBX.setAdmin(em,true).then(()=>toast(`${em} added. They log in with Google to open the dashboard.`),fbFail) };
+}
+
+/* Admin → Music. local is merged into CONFIG here; remote goes to settings/site (Firestore merges nested maps,
+   so MUSIC_DESIGNS can be sent one key at a time). The song playing in this tab is stopped so the new choice is heard. */
+function saveMusic(local,remote,msg){
+  store.set("config",{...store.get("config",{}),...local}); Object.assign(CONFIG,local);
+  const a=document.getElementById("lxAudio"); if(a){ a.pause(); a.remove() }
+  if(FB_ON()){ if(fbNeed()) FBX.saveSettings(remote).then(()=>toast(msg),fbFail) } else toast(msg);
+}
+/* uploads one MP3 to Cloudflare R2 through the server (admins only) and returns its public URL */
+async function musicUpload(file){
+  const data=await new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(String(r.result)); r.onerror=()=>rej(new Error("Could not read that file")); r.readAsDataURL(file) });
+  const r=await fetch("/api/music/upload",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+await FBX.idToken()},
+    body:JSON.stringify({name:file.name,data:"data:audio/mpeg;base64,"+data.slice(data.indexOf(",")+1)})});
+  const j=await r.json().catch(()=>({}));
+  if(r.status===404||r.status===405) throw new Error("This server can't take uploads. Upload the MP3 somewhere and paste its link.");
+  if(r.status===413&&!j.error) throw new Error("That song is too large for the server");
+  if(!r.ok||!/^https:\/\//.test(j.url||"")) throw new Error(j.error||"Upload failed ("+r.status+")");
+  return j.url;
+}
+function musicDelete(url){
+  if(!/^https:\/\/.*\/music\/[A-Za-z0-9_-]+\.mp3$/.test(url)||!FB_ON()||!window.FBX||!FBX.user) return;
+  FBX.idToken().then(tok=>fetch("/api/music/delete",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+tok},body:JSON.stringify({url})})).catch(()=>{});
 }
 
 /* Admin → Prices: add / edit a plan, and save the whole list (site + payment API read it from settings/site). */

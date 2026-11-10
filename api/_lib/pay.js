@@ -2,7 +2,7 @@
 import { db, auth } from "./firebase.js";
 import { createTransaction, getTransaction, CURRENCY, PAID_STATES, FAILED_STATES } from "./genie.js";
 
-export const SITE = () => (process.env.SITE_URL || "https://www.aradhanawa.com").replace(/\/+$/, "");
+export const SITE = () => (process.env.SITE_URL || "https://www.aradhanawa.lk").replace(/\/+$/, "");
 export const TYPES = ["wedding", "homecoming", "birthday", "party", "halloween", "dana", "other"];
 const DEFAULT_PRICE = { plus: "Rs. 990", custom: "Rs. 4,900" };
 export const KINDS = ["plus", "custom", "service"];   // what a plan unlocks: unlimited guests, a custom design, or a service the studio fulfils

@@ -7,7 +7,7 @@
  * Settings come from the environment (systemd loads them from /opt/aradhanawa/.env):
  *   PORT (default 3000), HOST (default 127.0.0.1), GENIE_API_KEY, FIREBASE_SERVICE_ACCOUNT, SITE_URL, GENIE_MODE,
  *   R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET, R2_PUBLIC_URL (gallery photos, api/photos/*)
- * Also: one canonical host (aradhanawa.com -> www.aradhanawa.com when SITE_URL is www), security headers, and a
+ * Also: one canonical host (aradhanawa.lk -> www.aradhanawa.lk when SITE_URL is www), security headers, and a
  * per-IP rate limit on /api/ (API_RATE_LIMIT requests per minute, default 30).
  * Run locally: node deploy/server.js
  */
@@ -23,8 +23,8 @@ const PORT = +process.env.PORT || 3000;
 const HOST = process.env.HOST || "127.0.0.1";
 const BODY_LIMIT = 1024 * 1024;
 
-/* One canonical host. SITE_URL decides it (https://www.aradhanawa.com): a request for the other spelling of the same
- * domain (aradhanawa.com) gets a 301 there, so Google sees one site. Other hosts (the server IP, localhost) are left alone. */
+/* One canonical host. SITE_URL decides it (https://www.aradhanawa.lk): a request for the other spelling of the same
+ * domain (aradhanawa.lk) gets a 301 there, so Google sees one site. Other hosts (the server IP, localhost) are left alone. */
 let CANON = null;
 try {
   const u = new URL(process.env.SITE_URL || "");

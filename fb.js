@@ -10,7 +10,7 @@
  *                          + paid orders (written only by api/pay/*): amountCents, currency, paid, paidAt, payRef, payState, method
  *   invitations/{uid_type} uid, ownerName, ownerEmail, type, lang, tpl, title, names, date, venue, ev, guests, guestCount, updated
  *   galleries/{uid_type}   uid, type, photos [Cloudflare R2 https URLs, or data:image/jpeg URLs when R2 is off], updated   (public read: guest links show these)
- *   links/{code}           uid, p (guest link details as JSON), created   (short guest links aradhanawa.com/i/{code}; public get)
+ *   links/{code}           uid, p (guest link details as JSON), created   (short guest links aradhanawa.lk/i/{code}; public get)
  *   rsvps/{id}             inviteId, ownerUid, type, event, guest, name, coming, count, msg, created
  *   plus/{uid_type}        uid, type, orderId, updated   (Plus for one function; written by api/pay/* or an admin;
  *                          firestore.rules reads it to let that invitation hold more than FREE_GUESTS guests)

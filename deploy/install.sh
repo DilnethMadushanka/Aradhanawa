@@ -244,7 +244,7 @@ server {
     $LISTEN_V6
     server_name $SERVER_NAMES;
 
-    client_max_body_size 2m;
+    client_max_body_size 18m;   # admin MP3 uploads; the Node server keeps other API calls at 1 MB
     server_tokens off;
 
     gzip on;

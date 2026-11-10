@@ -74,6 +74,14 @@ R2 set karala nathnam photos parana widiyatama Firestore eke (data URL) save wen
 
 Check karanna: site ekata log wela gallery photo ekak danna. Bucket eke `gallery/<uid>/<type>/` folder eke photo eka penna one. Error nam `journalctl -u aradhanawa -f` eke `[photos]` kiyala balanna.
 
+## Background music: Admin → Music
+
+Admin → **Music** eken MP3 ekak upload karala (12 MB max), eka function ekakata (Wedding, Birthday, ...) hari eka card design ekakata hari set karanna puluwan. Design ekata song ekak dammoth eka function eke song ekata wada mulin play wenawa; "No music" dammoth e design eke music na.
+
+- Upload wenne uda thiyena **R2 bucket ekatama** (`music/` folder eka). R2 set karala nathnam upload eka wada na, eth MP3 link ekak paste karala add karanna puluwan.
+- Admin kenekta witharai upload/delete karanna puluwan (firebase-config.js `adminEmails`, nathnam dashboard eken add karapu admins: eyata `FIREBASE_SERVICE_ACCOUNT` one).
+- Nginx upload limit eka 18 MB (`install.sh` eken). Parana server ekak nam `install.sh` aye run karanna.
+
 ## Useful commands
 
 - Logs: `journalctl -u aradhanawa -f`

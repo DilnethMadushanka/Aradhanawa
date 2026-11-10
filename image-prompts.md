@@ -149,3 +149,15 @@ A haunted Victorian mansion on a hill under a huge glowing full moon, warm yello
 ```
 Fine single-colour line drawing of a gothic haunted house with pointed arched windows, an iron fence on both sides, a crescent moon and three small bats, violet ink on pale lavender paper, minimal architectural sketch, lots of white space, 4:3
 ```
+
+---
+
+## Ran Nelum design (gold lotus, blush ivory, traditional)
+
+Bg, side art, card saha venue images `scripts/nelum_art.mjs` eken code eken adinawa (run: `NODE_PATH=$(npm root -g) node scripts/nelum_art.mjs && python3 scripts/card_sides.py th-nelum-card`). Gemini eken hadanna one **couple picture eka witharai**. Dan thiyenne `ivory-couple` picture eka copy ekak (placeholder).
+
+**`th-nelum-hero-960.webp`** (960 x 717, 4:3) — couple picture eka. Pahala kotasata gold lotus eka code eken uda wetenawa, e nisa pahala 20% simple wenna one.
+```
+Soft watercolour and fine gold line illustration of a Sri Lankan bride and groom seen from behind, standing close together and turning their heads toward each other, the bride in an ivory Kandyan osariya saree with a gold-embroidered pleated frill, a jasmine-wrapped bun and a gold nalal patiya on her forehead chain, the groom in an ivory silk Indian-style long jacket with a stand-up collar, warm champagne and pale gold palette with blush pink shadows, plain solid blush ivory background (#FAEEE9) with no scenery, no frame and no text, the figures centred and filling the upper two thirds, the bottom edge fading softly into the background, elegant wedding invitation art, 4:3
+```
+Save karana widiha: 960 wide ekak `th-nelum-hero-960.webp`, 480 wide ekak `th-nelum-hero-480.webp` (WebP, quality 80).

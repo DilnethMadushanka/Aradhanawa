@@ -2717,8 +2717,25 @@ const prettyPhone = p => { const d=String(p||"").replace(/\D/g,""); return d.len
 /* ================= SHARE LINK ================= */
 const b64 = s => btoa(unescape(encodeURIComponent(s))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
 const unb64 = s => decodeURIComponent(escape(atob(s.replace(/-/g,"+").replace(/_/g,"/"))));
+/* Google Maps links pasted by hosts are often very long (google.com/maps/place/…/data=!4m6!3m5…) or come with
+   extra text and tracking (?g_st=…). Keep just a short link to the same spot: the first URL in the text, without
+   tracking, and long google.com/maps links turned into maps.google.com/?q=<lat>,<lng> (or the search words). */
+function tidyMap(raw){
+  const s=String(raw||"").trim(); if(!s) return "";
+  const m=s.match(/https?:\/\/[^\s<>"']+/i); if(!m) return s;
+  let u; try{ u=new URL(m[0]) }catch(e){ return m[0] }
+  const host=u.hostname.toLowerCase();
+  if(/^(maps\.app\.goo\.gl|goo\.gl)$/.test(host)) return "https://"+host+u.pathname.replace(/\/+$/,"");
+  if(!/(^|\.)google\.[a-z.]+$/.test(host)||!(host.startsWith("maps.")||u.pathname.startsWith("/maps"))) return m[0];
+  const path=decodeURIComponent(u.pathname), num="(-?\\d{1,3}\\.\\d+)";
+  const pin=path.match(new RegExp("!3d"+num+"!4d"+num))||path.match(new RegExp("@"+num+","+num));
+  if(pin) return `https://maps.google.com/?q=${(+pin[1]).toFixed(6)*1},${(+pin[2]).toFixed(6)*1}`;
+  const q=u.searchParams.get("q")||u.searchParams.get("query");
+  if(q) return "https://maps.google.com/?q="+encodeURIComponent(q).replace(/%20/g,"+").replace(/%2C/gi,",");
+  return m[0];
+}
 function inviteLink(guest){
-  const e={}; for(const [k,v] of Object.entries(cur()||{})) if(v!==""&&v!=null) e[k]=v;   // leave out empty fields: shorter links
+  const e={}; for(const [k,v] of Object.entries(cur()||{})) if(v!==""&&v!=null) e[k]=k==="map"?tidyMap(v):v;   // leave out empty fields: shorter links
   const payload = {t:S.type, e}; if(S.lang==="si") payload.l="si"; if(guest) payload.g=guest; if(S.opener==="env"||S.opener==="seal") payload.x=S.opener; const cp=curPrem(); if(cp&&cp.site) payload.d=cp.site; if(FB_ON()&&window.FBX&&FBX.user) payload.o=FBX.user.uid;
   const json=JSON.stringify(payload);
   return shortLink(json) || (CONFIG.SITE + "#i=" + b64(json));
@@ -2869,7 +2886,7 @@ function waMessage(type, ev, lang, guest, link){
   const time={en:"⏰ Time",si:"⏰ වේලාව",sl:"⏰ Welawa"}[lang];
   const common = [
     opt(ev.venue,`${where}: ${ev.venue}`),
-    opt(ev.map,`🗺️ ${ev.map}`),
+    opt(ev.map,`🗺️ ${tidyMap(ev.map)}`),
   ];
   const tail = [
     "",
@@ -3367,6 +3384,10 @@ function bind(){
   $$("[data-type]").forEach(b=>b.onclick=()=>{S.type=b.dataset.type; save(); render(); document.getElementById("h-type").scrollIntoView({block:"nearest"})});
   $$("[data-opener]").forEach(b=>b.onclick=()=>{S.opener=b.dataset.opener; save(); $$("[data-opener]").forEach(x=>x.setAttribute("aria-pressed",x===b)); refreshGuestLinks(); guestPreview(S.guests[0]&&S.guests[0].name)});
   $$("[data-lang]").forEach(b=>b.onclick=()=>{S.lang=b.dataset.lang; save(); $$("[data-lang]").forEach(x=>x.setAttribute("aria-pressed",x===b)); refreshLive(); refreshGuestLinks()});
+  $("#evform").addEventListener("change",e=>{   // when the host leaves the map box, show the short map link they'll send
+    if(e.target.name!=="map") return; const t=tidyMap(e.target.value); if(t===e.target.value) return;
+    e.target.value=t; cur().map=t; save(); refreshLive(); refreshGuestLinks();
+  });
   $("#evform").addEventListener("input",e=>{
     const f=e.target.name; if(!f) return; cur()[f]=e.target.value;
     if(!S.edited[S.type]){S.edited[S.type]=true; const s=document.querySelector(".sample"); s&&s.remove()}

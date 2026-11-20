@@ -13,7 +13,7 @@ import json
 import os
 from datetime import date
 
-SITE = "https://www.aradhanawa.com"
+SITE = "https://www.aradhanawa.lk"
 WA = "94764487857"
 PRICE_PLUS = "Rs. 990"
 PRICE_CUSTOM = "Rs. 4,900"
@@ -315,7 +315,7 @@ LEGAL = [
     dict(slug="terms", title="Terms of use | Aradhanawa", h1="Terms of use",
          desc="The terms for using Aradhanawa digital invitations: accounts, your content, payments and guest links.",
          body=f"""
-<p>These terms apply when you use aradhanawa.com to make and send digital invitations. By creating an account or an invitation you agree to them. If you do not agree, please do not use the site.</p>
+<p>These terms apply when you use aradhanawa.lk to make and send digital invitations. By creating an account or an invitation you agree to them. If you do not agree, please do not use the site.</p>
 <h2>1. The service</h2>
 <p>Aradhanawa lets you make an invitation for a wedding, homecoming, engagement, birthday, party or dana and send each guest a personal link, usually on WhatsApp. Each function gets one free design and {FREE_GUESTS} free personal guest links. Paid options are listed on the <a href="/#pricing">pricing page</a>.</p>
 <h2>2. Your account</h2>
@@ -340,7 +340,7 @@ LEGAL = [
     dict(slug="privacy", title="Privacy policy | Aradhanawa", h1="Privacy policy",
          desc="What Aradhanawa collects when you make or open a digital invitation, why, who it is shared with and how to delete it.",
          body=f"""
-<p>This policy explains what personal information aradhanawa.com collects, why, and what you can do about it. We follow the Personal Data Protection Act, No. 9 of 2022, of Sri Lanka.</p>
+<p>This policy explains what personal information aradhanawa.lk collects, why, and what you can do about it. We follow the Personal Data Protection Act, No. 9 of 2022, of Sri Lanka.</p>
 <h2>What we collect</h2>
 <ul>
 <li><b>Your account:</b> name, email address, WhatsApp number if you give it, and your Google profile photo if you log in with Google. Passwords are handled by Google Firebase Authentication; we never see them.</li>

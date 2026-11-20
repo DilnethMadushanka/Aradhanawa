@@ -4,9 +4,9 @@
 # Run as root. First install and every update use the same command:
 #   curl -fsSL https://raw.githubusercontent.com/dilnethmadushanka/aradhanawa/main/deploy/install.sh | bash
 #
-# Optional settings (put them before "bash", e.g. "... | DOMAIN=aradhanawa.com bash"):
+# Optional settings (put them before "bash", e.g. "... | DOMAIN=aradhanawa.lk bash"):
 #   BRANCH=main            git branch to deploy
-#   DOMAIN=aradhanawa.com  your domain; also sets up HTTPS (Let's Encrypt) once the domain points at this server
+#   DOMAIN=aradhanawa.lk  your domain; also sets up HTTPS (Let's Encrypt) once the domain points at this server
 #   PORT=3000              local port for the Node server (Nginx talks to it)
 #   GENIE_API_KEY=...      Genie Business secret key (or type it when asked; kept in /opt/aradhanawa/.env)
 #   FIREBASE_SA_FILE=...   path to the Firebase service account JSON (default /root/firebase-service-account.json)
@@ -275,7 +275,7 @@ if systemctl is-active -q nginx; then systemctl reload nginx; else systemctl sta
 say "7/7  HTTPS"
 SCHEME="http"; HOSTNAME_SHOWN="$SERVER_IP"
 if [ -z "$DOMAIN" ]; then
-  echo "Skipped (no DOMAIN given). Add one later with: ... | DOMAIN=aradhanawa.com bash"
+  echo "Skipped (no DOMAIN given). Add one later with: ... | DOMAIN=aradhanawa.lk bash"
 elif [ -z "$DOMAIN_OK" ]; then
   warn "$DOMAIN does not point to $SERVER_IP yet. Change the DNS A record, wait a little, then run this again."
 else

@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /admin
 
-Sitemap: https://www.aradhanawa.com/sitemap.xml
+Sitemap: https://www.aradhanawa.lk/sitemap.xml

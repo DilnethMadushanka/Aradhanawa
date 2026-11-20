@@ -68,7 +68,7 @@ PAGES = [
         ],
     ),
     dict(
-        slug="engagement-invitations", type="other", img="ivory-couple",
+        slug="engagement-invitations", type="engagement", img="ivory-couple",
         nav="Engagement",
         title="Engagement Invitations Sri Lanka, Digital Cards on WhatsApp | Aradhanawa",
         desc="Create an engagement ceremony invitation for WhatsApp. Families' names, date, time, venue map and RSVP, in Sinhala or English. Free for 5 guests.",
@@ -80,12 +80,12 @@ PAGES = [
             ("Families, date and venue", "Name the hosting family, add the time and a Google Maps pin for the house or hotel."),
             ("Sinhala, Singlish or English", "Write the invitation the way your family speaks."),
             ("RSVP on WhatsApp", "Know who is coming before you order the food."),
-            ("Elegant designs", "Kandyan Gold, Perahera Night and a classic ivory card."),
+            ("Elegant designs", "Palm Drive with its own intro video, Blush Rose and Ran Nelum."),
             ("No app to install", "Guests open the card in their phone's browser from WhatsApp."),
         ],
         si_block="විවාහ ගිවිසගැනීමේ උත්සවයට පවුලේ අයට සහ යාළුවන්ට ආරාධනා කරන්න. දිනය, වේලාව, ස්ථානය සහ සිතියම WhatsApp ලින්ක් එකක.",
         faq=[
-            ("Which event type do I choose for an engagement?", "Choose 'Other function' in the app and set the function name to Engagement Ceremony. All the same features work."),
+            ("Which event type do I choose for an engagement?", "Choose 'Engagement' in the app. The Palm Drive design opens with an intro video of the couple's drive, then shows your names, date, countdown, venue map and RSVP."),
             ("Can I send it on Viber or Messenger too?", "Yes. The invitation is a normal link, so you can paste it into any app. WhatsApp sending is built in."),
             ("Can I use the same design for the wedding later?", "Yes. Wedding designs come in matching families, so the engagement and wedding cards can look related."),
         ],

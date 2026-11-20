@@ -1355,7 +1355,12 @@ nav.top a{font-weight:600}
 .site.th-video :is(.lx-cover,.lx-hero) :is(.lx-bq,.lx-mandala){display:none}
 .site.th-video .lx-cover .lx-open{margin-top:6px}
 .site.th-video > .s-sec,.site.th-video > section:not(.lx-cover):not(.lx-hero){margin:14px 12px;border-radius:24px;background:color-mix(in srgb,var(--c-bg) 84%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid color-mix(in srgb,#fff 55%,transparent);box-shadow:0 18px 40px -28px rgba(80,30,40,.6)}
-.site.th-video .lx-photo.lx-art img{object-position:50% 40%}
+.site.th-video .lx-photo.lx-art img{object-position:50% 30%}
+.lx-vid .vc{position:absolute;top:-3%;bottom:auto;width:min(58%,300px);margin-top:44px;height:auto;filter:drop-shadow(0 10px 14px rgba(40,30,10,.25));pointer-events:none}
+.lx-vid .vc.l{left:-8%;transform-origin:0 0;animation:vcsw 7s ease-in-out infinite alternate}
+.lx-vid .vc.r{right:-8%;left:auto;transform-origin:100% 0;animation:vcsw 8s ease-in-out -3s infinite alternate reverse}
+@keyframes vcsw{from{transform:rotate(-2.5deg)}to{transform:rotate(2.5deg)}}
+.gwrap .lx-vid .vc{width:min(30%,320px)}
 .card .cvid video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 0;display:block}
 .card .cvid::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,color-mix(in srgb,var(--c-bg) 90%,transparent) 0%,color-mix(in srgb,var(--c-bg) 84%,transparent) 56%,color-mix(in srgb,var(--c-bg) 35%,transparent) 76%,transparent 92%)}
 /* engagement intro video opener */
@@ -2426,7 +2431,7 @@ function lxSite(type, ev, lang, guest, prem, gallery, base){
     ${musicFor(type)?`<button type="button" class="lx-fab" data-music aria-pressed="false" aria-label="${L("Mute or unmute music","සංගීතය නවත්වන්න / වාදනය")}"><svg class="m-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg><svg class="m-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg></button>`:""}</div>`;
   const petals = Array.from({length:TH.fx==="confetti"||TH.fx==="gold"?14:10},(_,i)=>`<i style="left:${(i*41+7)%94}%;--d:${(11+i%4*3)}s;--w:${(i%3-1)*40}px;animation-delay:-${(i*2.3).toFixed(1)}s;--s:${(.7+(i%3)*.2).toFixed(1)}"></i>`).join("");
   const bgfx = TH.video
-    ? `<div class="lx-bgfx lx-vid" aria-hidden="true"><video src="${TH.video}.mp4" poster="${TH.bg}" autoplay muted loop playsinline preload="auto"></video><div class="lx-veil"></div><div class="lx-petals">${petals}</div></div>`
+    ? `<div class="lx-bgfx lx-vid" aria-hidden="true"><video src="${TH.video}.mp4" poster="${TH.bg}" autoplay muted loop playsinline preload="auto"></video><div class="lx-veil"></div><img class="vc l" src="${TH.l}" alt=""><img class="vc r" src="${TH.r}" alt=""><div class="lx-petals">${petals}</div></div>`
     : `<div class="lx-bgfx" aria-hidden="true"><img src="${TH.bg}" alt=""><img class="fl l" src="${TH.l}" alt=""><img class="fl r" src="${TH.r}" alt=""><div class="lx-petals">${petals}</div></div>`;
   return `<div class="site lotus th-${prem.site} mo-${TH.mo} fx-${TH.fx} ${TH.dark?"th-dark":""} ${TH.glow?"th-glow":""} ${TH.video?"th-video":""} locked t-${type} ${si?"si":""}" style="${tplVars(prem)}--lx-wine:${prem.wine||prem.ink}" data-site="${base.id}">
   ${bgfx}
@@ -2704,7 +2709,7 @@ const LX_TH = {
   balloons:{p:"th-balloons", mo:"bob", fx:"confetti"}, glam:{p:"th-glam", mo:"bob", fx:"gold", dark:1},
   lanterns:{p:"th-lanterns", mo:"swing", fx:"spark", dark:1, glow:1}, maroon:{p:"th-maroon", mo:"swing", fx:"ember", dark:1, glow:1},
   nelum:{p:"th-nelum", mo:"sway", fx:"petal", lay:"trad"},
-  drive:{video:"img/th-drive", bg:"img/th-drive-poster.webp", hero:"th-drive-hero", venue:"img/venue-lineart-900.webp", mo:"sway", fx:"rose"},
+  drive:{video:"img/th-drive", bg:"img/th-drive-poster.webp", l:"img/th-drive-l.webp", r:"img/th-drive-r.webp", hero:"th-drive-hero", venue:"img/venue-lineart-900.webp", mo:"sway", fx:"rose"},
   pumpkin:{p:"th-pumpkin", mo:"sway", fx:"leaf"}, haunted:{p:"th-haunted", mo:"swing", fx:"wisp", dark:1, glow:1}
 };
 for(const k in LX_TH){ const t=LX_TH[k]; if(t.p) Object.assign(t,{bg:`img/${t.p}-bg.webp`, l:`img/${t.p}-l.webp`, r:`img/${t.p}-r.webp`, hero:`${t.p}-hero`, venue:`img/${t.p}-venue.webp`}) }
@@ -3616,7 +3621,7 @@ function guestPreview(guest){
 
 
 /* ================= INVITATION SITE (scrolling mini-website) ================= */
-const SAMPLE_GAL = {wedding:["poruwa-couple","card-flatlay","galle-fort","kandyan-pattern"],engagement:["ivory-couple","card-flatlay","galle-fort"],homecoming:["tea-bungalow","galle-fort","card-flatlay"],birthday:["birthday-table","tuktuk"],party:["vesak-lanterns","tuktuk","galle-fort"],halloween:["th-pumpkin-hero","th-haunted-hero"],dana:[],other:["perahera","kandyan-pattern","card-flatlay"]};
+const SAMPLE_GAL = {wedding:["poruwa-couple","card-flatlay","galle-fort","kandyan-pattern"],engagement:["th-drive-couple","th-drive-ring","th-drive-aerial"],homecoming:["tea-bungalow","galle-fort","card-flatlay"],birthday:["birthday-table","tuktuk"],party:["vesak-lanterns","tuktuk","galle-fort"],halloween:["th-pumpkin-hero","th-haunted-hero"],dana:[],other:["perahera","kandyan-pattern","card-flatlay"]};
 function galleryFor(type){
   const own=(S.photos&&S.photos[type])||[];
   if(own.length) return own.map(src=>`<img src="${src}" alt="" loading="lazy">`);

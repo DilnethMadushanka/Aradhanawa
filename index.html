@@ -712,6 +712,7 @@ footer.foot{border-top:1px solid var(--line);padding-block:22px;color:var(--mute
 .stage .pnote{font-size:13px;color:var(--muted);text-align:center;margin:0}
 /* palettes per template */
 .t-wedding{--c-bg:#FBF6EC;--c-ink:#4A1420;--c-gold:#B08A45;--c-soft:#7A5A4A}
+.t-engagement{--c-bg:#FBF1EE;--c-ink:#6E2E3E;--c-gold:#B88A55;--c-soft:#7C6460}
 .t-homecoming{--c-bg:#F0F5EF;--c-ink:#1F3B33;--c-gold:#B07F3E;--c-soft:#4F6A60}
 .t-birthday{--c-bg:#FBEFC9;--c-ink:#5A1A16;--c-gold:#D9573A;--c-soft:#8A4A2B}
 .t-party{--c-bg:#16193F;--c-ink:#FFFFFF;--c-gold:#F6C64F;--c-soft:#BFC4F2}
@@ -1345,6 +1346,45 @@ nav.top a{font-weight:600}
 @media (min-width:900px){.gwrap .site.nt > .nt-navw{width:auto}.gwrap .site.nt > .nt-top{width:min(100%,960px);padding:0 28px}.gwrap .nt-greet{font-size:58px}.gwrap .nt-fam b{font-size:44px}}
 @media (prefers-reduced-motion:reduce){.nt-lotus *,.nt-open,.nt-mus{animation:none!important;opacity:1!important;stroke-dashoffset:0!important}}
 @media (prefers-reduced-motion:reduce){.lx-bq g,.lx-dust i,.lx-open,.lx-down span,.lx-fab.on{animation:none!important}}
+/* ---- Palm Drive (video background: .site.th-video) ---- */
+.lx-vid video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
+.lx-vid .lx-veil{position:absolute;inset:0;background:linear-gradient(180deg,color-mix(in srgb,var(--c-bg) 86%,transparent) 0%,color-mix(in srgb,var(--c-bg) 52%,transparent) 34%,transparent 58%);transition:background .8s ease}
+.site.th-video:not(.locked) .lx-vid .lx-veil{background:linear-gradient(180deg,color-mix(in srgb,var(--c-bg) 50%,transparent),color-mix(in srgb,var(--c-bg) 22%,transparent) 50%,color-mix(in srgb,var(--c-bg) 50%,transparent))}
+.site.th-video :is(.lx-cover,.lx-hero){align-items:start;padding-top:max(64px,9svh)}
+.site.th-video :is(.lx-cover,.lx-hero) .lx-in{background:color-mix(in srgb,var(--c-bg) 58%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid color-mix(in srgb,#fff 60%,transparent);border-radius:26px;padding:22px 20px 24px;box-shadow:0 18px 40px -26px rgba(80,30,40,.55)}
+.site.th-video :is(.lx-cover,.lx-hero) :is(.lx-bq,.lx-mandala){display:none}
+.site.th-video .lx-cover .lx-open{margin-top:6px}
+.site.th-video > .s-sec,.site.th-video > section:not(.lx-cover):not(.lx-hero){margin:14px 12px;border-radius:24px;background:color-mix(in srgb,var(--c-bg) 84%,transparent);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid color-mix(in srgb,#fff 55%,transparent);box-shadow:0 18px 40px -28px rgba(80,30,40,.6)}
+.site.th-video .lx-photo.lx-art img{object-position:50% 30%}
+.lx-vid .vc{position:absolute;top:-3%;bottom:auto;width:min(58%,300px);margin-top:44px;height:auto;filter:drop-shadow(0 10px 14px rgba(40,30,10,.25));pointer-events:none}
+.lx-vid .vc.l{left:-8%;transform-origin:0 0;animation:vcsw 7s ease-in-out infinite alternate}
+.lx-vid .vc.r{right:-8%;left:auto;transform-origin:100% 0;animation:vcsw 8s ease-in-out -3s infinite alternate reverse}
+@keyframes vcsw{from{transform:rotate(-2.5deg)}to{transform:rotate(2.5deg)}}
+.gwrap .lx-vid .vc{width:min(30%,320px)}
+.card .cvid video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 0;display:block}
+.card .cvid::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,color-mix(in srgb,var(--c-bg) 90%,transparent) 0%,color-mix(in srgb,var(--c-bg) 84%,transparent) 56%,color-mix(in srgb,var(--c-bg) 35%,transparent) 76%,transparent 92%)}
+/* engagement intro video opener */
+.gload.gv{background:#2c2a22;padding:0;color:#fff;display:block}
+.gload.gv::before{display:none}
+.gv-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.gv-veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(30,18,20,.55) 0%,rgba(30,18,20,.28) 34%,transparent 52%,transparent 76%,rgba(30,18,20,.45))}
+.gv-txt{position:absolute;left:0;right:0;top:max(48px,8svh);display:grid;justify-items:center;gap:6px;text-align:center;padding:0 22px;text-shadow:0 2px 14px rgba(0,0,0,.35)}
+.gv-txt > *{opacity:0;transform:translateY(12px);animation:gvin 1.1s cubic-bezier(.2,.7,.2,1) forwards}
+.gv-txt > :nth-child(1){animation-delay:1s}.gv-txt > :nth-child(2){animation-delay:1.6s}.gv-txt > :nth-child(3){animation-delay:2s}.gv-txt > :nth-child(4){animation-delay:2.6s}.gv-txt > :nth-child(5){animation-delay:3s}.gv-txt > :nth-child(6){animation-delay:3.4s}
+@keyframes gvin{to{opacity:1;transform:none}}
+.gv-k{margin:0;font:400 54px/1.1 "Pinyon Script",cursive;color:#FFF6EE}
+.gload.gv.si .gv-k{font:700 30px/1.4 "Noto Serif Sinhala",serif}
+.gv-txt small{font:600 12px/1.4 "Plus Jakarta Sans","Noto Sans Sinhala",sans-serif;letter-spacing:.28em;text-transform:uppercase;opacity:.92}
+.gload.gv.si .gv-txt small{letter-spacing:.04em;font-size:13px}
+.gv-n{margin:4px 0;display:grid;justify-items:center;font:500 40px/1.1 "Cormorant Garamond","Noto Serif Sinhala",serif;letter-spacing:.16em;text-transform:uppercase}
+.gv-n i{font:400 40px/1.1 "Pinyon Script",cursive;letter-spacing:0;color:#F7D9C4;text-transform:none}
+.gv-d{margin:6px 0 0;padding:8px 18px;border-radius:999px;background:rgba(255,255,255,.16);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.35);font:600 15px/1.2 "Cormorant Garamond","Noto Serif Sinhala",serif;letter-spacing:.12em}
+.gv-txt em{font:italic 500 19px/1.4 "Cormorant Garamond","Noto Serif Sinhala",serif}
+.gv-open{position:absolute;left:50%;bottom:calc(64px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);border:1px solid rgba(255,255,255,.6);cursor:pointer;padding:15px 30px;border-radius:999px;background:rgba(255,248,242,.9);color:#6E2E3E;font:600 15px/1 "Plus Jakarta Sans","Noto Sans Sinhala",sans-serif;letter-spacing:.06em;white-space:nowrap;box-shadow:0 14px 30px -12px rgba(0,0,0,.5);opacity:0;animation:gvbtn .9s ease 3.8s forwards,gvpulse 2.6s ease-in-out 4.8s infinite}
+@keyframes gvbtn{to{opacity:1}}
+@keyframes gvpulse{50%{box-shadow:0 14px 30px -12px rgba(0,0,0,.5),0 0 0 10px rgba(255,248,242,.18)}}
+.gload.gv .gl-skip{left:auto;right:16px;top:calc(14px + env(safe-area-inset-top,0px));bottom:auto;color:#fff;opacity:.8;z-index:2}
+@media (prefers-reduced-motion:reduce){.gv-txt > *,.gv-open{animation:none;opacity:1;transform:none}.gv-open{transform:translateX(-50%)}}
 /* card thumbnail. The vine strips use % (of the card width): cqw on the card itself would measure the page, not the card. */
 .card.L-lotus{background:var(--lx-l) left top/17% auto repeat-y,var(--lx-r) right top/17% auto repeat-y,linear-gradient(118deg,rgba(255,255,255,0) 18%,rgba(255,255,255,.55) 32%,rgba(255,255,255,0) 46%),linear-gradient(165deg,#F9F4EB,#EDE2CF 52%,#F7F0E4)}
 .card.L-lotus .frame,.card.L-lotus .corner{display:none}
@@ -2073,7 +2113,7 @@ const CONFIG = {
   PRICE_CUSTOM: "Rs. 4,900",
   MUSIC: "audio/jayamangala-gatha.mp3",   // wedding background music (put your MP3 here)
   // background music for the other functions. Empty means no music for that function.
-  MUSIC_HOMECOMING: "audio/homecoming.mp3", MUSIC_BIRTHDAY: "audio/birthday.mp3", MUSIC_PARTY: "", MUSIC_DANA: "", MUSIC_OTHER: "", MUSIC_HALLOWEEN: "",
+  MUSIC_HOMECOMING: "audio/homecoming.mp3", MUSIC_ENGAGEMENT: "audio/homecoming.mp3", MUSIC_BIRTHDAY: "audio/birthday.mp3", MUSIC_PARTY: "", MUSIC_DANA: "", MUSIC_OTHER: "", MUSIC_HALLOWEEN: "",
   // Base URL for share links. On a static host (Netlify, GitHub Pages, Vercel) the page itself is used.
   SITE: (location.protocol.startsWith("http") && !/claude|anthropic|usercontent/.test(location.hostname))
           ? location.origin + location.pathname : "https://aradhanawa.com/"
@@ -2137,6 +2177,16 @@ function palm(x,y,s,c){return `<g transform="translate(${x} ${y}) scale(${s})">
 <path d="M0 0Q6-50 2-96" stroke="${c}" stroke-width="6" fill="none" stroke-linecap="round"/>
 <path d="M2-96Q-30-110-56-90Q-30-100 2-96ZM2-96Q30-116 58-96Q30-104 2-96ZM2-96Q-14-128-40-130Q-18-118 2-96ZM2-96Q20-130 46-128Q22-118 2-96ZM2-96Q-40-90-50-64Q-34-86 2-96ZM2-96Q40-90 50-62Q34-86 2-96Z" fill="${c}"/>
 <circle cx="-2" cy="-92" r="4" fill="${c}"/><circle cx="6" cy="-90" r="4" fill="${c}"/></g>`}
+function engagementArt(){
+  const g="var(--c-gold)", s="var(--c-soft)";
+  return svg("0 0 320 150",`
+  <path d="M0 140Q80 128 160 136T320 132V150H0Z" fill="${s}" opacity=".18"/>
+  ${palm(40,142,.9,s)}${palm(284,144,.78,s)}
+  <g fill="none" stroke="${g}" stroke-width="5"><circle cx="146" cy="88" r="30"/><circle cx="176" cy="88" r="30"/></g>
+  <g fill="none" stroke="#fff" stroke-width="1.2" opacity=".55"><circle cx="146" cy="88" r="27"/><circle cx="176" cy="88" r="27"/></g>
+  <path d="M176 38L186 50L176 60L166 50Z" fill="#FFFDF8" stroke="${g}" stroke-width="1.6"/><path d="M166 50H186M176 38V60" stroke="${g}" stroke-width=".7"/>
+  ${[[120,40],[206,36],[100,70],[224,72]].map(([x,y])=>`<path d="M${x} ${y-5}L${x+1.4} ${y-1.4}L${x+5} ${y}L${x+1.4} ${y+1.4}L${x} ${y+5}L${x-1.4} ${y+1.4}L${x-5} ${y}L${x-1.4} ${y-1.4}Z" fill="${g}" opacity=".7"/>`).join("")}`);
+}
 function homecomingArt(){
   const g="var(--c-gold)", s="var(--c-soft)";
   return svg("0 0 320 150",`
@@ -2234,7 +2284,7 @@ function floralArt(){
 }
 function initials(type,ev){
   const f=s=>String(s||"").trim().charAt(0).toUpperCase();
-  if(type==="wedding"||type==="homecoming") return [f(ev.a)||"A",f(ev.b)||"B"];
+  if(type==="wedding"||type==="homecoming"||type==="engagement") return [f(ev.a)||"A",f(ev.b)||"B"];
   const w=String(ev.title||ev.a||"A").split(/\s+/).filter(x=>/^[A-Za-z]/.test(x));
   return [f(w[0])||"A", w[1]?f(w[1]):""];
 }
@@ -2252,6 +2302,10 @@ function confettiArt(){
   return svg("0 0 300 110",`${st(26,"#EB5757")}${st(272,"#2D9CDB")}${st(58,"#F2C94C")}${st(240,"#27AE60")}${out}`);
 }
 function premArt(type,t,ev){
+  const TV=t.site&&LX_TH[t.site]; if(TV&&TV.video){
+    const fx=Array.from({length:9},(_,i)=>`<i style="left:${(i*41+7)%94}%;--d:${(8+i%4*2)}s;--w:${(i%3-1)*14}cqw;animation-delay:-${(i*1.7).toFixed(1)}s;--s:${(.6+(i%3)*.2).toFixed(1)}"></i>`).join("");
+    return `<div class="cfx cvid" aria-hidden="true"><video class="cb" src="${TV.video}-480.mp4" poster="${TV.video}-poster-480.webp" autoplay muted loop playsinline preload="metadata"></video><div class="cpt">${fx}</div></div>`;
+  }
   if(t.img&&t.site&&LX_TH[t.site]&&/-card$/.test(t.img)){
     const TH=LX_TH[t.site], b=t.img, ss=n=>`srcset="img/${b}${n}-480.webp 480w, img/${b}${n}-960.webp 960w" sizes="(max-width:440px) 92vw, 380px"`;
     const many=TH.fx==="confetti"||TH.fx==="gold";
@@ -2319,7 +2373,7 @@ function lpMedal(){
   const pet=(n,r1,r2,w)=>Array.from({length:n},(_,i)=>`<path transform="rotate(${i*360/n} 50 50)" d="M50 ${50-r1}C${50-w} ${50-r1-(r2-r1)*.45} ${50-w*.6} ${50-r2+4} 50 ${50-r2}C${50+w*.6} ${50-r2+4} ${50+w} ${50-r1-(r2-r1)*.45} 50 ${50-r1}Z"/>`).join("");
   return `<svg class="lp-medal" viewBox="0 0 100 100" aria-hidden="true"><g class="rot" fill="#EBD29A" fill-opacity=".6" stroke="currentColor" stroke-width="1"><circle cx="50" cy="50" r="47" fill="none"/><circle cx="50" cy="50" r="43" fill="none" stroke-dasharray="1.5 3"/>${pet(16,26,41,6)}${pet(8,12,27,8)}<circle cx="50" cy="50" r="11" fill="#EBD29A" fill-opacity=".9"/><circle cx="50" cy="50" r="5" fill="currentColor"/></g></svg>`;
 }
-const MUSIC_KEY={wedding:"MUSIC",homecoming:"MUSIC_HOMECOMING",birthday:"MUSIC_BIRTHDAY",party:"MUSIC_PARTY",dana:"MUSIC_DANA",other:"MUSIC_OTHER",halloween:"MUSIC_HALLOWEEN"};
+const MUSIC_KEY={wedding:"MUSIC",engagement:"MUSIC_ENGAGEMENT",homecoming:"MUSIC_HOMECOMING",birthday:"MUSIC_BIRTHDAY",party:"MUSIC_PARTY",dana:"MUSIC_DANA",other:"MUSIC_OTHER",halloween:"MUSIC_HALLOWEEN"};
 /* credit lines that a track's free licence asks for, shown in the invitation footer */
 const MUSIC_CREDIT={"audio/homecoming.mp3":"“Until We Meet Again” by Arthur Vyncke"};
 const musicFor = type => CONFIG[MUSIC_KEY[type]||"MUSIC"]||"";
@@ -2355,11 +2409,12 @@ function lxBouquet(side){
 }
 function lxSite(type, ev, lang, guest, prem, gallery, base){
   const si=lang==="si", L=(e,s)=>si?s:e;
-  const TH = LX_TH[prem.site]||LX_TH.lotus, couple=(type==="wedding"||type==="homecoming");
+  const TH = LX_TH[prem.site]||LX_TH.lotus, couple=(type==="wedding"||type==="homecoming"||type==="engagement");
   if(TH.lay==="trad") return ntSite(type,ev,lang,guest,prem,gallery,base,TH);
   const names = couple ? [ev.a||"Groom", ev.b||"Bride"] : type==="birthday" ? [ev.a||L("Birthday","උපන්දිනය")] : [ev.title||TYPES[type].name];
-  const eyebrow = type==="wedding" ? L("The wedding of","විවාහ මංගල්‍යය") : type==="homecoming" ? L("The homecoming of","හෝම්කමිං උත්සවය") : type==="birthday" ? (ev.age?L(`Turning ${esc(ev.age)}`,`වයස ${esc(ev.age)} සපිරේ`):L("Birthday celebration","උපන්දින සාදය")) : (ev.a?esc(ev.a)+" "+L("invites you to","ආරාධනා කරයි"):L("You are invited to","ඔබට ආරාධනා"));
+  const eyebrow = type==="wedding" ? L("The wedding of","විවාහ මංගල්‍යය") : type==="homecoming" ? L("The homecoming of","හෝම්කමිං උත්සවය") : type==="engagement" ? L("The engagement of","විවාහ ගිවිස ගැනීම") : type==="birthday" ? (ev.age?L(`Turning ${esc(ev.age)}`,`වයස ${esc(ev.age)} සපිරේ`):L("Birthday celebration","උපන්දින සාදය")) : (ev.a?esc(ev.a)+" "+L("invites you to","ආරාධනා කරයි"):L("You are invited to","ඔබට ආරාධනා"));
   const TX = ({wedding:[L("Together with their families","දෙපාර්ශවයේ දෙමාපියන් සමඟ"),L("With the blessings of our families, we begin our forever","දෙපාර්ශවයේ ආශීර්වාදය ඇතිව අපි නව ජීවිතයක් අරඹමු"),L("Wedding details","විවාහ විස්තර")],
+    engagement:[L("Together with our families","දෙපාර්ශවයේ දෙමාපියන් සමඟ"),L("Two hearts, one promise, and the road ahead together","හදවත් දෙකක්, එක් පොරොන්දුවක්, එකට යන ගමනක්")],
     homecoming:[L("Welcome home","නිවසට සාදරයෙන්"),L("A new home, a new beginning, celebrated with you","නව නිවසක, නව ආරම්භයක් ඔබ සමඟ")],
     birthday:[L("Let's celebrate","අපි සමරමු"),L("Cake, laughter and the people we love","කේක්, සිනහව සහ අපේ ආදරණීයයන්")],
     party:[L("You're invited","ඔබට ආරාධනා"),L("An evening of good friends, music and memories","මිතුරන්, සංගීතය සහ මතකයන් පිරි සැන්දෑවක්")],
@@ -2375,8 +2430,11 @@ function lxSite(type, ev, lang, guest, prem, gallery, base){
     <button type="button" class="lx-fab" data-lxmenu aria-label="${L("Menu","මෙනුව")}" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 7h14M5 12h14M5 17h14"/></svg></button>
     ${musicFor(type)?`<button type="button" class="lx-fab" data-music aria-pressed="false" aria-label="${L("Mute or unmute music","සංගීතය නවත්වන්න / වාදනය")}"><svg class="m-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg><svg class="m-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg></button>`:""}</div>`;
   const petals = Array.from({length:TH.fx==="confetti"||TH.fx==="gold"?14:10},(_,i)=>`<i style="left:${(i*41+7)%94}%;--d:${(11+i%4*3)}s;--w:${(i%3-1)*40}px;animation-delay:-${(i*2.3).toFixed(1)}s;--s:${(.7+(i%3)*.2).toFixed(1)}"></i>`).join("");
-  return `<div class="site lotus th-${prem.site} mo-${TH.mo} fx-${TH.fx} ${TH.dark?"th-dark":""} ${TH.glow?"th-glow":""} locked t-${type} ${si?"si":""}" style="${tplVars(prem)}--lx-wine:${prem.wine||prem.ink}" data-site="${base.id}">
-  <div class="lx-bgfx" aria-hidden="true"><img src="${TH.bg}" alt=""><img class="fl l" src="${TH.l}" alt=""><img class="fl r" src="${TH.r}" alt=""><div class="lx-petals">${petals}</div></div>
+  const bgfx = TH.video
+    ? `<div class="lx-bgfx lx-vid" aria-hidden="true"><video src="${TH.video}.mp4" poster="${TH.bg}" autoplay muted loop playsinline preload="auto"></video><div class="lx-veil"></div><img class="vc l" src="${TH.l}" alt=""><img class="vc r" src="${TH.r}" alt=""><div class="lx-petals">${petals}</div></div>`
+    : `<div class="lx-bgfx" aria-hidden="true"><img src="${TH.bg}" alt=""><img class="fl l" src="${TH.l}" alt=""><img class="fl r" src="${TH.r}" alt=""><div class="lx-petals">${petals}</div></div>`;
+  return `<div class="site lotus th-${prem.site} mo-${TH.mo} fx-${TH.fx} ${TH.dark?"th-dark":""} ${TH.glow?"th-glow":""} ${TH.video?"th-video":""} locked t-${type} ${si?"si":""}" style="${tplVars(prem)}--lx-wine:${prem.wine||prem.ink}" data-site="${base.id}">
+  ${bgfx}
   <section class="lx-cover">${lxMandala()}${lxBouquet("l")}${lxBouquet("r")}<div class="lx-dust">${dust}</div>
     <div class="lx-in"><span class="lx-eb">${eyebrow}</span>${lxRule()}
     <h1 class="lx-names one">${names.map(esc).join(` <span>&amp;</span> `)}</h1>
@@ -2412,7 +2470,7 @@ function lxEvents(type,ev,L){
     if(ev.church) out.push({k:"church",n:L("Church ceremony","දේවස්ථාන චාරිත්‍රය"),t:ev.church,v:ev.cvenue||ev.venue});
     if(ev.nekath) out.push({k:"poruwa",n:L("Poruwa ceremony","පෝරුව චාරිත්‍රය"),t:ev.nekath,v:ev.venue});
     if(ev.time) out.push({k:"reception",n:L("Reception","මංගල සාදය"),t:ev.time,v:ev.venue});
-  } else if(ev.time) out.push({k:type==="homecoming"?"reception":"event",n:ev.title||L(TYPES[type].name,TYPES[type].si),t:ev.time,v:ev.venue});
+  } else if(ev.time) out.push({k:type==="homecoming"?"reception":type==="engagement"?"rings":"event",n:ev.title||L(TYPES[type].name,TYPES[type].si),t:ev.time,v:ev.venue});
   return out;
 }
 const LX_CLOCK=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`;
@@ -2422,6 +2480,7 @@ function lxEmblem(k){
     church:`<path d="M60 8v14M54 14h12"/><path d="M48 46V32l12-10 12 10v14"/><path d="M30 104V58l30-12 30 12v46"/><path d="M20 104h80"/><path d="M52 104V82a8 8 0 0 1 16 0v22"/><circle cx="60" cy="64" r="6"/><path d="M38 78v12M82 78v12"/><path d="M14 104c0-14 4-22 8-26 4 4 8 12 8 26M90 104c0-14 4-22 8-26 4 4 8 12 8 26"/>`,
     poruwa:`<path d="M24 34h72M20 34l40-20 40 20"/><path d="M30 34v52M90 34v52M44 34v52M76 34v52"/><path d="M22 86h76M16 96h88M10 106h100"/><path d="M30 42c10 8 20 8 30 0 10 8 20 8 30 0"/><circle cx="60" cy="14" r="3"/><path d="M52 60c4-6 12-6 16 0-4 6-12 6-16 0z"/>`,
     reception:`<path d="M60 8v10"/><path d="M36 30c0-8 48-8 48 0l-6 10H42z"/><path d="M42 40c-2 6 4 8 6 4M60 40v8M78 40c2 6-4 8-6 4"/><path d="M38 70h14l-2 14a5 5 0 0 1-10 0z"/><path d="M45 89v13M39 102h12"/><path d="M68 70h14l-2 14a5 5 0 0 1-10 0z"/><path d="M75 89v13M69 102h12"/><path d="M52 64l16 0" stroke-dasharray="2 3"/>`,
+    rings:`<circle cx="48" cy="70" r="24"/><circle cx="72" cy="70" r="24"/><circle cx="48" cy="70" r="19" opacity=".5"/><circle cx="72" cy="70" r="19" opacity=".5"/><path d="M72 46l-8-10 8-10 8 10z"/><path d="M64 36h16M72 26v20"/><path d="M30 24l2 4 4 2-4 2-2 4-2-4-4-2 4-2zM96 30l1.5 3 3 1.5-3 1.5-1.5 3-1.5-3-3-1.5 3-1.5z"/><path d="M24 104h72"/>`,
     event:`<path d="M60 96c-10-14-10-34 0-52 10 18 10 38 0 52z"/><path d="M60 96c-20-6-30-22-30-40 16 4 26 18 30 40zM60 96c20-6 30-22 30-40-16 4-26 18-30 40z"/><path d="M60 96c-26 2-42-8-48-22 18-4 34 4 48 22zM60 96c26 2 42-8 48-22-18-4-34 4-48 22z"/><path d="M30 106h60"/>`};
   return `<svg class="lx-emb" viewBox="0 0 120 112" aria-hidden="true"><g ${g}>${A[k]||A.event}</g></svg>`;
 }
@@ -2456,7 +2515,7 @@ function ntLotus(cls){
     <path d="M168 112Q200 132 232 112Q218 124 200 124Q182 124 168 112Z" fill="url(#${g})" stroke="#8A6020" stroke-width=".8"/>${[-3,-2,-1,0,1,2,3].map(i=>`<circle cx="${200+i*7}" cy="${r(128-Math.abs(i)*.6)}" r="1.8" fill="#B9893A"/>`).join("")}</svg>`;
 }
 function ntSite(type,ev,lang,guest,prem,gallery,base,TH){
-  const si=lang==="si", L=(e,s)=>si?s:e, id=base.id, couple=type==="wedding"||type==="homecoming";
+  const si=lang==="si", L=(e,s)=>si?s:e, id=base.id, couple=type==="wedding"||type==="homecoming"||type==="engagement";
   const groom=ev.a||L("Groom","මනාලයා"), bride=ev.b||L("Bride","මනාලිය");
   const names=couple?[groom,bride]:[ev.title||ev.a||L(TYPES[type].name,TYPES[type].si)];
   const dt=ev.date?new Date(ev.date+"T00:00:00"):null, ok=dt&&!isNaN(dt);
@@ -2470,6 +2529,7 @@ function ntSite(type,ev,lang,guest,prem,gallery,base,TH){
     : `<h2 class="nt-one">${esc(names[0])}</h2>`;
   const art=gallery&&gallery[0]&&!ev.hero ? gallery[0] : `<img src="img/${esc(TH.hero)}-960.webp" srcset="img/${esc(TH.hero)}-480.webp 480w, img/${esc(TH.hero)}-960.webp 960w" sizes="(max-width:520px) 92vw, 440px" alt="">`;
   const line=type==="wedding"?L("joyfully invite you to celebrate their wedding","විවාහ මංගල්‍යයට ඔබගේ පැමිණීම ප්‍රිය සේ බලාපොරොත්තු වෙමු")
+    : type==="engagement"?L("joyfully invite you to celebrate their engagement","විවාහ ගිවිස ගැනීමේ උත්සවයට ඔබට සාදරයෙන් ආරාධනා කරමු")
     : type==="homecoming"?L("warmly invite you to celebrate their homecoming","හෝම්කමිං උත්සවයට ඔබට සාදරයෙන් ආරාධනා කරමු")
     : L("warmly invite you to celebrate with us","අප සමඟ සතුට බෙදාගන්න ඔබට සාදරයෙන් ආරාධනා කරමු");
   const times=type==="wedding"?[[ev.nekath,L("Poruwa ceremony","පෝරුව චාරිත්‍රය")],[ev.time,L("Reception","මංගල සාදය")]]:[[ev.time,L("Starts at","ආරම්භය")]];
@@ -2552,6 +2612,10 @@ const TYPES = {
     fields:["a","b","pg","pb","date","church","cvenue","nekath","time","venue","map","rsvp","rsvpBy","note"],
     labels:{a:"Groom's name",b:"Bride's name",nekath:"Poruwa ceremony (nekath time)",time:"Reception starts",venue:"Poruwa and reception venue"},
     sample:{a:"Kasun",b:"Tharushi",hero:"ivory-couple",pg:"Mr & Mrs Ranasinghe",pb:"Mr & Mrs Fonseka",date:days(58),church:"",cvenue:"",nekath:"09:41",time:"11:30",venue:"Cinnamon Grand, Colombo 03",map:"",rsvp:"0771234567",note:""}},
+  engagement:{ name:"Engagement", si:"විවාහ ගිවිස ගැනීම", tpl:"Mudu Mangalya", art:engagementArt,
+    fields:["a","b","pg","pb","date","time","venue","map","rsvp","rsvpBy","note"],
+    labels:{a:"His name",b:"Her name",pg:"His parents (optional)",pb:"Her parents (optional)",time:"Ceremony starts"},
+    sample:{a:"Kasun",b:"Tharushi",pg:"Mr & Mrs Ranasinghe",pb:"Mr & Mrs Fonseka",date:days(40),time:"18:00",venue:"Cinnamon Grand, Colombo 03",map:"",rsvp:"0771234567",note:""}},
   homecoming:{ name:"Homecoming", si:"හෝම්කමිං", tpl:"Pol Atu", art:homecomingArt,
     fields:["a","b","pg","pb","date","time","venue","map","rsvp","rsvpBy","note"],
     labels:{a:"Groom's name",b:"Bride's name"},
@@ -2602,6 +2666,7 @@ const PREMIUM = {
     {n:"Vesak Lanterns", img:"vesak-lanterns", mode:"bg", veil:"linear-gradient(to bottom,rgba(16,18,52,.25),rgba(16,18,52,.82) 46%)", justify:"flex-end", bg:"#16193F", gold:"#F6C64F", soft:"#D9DCFF", ink:"#FFFFFF"},
     {n:"Colombo Streets", img:"tuktuk", mode:"top", pos:"50% 30%", bg:"#13314A", gold:"#F6B23D", soft:"#CFE6F2", ink:"#FFFFFF"}],
   halloween:[],
+  engagement:[],
   dana:[
     {n:"Bodhi Leaf", bg:"#F4F1E6", gold:"#3F6B3A", soft:"#5B5A3A", ink:"#2E2A1A"},
     {n:"Dagaba White", bg:"#EFF2F4", gold:"#8B6D3A", soft:"#5B5F66", ink:"#2A2C30"}],
@@ -2644,6 +2709,7 @@ const LX_TH = {
   balloons:{p:"th-balloons", mo:"bob", fx:"confetti"}, glam:{p:"th-glam", mo:"bob", fx:"gold", dark:1},
   lanterns:{p:"th-lanterns", mo:"swing", fx:"spark", dark:1, glow:1}, maroon:{p:"th-maroon", mo:"swing", fx:"ember", dark:1, glow:1},
   nelum:{p:"th-nelum", mo:"sway", fx:"petal", lay:"trad"},
+  drive:{video:"img/th-drive", bg:"img/th-drive-poster.webp", l:"img/th-drive-l.webp", r:"img/th-drive-r.webp", hero:"th-drive-hero", venue:"img/venue-lineart-900.webp", mo:"sway", fx:"rose"},
   pumpkin:{p:"th-pumpkin", mo:"sway", fx:"leaf"}, haunted:{p:"th-haunted", mo:"swing", fx:"wisp", dark:1, glow:1}
 };
 for(const k in LX_TH){ const t=LX_TH[k]; if(t.p) Object.assign(t,{bg:`img/${t.p}-bg.webp`, l:`img/${t.p}-l.webp`, r:`img/${t.p}-r.webp`, hero:`${t.p}-hero`, venue:`img/${t.p}-venue.webp`}) }
@@ -2655,10 +2721,11 @@ const TH_DESIGN = {
   lanterns:{n:"Lantern Night", img:"th-lanterns-card", mode:"bg", veil:"rgba(12,8,40,.2)", site:"lanterns", bg:"#1E1848", gold:"#F2B54A", soft:"#DCD6F5", ink:"#FFF4DE", wine:"#3A2A7A"},
   maroon:{n:"Kandyan Maroon", img:"th-maroon-card", mode:"bg", veil:"rgba(40,6,14,.2)", site:"maroon", bg:"#4A0E1C", gold:"#E2B65A", soft:"#EBCBA5", ink:"#FFF1DC", wine:"#6E1426"},
   nelum:{n:"Ran Nelum", img:"th-nelum-card", mode:"bg", veil:"rgba(255,255,255,0)", site:"nelum", bg:"#FAEEE9", gold:"#B98A3C", soft:"#7D6560", ink:"#7A5216", wine:"#B06A60"},
+  drive:{n:"Palm Drive", img:"th-drive-card", mode:"bg", veil:"rgba(255,255,255,0)", site:"drive", bg:"#FBF1EE", gold:"#B88A55", soft:"#7C6460", ink:"#6E2E3E", wine:"#9A4A5C"},
   pumpkin:{n:"Pumpkin Patch", img:"th-pumpkin-card", mode:"bg", veil:"rgba(255,255,255,0)", site:"pumpkin", bg:"#FBF1E4", gold:"#C8651B", soft:"#7A5A44", ink:"#8A3A12"},
   haunted:{n:"Haunted Night", img:"th-haunted-card", mode:"bg", veil:"rgba(14,8,32,.25)", site:"haunted", bg:"#1A1233", gold:"#F2A33A", soft:"#D8CFF2", ink:"#FFF1DE", wine:"#3B2466"}
 };
-[["wedding","blush"],["homecoming","sage"],["homecoming","blush"],["birthday","balloons"],["birthday","glam"],["party","lanterns"],["party","glam"],["other","blush"],["other","maroon"],["halloween","pumpkin"],["halloween","haunted"],["wedding","nelum"],["homecoming","nelum"]].forEach(([k,t])=>PREMIUM[k].push({...TH_DESIGN[t]}));
+[["wedding","blush"],["homecoming","sage"],["homecoming","blush"],["birthday","balloons"],["birthday","glam"],["party","lanterns"],["party","glam"],["other","blush"],["other","maroon"],["halloween","pumpkin"],["halloween","haunted"],["engagement","drive"],["engagement","blush"],["engagement","nelum"],["wedding","nelum"],["homecoming","nelum"]].forEach(([k,t])=>PREMIUM[k].push({...TH_DESIGN[t]}));
 /* For now the site only offers the animated themed designs. Older designs stay in the code but are not listed. */
 for(const k in PREMIUM) PREMIUM[k]=PREMIUM[k].filter(t=>LX_TH[t.site]);
 const hasTh = k => PREMIUM[k].length>0;
@@ -2827,6 +2894,11 @@ function cardHTML(type, ev, lang, guest, prem){
       <div class="line">${L("request the pleasure of your company at their wedding","ඔවුන්ගේ විවාහ මංගල්‍යයට ඔබට සාදරයෙන් ආරාධනා කරති")}</div>`;
       body=`<div class="rule"></div><div class="dets"><b>${esc(D)}</b>
       <div class="dgrid">${det(L("Poruwa","පෝරුව"),fTime(ev.nekath,lang))}${det(L("Reception","සාදය"),fTime(ev.time,lang))}</div>${venue}</div>`;break;
+    case "engagement":
+      head=`<div class="eb">${L("Save the date","දිනය මතක තබාගන්න")}</div>
+      <div class="names">${esc(ev.a||"Groom")}<span class="amp">&amp;</span>${esc(ev.b||"Bride")}</div>
+      <div class="line">${L("joyfully invite you to celebrate their engagement","ඔවුන්ගේ විවාහ ගිවිස ගැනීමේ උත්සවයට ඔබට සාදරයෙන් ආරාධනා කරති")}</div>`;
+      body=`<div class="rule"></div><div class="dets"><b>${esc(D)}</b>${det(L("Time","වේලාව"),fTime(ev.time,lang))}${venue}</div>`;break;
     case "homecoming":
       head=`<div class="eb">${L("Homecoming celebration","හෝම්කමිං උත්සවය")}</div>
       <div class="names">${esc(ev.a||"Groom")}<span class="amp">&amp;</span>${esc(ev.b||"Bride")}</div>
@@ -2903,6 +2975,12 @@ function waMessage(type, ev, lang, guest, link){
       mid=[`${when}: ${D}`, opt(N,{en:`💍 Poruwa ceremony: ${N}`,si:`💍 පෝරුව චාරිත්‍රය (නැකත): ${N}`,sl:`💍 Poruwa nekatha: ${N}`}[lang]),
            opt(T,{en:`🍽️ Reception: ${T}`,si:`🍽️ මංගල සාදය: ${T}`,sl:`🍽️ Reception eka: ${T}`}[lang])];
       close={en:"Your presence and blessings would mean the world to us. 🙏",si:"ඔබගේ පැමිණීම හා ආශීර්වාදය අපට මහත් සතුටකි. 🙏",sl:"Oyage pamineema saha ashirwadaya apita loku santhoshayak. 🙏"}[lang];break;
+    case "engagement":
+      top={en:["💍 *Engagement Invitation* 💍","",greet,"",`Together with our families, *${ev.a}* & *${ev.b}* joyfully invite you to celebrate their engagement.`],
+           si:["💍 *විවාහ ගිවිස ගැනීමේ ආරාධනය* 💍","",greet,"",`*${ev.a}* සහ *${ev.b}* ගේ විවාහ ගිවිස ගැනීමේ උත්සවයට ඔබට සාදරයෙන් ආරාධනා කරමු.`],
+           sl:["💍 *Engagement Arathanaya* 💍","",greet,"",`*${ev.a}* saha *${ev.b}* ge engagement ekata oyata adarayen arayum karanawa.`]}[lang];
+      mid=[`${when}: ${D}`,opt(T,`${time}: ${T}`)];
+      close={en:"Your presence and blessings would mean so much to us. 💕",si:"ඔබගේ පැමිණීම හා ආශීර්වාදය අපට මහත් සතුටකි. 💕",sl:"Oyage pamineema saha ashirwadaya apita loku santhoshayak. 💕"}[lang];break;
     case "homecoming":
       top={en:["🏡 *Homecoming Celebration* 🏡","",greet,"",`*${ev.a}* & *${ev.b}* warmly invite you to celebrate their homecoming.`],
            si:["🏡 *ගෙදර ඒමේ උත්සවය* 🏡","",greet,"",`*${ev.a}* සහ *${ev.b}* ගේ ගෙදර ඒමේ (හෝම්කමිං) උත්සවයට ඔබට ආදරයෙන් ආරාධනා කරමු.`],
@@ -3006,7 +3084,7 @@ function lpDetail(){
         <div class="dt-nav"><a href="#design/${k}/${prev}" aria-label="Previous design">←</a><span>${pos+1} / ${all.length}</span><a href="#design/${k}/${next}" aria-label="Next design">→</a></div></div>
       <div class="dt-info">${lpOrn()}<span class="lp-eb">${T.name} · ${esc(T.si)}</span><h1>${esc(name)}</h1>
         <p class="dt-price">${t?`<b>Free</b> for ${CONFIG.FREE_GUESTS} guests · every guest for <b>${esc(designPrice(t.n))}</b>`:`<b>Free</b> for every ${T.name.toLowerCase()}`}</p>
-        <ul class="dt-list">${(()=>{const W=k==="wedding",n=T.name.toLowerCase(),op=({wedding:"Magul Pahana",birthday:"birthday cake",homecoming:"door",dana:"lotus",party:"gift box",halloween:"jack-o'-lantern"})[k]||"envelope";return [
+        <ul class="dt-list">${(()=>{const W=k==="wedding",n=T.name.toLowerCase(),op=({wedding:"Magul Pahana",birthday:"birthday cake",homecoming:"door",dana:"lotus",party:"gift box",halloween:"jack-o'-lantern",engagement:"intro video"})[k]||"envelope";return [
           ["Personalised Guest Invitations",`Each guest's name will be individually included on the invitation (e.g., <i>&quot;Dear Nimal Uncle&quot;</i>).`],
           [W?"Traditional Opening Screen":"Opening Screen",`A beautifully designed ${op} opening screen displayed when guests access the invitation link.`],
           [`${T.name} Details`,W?"Complete information, including the wedding date, Poruwa ceremony (Poruwa Nekath), reception details, location map, and RSVP form.":`Complete information, including the ${n} date, time, venue, location map, and RSVP form.`],
@@ -3030,7 +3108,7 @@ const NV_IC={
 const NV_WA='<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.2a9.7 9.7 0 0 0-8.3 14.8L2.3 21.8l4.9-1.3A9.7 9.7 0 1 0 12 2.2zm0 17.7a8 8 0 0 1-4.1-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 1 1 12 19.9zm4.4-6c-.2-.1-1.4-.7-1.7-.8-.2-.1-.4-.1-.5.1l-.8 1c-.1.2-.3.2-.5.1a6.6 6.6 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.5-.4h-.5a.9.9 0 0 0-.7.3 2.8 2.8 0 0 0-.9 2.1 4.9 4.9 0 0 0 1 2.6 11.2 11.2 0 0 0 4.3 3.8c1.6.7 2.2.7 3 .6.5-.1 1.4-.6 1.6-1.1.2-.6.2-1 .1-1.1l-.5-.2z"/></svg>';
 function nvDesigns(){
   const out=[], seen=new Set();
-  for(const k of ["wedding","homecoming","birthday","party","halloween","other","dana"]) (PREMIUM[k]||[]).forEach((t,i)=>{ if((t.img||t.layout)&&!tplOff().includes(k+":"+(i+1))&&!seen.has(t.n)){ seen.add(t.n); out.push([k,i+1,t]) } });
+  for(const k of ["wedding","engagement","homecoming","birthday","party","halloween","other","dana"]) (PREMIUM[k]||[]).forEach((t,i)=>{ if((t.img||t.layout)&&!tplOff().includes(k+":"+(i+1))&&!seen.has(t.n)){ seen.add(t.n); out.push([k,i+1,t]) } });
   return out;
 }
 function nvSheet(u,PG){
@@ -3071,9 +3149,11 @@ function lpNav(){
 const LP_EX = ["Kasun & Tharushi","Senuli turns 5","Perera family dana","Batch reunion party"];
 function lpParse(t){
   t=String(t||"").trim(); let m;
+  if((m=t.match(/^(.+?)\s*(?:&|\+|and|saha|සහ)\s*(.+?)\s+(?:engagement|engaged)$/i))) return {type:"engagement",ev:{a:m[1].trim(),b:m[2].trim()}};
   if((m=t.match(/^(.+?)\s*(?:&|\+|and|saha|සහ)\s*(.+)$/i))) return {type:"wedding",ev:{a:m[1].trim(),b:m[2].trim()}};
   if((m=t.match(/^(.+?)\s+turns?\s+(\d{1,3})/i))) return {type:"birthday",ev:{a:m[1].trim(),age:m[2]}};
   if((m=t.match(/^(.*?)\s*(?:dana|daana|දානය|pinkama)/i))){ const h=(m[1]||"").trim().replace(/^the\s+/i,""); return {type:"dana",ev:{a:h?"The "+h.replace(/^./,c=>c.toUpperCase()):"",title:"Sanghika Dana"}} }
+  if(/engage|ගිවිස/i.test(t)) return {type:"engagement",ev:{a:"Kasun",b:"Tharushi"}};
   if(/hall?owe+n|pumpkin|spooky|හැලොවීන්/i.test(t)) return {type:"halloween",ev:{title:t.replace(/^./,c=>c.toUpperCase()),a:""}};
   if(/party|reunion|night|bash|get.?together/i.test(t)) return {type:"party",ev:{title:t.replace(/^./,c=>c.toUpperCase()),a:""}};
   if(/homecoming/i.test(t)) return {type:"homecoming",ev:{a:"Kasun",b:"Tharushi"}};
@@ -3252,7 +3332,7 @@ function render(){
     <aside class="stage" aria-label="Live preview">
       <div class="table" id="cardSlot" data-ui></div>
       <p class="pnote" id="premOwn" hidden>Your purchased design. Guest links use this design.</p><div id="premBar" hidden><p class="pnote">Free for ${CONFIG.FREE_GUESTS} guests. Buy this design to send it to every guest.</p><div class="row" style="margin-top:8px;justify-content:center"><button class="btn primary" id="buyPrem">Buy this design · <span id="premPrice"></span></button><button class="btn" id="reqPrem">Details</button></div></div>
-      <div class="opk"><span>Opening screen</span><div class="seg" role="group" aria-label="Opening screen when a guest opens the link">${[["theme",({wedding:"Magul pahana",birthday:"Birthday cake",homecoming:"Door",dana:"Lotus",party:"Gift box",halloween:"Pumpkin"})[S.type]||"Classic"],["env","Envelope"],["seal","Wax seal"]].map(([k,n])=>`<button type="button" data-opener="${k}" aria-pressed="${S.opener===k}">${n}</button>`).join("")}</div></div>
+      <div class="opk"><span>Opening screen</span><div class="seg" role="group" aria-label="Opening screen when a guest opens the link">${[["theme",({wedding:"Magul pahana",birthday:"Birthday cake",homecoming:"Door",dana:"Lotus",party:"Gift box",halloween:"Pumpkin",engagement:"Intro video"})[S.type]||"Classic"],["env","Envelope"],["seal","Wax seal"]].map(([k,n])=>`<button type="button" data-opener="${k}" aria-pressed="${S.opener===k}">${n}</button>`).join("")}</div></div>
       <div class="row">
         <button class="btn" id="preview">${I.eye} Preview as guest</button>
         <button class="btn" id="copyLink">${I.link} Copy invite link</button>
@@ -3463,7 +3543,7 @@ function designItems(filter){
     PREMIUM[k].forEach((t,i)=>{ if(!t.img&&!t.layout) return; if(tplOff().includes(k+":"+(i+1))) return; out.push(`<button class="lp-tile" data-pick="${k}:${i+1}"><div class="pv" data-ui>${cardHTML(k,ev,"en","",{...t,_noribbon:1})}</div><div class="strip"><b>${esc(t.n)}</b><span class="free">${T.name} · ${esc(setPrice(t.n)||"Free")}</span></div></button>`) });
   }
   if(filter!=="feat") out.unshift(customTile());
-  if(filter==="feat"){ const pickN=(k,n)=>out.filter(x=>x.includes(`data-pick="${k}:`)).slice(0,n); return [...pickN("wedding",4),...pickN("birthday",1),...pickN("homecoming",1),...pickN("dana",1),...pickN("party",1)].join("") }
+  if(filter==="feat"){ const pickN=(k,n)=>out.filter(x=>x.includes(`data-pick="${k}:`)).slice(0,n); return [...pickN("wedding",4),...pickN("engagement",1),...pickN("birthday",1),...pickN("homecoming",1),...pickN("dana",1),...pickN("party",1)].join("") }
   return out.join("");
 }
 function refreshGuestLinks(){
@@ -3541,7 +3621,7 @@ function guestPreview(guest){
 
 
 /* ================= INVITATION SITE (scrolling mini-website) ================= */
-const SAMPLE_GAL = {wedding:["poruwa-couple","card-flatlay","galle-fort","kandyan-pattern"],homecoming:["tea-bungalow","galle-fort","card-flatlay"],birthday:["birthday-table","tuktuk"],party:["vesak-lanterns","tuktuk","galle-fort"],halloween:["th-pumpkin-hero","th-haunted-hero"],dana:[],other:["perahera","kandyan-pattern","card-flatlay"]};
+const SAMPLE_GAL = {wedding:["poruwa-couple","card-flatlay","galle-fort","kandyan-pattern"],engagement:["th-drive-couple","th-drive-ring","th-drive-aerial"],homecoming:["tea-bungalow","galle-fort","card-flatlay"],birthday:["birthday-table","tuktuk"],party:["vesak-lanterns","tuktuk","galle-fort"],halloween:["th-pumpkin-hero","th-haunted-hero"],dana:[],other:["perahera","kandyan-pattern","card-flatlay"]};
 function galleryFor(type){
   const own=(S.photos&&S.photos[type])||[];
   if(own.length) return own.map(src=>`<img src="${src}" alt="" loading="lazy">`);
@@ -3716,6 +3796,7 @@ function renderGuest(p,gallery){
 const GL_COPY={
   wedding:{en:["Tap to light the magul pahana","May the light bless their new life"],si:["මංගල පහන දල්වන්න තට්ටු කරන්න","නව දිවියට ආලෝකය"],t:3400},
   birthday:{en:["Tap the cake to light the candles","Make a wish!"],si:["ඉටිපන්දම් දල්වන්න කේක් එක තට්ටු කරන්න","පැතුමක් පතන්න!"],t:3000},
+  engagement:{en:["Tap to open","Save the date"],si:["විවෘත කිරීමට තට්ටු කරන්න","දිනය මතක තබාගන්න"],t:3000},
   homecoming:{en:["Tap to open the door","Welcome home"],si:["දොර විවෘත කරන්න තට්ටු කරන්න","සාදරයෙන් පිළිගනිමු"],t:2900},
   dana:{en:["Tap the lotus","Sadhu! Sadhu! Sadhu!"],si:["නෙළුම තට්ටු කරන්න","සාධු! සාධු! සාධු!"],t:3000},
   party:{en:["Tap to open the gift","Let's celebrate!"],si:["තෑග්ග විවෘත කරන්න තට්ටු කරන්න","අපි සමරමු!"],t:2800},
@@ -4054,9 +4135,30 @@ function guestSealLoader(p,type,card){
   el.querySelector(".gl-skip").addEventListener("click",fin);
   return el;
 }
+/* Engagement opener: the palm drive intro video plays full screen, the names fade in over it, one tap opens the invitation */
+const GV_VIDEO="img/th-drive";
+function guestVideoLoader(p,type){
+  const si=p.l==="si", ev=p.e||{}, L=(e,s)=>si?s:e, D=fDate(ev.date,si?"si":"en");
+  const nm=[ev.a,ev.b].filter(Boolean).map(x=>`<span>${esc(x)}</span>`).join(`<i>&amp;</i>`);
+  const gw=document.querySelector(".gwrap"); gw&&gw.classList.remove("in");
+  const el=document.createElement("div"); el.className="gload gv t-"+type+(si?" si":"");
+  el.innerHTML=`<video class="gv-vid" src="${GV_VIDEO}.mp4" poster="${GV_VIDEO}-poster.webp" autoplay muted loop playsinline preload="auto"></video><div class="gv-veil"></div>
+  <div class="gv-txt"><p class="gv-k">${L("Save the date","දිනය මතක තබාගන්න")}</p><small>${L("Together with our families","දෙපාර්ශවයේ දෙමාපියන් සමඟ")}</small>
+    ${nm?`<h1 class="gv-n">${nm}</h1>`:""}<small>${L("are getting engaged","විවාහ ගිවිස ගනිති")}</small>${D?`<p class="gv-d">${esc(D)}</p>`:""}${p.g?`<em>${si?"ආදරණීය":"Dear"} ${esc(p.g)}</em>`:""}</div>
+  <button type="button" class="gv-open">${L("Open invitation","ආරාධනාව විවෘත කරන්න")}</button>
+  <button type="button" class="gl-skip">${si?"මඟ හරින්න":"Skip"}</button>`;
+  document.body.appendChild(el); document.documentElement.style.overflow="hidden";
+  const v=el.querySelector("video"); v.muted=true; const pl=v.play(); pl&&pl.catch(()=>{});
+  let done=false; const fin=()=>{ if(done) return; done=true; lxPlay();
+    document.querySelectorAll(".gwrap .site.locked").forEach(s=>s.classList.remove("locked")); window.scrollTo(0,0);
+    el.classList.add("out"); gw&&gw.classList.add("in"); document.documentElement.style.overflow=""; setTimeout(()=>el.remove(),800) };
+  el.querySelector(".gv-open").addEventListener("click",fin); el.querySelector(".gl-skip").addEventListener("click",fin);
+  return el;
+}
 function guestLoader(p,type,card){
   if(p.x==="env") return guestEnvLoader(p,type,card);
   if(p.x==="seal") return guestSealLoader(p,type,card);
+  if(type==="engagement") return guestVideoLoader(p,type);
   const si=p.l==="si", cs=card?getComputedStyle(card):null, v=k=>cs&&cs.getPropertyValue(k).trim();
   const ini=p.e.a&&p.e.b?`${p.e.a[0]}${p.e.b[0]}`:((p.e.title||p.e.a||"A")[0]);
   const C=GL_COPY[type]||GL_COPY.other, cp=si?C.si:C.en;

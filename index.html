@@ -2396,7 +2396,7 @@ function lxArm(){ if(!lxSrc()||!document.querySelector(".site [data-music]")) re
 function lxStop(){ lxDisarm(); const a=document.getElementById("lxAudio"); if(a) a.pause() }
 document.addEventListener("click",e=>{
   const op=e.target.closest("[data-open]");
-  if(op){ const site=op.closest(".site"); site.classList.add("opening"); lxPlay();
+  if(op){ const site=op.closest(".site"); site.classList.add("opening"); lxPlay().catch(()=>{});
     setTimeout(()=>{ site.classList.remove("locked","opening"); const sc=site.closest(".screen"); (sc||window).scrollTo(0,0) },650); return }
   const m=e.target.closest("[data-music]"); if(m){ const a=lxAudio(); if(a.paused){ a.muted=false; lxPlay() } else a.muted=!a.muted; return }
   const mn=e.target.closest("[data-lxmenu]"); if(mn){ const p=mn.closest(".lx-fabs").querySelector(".lx-sheet"); p.hidden=!p.hidden; mn.setAttribute("aria-expanded",!p.hidden); return }
@@ -2803,7 +2803,7 @@ function tidyMap(raw){
 }
 function inviteLink(guest){
   const e={}; for(const [k,v] of Object.entries(cur()||{})) if(v!==""&&v!=null) e[k]=k==="map"?tidyMap(v):v;   // leave out empty fields: shorter links
-  const payload = {t:S.type, e}; if(S.lang==="si") payload.l="si"; if(guest) payload.g=guest; if(S.opener==="env"||S.opener==="seal") payload.x=S.opener; const cp=curPrem(); if(cp&&cp.site) payload.d=cp.site; if(FB_ON()&&window.FBX&&FBX.user) payload.o=FBX.user.uid;
+  const payload = {t:S.type, e}; if(S.lang==="si") payload.l="si"; if(guest) payload.g=guest; const cp=curPrem(); if((S.opener==="env"||S.opener==="seal")&&!vidOf(cp&&cp.site)) payload.x=S.opener; if(cp&&cp.site) payload.d=cp.site; if(FB_ON()&&window.FBX&&FBX.user) payload.o=FBX.user.uid;
   const json=JSON.stringify(payload);
   return shortLink(json) || (CONFIG.SITE + "#i=" + b64(json));
 }
@@ -3404,7 +3404,7 @@ function lpBind(){
     document.querySelectorAll("[data-st]").forEach(b=>b.setAttribute("aria-current",String(+b.dataset.st===i))) };
   if(R) R.addEventListener("input",()=>set(R.value)); document.querySelectorAll("[data-st]").forEach(b=>b.onclick=()=>set(b.dataset.st));
   document.querySelectorAll("[data-band]").forEach(t=>t.onclick=()=>{ const on=t.getAttribute("aria-checked")!=="true"; t.setAttribute("aria-checked",on); t.closest(".lp-band").classList.toggle("on",on); const ph=document.getElementById("bdPhone"); if(ph) ph.classList.toggle("f"+t.dataset.band,on);
-    if(t.hasAttribute("data-bandmusic")){ if(on) lxPlay(); else lxStop() } });
+    if(t.hasAttribute("data-bandmusic")){ if(on) lxPlay().catch(()=>{}); else lxStop() } });
   document.querySelectorAll("[data-ctapick]").forEach(b=>b.onclick=()=>{ if(b.dataset.ctapick){ S.type=b.dataset.ctapick; save() } location.hash="#create" });
 
   // chapter ink for the fixed nav
@@ -3447,6 +3447,8 @@ function refreshLive(){
   document.getElementById("premBar").hidden = !prem || own;
   if(prem) document.getElementById("premPrice").textContent = designPrice(prem.n);
   document.getElementById("premOwn").hidden = !own;
+  /* a video design opens with its own video only: no envelope or wax seal choice */
+  const vd=!!vidOf(prem&&prem.site); document.querySelectorAll("[data-opener]").forEach(b=>{ const k=b.dataset.opener; if(k!=="theme") b.hidden=vd; b.setAttribute("aria-pressed",vd?k==="theme":S.opener===k) });
   const hp=document.getElementById("heroPhone");
   if(hp){ const sc=hp.querySelector(".screen"), top=sc?sc.scrollTop:0; hp.innerHTML=phoneHTML(siteHTML(S.type,ev,lang==="si"?"si":"en","",prem,galleryFor(S.type))); hp.querySelector(".screen").scrollTop=top; initSites(hp) }
   refreshShareLinks();
@@ -4022,8 +4024,8 @@ function guestEnvLoader(p,type,card){
   </div>
   <button type="button" class="gl-skip">${si?"මඟ හරින්න":"Skip"}</button>`;
   document.body.appendChild(el); document.documentElement.style.overflow="hidden";
-  let done=false, went=false; const fin=()=>{ if(done) return; done=true; el.classList.add("out"); gw&&gw.classList.add("in"); document.documentElement.style.overflow=""; setTimeout(()=>el.remove(),800) };
-  const go=()=>{ if(went) return; went=true;
+  let done=false, went=false; const fin=()=>{ if(done) return; done=true; gUnlock(); el.classList.add("out"); gw&&gw.classList.add("in"); document.documentElement.style.overflow=""; setTimeout(()=>el.remove(),800) };
+  const go=()=>{ if(went) return; went=true; lxPlay().catch(()=>{});
     /* how far the card must rise to be fully out (its bottom stays tucked in the top quarter of the envelope), and how far the envelope drops so the card stays on screen */
     const E=el.querySelector(".ge-env").getBoundingClientRect(), H=el.querySelector(".ge-card").offsetHeight, up=Math.max(0,H-.2*E.height), drop=Math.max(0,Math.min(16+up-.05*E.height-E.top,innerHeight-E.bottom-8));
     el.style.setProperty("--ge-up",up+"px"); el.style.setProperty("--ge-drop",drop+"px"); el.style.setProperty("--ge-c",((innerHeight-H)/2-(E.top+drop+.05*E.height-up))+"px");
@@ -4127,8 +4129,8 @@ function guestSealLoader(p,type,card){
   <button type="button" class="gs-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M3 10l9-6 9 6v10H3z"/><path d="M3 10l9 6 9-6"/></svg>${si?"ආරාධනාව විවෘත කරන්න":"Open invitation"}</button>
   <button type="button" class="gl-skip">${si?"මඟ හරින්න":"Skip"}</button>`;
   document.body.appendChild(el); document.documentElement.style.overflow="hidden";
-  let done=false, went=false; const fin=()=>{ if(done) return; done=true; el.classList.add("out"); gw&&gw.classList.add("in"); document.documentElement.style.overflow=""; setTimeout(()=>el.remove(),800) };
-  const go=()=>{ if(went) return; went=true; el.classList.add("go");
+  let done=false, went=false; const fin=()=>{ if(done) return; done=true; gUnlock(); el.classList.add("out"); gw&&gw.classList.add("in"); document.documentElement.style.overflow=""; setTimeout(()=>el.remove(),800) };
+  const go=()=>{ if(went) return; went=true; lxPlay().catch(()=>{}); el.classList.add("go");
     if(matchMedia("(prefers-reduced-motion:reduce)").matches) return setTimeout(fin,500);
     setTimeout(()=>{ el.classList.add("open"); gw&&gw.classList.add("in"); setTimeout(fin,1500) },1700) };
   el.querySelector(".gs-seal").addEventListener("click",go); el.querySelector(".gs-cta").addEventListener("click",go);
@@ -4137,25 +4139,34 @@ function guestSealLoader(p,type,card){
 }
 /* Engagement opener: the palm drive intro video plays full screen, the names fade in over it, one tap opens the invitation */
 const GV_VIDEO="img/th-drive";
+/* the design's background video ("" when the design has none) */
+const vidOf = d => (d&&LX_TH[d]&&LX_TH[d].video)||"";
+/* After any opener: open the site's own cover too (no second "Open invitation" screen), start the music, keep a video background playing */
+function gUnlock(){
+  document.querySelectorAll(".gwrap .site.locked, .phonebox .site.locked").forEach(s=>{ s.classList.remove("locked"); const sc=s.closest(".screen"); sc&&sc.scrollTo(0,0) });
+  window.scrollTo(0,0); lxPlay().catch(()=>{});
+  document.querySelectorAll(".site .lx-vid video").forEach(v=>{ v.muted=true; const r=v.play(); r&&r.catch(()=>{}) });
+}
 function guestVideoLoader(p,type){
+  const VID=vidOf(p.d)||GV_VIDEO;
   const si=p.l==="si", ev=p.e||{}, L=(e,s)=>si?s:e, D=fDate(ev.date,si?"si":"en");
   const nm=[ev.a,ev.b].filter(Boolean).map(x=>`<span>${esc(x)}</span>`).join(`<i>&amp;</i>`);
   const gw=document.querySelector(".gwrap"); gw&&gw.classList.remove("in");
   const el=document.createElement("div"); el.className="gload gv t-"+type+(si?" si":"");
-  el.innerHTML=`<video class="gv-vid" src="${GV_VIDEO}.mp4" poster="${GV_VIDEO}-poster.webp" autoplay muted loop playsinline preload="auto"></video><div class="gv-veil"></div>
+  el.innerHTML=`<video class="gv-vid" src="${VID}.mp4" poster="${VID}-poster.webp" autoplay muted loop playsinline preload="auto"></video><div class="gv-veil"></div>
   <div class="gv-txt"><p class="gv-k">${L("Save the date","දිනය මතක තබාගන්න")}</p><small>${L("Together with our families","දෙපාර්ශවයේ දෙමාපියන් සමඟ")}</small>
     ${nm?`<h1 class="gv-n">${nm}</h1>`:""}<small>${L("are getting engaged","විවාහ ගිවිස ගනිති")}</small>${D?`<p class="gv-d">${esc(D)}</p>`:""}${p.g?`<em>${si?"ආදරණීය":"Dear"} ${esc(p.g)}</em>`:""}</div>
   <button type="button" class="gv-open">${L("Open invitation","ආරාධනාව විවෘත කරන්න")}</button>
   <button type="button" class="gl-skip">${si?"මඟ හරින්න":"Skip"}</button>`;
   document.body.appendChild(el); document.documentElement.style.overflow="hidden";
   const v=el.querySelector("video"); v.muted=true; const pl=v.play(); pl&&pl.catch(()=>{});
-  let done=false; const fin=()=>{ if(done) return; done=true; lxPlay();
-    document.querySelectorAll(".gwrap .site.locked").forEach(s=>s.classList.remove("locked")); window.scrollTo(0,0);
+  let done=false; const fin=()=>{ if(done) return; done=true; gUnlock();
     el.classList.add("out"); gw&&gw.classList.add("in"); document.documentElement.style.overflow=""; setTimeout(()=>el.remove(),800) };
   el.querySelector(".gv-open").addEventListener("click",fin); el.querySelector(".gl-skip").addEventListener("click",fin);
   return el;
 }
 function guestLoader(p,type,card){
+  if(vidOf(p.d)) return guestVideoLoader(p,type);   // a video design has one opener only: its own video, never a paper envelope or seal on top
   if(p.x==="env") return guestEnvLoader(p,type,card);
   if(p.x==="seal") return guestSealLoader(p,type,card);
   if(type==="engagement") return guestVideoLoader(p,type);
@@ -4173,8 +4184,8 @@ function guestLoader(p,type,card){
   <div class="gl-do" aria-hidden="true">${esc(cp[0])}</div><div class="gl-msg" aria-live="polite">${esc(cp[1])}</div>
   <button type="button" class="gl-skip">${si?"මඟ හරින්න":"Skip"}</button>`;
   document.body.appendChild(el); document.documentElement.style.overflow="hidden";
-  let done=false, went=false; const fin=()=>{ if(done) return; done=true; el.classList.add("out"); gw&&gw.classList.add("in"); document.documentElement.style.overflow=""; setTimeout(()=>el.remove(),800) };
-  const go=()=>{ if(went) return; went=true; el.classList.add("go"); setTimeout(fin,matchMedia("(prefers-reduced-motion:reduce)").matches?400:C.t) };
+  let done=false, went=false; const fin=()=>{ if(done) return; done=true; gUnlock(); el.classList.add("out"); gw&&gw.classList.add("in"); document.documentElement.style.overflow=""; setTimeout(()=>el.remove(),800) };
+  const go=()=>{ if(went) return; went=true; lxPlay().catch(()=>{}); el.classList.add("go"); setTimeout(fin,matchMedia("(prefers-reduced-motion:reduce)").matches?400:C.t) };
   el.querySelector(".gl-stage").addEventListener("click",go); el.querySelector(".gl-do").addEventListener("click",go);
   el.querySelector(".gl-skip").addEventListener("click",fin);
   return el;

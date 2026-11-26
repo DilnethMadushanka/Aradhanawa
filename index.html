@@ -2710,6 +2710,7 @@ const LX_TH = {
   lanterns:{p:"th-lanterns", mo:"swing", fx:"spark", dark:1, glow:1}, maroon:{p:"th-maroon", mo:"swing", fx:"ember", dark:1, glow:1},
   nelum:{p:"th-nelum", mo:"sway", fx:"petal", lay:"trad"},
   drive:{video:"img/th-drive", bg:"img/th-drive-poster.webp", l:"img/th-drive-l.webp", r:"img/th-drive-r.webp", hero:"th-drive-hero", venue:"img/venue-lineart-900.webp", mo:"sway", fx:"rose"},
+  navy:{p:"th-navy", mo:"sway", fx:"jasmine", dark:1},
   pumpkin:{p:"th-pumpkin", mo:"sway", fx:"leaf"}, haunted:{p:"th-haunted", mo:"swing", fx:"wisp", dark:1, glow:1}
 };
 for(const k in LX_TH){ const t=LX_TH[k]; if(t.p) Object.assign(t,{bg:`img/${t.p}-bg.webp`, l:`img/${t.p}-l.webp`, r:`img/${t.p}-r.webp`, hero:`${t.p}-hero`, venue:`img/${t.p}-venue.webp`}) }
@@ -2722,10 +2723,12 @@ const TH_DESIGN = {
   maroon:{n:"Kandyan Maroon", img:"th-maroon-card", mode:"bg", veil:"rgba(40,6,14,.2)", site:"maroon", bg:"#4A0E1C", gold:"#E2B65A", soft:"#EBCBA5", ink:"#FFF1DC", wine:"#6E1426"},
   nelum:{n:"Ran Nelum", img:"th-nelum-card", mode:"bg", veil:"rgba(255,255,255,0)", site:"nelum", bg:"#FAEEE9", gold:"#B98A3C", soft:"#7D6560", ink:"#7A5216", wine:"#B06A60"},
   drive:{n:"Palm Drive", img:"th-drive-card", mode:"bg", veil:"rgba(255,255,255,0)", site:"drive", bg:"#FBF1EE", gold:"#B88A55", soft:"#7C6460", ink:"#6E2E3E", wine:"#9A4A5C"},
+  navy:{n:"Navy Promise", img:"th-navy-card", mode:"bg", veil:"rgba(8,14,40,.15)", site:"navy", bg:"#14234F", gold:"#E2BC68", soft:"#D6DDEE", ink:"#FFFFFF", wine:"#1B2A5A"},
   pumpkin:{n:"Pumpkin Patch", img:"th-pumpkin-card", mode:"bg", veil:"rgba(255,255,255,0)", site:"pumpkin", bg:"#FBF1E4", gold:"#C8651B", soft:"#7A5A44", ink:"#8A3A12"},
   haunted:{n:"Haunted Night", img:"th-haunted-card", mode:"bg", veil:"rgba(14,8,32,.25)", site:"haunted", bg:"#1A1233", gold:"#F2A33A", soft:"#D8CFF2", ink:"#FFF1DE", wine:"#3B2466"}
 };
 [["wedding","blush"],["homecoming","sage"],["homecoming","blush"],["birthday","balloons"],["birthday","glam"],["party","lanterns"],["party","glam"],["other","blush"],["other","maroon"],["halloween","pumpkin"],["halloween","haunted"],["engagement","drive"],["engagement","blush"],["engagement","nelum"],["wedding","nelum"],["homecoming","nelum"]].forEach(([k,t])=>PREMIUM[k].push({...TH_DESIGN[t]}));
+PREMIUM.engagement.push({...TH_DESIGN.navy});
 /* For now the site only offers the animated themed designs. Older designs stay in the code but are not listed. */
 for(const k in PREMIUM) PREMIUM[k]=PREMIUM[k].filter(t=>LX_TH[t.site]);
 const hasTh = k => PREMIUM[k].length>0;
@@ -4055,6 +4058,7 @@ function gsDiamond(x,y,s){ return gsG_(x,y,0,s,`<path class="e" d="M0 -6L4 0L0 6
 function gsLantern(x,y,a,s){ return gsG_(x,y,a,s,`<path class="e" d="M-3 3H3V7H-3Z"/><path class="e" d="M0 7L11 18V26L0 37L-11 26V18Z"/><path class="v" d="M-11 18H11M-11 26H11M0 7V37M-5.5 12.5L5.5 31.5M5.5 12.5L-5.5 31.5"/><path class="s" style="stroke-width:1.6" d="M-6 34C-7 42 -4 48 -6 56M0 37C1 46 -2 52 0 60M6 34C7 42 4 48 6 56"/>`) }
 function gsPahana(x,y,a,s){ return gsG_(x,y,a,s,`<path class="e" d="M0 -23C4.5 -17 4.5 -11.5 0 -8.5C-4.5 -11.5 -4.5 -17 0 -23Z"/><path class="e" d="M-15 -7H15C13 0 7 3 0 3C-7 3 -13 0 -15 -7Z"/><path class="e" d="M-2 3H2L3.2 14H-3.2Z"/><path class="e" d="M-10 14H10L12.5 18.5H-12.5Z"/><path class="v" d="M-11 -4.5H11"/>`) }
 function gsPumpkin(x,y,a,s,face){ return gsG_(x,y,a,s,`<ellipse class="e" cx="-6" cy="0" rx="7.5" ry="9.5"/><ellipse class="e" cx="6" cy="0" rx="7.5" ry="9.5"/><ellipse class="e" cx="0" cy="0" rx="7.5" ry="10"/><path class="v" d="M0 -9.5V9.5M-6 -8.5Q-10 0 -6 8.5M6 -8.5Q10 0 6 8.5"/><path class="e" d="M-1.2 -9.5L-.6 -14.5L2.6 -16L2.2 -14L1 -9.5Z"/>${face?`<path class="v" style="stroke-width:1" d="M-7 -1H-3L-5 -5Z M7 -1H3L5 -5Z M-7 3Q0 9 7 3"/>`:""}`) }
+function gsRings(x,y,s){ const r=cx=>`<circle class="s" style="stroke-width:3.2" cx="${cx}" cy="0" r="10"/>`; return gsG_(x,y,0,s,r(-6)+r(6)+`<path class="e" d="M6 -14L10 -18H2Z M2 -18L6 -23L10 -18Z"/>`) }
 function gsBat(x,y,a,s){ return gsG_(x,y,a,s*.55,`<path class="e" d="${HW_BAT}"/>`) }
 function gsMoon(x,y,s){ return gsG_(x,y,-20,s,`<path class="e" d="M3 -13A13 13 0 1 0 3 13A10 10 0 1 1 3 -13Z"/>`) }
 function gsWeb(x,y,a,s){ let o=""; const A=[0,22.5,45,67.5,90].map(d=>d*Math.PI/180); A.forEach(t=>o+=`M0 0L${gsN(Math.cos(t)*40)} ${gsN(Math.sin(t)*40)}`);
@@ -4067,6 +4071,7 @@ const GS_MOTIF={
     side(){ let o=gsWeb(0,0,0,2.4)+gsMoon(96,120,1.6);
       [[40,220,1.4,-12],[100,300,1,10],[30,390,1.1,6],[96,470,1.3,-8],[50,560,.9,12]].forEach(([x,y,s,r])=>o+=gsBat(x,y,r,s));
       [[120,190],[16,300],[124,400],[70,520],[10,470]].forEach(([x,y],i)=>o+=gsStar(x,y,i%2?.7:1)); return o }},
+  navy:{leaf:(x,y,a,i)=>i%3===2?`<circle class="e" cx="${gsN(x+(a>-90?10:-10))}" cy="${y}" r="2.2"/>`:gsLeaf(x,y,a,24+(i%2)*5,8), flower:(x,y,a,s)=>gsRose(x,y,a,s*1.1)+gsRose(x+9*s,y+20*s,a+40,s*.6), em:s=>gsRings(0,4*s,s*1.3), wax:"#C9A456", emInk:"#14234F"},
   lotus:{leaf:(x,y,a,i)=>gsLeaf(x,y,a,26+(i%3)*5,8), flower:(x,y,a,s)=>gsLotus(x,y,a+90,s), em:s=>gsLotus(0,10*s/.6,0,s), curls:1, wax:"#8E1E2C"},
   sage:{leaf:(x,y,a,i)=>i%3===2?gsJasBud(x,y,a+90,1.1):gsLeaf(x,y,a,30+(i%2)*6,9), flower:(x,y,a,s)=>gsJasmine(x,y,a,s*1.25)+gsJasmine(x+12*s,y+14*s,a+20,s*.8)+gsJasBud(x-10*s,y+14*s,a+150,s), em:s=>gsJasmine(0,0,18,s*1.25), wax:"#6E8A62"},
   blush:{leaf:(x,y,a,i)=>gsLeaf(x,y,a,24+(i%3)*4,9)+(i%4===1?gsLeaf(x,y,a+(a>-90?-28:28),16,6):""), flower:(x,y,a,s)=>gsRose(x,y,a,s*1.15)+gsRose(x+8*s,y+22*s,a+40,s*.62), em:s=>gsRose(0,0,0,s*1.05), wax:"#BF7C84"},

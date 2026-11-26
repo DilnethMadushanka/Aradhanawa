@@ -2611,7 +2611,6 @@ function lxSite(type, ev, lang, guest, prem, gallery, base){
   <section class="lx-cover">${lxMandala()}${lxBouquet("l")}${lxBouquet("r")}<div class="lx-dust">${dust}</div>
     <div class="lx-in"><span class="lx-eb">${eyebrow}</span>${lxRule()}
     <h1 class="lx-names one">${names.map(esc).join(` <span>&amp;</span> `)}</h1>
-    ${D?`<p class="lx-date">${esc(D)}</p>`:""}
     <p class="lx-dear">${guest?`${L("Dear","ආදරණීය")} ${esc(guest)}`:L("You are warmly invited","ඔබට සාදරයෙන් ආරාධනා")}</p>
     <button type="button" class="lx-open" data-open><svg viewBox="0 0 32 20" aria-hidden="true"><circle cx="11" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="21" cy="10" r="7" fill="none" stroke="currentColor" stroke-width="2"/></svg>${L("Open invitation","ආරාධනාව විවෘත කරන්න")}</button></div>
   </section>
@@ -2717,7 +2716,7 @@ function ntSite(type,ev,lang,guest,prem,gallery,base,TH){
   <section class="lx-cover nt-cover">${lxMandala("nt-mfull",1)}<div class="lx-dust">${dust}</div>
     <div class="lx-in">${ntLotus("nt-lotus big")}<p class="nt-greet">${greet}</p>
     <h1 class="nt-names">${names.map(esc).join(`<span>${couple?L("&amp;","සහ"):""}</span>`)}</h1>
-    ${ok?`<p class="nt-sub">${esc(fDate(ev.date,lang))}</p>`:""}<p class="nt-dear">${dear}</p>
+    <p class="nt-dear">${dear}</p>
     <button type="button" class="nt-open" data-open>${L("Open invitation","ආරාධනාව විවෘත කරන්න")}</button>${sw}</div>
   </section>
   <div class="nt-top">${sw}</div>
@@ -4358,7 +4357,6 @@ function guestSealLoader(p,type,card){
   const pair=ev.a&&ev.b, nm=pair?`${esc(ev.a)}<i>&amp;</i>${esc(ev.b)}`:esc(ev.title||ev.a||"");
   const what=type!=="other"&&!ev.title&&TYPES[type]?TYPES[type].name.toLowerCase():"";
   const eyebrow=si?"ඔබට ආරාධනා":(nm&&what?`You are invited to the ${what} of`:"You are invited to");
-  const D=/^\d{4}-\d\d-\d\d$/.test(ev.date||"")?ev.date.split("-").reverse().join(" . "):"";
   const gw=document.querySelector(".gwrap"); gw&&gw.classList.remove("in");
   const el=document.createElement("div"); el.className="gload gs gs-"+mk+" t-"+type+(si?" si":"");
   el.style.cssText=`--g-bg:${bg};--gs-paper:${paper};--gs-gold:${gold};--gs-ink:${dark?ink:nameC};--gs-name:${nameC};--gs-btn:${dark?gold:wax};--gs-em:${M.emInk||"url(#gsG)"};${th?`--gs-silk:url("${th.bg}");`:""}--gs-btnink:${dark?bg:"#FFF8F0"};--gs-hi:${dark?"rgba(255,255,255,.16)":"rgba(255,255,255,.9)"};--gs-lo:${dark?"rgba(0,0,0,.55)":"rgba(80,30,30,.26)"};--gs-sh:${dark?.45:.16}`;
@@ -4366,7 +4364,7 @@ function guestSealLoader(p,type,card){
   const art=k=>k==="l"?`<svg class="gs-art vl" viewBox="0 0 140 600" aria-hidden="true">${vine}</svg>`:k==="r"?`<svg class="gs-art vr" viewBox="0 0 140 600" aria-hidden="true">${vine}</svg>`:k==="b"?`<svg class="gs-art bt" viewBox="0 0 400 260" preserveAspectRatio="xMidYMid meet" aria-hidden="true">${spray}</svg>`:"";
   const flap=(k,extra="")=>`<div class="gs-f ${k}"><div class="gs-p">${art(k)?`<div class="gs-emb">${art(k)}</div><div class="gs-gold">${art(k)}</div>`:""}${extra}</div></div>`;
   const orn=`<svg viewBox="0 0 150 14" aria-hidden="true"><path d="M2 7H58M92 7H148" stroke="currentColor" stroke-width=".8"/><circle cx="56" cy="7" r="1.6" fill="currentColor"/><circle cx="94" cy="7" r="1.6" fill="currentColor"/><path d="M75 1C79 4 79 9 75 13C71 9 71 4 75 1ZM75 13C70 12 66 9 64 6C69 7 72 9 75 13ZM75 13C80 12 84 9 86 6C81 7 78 9 75 13Z" fill="currentColor"/></svg>`;
-  const txt=`<div class="gs-txt">${p.g?`<span class="dear">${si?"":"Dear "}${esc(p.g)}</span>`:""}<small>${eyebrow}</small>${nm?`<b>${nm}</b>`:""}${D?`<span class="d">${esc(D)}</span>`:""}${orn}</div>`;
+  const txt=`<div class="gs-txt">${p.g?`<span class="dear">${si?"":"Dear "}${esc(p.g)}</span>`:""}<small>${eyebrow}</small>${nm?`<b>${nm}</b>`:""}${orn}</div>`;
   const wx=`<svg viewBox="0 0 60 60" aria-hidden="true"><path d="M30 3C36 3 38 7 43 8S53 11 54 17 57 25 57 30 54 38 53 43 48 52 43 53 36 57 30 57 23 54 18 53 9 49 7 43 3 36 3 30 6 22 7 17 13 9 18 7 24 3 30 3Z" fill="url(#gsWax)"/><circle cx="30" cy="30" r="19.5" fill="none" stroke="#000" stroke-width="1.3" opacity=".28"/><circle cx="30" cy="30" r="20.3" fill="none" stroke="#fff" stroke-width=".5" opacity=".3"/>${Array.from({length:16},(_,i)=>{const a=i*Math.PI/8;return `<circle cx="${gsN(30+Math.cos(a)*23.5)}" cy="${gsN(30+Math.sin(a)*23.5)}" r=".9" fill="url(#gsG)"/>`}).join("")}<g class="gs-em" transform="translate(30 30)">${M.em(.92)}</g></svg>`;
   el.innerHTML=`<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="gsG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:color-mix(in srgb,${gold} 45%,#fff)"/><stop offset=".35" style="stop-color:${gold}"/><stop offset=".6" style="stop-color:color-mix(in srgb,${gold} 70%,#000)"/><stop offset=".8" style="stop-color:${gold}"/><stop offset="1" style="stop-color:color-mix(in srgb,${gold} 60%,#fff)"/></linearGradient><radialGradient id="gsWax" cx=".38" cy=".32" r=".75"><stop offset="0" style="stop-color:color-mix(in srgb,${wax} 70%,#fff)"/><stop offset=".55" style="stop-color:${wax}"/><stop offset="1" style="stop-color:color-mix(in srgb,${wax} 55%,#000)"/></radialGradient></defs></svg>
   <div class="gs-under"></div>${flap("l")}${flap("r")}${flap("b")}${flap("t",txt)}
@@ -4387,18 +4385,18 @@ function guestSealLoader(p,type,card){
    Cathedral Vows first shows closed church doors that swing open onto the video; Sunset Vows leaves through a burst of petals. */
 const GV_VIDEO="img/th-drive";
 function guestVideoLoader(p,type){
-  const si=p.l==="si", ev=p.e||{}, L=(e,s)=>si?s:e, D=fDate(ev.date,si?"si":"en");
+  const si=p.l==="si", ev=p.e||{}, L=(e,s)=>si?s:e;
   const TH=(p.d&&LX_TH[p.d]&&LX_TH[p.d].video)?LX_TH[p.d]:{video:GV_VIDEO}, VID=TH.video, intro=TH.intro||"";
   const nm=[ev.a,ev.b].filter(Boolean).map(x=>`<span>${esc(x)}</span>`).join(`<i>&amp;</i>`);
   const kick=intro==="doors"?L("Holy matrimony","විවාහ මංගල්‍යය"):L("Save the date","දිනය මතක තබාගන්න");
   const gw=document.querySelector(".gwrap"); gw&&gw.classList.remove("in");
   const el=document.createElement("div"); el.className="gload gv t-"+type+(si?" si":"")+(intro?" gi-"+intro:"")+(intro==="doors"?" shut":"");
   const doors=intro==="doors"?`<div class="gv-doors"><div class="gd l"><img src="${TH.doors}" alt=""></div><div class="gd r"><img src="${TH.doors}" alt=""></div><div class="gd-glow"></div>
-    <div class="gd-txt"><small>${L("The wedding of","විවාහ මංගල්‍යය")}</small>${nm?`<h1 class="gv-n">${nm}</h1>`:""}${D?`<p class="gv-d">${esc(D)}</p>`:""}
+    <div class="gd-txt"><small>${L("The wedding of","විවාහ මංගල්‍යය")}</small>${nm?`<h1 class="gv-n">${nm}</h1>`:""}
     <button type="button" class="gd-open"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 21V9a7 7 0 0 1 14 0v12M12 4v17M3 21h18"/></svg>${L("Open the doors","දොරටු විවෘත කරන්න")}</button></div></div>`:"";
   el.innerHTML=`<video class="gv-vid" src="${VID}.mp4" poster="${VID}-poster.webp" autoplay muted loop playsinline preload="auto"></video><div class="gv-veil"></div>
   <div class="gv-txt"><p class="gv-k">${kick}</p><small>${L("Together with our families","දෙපාර්ශවයේ දෙමාපියන් සමඟ")}</small>
-    ${nm?`<h1 class="gv-n">${nm}</h1>`:""}<small>${type==="wedding"?L("are getting married","විවාහ වෙති"):L("are getting engaged","විවාහ ගිවිස ගනිති")}</small>${D?`<p class="gv-d">${esc(D)}</p>`:""}${p.g?`<em>${si?"ආදරණීය":"Dear"} ${esc(p.g)}</em>`:""}</div>
+    ${nm?`<h1 class="gv-n">${nm}</h1>`:""}<small>${type==="wedding"?L("are getting married","විවාහ වෙති"):L("are getting engaged","විවාහ ගිවිස ගනිති")}</small>${p.g?`<em>${si?"ආදරණීය":"Dear"} ${esc(p.g)}</em>`:""}</div>
   <button type="button" class="gv-open">${L("Open invitation","ආරාධනාව විවෘත කරන්න")}</button>${doors}
   <button type="button" class="gl-skip">${si?"මඟ හරින්න":"Skip"}</button>`;
   document.body.appendChild(el); document.documentElement.style.overflow="hidden";

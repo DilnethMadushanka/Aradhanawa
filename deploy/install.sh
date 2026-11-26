@@ -263,6 +263,19 @@ server {
         proxy_set_header X-Forwarded-Proto \$scheme;
         proxy_read_timeout 60s;
     }
+
+    # Admin → Settings → Music library uploads whole MP3 files (up to 15 MB).
+    location /api/music/upload {
+        client_max_body_size 16m;
+        proxy_pass http://127.0.0.1:$PORT;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+        proxy_read_timeout 180s;
+    }
 }
 EOF
 ln -sfn "$NGINX_SITE" "/etc/nginx/sites-enabled/$APP_NAME"

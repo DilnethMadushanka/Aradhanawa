@@ -1000,6 +1000,7 @@ nav.top a{font-weight:600}
 .titem .trow b{font-family:var(--f-display);font-size:15.5px;font-weight:700;line-height:1.15}
 .titem .trow small{display:block;color:var(--muted);font-size:12px}
 .titem .tprice{display:block;margin-top:4px}
+.titem .tprice select{width:150px;font:inherit;font-size:13px;padding:4px 6px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)}
 .titem .tprice input{width:110px;font:inherit;font-size:13px;padding:4px 8px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)}
 .sw-t{appearance:none;-webkit-appearance:none;width:40px;height:23px;border-radius:999px;background:var(--line-2);position:relative;cursor:pointer;transition:background .2s;flex:none;margin:0}
 .sw-t::after{content:"";position:absolute;top:3px;left:3px;width:17px;height:17px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 2px rgba(0,0,0,.25)}
@@ -2376,9 +2377,17 @@ function lpMedal(){
 const MUSIC_KEY={wedding:"MUSIC",engagement:"MUSIC_ENGAGEMENT",homecoming:"MUSIC_HOMECOMING",birthday:"MUSIC_BIRTHDAY",party:"MUSIC_PARTY",dana:"MUSIC_DANA",other:"MUSIC_OTHER",halloween:"MUSIC_HALLOWEEN"};
 /* credit lines that a track's free licence asks for, shown in the invitation footer */
 const MUSIC_CREDIT={"audio/homecoming.mp3":"“Until We Meet Again” by Arthur Vyncke"};
-const musicFor = type => CONFIG[MUSIC_KEY[type]||"MUSIC"]||"";
+/* tracks the admin can pick: the MP3s in audio/, then the ones uploaded to Cloudflare R2 (Admin → Settings → Music library) */
+const BUILTIN_MUSIC=[{name:"Jayamangala Gatha",url:"audio/jayamangala-gatha.mp3"},{name:"Until We Meet Again",url:"audio/homecoming.mp3"},{name:"Happy birthday",url:"audio/birthday.mp3"}];
+const musicLib=()=>Array.isArray(CONFIG.MUSIC_LIBRARY)?CONFIG.MUSIC_LIBRARY.filter(t=>t&&t.url):[];
+function musicSelect(attrs,val,empty){
+  const ts=[...BUILTIN_MUSIC,...musicLib()], known=!val||ts.some(t=>t.url===val);
+  return `<select ${attrs}><option value="">${esc(empty)}</option>${ts.map(t=>`<option value="${esc(t.url)}" ${t.url===val?"selected":""}>${esc(t.name)}</option>`).join("")}${known?"":`<option value="${esc(val)}" selected>${esc(val)}</option>`}</select>`;
+}
+/* a design's own track (Admin → Templates, CONFIG.DESIGN_MUSIC by design name) wins over the function's track (Admin → Settings) */
+const musicFor = (type, prem) => (prem&&prem.n&&(CONFIG.DESIGN_MUSIC||{})[prem.n]) || CONFIG[MUSIC_KEY[type]||"MUSIC"] || "";
 /* the music of the invitation on screen: the preview layer first, then the guest page */
-function lxSrc(){ const s=document.querySelector("#layer .site")||document.querySelector(".gwrap .site"); const m=s&&s.className.match(/\bt-(\w+)/); return musicFor(m?m[1]:"wedding") }
+function lxSrc(){ const s=document.querySelector("#layer .site")||document.querySelector(".gwrap .site"); if(s&&s.dataset.msrc!=null) return s.dataset.msrc; const m=s&&s.className.match(/\bt-(\w+)/); return musicFor(m?m[1]:"wedding") }
 function lxAudio(){
   let a=document.getElementById("lxAudio");
   if(!a){ a=document.createElement("audio"); a.id="lxAudio"; a.loop=true; a.preload="none"; a.src=lxSrc(); document.body.appendChild(a);
@@ -2428,12 +2437,12 @@ function lxSite(type, ev, lang, guest, prem, gallery, base){
   const nm2 = names.length>1 ? `${esc(names[0])} ${L("and","සහ")} ${esc(names[1])}` : esc(names[0]);
   const fabs = `<div class="lx-fabs"><div class="lx-sheet" hidden>${base.sections.map(([k,ic,lb])=>`<button type="button" data-go="${base.id}-${k}">${ic}<span>${lb}</span></button>`).join("")}</div>
     <button type="button" class="lx-fab" data-lxmenu aria-label="${L("Menu","මෙනුව")}" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 7h14M5 12h14M5 17h14"/></svg></button>
-    ${musicFor(type)?`<button type="button" class="lx-fab" data-music aria-pressed="false" aria-label="${L("Mute or unmute music","සංගීතය නවත්වන්න / වාදනය")}"><svg class="m-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg><svg class="m-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg></button>`:""}</div>`;
+    ${musicFor(type,prem)?`<button type="button" class="lx-fab" data-music aria-pressed="false" aria-label="${L("Mute or unmute music","සංගීතය නවත්වන්න / වාදනය")}"><svg class="m-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg><svg class="m-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg></button>`:""}</div>`;
   const petals = Array.from({length:TH.fx==="confetti"||TH.fx==="gold"?14:10},(_,i)=>`<i style="left:${(i*41+7)%94}%;--d:${(11+i%4*3)}s;--w:${(i%3-1)*40}px;animation-delay:-${(i*2.3).toFixed(1)}s;--s:${(.7+(i%3)*.2).toFixed(1)}"></i>`).join("");
   const bgfx = TH.video
     ? `<div class="lx-bgfx lx-vid" aria-hidden="true"><video src="${TH.video}.mp4" poster="${TH.bg}" autoplay muted loop playsinline preload="auto"></video><div class="lx-veil"></div><img class="vc l" src="${TH.l}" alt=""><img class="vc r" src="${TH.r}" alt=""><div class="lx-petals">${petals}</div></div>`
     : `<div class="lx-bgfx" aria-hidden="true"><img src="${TH.bg}" alt=""><img class="fl l" src="${TH.l}" alt=""><img class="fl r" src="${TH.r}" alt=""><div class="lx-petals">${petals}</div></div>`;
-  return `<div class="site lotus th-${prem.site} mo-${TH.mo} fx-${TH.fx} ${TH.dark?"th-dark":""} ${TH.glow?"th-glow":""} ${TH.video?"th-video":""} locked t-${type} ${si?"si":""}" style="${tplVars(prem)}--lx-wine:${prem.wine||prem.ink}" data-site="${base.id}">
+  return `<div class="site lotus th-${prem.site} mo-${TH.mo} fx-${TH.fx} ${TH.dark?"th-dark":""} ${TH.glow?"th-glow":""} ${TH.video?"th-video":""} locked t-${type} ${si?"si":""}" style="${tplVars(prem)}--lx-wine:${prem.wine||prem.ink}" data-site="${base.id}" data-msrc="${esc(musicFor(type,prem))}">
   ${bgfx}
   <section class="lx-cover">${lxMandala()}${lxBouquet("l")}${lxBouquet("r")}<div class="lx-dust">${dust}</div>
     <div class="lx-in"><span class="lx-eb">${eyebrow}</span>${lxRule()}
@@ -2538,8 +2547,8 @@ function ntSite(type,ev,lang,guest,prem,gallery,base,TH){
   const dust=Array.from({length:10},(_,i)=>`<i style="left:${(i*37+11)%96}%;top:${(i*53+7)%90}%;animation-delay:${(i*.7).toFixed(1)}s"></i>`).join("");
   const petals=Array.from({length:10},(_,i)=>`<i style="left:${(i*41+7)%94}%;--d:${(11+i%4*3)}s;--w:${(i%3-1)*40}px;animation-delay:-${(i*2.3).toFixed(1)}s;--s:${(.7+(i%3)*.2).toFixed(1)}"></i>`).join("");
   const nav=base.sections.filter(s=>s[0]!=="details").map(([k,ic,lb],i)=>`<button type="button" data-go="${id}-${k}" aria-label="${lb}" ${i===0?'aria-current="true"':""}>${ic}</button>`).join("");
-  const mus=musicFor(type)?`<button type="button" class="nt-mus" data-music aria-pressed="false" aria-label="${L("Mute or unmute music","සංගීතය නවත්වන්න / වාදනය")}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></button>`:"";
-  return `<div class="site lotus nt th-${prem.site} mo-${TH.mo} fx-${TH.fx} locked t-${type} ${si?"si":""}" style="${tplVars(prem)}--lx-wine:${prem.wine||prem.ink}" data-site="${id}">
+  const mus=musicFor(type,prem)?`<button type="button" class="nt-mus" data-music aria-pressed="false" aria-label="${L("Mute or unmute music","සංගීතය නවත්වන්න / වාදනය")}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></button>`:"";
+  return `<div class="site lotus nt th-${prem.site} mo-${TH.mo} fx-${TH.fx} locked t-${type} ${si?"si":""}" style="${tplVars(prem)}--lx-wine:${prem.wine||prem.ink}" data-site="${id}" data-msrc="${esc(musicFor(type,prem))}">
   <div class="lx-bgfx" aria-hidden="true"><img src="${TH.bg}" alt=""><img class="fl l" src="${TH.l}" alt=""><img class="fl r" src="${TH.r}" alt=""><div class="lx-petals">${petals}</div></div>
   <section class="lx-cover nt-cover">${lxMandala("nt-mfull",1)}<div class="lx-dust">${dust}</div>
     <div class="lx-in">${ntLotus("nt-lotus big")}<p class="nt-greet">${greet}</p>
@@ -2600,7 +2609,7 @@ function lxRest(type,ev,lang,base){
   ${gal.replace('class="s-sec"','class="s-sec lx-plain"').replace(/<h2 class="s-h">[^<]*<\/h2>/,`<h2 class="s-h">${L("Our gallery","අපගේ ඡායාරූප")}</h2>`)}
   ${vs.length?`<section class="s-sec lx-plain" id="${id}-loc"><span class="s-eb">${L("The setting","උත්සව ස්ථානය")}</span><h2 class="s-h">${type==="wedding"?L("Wedding venue","මංගල ස්ථානය"):L("Venue","ස්ථානය")}</h2>${heart}${venues}</section>`:""}
   ${rsvp.replace('class="s-sec"','class="s-sec lx-plain lx-rsvp"').replace('<span class="s-eb">RSVP</span>',`<span class="s-eb">${L("Kindly reply","කරුණාකර දන්වන්න")}</span>`).replace(L("Joyfully yes","සතුටින් එනවා"),L("Joyfully accept","සතුටින් එනවා")).replace(L("Sorry, can't","එන්න බැහැ"),L("Regretfully decline","කණගාටුයි, එන්න බැහැ")).replace(/(<form class="s-form")/,`<p class="s-p">${L("We joyfully await your presence. Please let us know if you will be joining us.","ඔබගේ පැමිණීම සතුටින් බලාපොරොත්තු වෙමු.")}</p>$1`)}
-  <footer class="s-foot">${buyCTA(type,base.prem,L)}${L("Made with","නිර්මාණය")} <a href="${CONFIG.SITE.split("#")[0]}" target="_blank" rel="noopener">Aradhanawa.com</a>${MUSIC_CREDIT[musicFor(type)]?`<br><small>${L("Music","සංගීතය")}: ${MUSIC_CREDIT[musicFor(type)]}</small>`:""}</footer>`;
+  <footer class="s-foot">${buyCTA(type,base.prem,L)}${L("Made with","නිර්මාණය")} <a href="${CONFIG.SITE.split("#")[0]}" target="_blank" rel="noopener">Aradhanawa.com</a>${MUSIC_CREDIT[musicFor(type,base.prem)]?`<br><small>${L("Music","සංගීතය")}: ${MUSIC_CREDIT[musicFor(type,base.prem)]}</small>`:""}</footer>`;
 }
 
 const corner = c => `<svg class="corner %POS%" viewBox="0 0 42 42" aria-hidden="true"><path d="M4 38V14Q4 4 14 4H38" fill="none" stroke="${c}" stroke-width="1.4"/><path d="M10 30Q10 10 30 10" fill="none" stroke="${c}" stroke-width="1" opacity=".6"/><circle cx="10" cy="10" r="2.6" fill="${c}"/><path d="M16 16q6-2 8 4q-6 2-8-4z" fill="${c}" opacity=".8"/></svg>`;
@@ -3658,7 +3667,7 @@ function siteHTML(type, ev, lang, guest, prem, gallery){
   sections.push(["loc",I.pin,L("Location","ස්ථානය")]);
   if(ev.rsvp) sections.push(["rsvp",I.mail,L("Reply","පිළිතුර")]);
   const mapHref = ev.map || (ev.venue?`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ev.venue)}`:"");
-  const html = `<div class="site t-${type} ${si?"si":""}" ${prem?`style="${tplVars(prem)}"`:""} data-site="${id}">
+  const html = `<div class="site t-${type} ${si?"si":""}" ${prem?`style="${tplVars(prem)}"`:""} data-site="${id}" data-msrc="${esc(musicFor(type,prem))}">
   <section class="s-hero" id="${id}-home">${cardHTML(type,ev,lang,guest,prem)}<span class="s-hint">${L("Scroll for details","විස්තර සඳහා පහළට")} ↓</span></section>
 
   <section class="s-sec" id="${id}-date">
@@ -3702,7 +3711,7 @@ function siteHTML(type, ev, lang, guest, prem, gallery){
   </section>`:""}
 
   <footer class="s-foot">${buyCTA(type,prem,L)}${L("Made with","නිර්මාණය")} <a href="${CONFIG.SITE.split("#")[0]}" target="_blank" rel="noopener">Aradhanawa.com</a></footer>
-  <nav class="snav" aria-label="${L("Invitation sections","කොටස්")}">${sections.map(([k,ic,lb],i)=>`<button type="button" data-go="${id}-${k}" aria-label="${lb}" ${i===0?'aria-current="true"':""}>${ic}</button>`).join("")}${musicFor(type)?`<button type="button" class="s-mus" data-music aria-pressed="true" aria-label="${L("Play or mute music","සංගීතය වාදනය / නවත්වන්න")}"><svg class="m-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg><svg class="m-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg></button>`:""}</nav>
+  <nav class="snav" aria-label="${L("Invitation sections","කොටස්")}">${sections.map(([k,ic,lb],i)=>`<button type="button" data-go="${id}-${k}" aria-label="${lb}" ${i===0?'aria-current="true"':""}>${ic}</button>`).join("")}${musicFor(type,prem)?`<button type="button" class="s-mus" data-music aria-pressed="true" aria-label="${L("Play or mute music","සංගීතය වාදනය / නවත්වන්න")}"><svg class="m-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg><svg class="m-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M17 9l5 6M22 9l-5 6"/></svg></button>`:""}</nav>
 </div>`;
   if(prem&&LX_TH[prem.site]){ lxCSS(); const a=html.indexOf(`<section class="s-sec" id="${id}-date">`), b=html.indexOf(`<nav class="snav"`); const secs=[...sections]; secs.splice(1,0,["details",I.eye,L("Details","විස්තර")]); return lxSite(type,ev,lang,guest,prem,gallery,{id,th:prem.site,sections:secs,rest:html.slice(a,b)}) }
   return html;
@@ -4620,7 +4629,7 @@ function renderAdmin(tab,arg){
     <section class="tsec"><h2>Custom card <small>made from scratch, every function</small></h2><div class="trow"><span><label class="tprice"><small>Custom card price</small><input type="text" inputmode="numeric" data-dprice="${CUSTOM_CARD}" value="${esc((CONFIG.DESIGN_PRICES||{})[CUSTOM_CARD]||"")}" placeholder="${esc(CUSTOM_CARD_PRICE)}" aria-label="Customize card price"></label></span></div></section>
     ${Object.entries(TYPES).map(([k,T])=>`<section class="tsec"><h2>${T.name} <small>${1+PREMIUM[k].length} designs</small></h2><div class="tgrid">
       <div class="titem">${cardHTML(k,T.sample,"en","",null)}<div class="trow"><span><b>${esc(T.tpl)}</b><small>Free</small></span><input type="checkbox" class="sw-t" checked disabled aria-label="Free design is always on"></div></div>
-      ${PREMIUM[k].map((t,i)=>{ const key=offKey(k,t), on=!off.includes(key); return `<div class="titem" data-off="${on?0:1}">${cardHTML(k,T.sample,"en","",{...t,_noribbon:1})}<div class="trow"><span><b>${esc(t.n)}</b><label class="tprice"><small>Custom price</small><input type="text" inputmode="numeric" data-dprice="${esc(t.n)}" value="${esc((CONFIG.DESIGN_PRICES||{})[t.n]||"")}" placeholder="${esc(customBase())}" aria-label="Custom design price for ${esc(t.n)}"></label></span><input type="checkbox" class="sw-t" data-tog="${key}" ${on?"checked":""} aria-label="Show ${esc(t.n)}"></div></div>` }).join("")}
+      ${PREMIUM[k].map((t,i)=>{ const key=offKey(k,t), on=!off.includes(key); return `<div class="titem" data-off="${on?0:1}">${cardHTML(k,T.sample,"en","",{...t,_noribbon:1})}<div class="trow"><span><b>${esc(t.n)}</b><label class="tprice"><small>Custom price</small><input type="text" inputmode="numeric" data-dprice="${esc(t.n)}" value="${esc((CONFIG.DESIGN_PRICES||{})[t.n]||"")}" placeholder="${esc(customBase())}" aria-label="Custom design price for ${esc(t.n)}"></label><label class="tprice"><small>Music</small>${musicSelect(`data-dmusic="${esc(t.n)}" aria-label="Music for ${esc(t.n)}"`,(CONFIG.DESIGN_MUSIC||{})[t.n]||"",`${TYPES[k].name} music`)}</label></span><input type="checkbox" class="sw-t" data-tog="${key}" ${on?"checked":""} aria-label="Show ${esc(t.n)}"></div></div>` }).join("")}
     </div></section>`).join("")}`;
   }
   if(tab==="prices"){
@@ -4645,10 +4654,15 @@ function renderAdmin(tab,arg){
       <div class="af"><label for="s-free">Free guest links per event</label><input id="s-free" name="FREE_GUESTS" type="number" min="1" max="50" value="${CONFIG.FREE_GUESTS}"></div>
       <div class="af"><label for="s-wa">Studio WhatsApp</label><input id="s-wa" name="STUDIO_WA" value="${esc(CONFIG.STUDIO_WA)}"><small>International format, for example 94771234567</small></div>
       <div class="af"><label>Prices</label><small>Add, change or delete plans and prices in <a href="#admin/prices">Admin → Prices</a>.</small></div>
-      ${Object.entries(MUSIC_KEY).map(([t,k])=>`<div class="af"><label for="s-${k}">Music: ${esc(TYPES[t].name)}</label><input id="s-${k}" name="${k}" value="${esc(CONFIG[k]||"")}"></div>`).join("")}
-      <div class="af" style="grid-column:1/-1"><small>Background music for each function: an MP3 path or URL, for example audio/jayamangala-gatha.mp3. Leave empty for no music.</small></div>
+      ${Object.entries(MUSIC_KEY).map(([t,k])=>`<div class="af"><label for="s-${k}">Music: ${esc(TYPES[t].name)}</label>${musicSelect(`id="s-${k}" name="${k}"`,CONFIG[k]||"","No music")}</div>`).join("")}
+      <div class="af" style="grid-column:1/-1"><small>Background music for each function. Upload your own MP3s in the Music library below. One design can have its own track in <a href="#admin/templates">Admin → Templates</a>.</small></div>
     </div><div class="row" style="margin-top:18px"><button class="btn primary" type="submit">Save settings</button></div></form>
-    ${fb?`<div class="box"><h2>Admins</h2><p class="sub" style="margin:-4px 0 14px;color:var(--muted)">These Google accounts can open this dashboard. Owners listed in firebase-config.js and firestore.rules can't be removed here.</p>
+    ${fb?`<div class="box"><div class="bh"><h2>Music library</h2><label class="btn sm primary" style="cursor:pointer">Upload MP3<input type="file" id="mup" accept="audio/mpeg,.mp3" hidden></label></div>
+      <p class="sub" style="margin:-4px 0 14px;color:var(--muted)" id="mupst">MP3 files up to 15 MB, saved in your Cloudflare R2 bucket. After uploading, pick the track for a function above, or for one design in Admin → Templates.</p>
+      <div class="tblwrap"><table class="tbl"><tbody>
+        ${musicLib().map((t,i)=>`<tr><td><b>${esc(t.name)}</b><small>${esc(musicUses(t.url).join(", ")||"Not used yet")}</small></td><td><audio controls preload="none" src="${esc(t.url)}" style="height:34px;max-width:240px"></audio></td><td><div class="acts"><button class="btn sm" data-mcopy="${i}">Copy link</button><button class="btn sm" data-mdel="${i}">Delete</button></div></td></tr>`).join("")||`<tr><td class="empty">No uploaded music yet.</td></tr>`}
+      </tbody></table></div></div>
+    <div class="box"><h2>Admins</h2><p class="sub" style="margin:-4px 0 14px;color:var(--muted)">These Google accounts can open this dashboard. Owners listed in firebase-config.js and firestore.rules can't be removed here.</p>
       <div class="tblwrap"><table class="tbl"><tbody>
         ${[...new Set([...(window.ARADHANA_FIREBASE.adminEmails||[]).map(e=>String(e).toLowerCase()),...FBD().admins.map(a=>a.id)])].map(em=>`<tr><td><b>${esc(em)}</b><small>${FBX.isBootstrapAdmin(em)?"Owner":"Added from dashboard"}</small></td><td><div class="acts">${FBX.isBootstrapAdmin(em)||em===u.email?"":`<button class="btn sm" data-uadmin="${esc(em)}" data-on="0">Remove</button>`}</div></td></tr>`).join("")}
       </tbody></table></div>
@@ -4671,6 +4685,10 @@ function renderAdmin(tab,arg){
       const dp={...(CONFIG.DESIGN_PRICES||{}),[n]:v}; CONFIG.DESIGN_PRICES=dp; store.set("config",{...store.get("config",{}),DESIGN_PRICES:dp});
       const msg=v?`${n}: ${v}`:`${n}: back to ${designPrice(n)}`;
       if(fb){ if(fbNeed()) FBX.saveSettings({DESIGN_PRICES:{[n]:v}}).then(()=>toast(msg),fbFail) } else toast(msg); return }
+    if(t.dataset.dmusic!==undefined){ const n=t.dataset.dmusic, v=t.value, dm={...(CONFIG.DESIGN_MUSIC||{}),[n]:v};
+      CONFIG.DESIGN_MUSIC=dm; store.set("config",{...store.get("config",{}),DESIGN_MUSIC:dm}); const a=document.getElementById("lxAudio"); if(a) a.remove();
+      const msg=v?`${n}: ${t.selectedOptions[0].textContent}`:`${n}: plays the function's music`;
+      if(fb){ if(fbNeed()) FBX.saveSettings({DESIGN_MUSIC:{[n]:v}}).then(()=>toast(msg),fbFail) } else toast(msg); return }
     if(t.dataset.tog){ let o=tplOff(); o=t.checked?o.filter(x=>x!==t.dataset.tog):[...o,t.dataset.tog]; store.set("tplOff",o); if(fb&&fbNeed()) FBX.setTplOff(o).catch(fbFail); t.closest(".titem").dataset.off=t.checked?0:1; toast(t.checked?"Design visible":"Design hidden") }
     if(t.dataset.pon){ const ps=plans().map((p,i)=>i===+t.dataset.pon?{...p,on:t.checked}:p); savePlans(ps,t.checked?"Plan shown on the site":"Plan hidden from the site") }
     if(t.id==="rfilter"||t.id==="rsearch") filterR();
@@ -4698,14 +4716,52 @@ function renderAdmin(tab,arg){
     if(b.dataset.pdel){ const ps=plans(), i=+b.dataset.pdel, p=ps[i]; if(!p) return;
       modal(`<span class="eyebrow">Delete plan</span><h3>Delete ${esc(p.name)}?</h3><p>It disappears from the site and can't be bought any more. Past orders are kept. To hide it for a while, switch off “On site” instead.</p><div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><button class="btn primary" id="cdel">Delete</button></div>`);
       document.getElementById("cdel").onclick=()=>{ document.getElementById("layer").innerHTML=""; savePlans(plans().filter(x=>x!==p),"Plan deleted") } }
+    if(b.dataset.mcopy){ const tr=musicLib()[+b.dataset.mcopy]; if(tr) copy(new URL(tr.url,location.href).href,b) }
+    if(b.dataset.mdel){ const tr=musicLib()[+b.dataset.mdel]; if(!tr) return; const uses=musicUses(tr.url);
+      modal(`<span class="eyebrow">Delete music</span><h3>Delete ${esc(tr.name)}?</h3><p>The MP3 is removed from Cloudflare R2.${uses.length?` It is used by ${esc(uses.join(", "))}: a function then has no music until you pick another track, and a design plays its function's music.`:""} Cards already shared play the new music next time they open.</p><div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><button class="btn primary" id="cdel">Delete</button></div>`);
+      document.getElementById("cdel").onclick=()=>{ document.getElementById("layer").innerHTML=""; if(fbNeed()) deleteTrack(tr) } }
     if(b.dataset.prompt){ copy(PROMPTS[+b.dataset.prompt].p, document.getElementById("pr-"+b.dataset.prompt)) }
     if(b.hasAttribute("data-clearsample")){ DB.setUsers(DB.users().filter(x=>!x.sample)); DB.setOrders(DB.orders().filter(x=>!x.sample)); toast("Sample data removed"); re() }
   });
   const sf=document.getElementById("sform");
   if(sf) sf.onsubmit=e=>{ e.preventDefault(); const c={}; for(const k of ["FREE_GUESTS","STUDIO_WA",...Object.values(MUSIC_KEY)]){ const v=sf.elements[k].value.trim(); if(k.startsWith("MUSIC")){ c[k]=v; const a=document.getElementById("lxAudio"); if(a) a.remove(); continue } if(v) c[k]=k==="FREE_GUESTS"?Math.max(1,+v||5):k==="STUDIO_WA"?intlPhone(v):v } store.set("config",{...store.get("config",{}),...c}); Object.assign(CONFIG,c);
     if(fb){ if(fbNeed()) FBX.saveSettings(c).then(()=>toast("Settings saved for every visitor"),fbFail) } else toast("Settings saved") };
+  const mup=document.getElementById("mup");
+  if(mup) mup.onchange=()=>{ const f=mup.files[0]; mup.value=""; if(f) uploadTrack(f,document.getElementById("mupst")) };
   const af2=document.getElementById("aform2");
   if(af2) af2.onsubmit=e=>{ e.preventDefault(); const em=af2.elements.em.value.trim().toLowerCase(); if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) return toast("Enter a valid email"); if(fbNeed()) FBX.setAdmin(em,true).then(()=>toast(`${em} added. They log in with Google to open the dashboard.`),fbFail) };
+}
+
+/* Admin → Settings → Music library. The MP3 goes to Cloudflare R2 through api/music/upload (admins only), and the
+ * list of tracks is kept in settings/site config.MUSIC_LIBRARY [{name, url, added}]. */
+function musicUses(url){
+  const fx=Object.entries(MUSIC_KEY).filter(([,k])=>CONFIG[k]===url).map(([t])=>TYPES[t].name);
+  return [...fx,...Object.entries(CONFIG.DESIGN_MUSIC||{}).filter(([,u])=>u===url).map(([n])=>n)];
+}
+function saveMusic(c,msg){
+  store.set("config",{...store.get("config",{}),...c}); Object.assign(CONFIG,c);
+  const a=document.getElementById("lxAudio"); if(a) a.remove();
+  return FBX.saveSettings(c).then(()=>{ toast(msg); if(/^#admin\/settings/.test(location.hash)) route() },fbFail);
+}
+async function uploadTrack(f,st){
+  if(!/\.mp3$/i.test(f.name)&&f.type!=="audio/mpeg") return toast("Choose an MP3 file");
+  if(f.size>15*1024*1024) return toast("That MP3 is too large (15 MB at most)");
+  if(!fbNeed()) return;
+  const was=st&&st.textContent; if(st) st.textContent=`Uploading ${f.name}… keep this page open.`;
+  try{
+    const r=await fetch("/api/music/upload",{method:"POST",headers:{"Content-Type":"audio/mpeg","X-File-Name":encodeURIComponent(f.name),Authorization:"Bearer "+await FBX.idToken()},body:f});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok) throw new Error(j.error||(r.status===413?"That MP3 is too large for the server.":"Upload failed. Please try again."));
+    await saveMusic({MUSIC_LIBRARY:[...musicLib(),{name:j.name,url:j.url,added:new Date().toISOString()}]},`${j.name} added to the music library`);
+  }catch(er){ if(st) st.textContent=was; toast(er.message||"Upload failed. Please try again.") }
+}
+async function deleteTrack(tr){
+  const c={MUSIC_LIBRARY:musicLib().filter(t=>t.url!==tr.url)};
+  for(const k of Object.values(MUSIC_KEY)) if(CONFIG[k]===tr.url) c[k]="";
+  const dm=Object.fromEntries(Object.entries(CONFIG.DESIGN_MUSIC||{}).filter(([,u])=>u===tr.url).map(([n])=>[n,""]));
+  if(Object.keys(dm).length) c.DESIGN_MUSIC={...(CONFIG.DESIGN_MUSIC||{}),...dm};
+  await saveMusic(c,`${tr.name} deleted`);
+  FBX.idToken().then(tok=>fetch("/api/music/delete",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+tok},body:JSON.stringify({url:tr.url})})).catch(()=>{});
 }
 
 /* Admin → Prices: add / edit a plan, and save the whole list (site + payment API read it from settings/site). */

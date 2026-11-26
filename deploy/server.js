@@ -2,11 +2,11 @@
  *
  * Does what Vercel did for this repo, with no extra npm packages:
  *   - serves the static site from the repo root, with vercel.json's cleanUrls, rewrites and img/ cache header
- *   - runs the Vercel-style functions in api/ (api/pay/create, return, webhook; api/photos/upload, delete) with the same req/res helpers
+ *   - runs the Vercel-style functions in api/ (api/pay/create, return, webhook; api/photos/upload, delete; api/music/upload, delete) with the same req/res helpers
  *
  * Settings come from the environment (systemd loads them from /opt/aradhanawa/.env):
  *   PORT (default 3000), HOST (default 127.0.0.1), GENIE_API_KEY, FIREBASE_SERVICE_ACCOUNT, SITE_URL, GENIE_MODE,
- *   R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET, R2_PUBLIC_URL (gallery photos, api/photos/*)
+ *   R2_ACCOUNT_ID, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, R2_BUCKET, R2_PUBLIC_URL (gallery photos api/photos/*, card music api/music/*)
  * Also: one canonical host (aradhanawa.com -> www.aradhanawa.com when SITE_URL is www), security headers, and a
  * per-IP rate limit on /api/ (API_RATE_LIMIT requests per minute, default 30).
  * Run locally: node deploy/server.js
@@ -22,6 +22,7 @@ const API_DIR = path.join(ROOT, "api");
 const PORT = +process.env.PORT || 3000;
 const HOST = process.env.HOST || "127.0.0.1";
 const BODY_LIMIT = 1024 * 1024;
+const BIG_BODY = { "music/upload": 16 * 1024 * 1024 };   // routes that take a whole file (an MP3) as the body
 
 /* One canonical host. SITE_URL decides it (https://www.aradhanawa.com): a request for the other spelling of the same
  * domain (aradhanawa.com) gets a 301 there, so Google sees one site. Other hosts (the server IP, localhost) are left alone. */
@@ -166,21 +167,23 @@ async function loadHandler(route) {
   return fn;
 }
 
-function readBody(req) {
+function readBody(req, limit = BODY_LIMIT) {
   return new Promise((resolve, reject) => {
     const chunks = []; let size = 0;
     req.on("data", c => {
       size += c.length;
-      if (size > BODY_LIMIT) { reject(Object.assign(new Error("Body too large"), { status: 413 })); req.destroy(); return }
+      if (size > limit) { reject(Object.assign(new Error("Body too large"), { status: 413 })); req.destroy(); return }
       chunks.push(c);
     });
-    req.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
+    req.on("end", () => resolve(Buffer.concat(chunks)));
     req.on("error", reject);
   });
 }
 
-function parseBody(raw, type) {
+function parseBody(buf, type) {
   type = String(type || "").toLowerCase();
+  if (/^(audio\/|application\/octet-stream)/.test(type)) return buf;   // files stay binary
+  const raw = buf.toString("utf8");
   if (!raw) return type.includes("json") ? {} : "";
   if (type.includes("application/json")) {
     try { return JSON.parse(raw) } catch { throw Object.assign(new Error("Invalid JSON body"), { status: 400 }) }
@@ -220,7 +223,7 @@ async function serveApi(req, res, url) {
     req.query = Object.fromEntries(url.searchParams);
     req.cookies = Object.fromEntries(String(req.headers.cookie || "").split(";").map(s => s.trim()).filter(Boolean)
       .map(s => { const i = s.indexOf("="); return i < 0 ? [s, ""] : [s.slice(0, i), decodeURIComponent(s.slice(i + 1))] }));
-    req.body = req.method === "GET" || req.method === "HEAD" ? undefined : parseBody(await readBody(req), req.headers["content-type"]);
+    req.body = req.method === "GET" || req.method === "HEAD" ? undefined : parseBody(await readBody(req, BIG_BODY[route]), req.headers["content-type"]);
     await fn(req, res);
     if (!res.writableEnded) res.end();
   } catch (e) {

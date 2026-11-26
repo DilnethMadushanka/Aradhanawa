@@ -74,6 +74,17 @@ R2 set karala nathnam photos parana widiyatama Firestore eke (data URL) save wen
 
 Check karanna: site ekata log wela gallery photo ekak danna. Bucket eke `gallery/<uid>/<type>/` folder eke photo eka penna one. Error nam `journalctl -u aradhanawa -f` eke `[photos]` kiyala balanna.
 
+## Card music: Admin → Settings → Music library
+
+Gallery photos walata danna R2 settings (uda thiyena 5 lines) ma thamai music walatath. Aluth key ona naha.
+
+1. Uda R2 setup eka karala nathnam eka karanna.
+2. Me update eka server ekata ganna `install.sh` command eka aye run karanna. Eken Nginx eka MP3 upload walata 16 MB limit ekak dena widiyata update wenawa (anith requests walata 2 MB ma thamai).
+3. Admin → Settings → **Music library** → **Upload MP3** (15 MB max). File eka bucket eke `music/` folder ekata yanawa.
+4. Track eka function ekakata dammanna: Settings eke uda **Music: Engagement** wage dropdown eken thoragena **Save settings**. Ek design ekakata witharak wena track ekak ona nam: Admin → Templates → design eka yata **Music** dropdown eka.
+
+Error nam `journalctl -u aradhanawa -f` eke `[music]` kiyala balanna. Admins witharai upload karanna puluwan (firebase-config.js eke adminEmails, saha Admin → Settings → Admins eken add karapu aya).
+
 ## Useful commands
 
 - Logs: `journalctl -u aradhanawa -f`

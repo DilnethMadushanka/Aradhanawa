@@ -92,6 +92,8 @@ nav.top a:hover{background:var(--sunk);color:var(--ink)}
 .form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 @media (max-width:560px){.form{grid-template-columns:minmax(0,1fr)}}
 .fld{display:grid;gap:5px;min-width:0}
+.fhead{grid-column:1/-1;display:grid;gap:2px;margin-top:8px;padding-top:12px;border-top:1px solid var(--line,rgba(0,0,0,.1))}
+.fhead b{font-size:15px}.fhead span{font-size:12.5px;opacity:.7}
 .fld.full{grid-column:1/-1}
 .fld label{font-size:13px;font-weight:600}
 .fld .hint{font-size:12px;color:var(--muted)}
@@ -1248,7 +1250,7 @@ nav.top a{font-weight:600}
 .lx-evc p i{color:var(--c-gold);border-right:1px solid color-mix(in srgb,var(--c-gold) 50%,transparent);padding-right:6px;display:grid}
 .lx-evc p svg{width:16px;height:16px}
 .lx-evc .art{aspect-ratio:1;border-radius:18px;border:3px solid color-mix(in srgb,var(--c-gold) 70%,#fff);background:radial-gradient(circle at 50% 40%,#FFFDF8,#F1E7D6);display:grid;place-items:center;box-shadow:0 10px 22px -16px rgba(90,60,30,.6)}
-.lx-evc .art img{width:100%;height:100%;object-fit:cover;border-radius:15px}
+.lx-evc .art{position:relative;overflow:hidden}.lx-evc .art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:15px}
 .lx-emb{width:72%;height:auto}
 .site.lotus .lx-save{width:100%;max-width:440px;border-radius:22px;padding:16px;background:rgba(255,253,248,.95)}
 .lx-vc{width:100%;max-width:440px;display:grid;justify-items:center;gap:8px;background:rgba(255,253,248,.92);border:1px solid color-mix(in srgb,var(--c-gold) 55%,transparent);outline:1px solid color-mix(in srgb,var(--c-gold) 28%,transparent);outline-offset:-10px;border-radius:30px;padding:30px 22px;margin-top:10px}
@@ -2639,11 +2641,21 @@ function lxSite(type, ev, lang, guest, prem, gallery, base){
 function lxEvents(type,ev,L){
   const out=[];
   if(type==="wedding"){
-    if(ev.church) out.push({k:"church",n:L("Church ceremony","දේවස්ථාන චාරිත්‍රය"),t:ev.church,v:ev.cvenue||ev.venue});
-    if(ev.nekath) out.push({k:"poruwa",n:L("Poruwa ceremony","පෝරුව චාරිත්‍රය"),t:ev.nekath,v:ev.venue});
-    if(ev.time) out.push({k:"reception",n:L("Reception","මංගල සාදය"),t:ev.time,v:ev.venue});
-  } else if(ev.time) out.push({k:type==="homecoming"?"reception":type==="engagement"?"rings":"event",n:ev.title||L(TYPES[type].name,TYPES[type].si),t:ev.time,v:ev.venue});
+    // three sections, each with its own date (empty = the wedding day), time and venue (empty = the poruwa venue)
+    if(ev.church||ev.cvenue) out.push({k:"church",n:L("Church ceremony","දේවස්ථාන චාරිත්‍රය"),t:ev.church,d:ev.cdate||ev.date,v:ev.cvenue||ev.venue});
+    if(ev.nekath) out.push({k:"poruwa",n:L("Poruwa ceremony","පෝරුව චාරිත්‍රය"),t:ev.nekath,d:ev.ndate||ev.date,v:ev.venue});
+    if(ev.time||ev.rvenue) out.push({k:"reception",n:L("Reception","මංගල සාදය"),t:ev.time,d:ev.rdate||ev.date,v:ev.rvenue||ev.venue});
+  } else if(ev.time) out.push({k:type==="homecoming"?"reception":type==="engagement"?"rings":"event",n:ev.title||L(TYPES[type].name,TYPES[type].si),t:ev.time,d:ev.date,v:ev.venue});
   return out;
+}
+/* Couple pictures in the Church / Poruwa / Reception boxes: img/events/<design>-church.webp, -poruwa.webp, -reception.webp
+   (square, 720 x 720). Add a design here once its three pictures are in img/events/ (prompts: wedding-event-pictures-prompts.md).
+   A design that is not listed uses the Lotus Mandala pictures when those are listed, otherwise the gold line emblem. */
+const EV_ART = [];
+function evArt(site,k){
+  if(!["church","poruwa","reception"].includes(k)) return "";
+  const s=EV_ART.includes(site)?site:EV_ART.includes("lotus")?"lotus":"";
+  return s?`<img src="img/events/${s}-${k}.webp" alt="" loading="lazy" decoding="async">`:"";
 }
 const LX_CLOCK=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`;
 function lxEmblem(k){
@@ -2704,7 +2716,7 @@ function ntSite(type,ev,lang,guest,prem,gallery,base,TH){
     : type==="engagement"?L("joyfully invite you to celebrate their engagement","විවාහ ගිවිස ගැනීමේ උත්සවයට ඔබට සාදරයෙන් ආරාධනා කරමු")
     : type==="homecoming"?L("warmly invite you to celebrate their homecoming","හෝම්කමිං උත්සවයට ඔබට සාදරයෙන් ආරාධනා කරමු")
     : L("warmly invite you to celebrate with us","අප සමඟ සතුට බෙදාගන්න ඔබට සාදරයෙන් ආරාධනා කරමු");
-  const times=type==="wedding"?[[ev.nekath,L("Poruwa ceremony","පෝරුව චාරිත්‍රය")],[ev.time,L("Reception","මංගල සාදය")]]:[[ev.time,L("Starts at","ආරම්භය")]];
+  const times=type==="wedding"?[[ev.church,L("Church ceremony","දේවස්ථාන චාරිත්‍රය")],[ev.nekath,L("Poruwa ceremony","පෝරුව චාරිත්‍රය")],[ev.time,L("Reception","මංගල සාදය")]]:[[ev.time,L("Starts at","ආරම්භය")]];
   const date=ok?`<div class="nt-date"><span class="y">${dt.getFullYear()}</span><div class="r"><span>${f({month:"long"})}</span><b>${dt.getDate()}</b><span>${f({weekday:"long"})}</span></div>
     ${times.filter(t=>t[0]).map(([t,n])=>`<p class="t">${n} <b>${fTime(t,lang)}</b></p>`).join("")}${ev.venue?`<p class="v">${esc(ev.venue)}</p>`:""}</div>`:"";
   const dust=Array.from({length:10},(_,i)=>`<i style="left:${(i*37+11)%96}%;top:${(i*53+7)%90}%;animation-delay:${(i*.7).toFixed(1)}s"></i>`).join("");
@@ -2742,16 +2754,16 @@ document.addEventListener("click",e=>{
 });
 function lxRest(type,ev,lang,base){
   const si=lang==="si", L=(e,s)=>si?s:e, id=base.id, list=lxEvents(type,ev,L);
-  const first=(type==="wedding"?(ev.church||ev.nekath||ev.time):ev.time)||"00:00";
-  const target=ev.date?`${ev.date}T${first}`:"";
-  const D=fDate(ev.date,lang);
+  // countdown to the first event (the church ceremony can be on an earlier day)
+  const when=list.filter(e=>e.d).map(e=>`${e.d}T${e.t||"00:00"}`).sort()[0];
+  const target=when||(ev.date?`${ev.date}T00:00`:"");
   const pick=re=>{ const m=base.rest.match(re); return m?m[0]:"" };
   const gal=pick(new RegExp(`<section class="s-sec" id="${id}-gal">[\\s\\S]*?</section>`));
   const rsvp=pick(new RegExp(`<section class="s-sec" id="${id}-rsvp">[\\s\\S]*?</section>`));
   const heart=`<div class="lx-heart" aria-hidden="true"><i></i>♥<i></i></div>`;
-  const cards=list.map((e,i)=>`<article class="lx-evc ${i%2?"flip":""}"><div class="tx"><h3>${esc(e.n)}</h3>
-      ${D?`<p><i>${I.cal}</i><span>${esc(D)}</span></p>`:""}<p><i>${LX_CLOCK}</i><span>${fTime(e.t,lang)}</span></p>${e.v?`<p><i>${I.pin}</i><span>${esc(e.v)}</span></p>`:""}</div>
-      <div class="art">${lxEmblem(e.k)}</div></article>`).join("");
+  const cards=list.map((e,i)=>{ const D=fDate(e.d,lang); return `<article class="lx-evc ${i%2?"flip":""}"><div class="tx"><h3>${esc(e.n)}</h3>
+      ${D?`<p><i>${I.cal}</i><span>${esc(D)}</span></p>`:""}${e.t?`<p><i>${LX_CLOCK}</i><span>${fTime(e.t,lang)}</span></p>`:""}${e.v?`<p><i>${I.pin}</i><span>${esc(e.v)}</span></p>`:""}</div>
+      <div class="art">${evArt(base.th,e.k)||lxEmblem(e.k)}</div></article>` }).join("");
   // one card per venue, with the events held there
   const vs=[]; list.forEach(e=>{ if(!e.v) return; let v=vs.find(x=>x.v===e.v); if(!v){ v={v:e.v,n:[],church:e.k==="church"}; vs.push(v) } v.n.push(e.n) });
   if(!vs.length&&ev.venue) vs.push({v:ev.venue,n:[],church:false});
@@ -2781,9 +2793,9 @@ const corner = c => `<svg class="corner %POS%" viewBox="0 0 42 42" aria-hidden="
 const days = n => { const d=new Date(); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10) };
 const TYPES = {
   wedding:{ name:"Wedding", si:"විවාහ මංගල්‍යය", tpl:"Rathu Ran", art:weddingArt,
-    fields:["a","b","pg","pb","date","church","cvenue","nekath","time","venue","map","rsvp","rsvpBy","note"],
-    labels:{a:"Groom's name",b:"Bride's name",nekath:"Poruwa ceremony (nekath time)",time:"Reception starts",venue:"Poruwa and reception venue"},
-    sample:{a:"Kasun",b:"Tharushi",hero:"ivory-couple",pg:"Mr & Mrs Ranasinghe",pb:"Mr & Mrs Fonseka",date:days(58),church:"",cvenue:"",nekath:"09:41",time:"11:30",venue:"Cinnamon Grand, Colombo 03",map:"",rsvp:"0771234567",note:""}},
+    fields:["a","b","pg","pb","date","_church","cdate","church","cvenue","_poruwa","ndate","nekath","venue","_reception","rdate","time","rvenue","map","rsvp","rsvpBy","note"],
+    labels:{a:"Groom's name",b:"Bride's name",date:"Wedding date",nekath:"Nekath time",time:"Reception starts",venue:"Poruwa venue",map:"Google Maps link for the poruwa venue (optional)"},
+    sample:{a:"Kasun",b:"Tharushi",hero:"ivory-couple",pg:"Mr & Mrs Ranasinghe",pb:"Mr & Mrs Fonseka",date:days(58),cdate:"",church:"08:30",cvenue:"St. Lucia's Cathedral, Kotahena",ndate:"",nekath:"10:41",venue:"Cinnamon Grand, Colombo 03",rdate:"",time:"12:30",rvenue:"Grand Ballroom, Cinnamon Grand, Colombo 03",map:"",rsvp:"0771234567",note:""}},
   engagement:{ name:"Engagement", si:"විවාහ ගිවිස ගැනීම", tpl:"Mudu Mangalya", art:engagementArt,
     fields:["a","b","pg","pb","date","time","venue","map","rsvp","rsvpBy","note"],
     labels:{a:"His name",b:"Her name",pg:"His parents (optional)",pb:"Her parents (optional)",time:"Ceremony starts"},
@@ -2818,7 +2830,12 @@ const FIELD = {
   date:{label:"Date",type:"date"}, time:{label:"Time",type:"time"}, nekath:{label:"Nekath time",type:"time"},
   venue:{label:"Venue",full:true},
   pg:{label:"Groom's parents (optional)",ph:"Mr & Mrs Perera"}, pb:{label:"Bride's parents (optional)",ph:"Mr & Mrs Silva"},
-  church:{label:"Church or temple ceremony (optional)",type:"time"}, cvenue:{label:"Church or temple venue (optional)",full:true,ph:"St. Mary's Church, Negombo"}, map:{label:"Google Maps link (optional)",full:true,ph:"https://maps.app.goo.gl/…"},
+  church:{label:"Ceremony time",type:"time"}, cvenue:{label:"Church or temple venue",full:true,ph:"St. Mary's Church, Negombo"},
+  _church:{head:"Church ceremony",sub:"Optional. Leave this part empty if there is no church or temple ceremony."},
+  _poruwa:{head:"Poruwa ceremony"},
+  _reception:{head:"Reception",sub:"Leave the date or venue empty if they are the same as the poruwa."},
+  cdate:{label:"Date (if not the wedding date)",type:"date"}, ndate:{label:"Date (if not the wedding date)",type:"date"}, rdate:{label:"Date (if not the wedding date)",type:"date"},
+  rvenue:{label:"Reception venue (if not the poruwa venue)",full:true,ph:"Grand Ballroom, Cinnamon Grand"}, map:{label:"Google Maps link (optional)",full:true,ph:"https://maps.app.goo.gl/…"},
   rsvp:{label:"RSVP WhatsApp number",ph:"07X XXX XXXX"}, rsvpBy:{label:"Reply by (optional)",type:"date"}, dress:{label:"Dress code"},
   note:{label:"Extra note (optional)",full:true,area:true}
 };
@@ -3162,8 +3179,14 @@ function waMessage(type, ev, lang, guest, link){
       top={en:["🌸 *Wedding Invitation* 🌸","",greet,"",`Together with our families, we warmly invite you to celebrate the wedding of *${ev.a}* & *${ev.b}*.`],
            si:["🌸 *විවාහ මංගල ආරාධනය* 🌸","",greet,"",`දෙපාර්ශවයේ දෙමාපියන් සමඟ එක්ව, *${ev.a}* සහ *${ev.b}* ගේ විවාහ මංගල උත්සවයට සහභාගී වන ලෙස ඔබට ගෞරවයෙන් ආරාධනා කරමු.`],
            sl:["🌸 *Magul Arathanaya* 🌸","",greet,"",`*${ev.a}* saha *${ev.b}* ge magul utsawayata oyata adarayen arayum karanawa.`]}[lang];
-      mid=[`${when}: ${D}`, opt(N,{en:`💍 Poruwa ceremony: ${N}`,si:`💍 පෝරුව චාරිත්‍රය (නැකත): ${N}`,sl:`💍 Poruwa nekatha: ${N}`}[lang]),
-           opt(T,{en:`🍽️ Reception: ${T}`,si:`🍽️ මංගල සාදය: ${T}`,sl:`🍽️ Reception eka: ${T}`}[lang])];
+      { // each part: time, plus its own date and venue when they differ from the wedding date and the poruwa venue
+        const fl=lang==="si"?"si":"en", more=(d,v)=>{ const x=[d&&d!==ev.date?fDate(d,fl):"",v&&v!==ev.venue?v:""].filter(Boolean).join(", "); return x?` (${x})`:"" };
+        const C=fTime(ev.church,fl);
+        mid=[`${when}: ${D}`,
+           opt(C||ev.cvenue,{en:`⛪ Church ceremony`,si:`⛪ දේවස්ථාන චාරිත්‍රය`,sl:`⛪ Church ceremony eka`}[lang]+`: ${C||ev.cvenue}${C?more(ev.cdate,ev.cvenue):more(ev.cdate,"")}`),
+           opt(N,{en:`💍 Poruwa ceremony: ${N}`,si:`💍 පෝරුව චාරිත්‍රය (නැකත): ${N}`,sl:`💍 Poruwa nekatha: ${N}`}[lang]+more(ev.ndate,"")),
+           opt(T,{en:`🍽️ Reception: ${T}`,si:`🍽️ මංගල සාදය: ${T}`,sl:`🍽️ Reception eka: ${T}`}[lang]+more(ev.rdate,ev.rvenue))];
+      }
       close={en:"Your presence and blessings would mean the world to us. 🙏",si:"ඔබගේ පැමිණීම හා ආශීර්වාදය අපට මහත් සතුටකි. 🙏",sl:"Oyage pamineema saha ashirwadaya apita loku santhoshayak. 🙏"}[lang];break;
     case "engagement":
       top={en:["💍 *Engagement Invitation* 💍","",greet,"",`Together with our families, *${ev.a}* & *${ev.b}* joyfully invite you to celebrate their engagement.`],
@@ -3531,6 +3554,7 @@ function render(){
         ${!S.edited[S.type]?`<div class="sample"><span>These are sample details. Replace them with yours.</span><button class="linkbtn" id="clearSample">Clear all fields</button></div>`:""}
         <form class="form" id="evform" autocomplete="off" data-ui>
           ${T.fields.map(f=>{const d=FIELD[f]; const lbl=(T.labels&&T.labels[f])||d.label; const id=`f-${S.type}-${f}`;
+            if(d.head) return `<div class="fhead full"><b>${d.head}</b>${d.sub?`<span>${d.sub}</span>`:""}</div>`;
             return `<div class="fld ${d.full?"full":""}"><label for="${id}">${lbl}</label>${d.area?`<textarea id="${id}" name="${f}" rows="2">${esc(ev[f])}</textarea>`:`<input id="${id}" name="${f}" type="${d.type||"text"}" value="${esc(ev[f])}" ${d.ph?`placeholder="${d.ph}"`:""} ${f==="rsvp"?'inputmode="tel"':""}>`}</div>`}).join("")}
         </form>
         ${S.type!=="dana"?`<div class="photos"><label class="fld"><span style="font-size:13px;font-weight:600">Gallery photos</span></label><span class="hint">These appear in the gallery section of your invitation. Up to 6. Until you add yours, sample images are shown in the preview.${FB_ON()&&!(window.FBX&&FBX.user)?` <b><a href="#login">Log in</a> so your guests can see your photos on their link.</b>`:""}</span>
@@ -3599,7 +3623,7 @@ function render(){
       ["Can each guest's name be on the card?","Yes. Add a guest and their link opens with Dear Nimal Uncle, or their own name, on the card."],
       ["Can I write it in Sinhala?","Yes. Switch to සිංහල and the card, the invitation website and the WhatsApp message all change. Singlish and English work too."],
       ["How do guests reply?","The invitation has a reply form: name, yes or no, how many people and a wish. It arrives in your WhatsApp, already written."],
-      ["Can I add the poruwa nekath and the reception?","Yes. Weddings have their own fields for the poruwa nekath and the reception, and both show on the card and in the schedule."],
+      ["Can I add the poruwa nekath and the reception?","Yes. Weddings have three parts: the church ceremony (optional), the poruwa ceremony with the nekath time, and the reception. Each has its own date, time and venue."],
       ["Do guests need to install anything?","No. The link opens in the phone's browser straight from WhatsApp."]].map(([q,a],i)=>`<div class="r"><h3>${q}</h3><p>${a}</p></div>`).join("")}
   </div></section>
 `,
@@ -3717,7 +3741,7 @@ function bind(){
     if(!S.edited[S.type]){S.edited[S.type]=true; const s=document.querySelector(".sample"); s&&s.remove()}
     save(); refreshLive(); refreshGuestLinks();
   });
-  const cs=$("#clearSample"); cs&&(cs.onclick=()=>{ const keep={date:cur().date}; S.ev[S.type]={...Object.fromEntries(TYPES[S.type].fields.map(f=>[f,""])),...keep}; S.edited[S.type]=true; save(); render(); });
+  const cs=$("#clearSample"); cs&&(cs.onclick=()=>{ const keep={date:cur().date}; S.ev[S.type]={...Object.fromEntries(TYPES[S.type].fields.filter(f=>!FIELD[f].head).map(f=>[f,""])),...keep}; S.edited[S.type]=true; save(); render(); });
   $("#copyMsg").onclick=async()=>{ await copyInvite(""); copy(waMessage(S.type,cur(),S.lang,"",inviteLink("")),$("#bubble")) };
   $("#copyLink").onclick=async()=>copy(await copyInvite(""));
   $("#preview").onclick=()=>guestPreview("");

@@ -2568,6 +2568,14 @@ const LX_EV=["pointerdown","touchend","keydown","click"];
 function lxDisarm(){ LX_EV.forEach(t=>document.removeEventListener(t,lxKick,true)) }
 function lxKick(e){ if(e&&e.target&&e.target.closest&&e.target.closest("[data-music]")) { lxDisarm(); return } lxDisarm(); lxPlay() }
 function lxArm(){ if(!lxSrc()||!document.querySelector(".site [data-music]")) return; lxDisarm(); lxPlay().catch(()=>{ LX_EV.forEach(t=>document.addEventListener(t,lxKick,{capture:true,passive:true})) }) }
+/* Guest links render before Firestore settings arrive, so a design's admin track (DESIGN_MUSIC) may be missing at first.
+   When settings land, point every rendered card at its current track and swap a playing default for it. */
+function lxRefresh(){
+  document.querySelectorAll(".site[data-mt]").forEach(s=>{ const u=musicFor(s.dataset.mt,{n:s.dataset.mn}); if(s.dataset.msrc!==u) s.dataset.msrc=u });
+  const a=document.getElementById("lxAudio"), src=lxSrc(); if(!a||a.getAttribute("src")===src) return;
+  if(!src){ a.pause(); return }
+  const was=!a.paused; a.src=src; if(was){ a.volume=.7; a.play().catch(()=>{}) }
+}
 function lxStop(){ lxDisarm(); const a=document.getElementById("lxAudio"); if(a) a.pause() }
 document.addEventListener("click",e=>{
   const op=e.target.closest("[data-open]");
@@ -2608,7 +2616,7 @@ function lxSite(type, ev, lang, guest, prem, gallery, base){
   const bgfx = TH.video
     ? `<div class="lx-bgfx lx-vid" aria-hidden="true"><video src="${TH.video}.mp4" poster="${TH.bg}" autoplay muted loop playsinline preload="auto"></video><div class="lx-veil"></div><img class="vc l" src="${TH.l}" alt=""><img class="vc r" src="${TH.r}" alt=""><div class="lx-petals">${petals}</div></div>`
     : `<div class="lx-bgfx" aria-hidden="true"><img src="${TH.bg}" alt=""><img class="fl l" src="${TH.l}" alt=""><img class="fl r" src="${TH.r}" alt=""><div class="lx-petals">${petals}</div></div>`;
-  return `<div class="site lotus th-${prem.site} mo-${TH.mo} fx-${TH.fx} ${TH.dark?"th-dark":""} ${TH.glow?"th-glow":""} ${TH.video?"th-video":""} locked t-${type} ${si?"si":""}" style="${tplVars(prem)}--lx-wine:${prem.wine||prem.ink}" data-site="${base.id}" data-msrc="${esc(musicFor(type,prem))}">
+  return `<div class="site lotus th-${prem.site} mo-${TH.mo} fx-${TH.fx} ${TH.dark?"th-dark":""} ${TH.glow?"th-glow":""} ${TH.video?"th-video":""} locked t-${type} ${si?"si":""}" style="${tplVars(prem)}--lx-wine:${prem.wine||prem.ink}" data-site="${base.id}" data-msrc="${esc(musicFor(type,prem))}" data-mt="${type}" data-mn="${esc((prem&&prem.n)||"")}">
   ${bgfx}
   <section class="lx-cover">${lxMandala()}${lxBouquet("l")}${lxBouquet("r")}<div class="lx-dust">${dust}</div>
     <div class="lx-in"><span class="lx-eb">${eyebrow}</span>${lxRule()}
@@ -2723,7 +2731,7 @@ function ntSite(type,ev,lang,guest,prem,gallery,base,TH){
   const petals=Array.from({length:10},(_,i)=>`<i style="left:${(i*41+7)%94}%;--d:${(11+i%4*3)}s;--w:${(i%3-1)*40}px;animation-delay:-${(i*2.3).toFixed(1)}s;--s:${(.7+(i%3)*.2).toFixed(1)}"></i>`).join("");
   const nav=base.sections.filter(s=>s[0]!=="details").map(([k,ic,lb],i)=>`<button type="button" data-go="${id}-${k}" aria-label="${lb}" ${i===0?'aria-current="true"':""}>${ic}</button>`).join("");
   const mus=musicFor(type,prem)?`<button type="button" class="nt-mus" data-music aria-pressed="false" aria-label="${L("Mute or unmute music","සංගීතය නවත්වන්න / වාදනය")}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></button>`:"";
-  return `<div class="site lotus nt th-${prem.site} mo-${TH.mo} fx-${TH.fx} locked t-${type} ${si?"si":""}" style="${tplVars(prem)}--lx-wine:${prem.wine||prem.ink}" data-site="${id}" data-msrc="${esc(musicFor(type,prem))}">
+  return `<div class="site lotus nt th-${prem.site} mo-${TH.mo} fx-${TH.fx} locked t-${type} ${si?"si":""}" style="${tplVars(prem)}--lx-wine:${prem.wine||prem.ink}" data-site="${id}" data-msrc="${esc(musicFor(type,prem))}" data-mt="${type}" data-mn="${esc((prem&&prem.n)||"")}">
   <div class="lx-bgfx" aria-hidden="true"><img src="${TH.bg}" alt=""><img class="fl l" src="${TH.l}" alt=""><img class="fl r" src="${TH.r}" alt=""><div class="lx-petals">${petals}</div></div>
   <section class="lx-cover nt-cover">${lxMandala("nt-mfull",1)}<div class="lx-dust">${dust}</div>
     <div class="lx-in">${ntLotus("nt-lotus big")}<p class="nt-greet">${greet}</p>
@@ -3057,6 +3065,21 @@ async function flushShort(){
   if(!added) return;
   store.set("shortok",[...shortOk()].slice(-400));
   refreshShareLinks();
+}
+/* Guest links render before the Firebase SDK is up, so fetch the public site settings over REST first:
+   the design's admin track (DESIGN_MUSIC) and function tracks must be in CONFIG before the card is drawn. */
+function fsVal(v){ if(!v) return null; if("stringValue" in v) return v.stringValue; if("integerValue" in v) return +v.integerValue; if("doubleValue" in v) return v.doubleValue;
+  if("booleanValue" in v) return v.booleanValue; if("nullValue" in v) return null; if("timestampValue" in v) return v.timestampValue;
+  if("arrayValue" in v) return (v.arrayValue.values||[]).map(fsVal); if("mapValue" in v) return Object.fromEntries(Object.entries(v.mapValue.fields||{}).map(([k,x])=>[k,fsVal(x)])); return null }
+let guestCfgP=null;
+function guestSettings(){
+  if(guestCfgP) return guestCfgP;
+  const cfg=window.ARADHANA_FIREBASE&&window.ARADHANA_FIREBASE.config;
+  if(!cfg||(window.FBX&&FBX.settings)) return guestCfgP=Promise.resolve();
+  const ctl=new AbortController(), tm=setTimeout(()=>ctl.abort(),2500);
+  return guestCfgP=fetch(`https://firestore.googleapis.com/v1/projects/${encodeURIComponent(cfg.projectId)}/databases/(default)/documents/settings/site?key=${encodeURIComponent(cfg.apiKey)}`,{signal:ctl.signal})
+    .then(r=>r.ok?r.json():null).then(d=>{ const c=d&&d.fields&&fsVal(d.fields.config); if(c&&typeof c==="object"&&!(window.FBX&&FBX.settings)){ store.set("config",c); Object.assign(CONFIG,c) } })
+    .catch(()=>{}).finally(()=>clearTimeout(tm));
 }
 function loadShort(code){
   const cfg=window.ARADHANA_FIREBASE&&window.ARADHANA_FIREBASE.config;
@@ -3917,7 +3940,7 @@ function siteHTML(type, ev, lang, guest, prem, gallery){
   sections.push(["loc",I.pin,L("Location","ස්ථානය")]);
   if(ev.rsvp) sections.push(["rsvp",I.mail,L("Reply","පිළිතුර")]);
   const mapHref = ev.map || (ev.venue?`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(ev.venue)}`:"");
-  const html = `<div class="site t-${type} ${si?"si":""}" ${prem?`style="${tplVars(prem)}"`:""} data-site="${id}" data-msrc="${esc(musicFor(type,prem))}">
+  const html = `<div class="site t-${type} ${si?"si":""}" ${prem?`style="${tplVars(prem)}"`:""} data-site="${id}" data-msrc="${esc(musicFor(type,prem))}" data-mt="${type}" data-mn="${esc((prem&&prem.n)||"")}">
   <section class="s-hero" id="${id}-home">${cardHTML(type,ev,lang,guest,prem)}<span class="s-hint">${L("Scroll for details","විස්තර සඳහා පහළට")} ↓</span></section>
 
   <section class="s-sec" id="${id}-date">
@@ -5067,9 +5090,9 @@ const PAGES = { login:()=>renderAuth("login"), register:()=>renderAuth("register
   design:(sub,rest)=>{ S.page="design"; S.dt=sub; S.di=rest; render(); scrollTo(0,0) } };
 function route(){
   const h=location.hash||"";
-  if(h.startsWith("#i=")){ try{ const p=JSON.parse(unb64(h.slice(3))); if(p&&p.e){ guestGallery(p).then(g=>{ if(location.hash===h) renderGuest(p,g) }); return } }catch(e){} }
+  if(h.startsWith("#i=")){ try{ const p=JSON.parse(unb64(h.slice(3))); if(p&&p.e){ Promise.all([guestGallery(p),guestSettings()]).then(([g])=>{ if(location.hash===h) renderGuest(p,g) }); return } }catch(e){} }
   if(h.startsWith("#s=")){
-    loadShort(h.slice(3)).then(p=>p?guestGallery(p).then(g=>{ if(location.hash===h) renderGuest(p,g) }):(location.hash===h&&(history.replaceState(null,"","/"),route(),toast("This invitation link isn't available any more."))));
+    Promise.all([loadShort(h.slice(3)),guestSettings()]).then(([p])=>p?guestGallery(p).then(g=>{ if(location.hash===h) renderGuest(p,g) }):(location.hash===h&&(history.replaceState(null,"","/"),route(),toast("This invitation link isn't available any more."))));
     return }
   const [pg,sub,rest]=h.slice(1).split("/");
   if(PAGES[pg]){ PAGES[pg](sub,rest); return }
@@ -5105,7 +5128,7 @@ document.addEventListener("click",e=>{
 let fbT=0, fbDirty=false;
 function fbApplySettings(){ const st=(window.FBX&&FBX.settings)||{}; if(st.config){ store.set("config",st.config); Object.assign(CONFIG,st.config) } if(Array.isArray(st.tplOff)) store.set("tplOff",st.tplOff) }
 function fbChanged(why){
-  if(why==="settings"){ fbApplySettings(); return }
+  if(why==="settings"){ fbApplySettings(); lxRefresh(); return }
   const h=location.hash||"", pg=h.slice(1).split("/")[0];
   if(isGuestHash(h)) return;
   if(why==="auth"){ fbSyncGalleries(); if(["login","register","admin","account","create"].includes(pg)) route(); else render(); return }
@@ -5117,7 +5140,7 @@ function fbChanged(why){
 document.addEventListener("focusout",()=>{ if(!fbDirty) return; setTimeout(()=>{ const a=document.activeElement; if(fbDirty&&!(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))){ fbDirty=false; route() } },200) });
 function fbStart(){
   return import("./fb.js").then(m=>{ fbErrText=m.errText; return m.init(window.ARADHANA_FIREBASE,{onChange:fbChanged,onError:e=>toast(fbErrText(e))}) })
-    .then(()=>{ fbApplySettings(); fbSyncGalleries() }).catch(e=>console.error("[fb] could not start",e));
+    .then(()=>{ fbApplySettings(); lxRefresh(); fbSyncGalleries() }).catch(e=>console.error("[fb] could not start",e));
 }
 
 (function boot(){

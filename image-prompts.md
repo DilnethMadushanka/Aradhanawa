@@ -161,3 +161,34 @@ Bg, side art, card saha venue images `scripts/nelum_art.mjs` eken code eken adin
 Soft watercolour and fine gold line illustration of a Sri Lankan bride and groom seen from behind, standing close together and turning their heads toward each other, the bride in an ivory Kandyan osariya saree with a gold-embroidered pleated frill, a jasmine-wrapped bun and a gold nalal patiya on her forehead chain, the groom in an ivory silk Indian-style long jacket with a stand-up collar, warm champagne and pale gold palette with blush pink shadows, plain solid blush ivory background (#FAEEE9) with no scenery, no frame and no text, the figures centred and filling the upper two thirds, the bottom edge fading softly into the background, elegant wedding invitation art, 4:3
 ```
 Save karana widiha: 960 wide ekak `th-nelum-hero-960.webp`, 480 wide ekak `th-nelum-hero-480.webp` (WebP, quality 80).
+
+## Navy Promise design (navy blue, white roses, gold, engagement)
+
+Dan thiyena images okkoma `scripts/navy_art.mjs` eken code eken adala thiyenne (run: `NODE_PATH=$(npm root -g) node scripts/navy_art.mjs && python3 scripts/card_sides.py th-navy-card`). Real images one nam pahala prompts Gemini / Midjourney walata danna. Hama ekatama anthimata: `no text, no letters, no watermark, no logos`. Palette: navy #14234F, white, gold #E2BC68.
+
+**1. Couple picture: `th-navy-hero-960.webp` + `-480`** (960 x 717, 4:3). Rings picture eka wenuwata.
+```
+Elegant portrait of a young Sri Lankan couple at their engagement, the man in a navy blue tailored suit with a white shirt, the woman in a white and silver embroidered saree with delicate gold jewellery, she holds out her left hand showing a diamond engagement ring while they smile at each other, soft warm bokeh of golden fairy lights behind them, deep navy blue evening background, white roses in the lower corners, romantic editorial photography, shallow depth of field, couple centred, 4:3
+```
+
+**2. Website background: `th-navy-bg.webp`** (900 x 1612, 9:16). Meda kotasa hari simple wenna one.
+```
+Deep navy blue luxury background texture, smooth matte velvet with a very faint gold damask lattice pattern, soft lighter glow in the centre fading to darker navy at the edges, a few tiny scattered gold glitter specks, no objects, plain and even, high resolution, 9:16
+```
+
+**3. Side flowers: `th-navy-l.webp` (left) saha `th-navy-r.webp` (right)** (900 x 1612, transparent PNG). Left eka hadala, flip karala right eka hadanna.
+```
+Vertical border of white garden roses, rose buds, baby's breath and gold metallic leaves climbing up the left edge only, the flowers hugging the left side and fading out towards the middle, the rest of the image completely empty, isolated on a transparent background (PNG), elegant wedding stationery illustration, soft shadows, 9:16
+```
+(Transparent background ena nathi tool ekak nam: plain solid #14234F navy background ekak illanna. Mama eka cut karala transparent karannam.)
+
+**4. Card front: `th-navy-card-960.webp`** (960 x 1383, about 9:13). Text eka uda wetena nisa meda 60% hisaw thiyanna one.
+```
+Portrait luxury engagement invitation card background, deep navy blue card with a thin double gold foil border and small gold corner flourishes, a lush cluster of white roses, baby's breath and gold leaves in the top left corner and a larger matching cluster in the bottom right corner, two small interlocked gold rings with a diamond centred near the top, the whole middle area plain navy and empty for text, subtle paper texture, flat lay, print quality, 9:13
+```
+Save karala `python3 scripts/card_sides.py th-navy-card` run karanna (480 size saha cardl / cardr strips hadanawa).
+
+**5. Venue picture: `th-navy-venue.webp`** (900 x 672, 4:3).
+```
+Elegant gold line-art illustration of a wedding arch pavilion with a domed top, standing on a deep navy blue background, small clusters of white roses and baby's breath at the base of each side, a faint golden glow behind the arch, minimal and symmetrical, invitation card style, 4:3
+```

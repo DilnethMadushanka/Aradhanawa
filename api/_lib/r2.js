@@ -1,11 +1,12 @@
-/* Cloudflare R2 (S3-compatible) for gallery photos. No SDK: requests are signed with AWS Signature V4 using node:crypto.
+/* Cloudflare R2 (S3-compatible) for gallery photos and card music. No SDK: requests are signed with AWS Signature V4 using node:crypto.
  * Settings (server .env):
  *   R2_ACCOUNT_ID         Cloudflare account ID (R2 overview page, right side)
  *   R2_ACCESS_KEY_ID      R2 API token → Access Key ID
  *   R2_SECRET_ACCESS_KEY  R2 API token → Secret Access Key
  *   R2_BUCKET             bucket name, e.g. aradhanawa-photos
  *   R2_PUBLIC_URL         public address of the bucket, e.g. https://pub-xxxx.r2.dev or https://media.aradhanawa.com
- * Photos are stored at gallery/{uid}/{type}/{random}.{ext} and guests load them straight from R2_PUBLIC_URL. */
+ * Photos are stored at gallery/{uid}/{type}/{random}.{ext}, card music (Admin → Settings → Music library) at music/{name}-{random}.mp3.
+ * Guests load both straight from R2_PUBLIC_URL. */
 import crypto from "node:crypto";
 
 const env = k => String(process.env[k] || "").trim();
@@ -37,17 +38,17 @@ export function signedRequest(c, method, key, body = Buffer.alloc(0), headers = 
   return { url: url.href, init: { method, headers: h, body: method === "PUT" ? body : undefined } };
 }
 
-async function send(c, method, key, body, headers) {
+async function send(c, method, key, body, headers, ms = 15000) {
   const { url, init } = signedRequest(c, method, key, body, headers);
-  const r = await fetch(url, { ...init, signal: AbortSignal.timeout(15000) });
+  const r = await fetch(url, { ...init, signal: AbortSignal.timeout(ms) });
   if (!r.ok && !(method === "DELETE" && r.status === 404)) {
     const t = await r.text().catch(() => "");
     throw Object.assign(new Error(`R2 ${method} failed: ${r.status} ${t.slice(0, 300)}`), { status: 502 });
   }
 }
 
-export const putObject = (c, key, body, type) =>
-  send(c, "PUT", key, body, { "content-type": type, "cache-control": "public, max-age=31536000, immutable" });
+export const putObject = (c, key, body, type, ms) =>
+  send(c, "PUT", key, body, { "content-type": type, "cache-control": "public, max-age=31536000, immutable" }, ms);
 export const deleteObject = (c, key) => send(c, "DELETE", key);
 export const publicUrl = (c, key) => `${c.publicUrl}/${encKey(key)}`;
 /* The object key for a public URL of ours, or "" when the URL is not from this bucket. */

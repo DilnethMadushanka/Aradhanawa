@@ -14,7 +14,8 @@
  *   rsvps/{id}             inviteId, ownerUid, type, event, guest, name, coming, count, msg, created
  *   plus/{uid_type}        uid, type, orderId, updated   (Plus for one function; written by api/pay/* or an admin;
  *                          firestore.rules reads it to let that invitation hold more than FREE_GUESTS guests)
- *   settings/site          config {FREE_GUESTS, STUDIO_WA, PRICE_PLUS, PRICE_CUSTOM, PLANS [{id, kind, name, price, details, on}], MUSIC}, tplOff []
+ *   settings/site          config {FREE_GUESTS, STUDIO_WA, PRICE_PLUS, PRICE_CUSTOM, PLANS [{id, kind, name, price, details, on}], MUSIC, MUSIC_*,
+ *                          MUSIC_LIBRARY [{name, url, added}] (MP3s in Cloudflare R2), DESIGN_MUSIC {design name: url}}, tplOff []
  */
 const V = "10.12.2";
 const CDN = `https://www.gstatic.com/firebasejs/${V}`;

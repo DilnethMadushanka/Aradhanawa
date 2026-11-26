@@ -1,6 +1,7 @@
 /* Draws the art for the "Navy Promise" engagement design (deep navy, white roses, gold rings and gold line work) and saves it as WebP in img/.
- * Makes: th-navy-bg, th-navy-l, th-navy-r (transparent), th-navy-card-480/960, th-navy-hero-480/960 and th-navy-venue.
- * Run from the repo root: NODE_PATH=$(npm root -g) node scripts/navy_art.mjs && python3 scripts/card_sides.py th-navy-card
+ * The live bg, side flowers, card and couple picture are AI images (image-prompts.md, "Navy Promise"), so by default this only makes
+ * th-navy-venue. ALL=1 redraws the old code-drawn versions too (th-navy-bg, -l, -r, -card-480/960, -hero-480/960); then run
+ * python3 scripts/card_sides.py th-navy-card.  Run from the repo root: NODE_PATH=$(npm root -g) node scripts/navy_art.mjs
  * (needs playwright + python3 Pillow) */
 import { createRequire } from "node:module";
 import { execFileSync } from "node:child_process";
@@ -139,10 +140,11 @@ function venue(W, H) {
   return s + `<rect width="${W}" height="${H}" filter="url(#paper)"/>`;
 }
 
-const JOBS = [
+const ALL_JOBS = [
   ["th-navy-bg", 900, 1612, bg], ["th-navy-l", 900, 1612, (W, H) => side(W, H, "l"), 1], ["th-navy-r", 900, 1612, (W, H) => side(W, H, "r"), 1],
   ["th-navy-card", 960, 1383, card], ["th-navy-hero", 960, 717, hero], ["th-navy-venue", 900, 672, venue],
 ];
+const JOBS = process.env.ALL ? ALL_JOBS : ALL_JOBS.filter(j => j[0] === "th-navy-venue");
 const browser = await chromium.launch();
 const page = await browser.newPage();
 for (const [name, W, H, fn, alpha] of JOBS) {

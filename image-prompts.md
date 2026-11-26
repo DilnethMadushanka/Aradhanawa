@@ -192,3 +192,7 @@ Save karala `python3 scripts/card_sides.py th-navy-card` run karanna (480 size s
 ```
 Elegant gold line-art illustration of a wedding arch pavilion with a domed top, standing on a deep navy blue background, small clusters of white roses and baby's breath at the base of each side, a faint golden glow behind the arch, minimal and symmetrical, invitation card style, 4:3
 ```
+
+## Cathedral Vows saha Sunset Vows (wedding intro video cards)
+
+Image saha video prompts okkoma: [wedding-video-cards-prompts.md](wedding-video-cards-prompts.md)

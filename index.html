@@ -1814,17 +1814,9 @@ nav.top a{font-weight:600}
 .dt-list li::before{content:"";position:absolute;left:4px;top:.5em;width:8px;height:8px;background:#C9993A;transform:rotate(45deg)}
 .dt-acts{display:flex;flex-wrap:wrap;gap:22px 30px;align-items:center}
 .lp-nav .wm .wm-t{display:grid}
-.lp-steps{padding-block:clamp(48px,6vw,96px);text-align:center}
+.lp-steps{padding-block:clamp(48px,6vw,96px);text-align:center;overflow-x:clip}
 .lp-steps h2{font-size:clamp(34px,4.6vw,64px)}
-.lp-steps ol{list-style:none;margin:clamp(32px,4vw,56px) auto 0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;max-width:1240px;text-align:left}
-.lp-steps li{position:relative;padding:28px 24px 26px;background:rgba(255,251,243,.75);border:1px solid rgba(166,122,31,.35);outline:1px solid rgba(166,122,31,.2);outline-offset:-7px}
-.lp-steps .no{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:#2A1E12;color:#EBD29A;font:700 22px/1 "Noto Sans Sinhala",serif;margin-bottom:18px}
-.lp-steps h3{font-size:24px;letter-spacing:-.02em;line-height:1.1}
-.lp-steps h3 em{display:block;font-family:"Cormorant Garamond",serif;font-style:italic;font-weight:600;color:#8A6420;font-size:1.05em}
-.lp-steps p{margin-top:10px;color:#6E5D48;line-height:1.45}
 .lp-steps .st-go{margin-top:clamp(32px,4vw,52px)}
-@media (max-width:900px){.lp-steps ol{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:520px){.lp-steps ol{grid-template-columns:minmax(0,1fr)}}
 .lp-nakath b,.lp-nakath .nk-en{white-space:nowrap}
 @media (max-width:420px){.lp-nav .nv-end .lp-nakath.sm .nk-paper{padding:6px 11px}.lp-nav .nv-end .lp-nakath.sm b{font-size:12px}.lp-nav .wm-t small{display:none}}
 button.lp-hghost{background:none;border:0;border-bottom:1.5px solid rgba(122,84,16,.45);border-radius:0;font:600 16px "Inter Tight",sans-serif;cursor:pointer;padding:0 0 2px}
@@ -2022,10 +2014,137 @@ body:has(.lp){background:#fff}
 .lp-tile .strip b{font:600 21px/1.1 "Cormorant Garamond",Georgia,serif;letter-spacing:0}
 @media (max-width:900px){.lp-feat .lp-tile{flex-basis:calc((100% - 22px)/2)}}
 @media (max-width:700px){.lp-feat .lp-tiles{gap:10px}.lp-feat .lp-tile{flex-basis:calc((100% - 10px)/2)}.lp-tile{outline-offset:-5px}.lp-tile .pv{padding:12px}.lp-tile .strip{padding:10px 12px}.lp-tile .strip b{font-size:17px}}
-/* steps */
-.lp-steps li{background:rgba(255,251,243,.85);box-shadow:0 18px 40px -32px rgba(110,70,20,.6)}
-.lp-steps h3{font-size:30px;letter-spacing:-.01em}
-.lp-steps .no{background:radial-gradient(circle at 35% 30%,#4A3520,#2A1E12);box-shadow:0 0 0 3px #FFFBF3,0 0 0 4px rgba(166,122,31,.5)}
+/* how it works: phone that plays each step */
+.hw{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(32px,6vw,96px);align-items:center;max-width:1080px;margin:clamp(32px,4vw,56px) auto 0;text-align:left}
+.hw-ph{position:relative;display:grid;place-items:center;padding:28px 0}
+.hw-ring{position:absolute;width:118%;max-width:460px;aspect-ratio:1;left:50%;top:50%;translate:-50% -50%;color:rgba(166,122,31,.28);pointer-events:none}
+.hw-ring svg{width:100%;height:100%;animation:hwSpin 80s linear infinite}
+.hw-ph::before{content:"";position:absolute;inset:8% 0;background:radial-gradient(closest-side,rgba(235,210,154,.75),rgba(235,210,154,0));pointer-events:none}
+.hw-dev{position:relative;width:100%;max-width:300px;aspect-ratio:9/18.5;border-radius:44px;padding:10px;background:linear-gradient(145deg,#4A3826,#1C140C 60%,#3B2B1B);box-shadow:0 0 0 1px #8A6420,0 50px 80px -40px rgba(60,35,10,.75);animation:hwFloat 7s ease-in-out infinite}
+.hw-scr{position:relative;height:100%;border-radius:35px;overflow:hidden;background:#FFFBF3;font:500 12px/1.3 "Inter Tight",system-ui,sans-serif;color:#2A1E12}
+.hw-sb{position:absolute;inset:0 0 auto;height:40px;display:flex;justify-content:space-between;align-items:center;padding:0 24px;font-weight:700;font-size:11.5px;z-index:4}
+.hw-sb i{width:30%;height:20px;border-radius:20px;background:#120C07}
+.hw-sb span:last-child{display:flex;gap:3px;align-items:flex-end}.hw-sb span:last-child b{width:3px;background:#2A1E12;border-radius:1px}
+.hw-s{position:absolute;inset:0;padding:48px 14px 14px;display:flex;flex-direction:column;gap:10px;opacity:0;visibility:hidden;transform:scale(.97);transition:opacity .45s,transform .45s,visibility 0s .45s}
+.hw-s.on{opacity:1;visibility:visible;transform:none;transition:opacity .45s .1s,transform .45s .1s}
+.hw-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.hw-h b{font:600 19px/1.1 "Cormorant Garamond",Georgia,serif;letter-spacing:-.01em}
+.hw-h small{color:#8A6420;font-size:10.5px;font-weight:600}
+/* 1 pick */
+.hw-chips{display:flex;gap:5px;flex-wrap:wrap}
+.hw-chips span{padding:5px 9px;border-radius:99px;border:1px solid rgba(166,122,31,.35);font-size:10.5px;font-weight:600;color:#6E5D48;background:#fff}
+.hw-chips span.k{background:#2A1E12;color:#EBD29A;border-color:#2A1E12}
+.hw-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.hw-grid > div{position:relative;border-radius:7px;aspect-ratio:5/7.2;overflow:hidden;box-shadow:0 8px 16px -10px rgba(60,35,10,.6);outline:2px solid transparent;outline-offset:2px}
+.hw-grid > div.k{outline-color:#B3852B}
+.hw-grid > div.k::after{content:"✓";position:absolute;top:6px;right:6px;width:20px;height:20px;border-radius:50%;background:#B3852B;color:#fff;display:grid;place-items:center;font-size:12px;font-weight:800}
+.hw-btn{margin-top:auto;border-radius:99px;background:#2A1E12;color:#EBD29A;text-align:center;padding:10px;font-weight:700;font-size:12px}
+/* 2 fill */
+.hw-prev{border-radius:14px;background:#F6F0E4 url("img/ivory-silk-900.webp") center/cover;padding:12px 10px;text-align:center;display:grid;gap:3px;border:1px solid rgba(166,122,31,.3)}
+.hw-prev small{font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:#8A6420}
+.hw-prev b{font:600 22px/1.05 "Cormorant Garamond",Georgia,serif}.hw-prev b i{color:#B3852B}
+.hw-prev span{font-size:10px;color:#6E5D48}
+.hw-f{display:grid;gap:3px}
+.hw-f small{font-size:9.5px;font-weight:600;color:#6E5D48}
+.hw-f span{display:flex;align-items:center;border:1px solid rgba(166,122,31,.3);background:#fff;border-radius:9px;padding:7px 9px;font-size:11.5px;min-height:30px}
+.hw-f span em{font-style:normal;white-space:nowrap;overflow:hidden}
+.hw-f span::after{content:"";width:1.5px;height:13px;background:#B3852B;margin-left:1px;opacity:0}
+.hw-two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+/* 3 guests */
+.hw-g{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:8px;align-items:center;background:#fff;border:1px solid rgba(166,122,31,.22);border-radius:12px;padding:8px}
+.hw-g i{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:11px;background:#FBE6C8;color:#8A6420}
+.hw-g b{display:block;font-size:12px}.hw-g small{display:block;font-size:9.5px;color:#8A6420;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hw-g u{text-decoration:none;font-size:9.5px;font-weight:700;color:#2F7A4B;background:rgba(47,122,75,.12);padding:3px 7px;border-radius:99px}
+.hw-add{border:1.5px dashed rgba(166,122,31,.55);border-radius:12px;padding:9px;text-align:center;color:#8A6420;font-weight:700;font-size:11.5px}
+.hw-tip{margin-top:auto;border-radius:12px;background:#2A1E12;color:#F7EEDD;padding:10px 12px;font-size:11px;line-height:1.4}.hw-tip b{color:#EBD29A}
+/* 4 whatsapp */
+.hw-s.s3{padding:40px 0 0;gap:0;background:#EFE6D6}
+.hw-wa{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#1F5E4B;color:#fff}
+.hw-wa i{width:26px;height:26px;border-radius:50%;background:#EBD29A;color:#2A1E12;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:11px}
+.hw-wa b{display:block;font-size:12px}.hw-wa small{font-size:9.5px;opacity:.8}
+.hw-chat{flex:1;display:flex;flex-direction:column;gap:8px;padding:12px 10px}
+.hw-m{max-width:84%;border-radius:12px;padding:6px;font-size:10.5px;line-height:1.35;box-shadow:0 1px 1px rgba(0,0,0,.08)}
+.hw-m.o{align-self:flex-end;background:#DCF3C8;border-top-right-radius:3px}
+.hw-m.i{align-self:flex-start;background:#fff;border-top-left-radius:3px;padding:7px 10px}
+.hw-m .cv{height:100px;overflow:hidden;border-radius:8px;margin-bottom:5px}.hw-m .cv .card,.hw-grid .card{box-shadow:none;max-width:none;border-radius:6px}
+.hw-map{position:relative;border-radius:10px;overflow:hidden;border:1px solid rgba(166,122,31,.25)}.hw-map svg{display:block;width:100%;height:auto}
+.hw-map span{position:absolute;left:8px;bottom:6px;background:#fff;border-radius:99px;padding:3px 8px 3px 5px;font-size:10px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,.15)}.hw-map b{font-weight:400;margin-right:3px}
+.s1 .hw-btn{background:#2F7A4B;color:#fff}
+.hw-m p{margin:0 3px}.hw-m p b{color:#1F5E4B}
+.hw-m .tk{display:block;text-align:right;font-size:9px;color:#7A8A7A;margin-top:2px}
+.hw-m .tk s{text-decoration:none;color:#9AA49A;letter-spacing:-3px;margin-left:3px}
+.hw-dots{align-self:flex-start;background:#fff;border-radius:12px;padding:8px 10px;display:flex;gap:3px}
+.hw-dots i{width:5px;height:5px;border-radius:50%;background:#9AA49A}
+.hw-note{position:absolute;left:10px;right:10px;top:44px;z-index:5;background:rgba(255,251,243,.97);border-radius:14px;padding:9px 11px;box-shadow:0 12px 24px -12px rgba(0,0,0,.45);display:grid;grid-template-columns:auto 1fr;gap:2px 8px;align-items:center;font-size:10.5px}
+.hw-note i{grid-row:span 2;width:24px;height:24px;border-radius:7px;background:#2A1E12;color:#EBD29A;display:grid;place-items:center;font-style:normal;font-size:12px}
+.hw-note b{font-size:11px}.hw-note span{color:#2F7A4B;font-weight:600}
+/* step list */
+.hw-steps{display:grid;gap:6px}
+.hw-t{all:unset;box-sizing:border-box;cursor:pointer;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 18px;padding:18px 4px 16px;position:relative;-webkit-tap-highlight-color:transparent}
+.hw-t:focus-visible{outline:2px solid #B3852B;outline-offset:4px;border-radius:6px}
+.hw-t .pb{position:absolute;left:0;right:0;top:0;height:2px;background:rgba(166,122,31,.22);border-radius:2px;overflow:hidden}
+.hw-t .pb i{position:absolute;inset:0;background:linear-gradient(90deg,#B3852B,#8A6420);transform-origin:left;transform:scaleX(0)}
+.hw-t[aria-selected="true"] .pb i{animation:hwBar var(--dur,5600ms) linear forwards}
+.hw-t .no{font:600 30px/1 "Cormorant Garamond",Georgia,serif;color:rgba(138,100,32,.45);transition:color .3s;font-variant-numeric:lining-nums}
+.hw-t h3{font-size:clamp(24px,2.4vw,30px);line-height:1.05;color:rgba(42,30,18,.5);transition:color .3s}
+.hw-t h3 em{font-style:italic;color:inherit}
+.hw-t[aria-selected="true"] .no{color:#8A6420}
+.hw-t[aria-selected="true"] h3{color:#2A1E12}.hw-t[aria-selected="true"] h3 em{color:#8A6420}
+.hw-t:hover h3{color:#2A1E12}
+.hw-t .ds{grid-column:2;display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s cubic-bezier(.2,.7,.2,1)}
+.hw-t .ds p{overflow:hidden;margin:0;color:#6E5D48;line-height:1.5;font-size:16px}
+.hw-t[aria-selected="true"] .ds{grid-template-rows:1fr}
+.hw-t[aria-selected="true"] .ds p{padding-top:8px}
+.hw-cap{display:none}
+.hw:not(.run) *,.hw.hold .hw-t .pb i{animation-play-state:paused!important}
+@media (max-width:820px){
+  .hw{grid-template-columns:minmax(0,1fr);gap:8px}
+  .hw-ph{padding:18px 0 22px}
+  .hw-dev{max-width:236px;border-radius:38px;padding:8px}.hw-scr{border-radius:31px}
+  .hw-steps{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+  .hw-t{display:block;padding:12px 0 6px}.hw-t h3,.hw-t .ds{display:none}
+  .hw-t .no{font-size:24px}
+  .hw-cap{display:grid;gap:8px;min-height:7.5em;padding-top:10px}
+  .hw-cap h3{font-size:28px;line-height:1.05}.hw-cap h3 em{font-style:italic;color:#8A6420}
+  .hw-cap p{margin:0;color:#6E5D48;line-height:1.5;font-size:16px}
+  .hw-cap.sw{animation:hwCap .45s cubic-bezier(.2,.7,.2,1)}
+}
+@media (prefers-reduced-motion:no-preference){
+  .hw-s.on .hw-pop{animation:hwPop .45s cubic-bezier(.2,.9,.3,1.3) both;animation-delay:var(--a,0ms)}
+  .hw-s.on .hw-up{animation:hwUp .55s cubic-bezier(.2,.7,.2,1) both;animation-delay:var(--a,0ms)}
+  .hw-s.on .hw-in{animation:hwIn .5s cubic-bezier(.2,.7,.2,1) both;animation-delay:var(--a,0ms)}
+  .hw-s.on .hw-chips span.k{animation:hwPick .4s both;animation-delay:var(--a,0ms)}
+  .hw-s.on .hw-grid > div.k{animation:hwRing .5s both;animation-delay:1.7s}
+  .hw-s.on .hw-grid > div.k::after{animation:hwPop .4s cubic-bezier(.2,.9,.3,1.5) both;animation-delay:1.9s}
+  .hw-s.on .hw-f em{animation:hwType var(--t,.7s) steps(var(--n,8)) both;animation-delay:var(--a,0ms)}
+  .hw-s.on .hw-f span{animation:hwFocus calc(var(--t,.7s) + .5s) both;animation-delay:calc(var(--a,0ms) - .15s)}
+  .hw-s.on .hw-f span::after{animation:hwCaret calc(var(--t,.7s) + .5s) step-end both;animation-delay:calc(var(--a,0ms) - .15s)}
+  .hw-s.on .hw-prev .nm{animation:hwUp .5s both;animation-delay:1.5s}
+  .hw-s.on .hw-g u{animation:hwPop .35s cubic-bezier(.2,.9,.3,1.5) both;animation-delay:calc(var(--a,0ms) + .45s)}
+  .hw-s.on .hw-add{animation:hwUp .45s both,hwPulse 1.6s 2.4s ease-in-out infinite;animation-delay:1.6s,2.4s}
+  .hw-s.on .tk s{animation:hwTick .01s both;animation-delay:1.6s}
+  .hw-s.on .hw-dots{animation:hwDots 1.2s both;animation-delay:1.7s}
+  .hw-s.on .hw-dots i{animation:hwBlink .9s infinite}.hw-dots i:nth-child(2){animation-delay:.15s!important}.hw-dots i:nth-child(3){animation-delay:.3s!important}
+  .hw-s.on .hw-note{animation:hwDrop .55s cubic-bezier(.2,.9,.3,1.2) both;animation-delay:3.3s}
+}
+@media (prefers-reduced-motion:reduce){.hw-ring svg,.hw-dev{animation:none}.hw-t .pb i{animation:none!important}.hw-t[aria-selected="true"] .pb i{transform:none}.hw-s{transition:none}.hw-dots{display:none}}
+@keyframes hwBar{to{transform:scaleX(1)}}
+@keyframes hwSpin{to{transform:rotate(360deg)}}
+@keyframes hwFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes hwPop{from{opacity:0;transform:scale(.6)}}
+@keyframes hwUp{from{opacity:0;transform:translateY(14px)}}
+@keyframes hwIn{from{opacity:0;transform:translateX(26px)}}
+@keyframes hwPick{from{background:#fff;color:#6E5D48;border-color:rgba(166,122,31,.35)}}
+@keyframes hwRing{from{outline-color:transparent;transform:scale(1)}50%{transform:scale(1.04)}to{transform:scale(1)}}
+@keyframes hwType{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes hwFocus{0%,100%{border-color:rgba(166,122,31,.3);box-shadow:none}8%,85%{border-color:#B3852B;box-shadow:0 0 0 3px rgba(179,133,43,.18)}}
+@keyframes hwCaret{0%{opacity:0}8%{opacity:1}30%{opacity:.2}45%{opacity:1}85%{opacity:0}}
+@keyframes hwPulse{0%,100%{box-shadow:0 0 0 0 rgba(179,133,43,0)}50%{box-shadow:0 0 0 5px rgba(179,133,43,.15)}}
+@keyframes hwTick{to{color:#3B9EDB}}
+@keyframes hwDots{0%{opacity:0;transform:scale(.7)}15%,85%{opacity:1;transform:none}100%{opacity:0;height:0;padding:0;margin:-8px 0 0}}
+@keyframes hwBlink{0%,100%{opacity:.35}50%{opacity:1}}
+@keyframes hwDrop{from{opacity:0;transform:translateY(-30px)}}
+@keyframes hwCap{from{opacity:0;transform:translateY(10px)}}
 /* real-life photo */
 .lp-real::before,.lp-bands::before{grid-column:1/-1;margin:0 0 8px!important}
 .lp-real{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(28px,5vw,80px);align-items:center;max-width:1280px;margin:0 auto;padding:clamp(56px,7vw,110px) var(--m)}
@@ -3213,6 +3332,59 @@ function lpFrag(i){
   if(i===2) return `<div class="fx" data-ui><div class="bub">${waHTML(waMessage("wedding",ev,"sl","Nimal Uncle","aradhanawa.com/…").split("\n").slice(0,9).join("\n"))}</div><div class="meta"><span>Singlish · සිංහල · English</span><span>Copy</span></div></div>`;
   return `<div class="fx" data-ui>${[["Nimal Uncle","077 111 2233",1],["Ruwani","071 222 3344",1],["Saman Aiya","075 333 4455",0],["Chamari Akka","070 444 5566",0]].map(([n,p,d])=>`<div class="gr"><b>${n}</b><small>${p}</small><span class="s ${d?"done":""}">${d?"Sent":"Send"}</span></div>`).join("")}<div class="meta"><span>4 of 5 free links used</span><span>Dear Nimal Uncle,</span></div></div>`;
 }
+// How it works: a phone that plays each step, with tabs that fill and move on by themselves.
+const LP_HOW=[["Pick","the function and a card","Wedding, homecoming, birthday, dana, party or anything else. Every function has a free design."],
+  ["Fill","names, date and nekath","Venue, map, poruwa time and reception. The card changes as you type."],
+  ["Add","your guests","Each guest gets their own link that opens with their name on the card."],
+  ["Send","on WhatsApp","The message is written for you in Sinhala, Singlish or English. Replies come straight back to you."]];
+function lpHow(){
+  const ev=TYPES.wedding.sample, d=(ms)=>`style="--a:${ms}ms"`;
+  const cards=(PREMIUM.wedding||[]).filter(t=>t.img||t.layout).slice(0,4).map(t=>cardHTML("wedding",ev,"en","",{...t,_noribbon:1}));
+  while(cards.length<4) cards.push(cardHTML("wedding",ev,"en","",null));
+  const ty=(t,ms,dur)=>`<em style="--a:${ms}ms;--n:${t.length};--t:${dur||Math.max(.45,t.length*.06)}s">${esc(t)}</em>`;
+  const f=(l,t,ms)=>`<label class="hw-f hw-up" ${d(ms-250)}><small>${l}</small><span style="--a:${ms}ms;--t:${Math.max(.45,t.length*.06)}s">${ty(t,ms)}</span></label>`;
+  const s0=`<div class="hw-s s0"><div class="hw-h hw-up"><b>New invitation</b><small>Step 1 of 4</small></div>
+    <div class="hw-chips">${[["Wedding",1],["Homecoming"],["Birthday"],["Dana"],["Party"]].map(([n,k],i)=>`<span class="hw-pop${k?" k":""}" ${d(150+i*80)}>${n}</span>`).join("")}</div>
+    <div class="hw-grid" data-ui>${cards.map((c,i)=>`<div class="hw-up${i?"":" k"}" ${d(550+i*120)}>${c}</div>`).join("")}</div>
+    <div class="hw-btn hw-up" ${d(2200)}>Use this design</div></div>`;
+  const s1=`<div class="hw-s s1"><div class="hw-prev hw-up" ${d(100)}><small>The wedding of</small><b class="nm">${esc(ev.a)} <i>&amp;</i> ${esc(ev.b)}</b><span>${esc(fDate(ev.date,"en"))} · 9.41 AM</span></div>
+    <div class="hw-two">${f("Groom",ev.a,450)}${f("Bride",ev.b,1000)}</div>
+    <div class="hw-two">${f("Poruwa nekath","9.41 AM",1700)}${f("Reception","11.30 AM",2250)}</div>
+    ${f("Venue",ev.venue.split(",")[0],2850)}
+    <div class="hw-map hw-up" ${d(3700)}><svg viewBox="0 0 240 60" aria-hidden="true"><rect width="240" height="60" fill="#EFE6D3"/><path d="M0 40 C60 30 90 52 150 34 S220 20 240 26" stroke="#fff" stroke-width="7" fill="none"/><path d="M70 0 L95 60 M170 0 L150 60" stroke="#fff" stroke-width="4"/><path d="M0 14 H240" stroke="#DCE8D2" stroke-width="10"/></svg><span><b>📍</b>Google Maps added</span></div>
+    <div class="hw-btn hw-up" ${d(4100)}>Saved ✓ Preview updated</div></div>`;
+  const s2=`<div class="hw-s s2"><div class="hw-h hw-up"><b>Guests</b><small>4 added</small></div>
+    ${[["Nimal Uncle","N"],["Ruwani Akka","R"],["Saman Aiya","S"],["Chamari","C"]].map(([n,c],i)=>`<div class="hw-g hw-in" ${d(200+i*300)}><i>${c}</i><span><b>${n}</b><small>“Dear ${n}”</small></span><u>Link ready</u></div>`).join("")}
+    <div class="hw-add">+ Add a guest</div>
+    <div class="hw-tip hw-up" ${d(2000)}><b>${CONFIG.FREE_GUESTS} links free.</b> Every guest sees their own name on the card.</div></div>`;
+  const s3=`<div class="hw-s s3"><div class="hw-wa"><i>N</i><span><b>Nimal Uncle</b><small>online</small></span></div>
+    <div class="hw-chat"><div class="hw-m o hw-up" ${d(300)}><div class="cv" data-ui>${cardHTML("wedding",ev,"en","Nimal Uncle",(PREMIUM.wedding||[]).find(t=>t.img||t.layout)?{...(PREMIUM.wedding||[]).find(t=>t.img||t.layout),_noribbon:1}:null)}</div><p><b>Dear Nimal Uncle,</b> you are warmly invited to the wedding of ${esc(ev.a)} &amp; ${esc(ev.b)}. Open your invitation: aradhanawa.com/…</p><span class="tk">9.41<s>✓✓</s></span></div>
+      <div class="hw-dots"><i></i><i></i><i></i></div>
+      <div class="hw-m i hw-up" ${d(2900)}>Congratulations! We will be there 🙏</div></div>
+    <div class="hw-note"><i>✓</i><b>Nimal Uncle replied</b><span>Attending · 2 guests</span></div></div>`;
+  const ring=`<div class="hw-ring" aria-hidden="true"><svg viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width=".7"><circle cx="100" cy="100" r="96"/><circle cx="100" cy="100" r="88" stroke-dasharray="2 5"/>${Array.from({length:16},(_,i)=>`<path transform="rotate(${i*22.5} 100 100)" d="M100 12C94 22 94 30 100 38C106 30 106 22 100 12Z"/>`).join("")}</svg></div>`;
+  return `<div class="hw rv" id="hw" style="--dur:5600ms">
+    <div class="hw-ph" aria-hidden="true">${ring}<div class="hw-dev"><div class="hw-scr"><div class="hw-sb"><span>9:41</span><i></i><span><b style="height:4px"></b><b style="height:6px"></b><b style="height:8px"></b><b style="height:10px"></b></span></div>${s0}${s1}${s2}${s3}</div></div></div>
+    <div><div class="hw-steps" role="tablist" aria-label="How it works">${LP_HOW.map(([a,b,c],i)=>`<button class="hw-t" type="button" role="tab" aria-selected="${i===0}" data-hw="${i}"><span class="pb"><i></i></span><span class="no">0${i+1}</span><h3>${a} <em>${b}</em></h3><span class="ds"><p>${c}</p></span></button>`).join("")}</div>
+    <div class="hw-cap" aria-live="polite"><h3>${LP_HOW[0][0]} <em>${LP_HOW[0][1]}</em></h3><p>${LP_HOW[0][2]}</p></div></div></div>`;
+}
+function lpHowBind(){
+  const W=document.getElementById("hw"); if(!W) return;
+  const tabs=[...W.querySelectorAll(".hw-t")], scr=[...W.querySelectorAll(".hw-s")], cap=W.querySelector(".hw-cap");
+  let cur=-1;
+  const go=i=>{ i=(i+tabs.length)%tabs.length;
+    tabs.forEach((t,k)=>{ t.setAttribute("aria-selected",String(k===i)); t.tabIndex=k===i?0:-1 });
+    const bar=tabs[i].querySelector(".pb i"); bar.style.animation="none"; void bar.offsetWidth; bar.style.animation="";
+    scr.forEach((s,k)=>s.classList.toggle("on",k===i));
+    if(cur!==-1&&cur!==i){ cap.innerHTML=`<h3>${LP_HOW[i][0]} <em>${LP_HOW[i][1]}</em></h3><p>${LP_HOW[i][2]}</p>`; cap.classList.remove("sw"); void cap.offsetWidth; cap.classList.add("sw") }
+    cur=i };
+  tabs.forEach((t,k)=>{ t.onclick=()=>go(k); t.querySelector(".pb i").addEventListener("animationend",e=>{ if(e.animationName==="hwBar"&&k===cur) go(k+1) }) });
+  W.querySelector(".hw-steps").addEventListener("keydown",e=>{ const m={ArrowRight:1,ArrowDown:1,ArrowLeft:-1,ArrowUp:-1}[e.key]; if(m){ e.preventDefault(); go(cur+m); tabs[cur].focus() } });
+  const st=W.querySelector(".hw-steps"); st.addEventListener("mouseenter",()=>W.classList.add("hold")); st.addEventListener("mouseleave",()=>W.classList.remove("hold"));
+  go(0);
+  if(!("IntersectionObserver" in window)){ W.classList.add("run"); return }
+  new IntersectionObserver(es=>es.forEach(e=>W.classList.toggle("run",e.isIntersecting)),{threshold:.35}).observe(W);
+}
 const LP_BANDS=[
   {h:"Put every guest's name on the card",fb:"var(--l-lotus)",fi:"#1E1418",on:1,c:()=>`Nimal Uncle opens a card that begins <b>Dear Nimal Uncle</b>. The first ${CONFIG.FREE_GUESTS} personal links are free.`},
   {h:"Count down to your nekath minute",fb:"var(--l-gold)",fi:"#1E1418",on:1,c:()=>`<b data-t="${TYPES.wedding.sample.date}T09:41"><span data-u="d">0</span> days, <span data-u="h">0</span> hours and <span data-u="m">0</span> minutes</b> until the 9.41 AM poruwa on the sample card.`},
@@ -3417,7 +3589,7 @@ function render(){
     phead:()=>`<section class="lp-phead" data-f="paper">${lpOrn()}<span class="lp-eb">${LP_PH[PG][0]}</span><h1>${LP_PH[PG][1]}</h1><p>${LP_PH[PG][2]}</p></section>`,
     detail:()=>lpDetail(),
     steps:()=>`<section class="lp-steps g" id="how" data-f="paper">${lpOrn()}<span class="lp-eb">How it works</span><h2>Four steps, <em>ten minutes</em></h2>
-      <ol>${[["Pick","the function and a card","Wedding, homecoming, birthday, dana, party or anything else."],["Fill","names, date and nekath","Venue, map, poruwa time, reception and a note for guests."],["Add","your guests","Each guest gets a link that opens with their own name on the card."],["Send","on WhatsApp","The message is written for you in Sinhala, Singlish or English."]].map(([a,b,c],i)=>`<li class="rv" style="--d:${i*90}ms"><span class="no">${i+1}</span><h3>${a} <em>${b}</em></h3><p>${c}</p></li>`).join("")}</ol>
+      ${lpHow()}
       <div class="st-go">${lpNakath()}</div></section>`
   };
   const ORDER={home:["hero","feat","steps","real","try","bands","cta","foot"],designs:["phead","des","cta","foot"],design:["detail","foot"],create:["phead","make","foot"],pricing:["phead","price","faq","cta","foot"]}[PG]||["hero","foot"];
@@ -3434,6 +3606,7 @@ function lpBind(){
   const R=$("#howR"); const set=i=>{ i=+i; R.value=i; R.setAttribute("aria-valuetext",LP_STAGES[i][0]); R.parentElement.style.setProperty("--p",(i/3*100)+"%");
     const H=$("#howH"), F=$("#howF"); H.style.opacity=F.style.opacity=0; setTimeout(()=>{ H.textContent=LP_STAGES[i][1]; F.innerHTML=lpFrag(i); H.style.opacity=F.style.opacity=1 },200);
     document.querySelectorAll("[data-st]").forEach(b=>b.setAttribute("aria-current",String(+b.dataset.st===i))) };
+  lpHowBind();
   if(R) R.addEventListener("input",()=>set(R.value)); document.querySelectorAll("[data-st]").forEach(b=>b.onclick=()=>set(b.dataset.st));
   document.querySelectorAll("[data-band]").forEach(t=>t.onclick=()=>{ const on=t.getAttribute("aria-checked")!=="true"; t.setAttribute("aria-checked",on); t.closest(".lp-band").classList.toggle("on",on); const ph=document.getElementById("bdPhone"); if(ph) ph.classList.toggle("f"+t.dataset.band,on);
     if(t.hasAttribute("data-bandmusic")){ if(on) lxPlay(); else lxStop() } });

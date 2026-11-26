@@ -1182,8 +1182,13 @@ nav.top a{font-weight:600}
 .card.thc .txt{z-index:2}
 @media (prefers-reduced-motion:reduce){.card.thc *,.card.thc .frame::before{animation:none!important}.card.thc .frame,.card.thc .corner{clip-path:none;opacity:1}.cpt{display:none}}
 /* ---- themed sites: motion of side art, particles, dark themes ---- */
-.site.lotus:not(.th-lotus):not(.th-maroon) :is(.lx-cover,.lx-hero) > .lx-mandala{display:none}
-.site.lotus:not(.th-lotus):not(.th-maroon) :is(.lx-cover,.lx-hero){padding-top:110px}
+.site.lotus:not(.th-lotus):not(.th-lotusblue):not(.th-maroon) :is(.lx-cover,.lx-hero) > .lx-mandala{display:none}
+.site.lotus:not(.th-lotus):not(.th-lotusblue):not(.th-maroon) :is(.lx-cover,.lx-hero){padding-top:110px}
+/* Lotus Mandala Blue: white card, gold mandala and leaves, royal blue lotus and text */
+.site.th-lotusblue{color:#2B3654;background-color:#FFFFFF}
+.site.th-lotusblue :is(.lx-date,.lx-tag,.lx-cd small){color:#2B3654}
+.fx-blue .lx-petals i{background:linear-gradient(135deg,#E3EAF8,#9FB5E4);box-shadow:inset -1px -1px 2px rgba(40,70,140,.2)}
+.fx-blue .lx-petals i:nth-child(3n){background:linear-gradient(135deg,#FCE7A8,#C9993F)}
 .th-dark{background:var(--c-bg)!important}
 .mo-bob .lx-bgfx .fl.l{transform-origin:50% 50%;animation:lxbobL 6.5s ease-in-out infinite alternate}
 .mo-bob .lx-bgfx .fl.r{transform-origin:50% 50%;animation:lxbobR 7.5s ease-in-out infinite alternate;animation-delay:-2s}
@@ -1388,6 +1393,7 @@ nav.top a{font-weight:600}
 @media (prefers-reduced-motion:reduce){.gv-txt > *,.gv-open{animation:none;opacity:1;transform:none}.gv-open{transform:translateX(-50%)}}
 /* card thumbnail. The vine strips use % (of the card width): cqw on the card itself would measure the page, not the card. */
 .card.L-lotus{background:var(--lx-l) left top/17% auto repeat-y,var(--lx-r) right top/17% auto repeat-y,linear-gradient(118deg,rgba(255,255,255,0) 18%,rgba(255,255,255,.55) 32%,rgba(255,255,255,0) 46%),linear-gradient(165deg,#F9F4EB,#EDE2CF 52%,#F7F0E4)}
+.card.L-lotus.ds-lotusblue{background:var(--lxb-l) left top/17% auto repeat-y,var(--lxb-r) right top/17% auto repeat-y,linear-gradient(118deg,rgba(255,255,255,0) 18%,rgba(255,255,255,.7) 32%,rgba(255,255,255,0) 46%),linear-gradient(165deg,#FFFFFF,#F3F5FA 52%,#FFFFFF)}
 .card.L-lotus .frame,.card.L-lotus .corner{display:none}
 .card.L-lotus .art{padding:0 0 0;display:block}
 .card.L-lotus .art svg{width:100%;max-height:none;display:block;margin-top:-9cqw}
@@ -2338,6 +2344,9 @@ function lxStrip(){
   ${lxPad(62,470,1,-14)}${lxBud(78,54,1,14,0)}${lxBud(20,20,.8,6,1)}
   ${lxLotus(40,124,1.05,"w")}${lxLotus(26,334,.95,"p")}${lxBud(70,250,.9,18,0)}${lxLotus(48,548,1.15,"w")}</svg>`;
 }
+/* Lotus Mandala Blue: the same drawn lotus art, pink lotus to royal blue and green stems to gold */
+const LX_BLUE={"#EFC9C6":"#93ACE3","#F3EAD8":"#EAF0FA","#FCF7EC":"#FFFFFF","#F8DEDA":"#D2DEF5","#FCEDEA":"#EEF3FC","#F2D3CF":"#BCCDEF","#E6E8D8":"#F4ECD8","#A9B08E":"#C2A262","#9AA67F":"#B8964F","#B9C2A0":"#D9C08A","#E4E6D4":"#F5EEDC"};
+const lxBlue = svg => svg.replace(/#[0-9A-F]{6}/g,c=>LX_BLUE[c]||c);
 const lxUri = svgStr => `url("data:image/svg+xml,${encodeURIComponent(svgStr.replace(/\s+/g," "))}")`;
 function lxMandala(cls,full){
   const ring=(n,fn)=>{let o="";for(let i=0;i<n;i++)o+=`<g transform="rotate(${(i*360/n).toFixed(2)})">${fn(i)}</g>`;return o};
@@ -2356,7 +2365,8 @@ const lxRule = () => `<div class="lx-rule" aria-hidden="true"><i></i><b>◆</b><
 function lxCSS(){
   if(document.getElementById("lxcss")) return;
   const st=lxStrip(), s=document.createElement("style"); s.id="lxcss";
-  s.textContent=`:root{--lx-l:${lxUri(st)};--lx-r:${lxUri(st.replace('<svg ','<svg ').replace(/(<svg[^>]*>)/,'$1<g transform="translate(120 0) scale(-1 1)">').replace('</svg>','</g></svg>'))}}`;
+  const flip=x=>x.replace(/(<svg[^>]*>)/,'$1<g transform="translate(120 0) scale(-1 1)">').replace('</svg>','</g></svg>'), bl=lxBlue(st);
+  s.textContent=`:root{--lx-l:${lxUri(st)};--lx-r:${lxUri(flip(st))};--lxb-l:${lxUri(bl)};--lxb-r:${lxUri(flip(bl))}}`;
   document.head.appendChild(s);
 }
 /* music */
@@ -2713,9 +2723,13 @@ const MORE = {
 for(const k in MORE) PREMIUM[k].push(...MORE[k]);
 const LOTUS_DESIGN = {n:"Lotus Mandala", layout:"lotus", site:"lotus", bg:"#F6F0E4", gold:"#B39256", soft:"#6E625A", ink:"#7A1F2B"};
 PREMIUM.wedding.push({...LOTUS_DESIGN});
+/* Lotus Mandala Blue: a customer's colours on the Lotus Mandala (white card, gold mandala, royal blue lotus and text) */
+const LOTUS_BLUE = {n:"Lotus Mandala Blue", layout:"lotus", site:"lotusblue", bg:"#FFFFFF", gold:"#B8934A", soft:"#5B6680", ink:"#1F3C88"};
+PREMIUM.wedding.push({...LOTUS_BLUE});
 /* Animated themed sites (silk / velvet / night backgrounds with moving side art). mo = how the side art moves, fx = falling or rising particles */
 const LX_TH = {
   lotus:{bg:"img/ivory-silk-900.webp", l:"img/ivory-lotus-l.webp", r:"img/ivory-lotus-r.webp", hero:"ivory-couple", venue:"img/venue-lineart-900.webp", mo:"sway", fx:"petal"},
+  lotusblue:{bg:"img/th-lotusblue-bg.webp", l:"img/th-lotusblue-l.webp", r:"img/th-lotusblue-r.webp", hero:"ivory-couple", venue:"img/th-lotusblue-venue.webp", mo:"sway", fx:"blue"},
   sage:{p:"th-sage", mo:"sway", fx:"jasmine"}, blush:{p:"th-blush", mo:"sway", fx:"rose"},
   balloons:{p:"th-balloons", mo:"bob", fx:"confetti"}, glam:{p:"th-glam", mo:"bob", fx:"gold", dark:1},
   lanterns:{p:"th-lanterns", mo:"swing", fx:"spark", dark:1, glow:1}, maroon:{p:"th-maroon", mo:"swing", fx:"ember", dark:1, glow:1},
@@ -2744,7 +2758,7 @@ const TH_DESIGN = {
 /* For now the site only offers the animated themed designs. Older designs stay in the code but are not listed. */
 for(const k in PREMIUM) PREMIUM[k]=PREMIUM[k].filter(t=>LX_TH[t.site]);
 /* Invitations already sent keep the design they were made with (p.d), even if that design has since moved to another function */
-const DESIGN_BY_SITE = {lotus:LOTUS_DESIGN, ...TH_DESIGN};
+const DESIGN_BY_SITE = {lotus:LOTUS_DESIGN, lotusblue:LOTUS_BLUE, ...TH_DESIGN};
 const findDesign = (type,d) => d ? ((PREMIUM[type]||[]).find(x=>x.site===d) || DESIGN_BY_SITE[d] || null) : null;
 const hasTh = k => PREMIUM[k].length>0;
 const tplOf = k => S.tpl[k] || (hasTh(k)?1:0);
@@ -2950,7 +2964,7 @@ function cardHTML(type, ev, lang, guest, prem){
   }
   const c="var(--c-gold)";
   const thc = prem&&prem.site&&LX_TH[prem.site]&&/-card$/.test(prem.img||"") ? LX_TH[prem.site] : null;
-  const pc = prem ? `${prem.img&&prem.mode?`photo-${prem.mode}`:""} ${prem.layout?`L-${prem.layout}`:""} ${thc?`thc cm-${thc.mo} cx-${thc.fx} ${thc.glow?"cglow":""}`:""}` : "";
+  const pc = prem ? `${prem.img&&prem.mode?`photo-${prem.mode}`:""} ${prem.layout?`L-${prem.layout}`:""} ${prem.site?`ds-${prem.site}`:""} ${thc?`thc cm-${thc.mo} cx-${thc.fx} ${thc.glow?"cglow":""}`:""}` : "";
   return `<article class="card t-${type} ${si?"si":""} ${pc}" aria-label="Invitation preview" ${prem?`style="${tplVars(prem)}"`:""}>
     ${prem&&!prem._noribbon?`<div class="ribbon">Preview</div>`:""}
     <div class="frame"></div>${["tl","tr","bl","br"].map(p=>corner(c).replace("%POS%",p)).join("")}

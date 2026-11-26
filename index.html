@@ -1380,7 +1380,7 @@ nav.top a{font-weight:600}
 @keyframes gvin{to{opacity:1;transform:none}}
 .gv-k{margin:0;font:400 54px/1.1 "Pinyon Script",cursive;color:#FFF6EE}
 .gload.gv.si .gv-k{font:700 30px/1.4 "Noto Serif Sinhala",serif}
-.gv-txt small{font:600 12px/1.4 "Plus Jakarta Sans","Noto Sans Sinhala",sans-serif;letter-spacing:.28em;text-transform:uppercase;opacity:.92}
+.gv-txt small{font:600 12px/1.4 "Plus Jakarta Sans","Noto Sans Sinhala",sans-serif;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.92)}
 .gload.gv.si .gv-txt small{letter-spacing:.04em;font-size:13px}
 .gv-n{margin:4px 0;display:grid;justify-items:center;font:500 40px/1.1 "Cormorant Garamond","Noto Serif Sinhala",serif;letter-spacing:.16em;text-transform:uppercase}
 .gv-n i{font:400 40px/1.1 "Pinyon Script",cursive;letter-spacing:0;color:#F7D9C4;text-transform:none}
@@ -1389,8 +1389,43 @@ nav.top a{font-weight:600}
 .gv-open{position:absolute;left:50%;bottom:calc(64px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);border:1px solid rgba(255,255,255,.6);cursor:pointer;padding:15px 30px;border-radius:999px;background:rgba(255,248,242,.9);color:#6E2E3E;font:600 15px/1 "Plus Jakarta Sans","Noto Sans Sinhala",sans-serif;letter-spacing:.06em;white-space:nowrap;box-shadow:0 14px 30px -12px rgba(0,0,0,.5);opacity:0;animation:gvbtn .9s ease 3.8s forwards,gvpulse 2.6s ease-in-out 4.8s infinite}
 @keyframes gvbtn{to{opacity:1}}
 @keyframes gvpulse{50%{box-shadow:0 14px 30px -12px rgba(0,0,0,.5),0 0 0 10px rgba(255,248,242,.18)}}
-.gload.gv .gl-skip{left:auto;right:16px;top:calc(14px + env(safe-area-inset-top,0px));bottom:auto;color:#fff;opacity:.8;z-index:2}
+.gload.gv .gl-skip{left:auto;right:16px;top:calc(14px + env(safe-area-inset-top,0px));bottom:auto;color:#fff;opacity:.8;z-index:4}
+.gload.gv.shut .gl-skip{color:#8A7448;opacity:.9}
 @media (prefers-reduced-motion:reduce){.gv-txt > *,.gv-open{animation:none;opacity:1;transform:none}.gv-open{transform:translateX(-50%)}}
+/* Cathedral Vows: closed church doors swing open onto the aisle video, then the names fade in */
+.gload.gv.gi-doors.shut .gv-txt > *,.gload.gv.gi-doors.shut .gv-open,.gload.gv.gi-doors.opening:not(.opened) .gv-txt > *,.gload.gv.gi-doors.opening:not(.opened) .gv-open{animation-play-state:paused}
+.gload.gv.gi-doors .gv-vid{transform:scale(1.18);transition:transform 3.4s cubic-bezier(.3,.6,.2,1)}
+.gload.gv.gi-doors.opening .gv-vid{transform:none}
+.gv-doors{position:absolute;inset:0;perspective:1600px;z-index:1;pointer-events:none}
+.gload.gv.shut .gv-doors{pointer-events:auto}
+.gv-doors .gd{position:absolute;top:0;bottom:0;width:50%;overflow:hidden;backface-visibility:hidden;transition:transform 2.4s cubic-bezier(.55,.05,.25,1),opacity .6s ease 1.9s;box-shadow:0 0 40px rgba(60,40,10,.25)}
+.gv-doors .gd img{position:absolute;top:0;height:100%;width:200%;object-fit:cover;max-width:none}
+.gv-doors .gd.l{left:0;transform-origin:0 50%}.gv-doors .gd.l img{left:0}
+.gv-doors .gd.r{right:0;transform-origin:100% 50%}.gv-doors .gd.r img{right:0}
+.gload.gv.opening .gd.l{transform:rotateY(-104deg);opacity:0}
+.gload.gv.opening .gd.r{transform:rotateY(104deg);opacity:0}
+.gd-glow{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 45%,rgba(255,252,240,.95),rgba(255,252,240,0) 60%);opacity:0;pointer-events:none}
+.gload.gv.opening .gd-glow{animation:gdglow 2.6s ease forwards}
+@keyframes gdglow{30%{opacity:1}100%{opacity:0}}
+.gd-txt{position:absolute;left:50%;top:50%;transform:translate(-50%,-56%);width:min(84%,340px);display:grid;justify-items:center;gap:8px;text-align:center;padding:26px 18px 22px;border-radius:24px;background:rgba(255,253,248,.82);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border:1px solid rgba(184,150,79,.45);box-shadow:0 18px 40px -24px rgba(80,60,20,.5);color:#4A4234;transition:opacity .5s ease}
+.gload.gv.opening .gd-txt{opacity:0}
+.gd-txt small{font:600 11px/1.4 "Plus Jakarta Sans","Noto Sans Sinhala",sans-serif;letter-spacing:.3em;text-transform:uppercase;color:#8A7448}
+.gload.gv.si .gd-txt small{letter-spacing:.04em;font-size:13px}
+.gd-txt .gv-n{color:#4A4234;font-size:30px}.gd-txt .gv-n i{color:#B8964F;font-size:34px}
+.gd-txt .gv-d{background:rgba(184,150,79,.12);border-color:rgba(184,150,79,.4);color:#4A4234}
+.gd-open{margin-top:8px;display:inline-flex;align-items:center;gap:8px;border:0;cursor:pointer;padding:13px 24px;border-radius:999px;background:linear-gradient(180deg,#D9BC7C,#B8964F);color:#fff;font:600 14px/1 "Plus Jakarta Sans","Noto Sans Sinhala",sans-serif;letter-spacing:.06em;box-shadow:0 10px 22px -10px rgba(120,90,30,.8);animation:gvpulse 2.6s ease-in-out 1.5s infinite}
+.gd-open svg{width:18px;height:18px}
+/* Sunset Vows: the names come in with the bouquet toss, and a burst of petals carries the guest into the invitation */
+.gload.gv.gi-burst .gv-txt > :nth-child(1){animation-delay:2.2s}.gload.gv.gi-burst .gv-txt > :nth-child(2){animation-delay:2.6s}.gload.gv.gi-burst .gv-txt > :nth-child(3){animation-delay:3s}.gload.gv.gi-burst .gv-txt > :nth-child(4){animation-delay:3.4s}.gload.gv.gi-burst .gv-txt > :nth-child(5){animation-delay:3.7s}.gload.gv.gi-burst .gv-txt > :nth-child(6){animation-delay:4s}
+.gload.gv.gi-burst .gv-open{animation-delay:4.4s,5.4s}
+.gload.gv.go .gv-open,.gload.gv.go .gv-txt{opacity:0!important;transition:opacity .4s}
+.gv-petals{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:3}
+.gv-petals i{position:absolute;left:50%;top:58%;width:26px;height:34px;margin:-17px 0 0 -13px;border-radius:80% 10% 80% 10%;background:radial-gradient(circle at 30% 30%,#fff,#FBE3DA 70%);box-shadow:0 2px 6px rgba(120,60,40,.18);opacity:0;animation:gvpetal 1.5s cubic-bezier(.15,.7,.3,1) forwards}
+.gv-petals i.c1{background:radial-gradient(circle at 30% 30%,#fff,#F7C9C0 75%)}.gv-petals i.c2{background:radial-gradient(circle at 30% 30%,#fff,#F3E9DE 70%)}.gv-petals i.c3{background:radial-gradient(circle at 30% 30%,#FFF6E8,#F2B9A0 80%)}
+@keyframes gvpetal{0%{opacity:0;transform:translate(0,0) rotate(0) scale(.3)}12%{opacity:1}100%{opacity:1;transform:translate(var(--x),var(--y)) rotate(var(--r)) scale(calc(var(--s)*3))}}
+.gv-petals b{position:absolute;inset:0;background:radial-gradient(circle at 50% 58%,#FFF9F3,#FCEDE4);opacity:0;animation:gvwhite 1.5s ease .5s forwards}
+@keyframes gvwhite{to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.gv-doors .gd,.gload.gv.gi-doors .gv-vid{transition:none}.gd-open{animation:none}}
 /* card thumbnail. The vine strips use % (of the card width): cqw on the card itself would measure the page, not the card. */
 .card.L-lotus{background:var(--lx-l) left top/17% auto repeat-y,var(--lx-r) right top/17% auto repeat-y,linear-gradient(118deg,rgba(255,255,255,0) 18%,rgba(255,255,255,.55) 32%,rgba(255,255,255,0) 46%),linear-gradient(165deg,#F9F4EB,#EDE2CF 52%,#F7F0E4)}
 .card.L-lotus.ds-lotusblue{background:var(--lxb-l) left top/17% auto repeat-y,var(--lxb-r) right top/17% auto repeat-y,linear-gradient(118deg,rgba(255,255,255,0) 18%,rgba(255,255,255,.7) 32%,rgba(255,255,255,0) 46%),linear-gradient(165deg,#FFFFFF,#F3F5FA 52%,#FFFFFF)}
@@ -2855,6 +2890,9 @@ const LX_TH = {
   nelum:{p:"th-nelum", mo:"sway", fx:"petal", lay:"trad"},
   drive:{video:"img/th-drive", bg:"img/th-drive-poster.webp", l:"img/th-drive-l.webp", r:"img/th-drive-r.webp", hero:"th-drive-hero", venue:"img/venue-lineart-900.webp", mo:"sway", fx:"rose"},
   navy:{p:"th-navy", mo:"sway", fx:"jasmine", dark:1},
+  /* intro video wedding cards: intro "doors" = church doors swing open onto the video, "burst" = a burst of petals carries you into the invitation */
+  chapel:{video:"img/th-chapel", bg:"img/th-chapel-poster.webp", l:"img/th-chapel-l.webp", r:"img/th-chapel-r.webp", hero:"th-chapel-hero", venue:"img/th-chapel-venue.webp", mo:"sway", fx:"petal", intro:"doors", doors:"img/th-chapel-doors.webp"},
+  sunset:{video:"img/th-sunset", bg:"img/th-sunset-poster.webp", l:"img/th-sunset-l.webp", r:"img/th-sunset-r.webp", hero:"th-sunset-hero", venue:"img/th-sunset-venue.webp", mo:"sway", fx:"rose", intro:"burst"},
   pumpkin:{p:"th-pumpkin", mo:"sway", fx:"leaf"}, haunted:{p:"th-haunted", mo:"swing", fx:"wisp", dark:1, glow:1}
 };
 for(const k in LX_TH){ const t=LX_TH[k]; if(t.p) Object.assign(t,{bg:`img/${t.p}-bg.webp`, l:`img/${t.p}-l.webp`, r:`img/${t.p}-r.webp`, hero:`${t.p}-hero`, venue:`img/${t.p}-venue.webp`}) }
@@ -2867,13 +2905,15 @@ const TH_DESIGN = {
   maroon:{n:"Kandyan Maroon", img:"th-maroon-card", mode:"bg", veil:"rgba(40,6,14,.2)", site:"maroon", bg:"#4A0E1C", gold:"#E2B65A", soft:"#EBCBA5", ink:"#FFF1DC", wine:"#6E1426"},
   nelum:{n:"Ran Nelum", img:"th-nelum-card", mode:"bg", veil:"rgba(255,255,255,0)", site:"nelum", bg:"#FAEEE9", gold:"#B98A3C", soft:"#7D6560", ink:"#7A5216", wine:"#B06A60"},
   drive:{n:"Palm Drive", img:"th-drive-card", mode:"bg", veil:"rgba(255,255,255,0)", site:"drive", bg:"#FBF1EE", gold:"#B88A55", soft:"#7C6460", ink:"#6E2E3E", wine:"#9A4A5C"},
+  chapel:{n:"Cathedral Vows", img:"th-chapel-card", mode:"bg", veil:"rgba(255,255,255,0)", site:"chapel", bg:"#FBF8F2", gold:"#B8964F", soft:"#6F6A60", ink:"#4A4234", wine:"#8A7448"},
+  sunset:{n:"Sunset Vows", img:"th-sunset-card", mode:"bg", veil:"rgba(255,255,255,0)", site:"sunset", bg:"#FFF5EC", gold:"#C98B4A", soft:"#7A5E52", ink:"#7A3B2A", wine:"#A2533B"},
   navy:{n:"Navy Promise", img:"th-navy-card", mode:"bg", veil:"rgba(8,14,40,.15)", site:"navy", bg:"#14234F", gold:"#E2BC68", soft:"#D6DDEE", ink:"#FFFFFF", wine:"#1B2A5A"},
   pumpkin:{n:"Pumpkin Patch", img:"th-pumpkin-card", mode:"bg", veil:"rgba(255,255,255,0)", site:"pumpkin", bg:"#FBF1E4", gold:"#C8651B", soft:"#7A5A44", ink:"#8A3A12"},
   haunted:{n:"Haunted Night", img:"th-haunted-card", mode:"bg", veil:"rgba(14,8,32,.25)", site:"haunted", bg:"#1A1233", gold:"#F2A33A", soft:"#D8CFF2", ink:"#FFF1DE", wine:"#3B2466"}
 };
 /* Each design is listed under one function only, so the Designs page shows no repeats.
-   Palm Drive (the intro video card) is a wedding card; Blush Rose, Navy Promise and Lotus Mandala Blue are the engagement cards. */
-[["wedding","nelum"],["wedding","drive"],["engagement","blush"],["engagement","navy"],["homecoming","sage"],["birthday","balloons"],["party","lanterns"],["party","glam"],["other","maroon"],["halloween","pumpkin"],["halloween","haunted"]].forEach(([k,t])=>PREMIUM[k].push({...TH_DESIGN[t]}));
+   Palm Drive, Cathedral Vows and Sunset Vows (the intro video cards) are wedding cards; Blush Rose, Navy Promise and Lotus Mandala Blue are the engagement cards. */
+[["wedding","nelum"],["wedding","drive"],["wedding","chapel"],["wedding","sunset"],["engagement","blush"],["engagement","navy"],["homecoming","sage"],["birthday","balloons"],["party","lanterns"],["party","glam"],["other","maroon"],["halloween","pumpkin"],["halloween","haunted"]].forEach(([k,t])=>PREMIUM[k].push({...TH_DESIGN[t]}));
 /* For now the site only offers the animated themed designs. Older designs stay in the code but are not listed. */
 for(const k in PREMIUM) PREMIUM[k]=PREMIUM[k].filter(t=>LX_TH[t.site]);
 /* Invitations already sent keep the design they were made with (p.d), even if that design has since moved to another function */
@@ -4342,30 +4382,46 @@ function guestSealLoader(p,type,card){
   el.querySelector(".gl-skip").addEventListener("click",fin);
   return el;
 }
-/* Engagement and Palm Drive opener: the palm drive intro video plays full screen, the names fade in over it, one tap opens the invitation */
+/* Intro video opener (Palm Drive, Cathedral Vows, Sunset Vows, and engagement cards made before designs were saved):
+   the design's video plays full screen, the names fade in over it, one tap opens the invitation.
+   Cathedral Vows first shows closed church doors that swing open onto the video; Sunset Vows leaves through a burst of petals. */
 const GV_VIDEO="img/th-drive";
 function guestVideoLoader(p,type){
   const si=p.l==="si", ev=p.e||{}, L=(e,s)=>si?s:e, D=fDate(ev.date,si?"si":"en");
+  const TH=(p.d&&LX_TH[p.d]&&LX_TH[p.d].video)?LX_TH[p.d]:{video:GV_VIDEO}, VID=TH.video, intro=TH.intro||"";
   const nm=[ev.a,ev.b].filter(Boolean).map(x=>`<span>${esc(x)}</span>`).join(`<i>&amp;</i>`);
+  const kick=intro==="doors"?L("Holy matrimony","විවාහ මංගල්‍යය"):L("Save the date","දිනය මතක තබාගන්න");
   const gw=document.querySelector(".gwrap"); gw&&gw.classList.remove("in");
-  const el=document.createElement("div"); el.className="gload gv t-"+type+(si?" si":"");
-  el.innerHTML=`<video class="gv-vid" src="${GV_VIDEO}.mp4" poster="${GV_VIDEO}-poster.webp" autoplay muted loop playsinline preload="auto"></video><div class="gv-veil"></div>
-  <div class="gv-txt"><p class="gv-k">${L("Save the date","දිනය මතක තබාගන්න")}</p><small>${L("Together with our families","දෙපාර්ශවයේ දෙමාපියන් සමඟ")}</small>
+  const el=document.createElement("div"); el.className="gload gv t-"+type+(si?" si":"")+(intro?" gi-"+intro:"")+(intro==="doors"?" shut":"");
+  const doors=intro==="doors"?`<div class="gv-doors"><div class="gd l"><img src="${TH.doors}" alt=""></div><div class="gd r"><img src="${TH.doors}" alt=""></div><div class="gd-glow"></div>
+    <div class="gd-txt"><small>${L("The wedding of","විවාහ මංගල්‍යය")}</small>${nm?`<h1 class="gv-n">${nm}</h1>`:""}${D?`<p class="gv-d">${esc(D)}</p>`:""}
+    <button type="button" class="gd-open"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M5 21V9a7 7 0 0 1 14 0v12M12 4v17M3 21h18"/></svg>${L("Open the doors","දොරටු විවෘත කරන්න")}</button></div></div>`:"";
+  el.innerHTML=`<video class="gv-vid" src="${VID}.mp4" poster="${VID}-poster.webp" autoplay muted loop playsinline preload="auto"></video><div class="gv-veil"></div>
+  <div class="gv-txt"><p class="gv-k">${kick}</p><small>${L("Together with our families","දෙපාර්ශවයේ දෙමාපියන් සමඟ")}</small>
     ${nm?`<h1 class="gv-n">${nm}</h1>`:""}<small>${type==="wedding"?L("are getting married","විවාහ වෙති"):L("are getting engaged","විවාහ ගිවිස ගනිති")}</small>${D?`<p class="gv-d">${esc(D)}</p>`:""}${p.g?`<em>${si?"ආදරණීය":"Dear"} ${esc(p.g)}</em>`:""}</div>
-  <button type="button" class="gv-open">${L("Open invitation","ආරාධනාව විවෘත කරන්න")}</button>
+  <button type="button" class="gv-open">${L("Open invitation","ආරාධනාව විවෘත කරන්න")}</button>${doors}
   <button type="button" class="gl-skip">${si?"මඟ හරින්න":"Skip"}</button>`;
   document.body.appendChild(el); document.documentElement.style.overflow="hidden";
   const v=el.querySelector("video"); v.muted=true; const pl=v.play(); pl&&pl.catch(()=>{});
+  const still=matchMedia("(prefers-reduced-motion:reduce)").matches;
   let done=false; const fin=()=>{ if(done) return; done=true; lxPlay();
     document.querySelectorAll(".gwrap .site.locked").forEach(s=>s.classList.remove("locked")); window.scrollTo(0,0);
     el.classList.add("out"); gw&&gw.classList.add("in"); document.documentElement.style.overflow=""; setTimeout(()=>el.remove(),800) };
-  el.querySelector(".gv-open").addEventListener("click",fin); el.querySelector(".gl-skip").addEventListener("click",fin);
+  /* petal burst: petals fly out from the middle and fill the screen, then the invitation shows through */
+  const burst=()=>{ if(done||el.classList.contains("go")) return; if(still) return fin(); el.classList.add("go");
+    const B=document.createElement("div"); B.className="gv-petals"; let h="";
+    for(let i=0;i<64;i++){ const a=Math.random()*Math.PI*2, r=40+Math.random()*80, c=i%4;
+      h+=`<i class="c${c}" style="--x:${(Math.cos(a)*r).toFixed(1)}vmax;--y:${(Math.sin(a)*r-10).toFixed(1)}vmax;--r:${Math.round(Math.random()*720-360)}deg;--s:${(.7+Math.random()*1.6).toFixed(2)};animation-delay:${(Math.random()*.35).toFixed(2)}s"></i>` }
+    B.innerHTML=h+`<b></b>`; el.appendChild(B); setTimeout(fin,1500) };
+  const open=intro==="burst"?burst:fin;
+  el.querySelector(".gv-open").addEventListener("click",open); el.querySelector(".gl-skip").addEventListener("click",fin);
+  if(intro==="doors"){ el.querySelector(".gd-open").addEventListener("click",()=>{ if(!el.classList.contains("shut")) return; el.classList.remove("shut"); el.classList.add("opening"); const pv=v.play(); pv&&pv.catch(()=>{}); try{v.currentTime=0}catch(e){} setTimeout(()=>el.classList.add("opened"),still?0:2400) }) }
   return el;
 }
 function guestLoader(p,type,card){
   if(p.x==="env") return guestEnvLoader(p,type,card);
   if(p.x==="seal") return guestSealLoader(p,type,card);
-  if(p.d==="drive"||(type==="engagement"&&!p.d)) return guestVideoLoader(p,type); /* only the Palm Drive card opens with its intro video; other engagement designs (Navy Promise) get the envelope opener */
+  if((p.d&&LX_TH[p.d]&&LX_TH[p.d].video)||(type==="engagement"&&!p.d)) return guestVideoLoader(p,type); /* the intro video cards (Palm Drive, Cathedral Vows, Sunset Vows) open with their own video; other designs get their own opener */
   const si=p.l==="si", cs=card?getComputedStyle(card):null, v=k=>cs&&cs.getPropertyValue(k).trim();
   const ini=p.e.a&&p.e.b?`${p.e.a[0]}${p.e.b[0]}`:((p.e.title||p.e.a||"A")[0]);
   const C=GL_COPY[type]||GL_COPY.other, cp=si?C.si:C.en;

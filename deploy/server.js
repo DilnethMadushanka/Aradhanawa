@@ -2,7 +2,7 @@
  *
  * Does what Vercel did for this repo, with no extra npm packages:
  *   - serves the static site from the repo root, with vercel.json's cleanUrls, rewrites and img/ cache header
- *   - runs the Vercel-style functions in api/ (api/pay/create, return, webhook; api/photos/upload, delete; api/music/upload, delete) with the same req/res helpers
+ *   - runs the Vercel-style functions in api/ (api/pay/create, return, webhook, bank, verify, slip; api/photos/upload, delete; api/music/upload, delete) with the same req/res helpers
  *
  * Settings come from the environment (systemd loads them from /opt/aradhanawa/.env):
  *   PORT (default 3000), HOST (default 127.0.0.1), GENIE_API_KEY, FIREBASE_SERVICE_ACCOUNT, SITE_URL, GENIE_MODE,
@@ -22,7 +22,7 @@ const API_DIR = path.join(ROOT, "api");
 const PORT = +process.env.PORT || 3000;
 const HOST = process.env.HOST || "127.0.0.1";
 const BODY_LIMIT = 1024 * 1024;
-const BIG_BODY = { "music/upload": 16 * 1024 * 1024 };   // routes that take a whole file (an MP3) as the body
+const BIG_BODY = { "music/upload": 16 * 1024 * 1024, "pay/bank": 4.5 * 1024 * 1024 };   // routes that take a whole file (an MP3, a bank slip) as the body
 
 /* One canonical host. SITE_URL decides it (https://www.aradhanawa.com): a request for the other spelling of the same
  * domain (aradhanawa.com) gets a 301 there, so Google sees one site. Other hosts (the server IP, localhost) are left alone. */

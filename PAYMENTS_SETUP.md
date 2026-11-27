@@ -10,6 +10,19 @@ Customers **Pay Rs. 990** (Aradhanawa Plus) or **Pay Rs. 4,900** (custom design)
   - Plus type eka pay karapu gaman guest limit eka ain wenawa. Custom design saha Other service `In progress` wela, oya Orders eken `Done` karanna one.
   - Hama type ekema site eke pennanne udinma thiyena plan eka **Main** eka (editor eke Plus upgrade eka saha design yata Buy button eka eka use karanawa).
 
+## Bank transfer (slip upload)
+
+Customer ta **Card payment** (Genie) ho **Bank transfer** thoranna puluwan.
+
+1. **Admin → Settings → Bank transfer** eke bank eka, branch eka, account name saha account number danna → **Save bank details**. Account number eka his karoth bank transfer off wenawa (card witharai).
+2. Customer bank transfer thoruwama account details pennanawa. Salli dala slip eke photo / screenshot / PDF eka upload karanawa. Order eka **Awaiting verification** wenawa.
+3. Admin → Orders (saha Overview) eke udinma **"bank slip to check"** box eka enawa. **Check slip** → slip eka balala bank account eke salli awada kiyala check karanna:
+   - **Approve and unlock** → order eka Paid wenawa, card payment ekak wage card eka unlock wenawa (Plus / template nam `Done`, custom design nam `In progress`).
+   - **Reject** → hethuwa liyanna. Customer ta My orders eke eka pennanawa, **Upload new slip** eken aluth slip ekak ewanna puluwan.
+- Slips Cloudflare R2 eke `slips/{uid}/` yata save wenawa (gallery photos wage, R2_* env vars ma use karanawa). Site eke public link ekak denne na; admin ta saha order eke owner ta witharak `api/pay/slip` eken penawa.
+- Firestore rules wenas karanna one na (orders server eken liyanne, bank details `settings/site` eke).
+- Droplet eke: `deploy/install.sh` aye run karanna (slip upload ekata Nginx limit eka 5 MB karanawa).
+
 ## Vercel eke danna one env vars (eka parak witharai)
 
 Vercel → aradhanawa project → **Settings → Environment Variables** → Production (saha Preview) ekata:
@@ -37,4 +50,7 @@ Sandbox ekak one nam (genie.integration@dialog.lk walin illanna), `GENIE_MODE=sa
 - `api/pay/return.js` – Genie eken customer wa aye ewana thana. Genie API eken transaction eka check karala order eka update karanawa.
 - `api/pay/webhook.js` – Genie eken status update ewanawa. Meketh Genie API eken aye check karanawa, ewana data eka witharak trust karanne na.
 - Paid wenne Genie eke state eka `CONFIRMED`/`AUTHORIZED` saha amount + currency + order id match unoth witharai.
+- `api/pay/bank.js` – bank transfer order eka hadala slip eka R2 ekata upload karanawa (nathnam rejected order ekakata aluth slip ekak).
+- `api/pay/verify.js` – admin approve / reject. Approve unoth Genie payment ekak wage `plus/{uid_type}` hadanawa.
+- `api/pay/slip.js` – slip file eka admin ta / owner ta pennanawa.
 - Tests: `npm install && npm test`.

@@ -276,6 +276,19 @@ server {
         proxy_set_header X-Forwarded-Proto \$scheme;
         proxy_read_timeout 180s;
     }
+
+    # Bank transfer: customers upload a photo or PDF of their payment slip (up to 3 MB, sent as base64).
+    location /api/pay/bank {
+        client_max_body_size 5m;
+        proxy_pass http://127.0.0.1:$PORT;
+        proxy_http_version 1.1;
+        proxy_set_header Connection "";
+        proxy_set_header Host \$host;
+        proxy_set_header X-Real-IP \$remote_addr;
+        proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto \$scheme;
+        proxy_read_timeout 90s;
+    }
 }
 EOF
 ln -sfn "$NGINX_SITE" "/etc/nginx/sites-enabled/$APP_NAME"

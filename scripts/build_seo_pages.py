@@ -161,7 +161,7 @@ PAGES = [
     ),
 ]
 
-FONTS = "https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@1,600&family=Noto+Sans+Sinhala:wght@400..700&display=swap"
+FONTS = "https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Noto+Sans+Sinhala:wght@400..700&display=swap"
 
 # The Aradhanawa logo (side-view lotus + ARADHANAWA wordmark). Source SVGs live in /img/logo/.
 LOGO = '<img class="wm-logo" src="/img/logo/aradhanawa-logo.svg" alt="Aradhanawa" width="167" height="33">'

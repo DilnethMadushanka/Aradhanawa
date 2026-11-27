@@ -127,7 +127,7 @@ nav.top a:hover{background:var(--sunk);color:var(--ink)}
 .meter .bar{display:flex;gap:3px}
 .meter .bar i{width:18px;height:6px;border-radius:3px;background:var(--line)}
 .meter .bar i.on{background:var(--leaf)}
-.gadd{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) auto;gap:8px;margin-bottom:12px}
+.gadd{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) 78px auto;gap:8px;margin-bottom:12px}
 @media (max-width:560px){.gadd{grid-template-columns:minmax(0,1fr)}}
 .gadd input{border:1px solid var(--line);background:var(--paper);border-radius:8px;padding:9px 12px;min-width:0}
 .glist{display:grid;gap:8px;list-style:none;margin:0;padding:0}
@@ -1014,6 +1014,120 @@ nav.top a{font-weight:600}
 .danger h2{color:#9A2B2B}
 .acct .wrap{padding-block:36px 64px;display:grid;gap:22px}
 @media (max-width:900px){.adm{grid-template-columns:minmax(0,1fr)}.adm .side{position:sticky;top:96px;z-index:5;height:auto;flex-direction:row;overflow-x:auto;padding:6px 8px;border-right:0;border-bottom:1px solid var(--line);scrollbar-width:none}.adm .side .who,.adm .side .sp{display:none}.adm .side a{white-space:nowrap;border-left:0;border-bottom:2px solid transparent;padding:10px 12px}.adm .side a[aria-current="page"]{border-bottom-color:var(--gold);background:none}.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.two,.sform{grid-template-columns:minmax(0,1fr)}.adm .main{padding-top:22px}}
+/* ================= GUEST REPLIES + SEATING PLAN (#rsvp, #seating) ================= */
+.gm{--gm-maroon:#7A2332;--gm-gold:#9A6B12;--gm-cream:#FBF6EC}
+.gm .wrap{gap:18px}
+.gm .mh .row{display:flex;gap:8px;flex-wrap:wrap}
+.gm-tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.gm-tabs a{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;color:var(--muted);font-weight:600;font-size:14px;text-decoration:none;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap}
+.gm-tabs a svg{width:16px;height:16px}
+.gm-tabs a[aria-current="page"]{color:var(--ink);border-bottom-color:var(--gm-gold)}
+.gm-tabs a:last-child{margin-left:auto}
+.gm-ev{display:inline-flex;gap:4px;padding:4px;background:var(--sunk);border-radius:999px;justify-self:start;max-width:100%;overflow-x:auto;scrollbar-width:none}
+.gm-ev a{padding:8px 16px;border-radius:999px;color:var(--muted);font-weight:600;font-size:14px;text-decoration:none;white-space:nowrap}
+.gm-ev a[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(29,42,36,.12)}
+.gm-demo{font-size:14px;border-left:3px solid var(--gold);background:var(--sunk)}.gm-demo b{display:block;margin-bottom:2px}
+.gm-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.gk{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:grid;gap:4px}
+.gk small{display:flex;align-items:center;gap:8px;font:700 11px/1 var(--t-head);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.gk small i{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;flex:none}
+.gk small i svg{width:14px;height:14px}
+.gk.yes i{background:#E2F1E7;color:#1E6A42}.gk.no i{background:#F7E3E1;color:#9A2B2B}.gk.wait i{background:#FBEFD7;color:#865610}.gk.all i{background:#F3E8D2;color:#7E5C22}
+.gk b{font:700 36px/1.1 var(--t-head);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.gk span{font-size:13px;color:var(--muted)}
+.gm-list{border-radius:14px;padding:16px}
+.gm-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:8px}
+.gm-bar input{border:1px solid var(--line-2);border-radius:999px;padding:9px 14px;background:var(--surface);font-size:14px;min-width:0;flex:0 1 240px}
+.gm-f{display:flex;gap:6px;flex-wrap:wrap}
+.gm-f button{border:1px solid var(--line-2);background:var(--surface);border-radius:999px;padding:7px 12px;font:600 13.5px var(--t-body);color:var(--ink);cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.gm-f button span{background:var(--sunk);color:var(--muted);border-radius:999px;padding:1px 7px;font-size:12px;font-variant-numeric:tabular-nums}
+.gm-f button[aria-pressed="true"]{border-color:var(--gm-maroon);color:var(--gm-maroon);background:color-mix(in srgb,var(--gm-maroon) 6%,#fff)}
+.gm-f button[aria-pressed="true"] span{background:var(--gm-maroon);color:#fff}
+.gm-tbl td.num{font-variant-numeric:tabular-nums;font-weight:600}
+.gm-tbl td.gmsg{color:#4B5650;white-space:normal;min-width:200px;max-width:320px}
+.gm-tbl td a{color:var(--gm-maroon);font-weight:600}
+.gm-tbl td.ga{text-align:right}
+@media (max-width:900px){.gm-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){
+  .gm .mh .row{width:100%}.gm .mh .row .btn{flex:1}
+  .gm-bar input{flex:1 1 100%}
+  .gk{padding:14px}.gk b{font-size:30px}
+  .gm-tbl thead{display:none}
+  .gm-tbl,.gm-tbl tbody{display:block}
+  .gm-tbl tr{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;padding:12px 4px;border-bottom:1px solid var(--line)}
+  .gm-tbl tr[hidden]{display:none}
+  .gm-tbl td{border:0;padding:0;white-space:normal}
+  .gm-tbl td.gn{grid-column:1}
+  .gm-tbl td[data-l="Reply"]{grid-column:2;grid-row:1;align-self:start}
+  .gm-tbl td[data-l="People"],.gm-tbl td[data-l="Table"],.gm-tbl td[data-l="Replied"]{font-size:13px;color:var(--muted);font-weight:500;grid-column:1/-1}
+  .gm-tbl td[data-l]::before{content:attr(data-l) ": ";color:var(--muted);font-weight:500}
+  .gm-tbl td[data-l="Reply"]::before{content:none}
+  .gm-tbl td[data-l="Message"]{grid-column:1/-1;max-width:none;font-size:14px;margin-top:4px}
+  .gm-tbl td[data-l="Message"]::before{content:none}
+  .gm-tbl td.ga{grid-column:1/-1;text-align:left;margin-top:6px}
+  .gm-tbl td.ga:empty{display:none}
+  .gm-tbl tr.gm-empty{display:block}
+  .gm-tbl td.nil{display:none}
+}
+
+.gm-stat{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.gm-stat p{margin:0;color:var(--muted);font-size:15px}.gm-stat p b{color:var(--ink);font-variant-numeric:tabular-nums}
+.gm-stat .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.gm .lnk{background:none;border:0;padding:0;color:var(--gm-maroon);font-weight:700;font-size:13.5px;cursor:pointer;text-decoration:underline;text-underline-offset:.2em}
+.gm-seat{display:grid;grid-template-columns:290px minmax(0,1fr);gap:16px;align-items:start}
+.sg-panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:10px;position:sticky;top:84px;max-height:calc(100vh - 100px);grid-template-rows:auto auto minmax(0,1fr)}
+.sg-h{display:flex;justify-content:space-between;align-items:center}
+.sg-h b{font:700 17px var(--t-head);letter-spacing:-.02em}
+.sg-list{display:grid;gap:4px;overflow:auto;align-content:start;margin:0 -6px;padding:0 6px}
+.sg{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:10px;align-items:center;text-align:left;border:1px solid transparent;background:none;border-radius:10px;padding:7px 8px;cursor:pointer;font:inherit;color:inherit}
+.sg:hover{background:var(--sunk)}
+.sg[aria-pressed="true"]{border-color:var(--gm-gold);background:color-mix(in srgb,var(--gm-gold) 9%,#fff)}
+.sg i{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--gm-maroon) 10%,#fff);color:var(--gm-maroon);font:700 12px var(--t-head);font-style:normal}
+.sg b{display:block;font-size:14px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sg small{display:block;color:var(--muted);font-size:12px}
+.sg em{font-style:normal;font-size:12px;color:var(--muted);white-space:nowrap}
+.sg em.in{color:#1E6A42;font-weight:600}.sg em.short{color:#865610;font-weight:600}
+.sg-none{color:var(--muted);font-size:14px;margin:6px 4px}
+.hallbox{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;min-width:0}
+.gm-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;padding:10px 12px;border-bottom:1px solid var(--line)}
+.gm-tools .btn{border-radius:999px;text-transform:none;letter-spacing:0;padding:8px 13px;font-size:13px}
+.gm-tools .sp,.gm-hint .sp,.gm-tfa .sp{flex:1}
+.zoom{display:inline-flex;align-items:center;border:1px solid var(--line-2);border-radius:999px;overflow:hidden}
+.zoom button{border:0;background:var(--surface);width:34px;height:32px;font-size:18px;cursor:pointer;color:var(--ink)}
+.zoom span{font-size:12px;color:var(--muted);min-width:40px;text-align:center;font-variant-numeric:tabular-nums}
+.gm-hint{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:9px 14px;font-size:13.5px;color:var(--muted);background:var(--gm-cream);border-bottom:1px solid var(--line)}
+.gm-hint b{color:var(--ink)}
+.gm-hint .dot{width:8px;height:8px;border-radius:50%;background:var(--gm-maroon);box-shadow:0 0 0 4px color-mix(in srgb,var(--gm-maroon) 18%,transparent)}
+.hallwrap{overflow:auto;max-height:76vh;overscroll-behavior:contain}
+.hallsz{position:relative;margin:0 auto}
+.hall{position:absolute;left:0;top:0;transform-origin:0 0;background-color:var(--gm-cream);
+  background-image:linear-gradient(rgba(154,107,18,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(154,107,18,.09) 1px,transparent 1px);background-size:24px 24px}
+.tb{position:absolute;width:0;height:0}
+.tb.drag{z-index:5}
+.tb-body{position:absolute;left:0;top:0;transform:translate(-50%,-50%);border:1.5px solid color-mix(in srgb,var(--gm-gold) 55%,transparent);background:#fff;border-radius:50%;display:grid;place-content:center;gap:2px;text-align:center;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;box-shadow:0 10px 24px -16px rgba(60,40,10,.45);color:var(--ink);font:inherit;padding:4px}
+.tb.head .tb-body{border-radius:12px;background:linear-gradient(#fff,#FFF9EE)}
+.tb.drag .tb-body{cursor:grabbing;box-shadow:0 18px 34px -14px rgba(60,40,10,.5);border-color:var(--gm-gold)}
+.tb-body b{font:700 13px/1.1 var(--t-head);letter-spacing:-.01em}
+.tb-body small{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.seat{position:absolute;width:32px;height:32px;margin:-16px 0 0 -16px;border-radius:50%;border:1.5px solid color-mix(in srgb,var(--gm-gold) 45%,transparent);background:#fff;color:#8C7A62;font:600 11px/1 var(--t-body);cursor:pointer;display:grid;place-items:center;padding:0;transition:transform .15s}
+.seat:hover{transform:scale(1.1)}
+.seat.on{background:var(--gm-maroon);border-color:var(--gm-maroon);color:#FFF4E4;font:700 10.5px/1 var(--t-head)}
+.seat.sel{background:var(--gm-gold);border-color:var(--gm-gold);color:#fff;box-shadow:0 0 0 4px color-mix(in srgb,var(--gm-gold) 25%,transparent)}
+.gm-tf{display:grid;gap:12px;margin-top:8px}
+.gm-tfa{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+@media (max-width:900px){
+  .gm-seat{grid-template-columns:minmax(0,1fr)}
+  .sg-panel{position:static;max-height:none}
+  .sg-list{max-height:236px}
+  .hallwrap{max-height:70vh}
+}
+@media (max-width:640px){.gm-tools .btn{padding:7px 10px;font-size:12.5px}.gm-tools .btn svg{width:14px;height:14px}}
+
+/* guest link: "Your table" */
+.gseat .gseat-c{display:grid;justify-items:center;gap:6px;margin:6px auto 4px;padding:22px 26px;min-width:min(280px,100%);border:1px solid color-mix(in srgb,var(--c-gold,#B8924A) 55%,transparent);outline:1px solid color-mix(in srgb,var(--c-gold,#B8924A) 25%,transparent);outline-offset:-7px;border-radius:22px;background:color-mix(in srgb,#fff 70%,transparent)}
+.gseat .gseat-c small{font-size:14px;opacity:.8}
+.gseat .gseat-c .s-h{margin:0;font-size:clamp(34px,9vw,50px)}
+.gseat .gseat-c span{font-size:16px;letter-spacing:.06em}
 @media (max-width:420px){.kpi b{font-size:28px}.tgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}}
 /* ================= LOTUS MANDALA THEME ================= */
 .site.lotus{--lx-wine:var(--c-ink);container-type:inline-size;font-family:"Cormorant Garamond","Noto Serif Sinhala",Georgia,serif;color:#4A3F38;position:relative;
@@ -1632,6 +1746,36 @@ nav.top a{font-weight:600}
 .lp-price .plan .pp{font-size:30px;letter-spacing:-.02em}
 .lp-price .plan ul{margin:0;padding-left:18px;display:grid;gap:4px;align-content:start;font-size:15px;line-height:1.4}
 .lp-price .plan .lp-btn{justify-self:start;margin-top:6px}
+.lp-price .sig{position:relative;display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:22px 48px;padding:clamp(24px,3.4vw,44px);border:1.5px solid #7A2332;border-radius:22px;color:#2A1A16;
+  background:radial-gradient(120% 90% at 0% 0%,#FFF6E6 0%,#FBEDE4 55%,#F6E1DC 100%);box-shadow:0 30px 60px -40px rgba(122,35,50,.55);outline:1px solid rgba(154,107,18,.35);outline-offset:-9px}
+.lp-price .sig-l{display:grid;gap:12px;align-content:start}
+.lp-price .sig small{font:700 11px/1 var(--t-head);letter-spacing:.18em;text-transform:uppercase;color:#9A6B12}
+.lp-price .sig h3{font-size:clamp(28px,3vw,40px);margin:0;color:#7A2332}
+.lp-price .sig p{margin:0;color:#5E4A44;font-size:16.5px;max-width:40ch}
+.lp-price .sig .pp{font:700 clamp(34px,4vw,52px)/1 var(--t-head);letter-spacing:-.04em;color:#1E1412;margin-top:6px}
+.lp-price .sig .pp span{font:500 15px var(--t-body);letter-spacing:0;color:#7B6560}
+.lp-price .sig .lp-btn{justify-self:start;background:#7A2332;color:#FFF4E4;border-color:#7A2332;margin-top:6px}
+.lp-price .sig .lp-btn:hover{background:#5E1826}
+.lp-price .sig li::before{content:"";width:24px;height:24px;border-radius:50%;background:rgba(122,35,50,.1) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237A2332' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center/14px no-repeat}
+@media (max-width:820px){.lp-price .sig{grid-template-columns:minmax(0,1fr)}.lp-price .sig .lp-btn{justify-self:stretch;text-align:center}.lp-price .sig ul{order:2}}
+.lp-price .pk{grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px}
+.lp-price .pk-c{position:relative;background:#FFFDF9;color:#2A1A16;border:1px solid #E8DCC8;border-radius:22px;padding:28px;gap:12px;grid-template-rows:auto auto auto auto 1fr auto;box-shadow:0 24px 50px -40px rgba(60,40,10,.45)}
+.lp-price .pk-c::before,.lp-price .pk-c::after{display:none}
+.lp-price .pk-c small{font:700 11px/1 var(--t-head);letter-spacing:.18em;text-transform:uppercase;color:#9A6B12}
+.lp-price .pk-c h3{font-size:26px;color:#1E1412}
+.lp-price .pk-c .pk-t{margin:0;color:#6E5D55;font-size:15px}
+.lp-price .pk-c .pp{font:700 40px/1 var(--t-head);letter-spacing:-.04em;color:#1E1412;margin:6px 0 4px}
+.lp-price .pk-c .pp span,.lp-price .sig .pp span{font:500 14px var(--t-body);letter-spacing:0;color:#7B6560}
+.lp-price .pk-c ul,.lp-price .sig ul{list-style:none;margin:0;padding:0;display:grid;gap:11px;align-content:start;font-size:15.5px}
+.lp-price .pk-c li,.lp-price .sig li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:12px;align-items:start;line-height:1.4}
+.lp-price .pk-c li::before{content:"";width:24px;height:24px;border-radius:50%;background:#F1EBE0 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239A6B12' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center/14px no-repeat}
+.lp-price .pk-c .lp-btn{justify-self:stretch;justify-content:center;text-align:center;background:transparent;color:#1E1412;border:1.5px solid #DCCFB8;border-radius:999px;margin-top:10px}
+.lp-price .pk-c .lp-btn:hover{border-color:#1E1412}
+.lp-price .pk-c.plus{border-color:#C9A65F;box-shadow:0 0 0 1px #C9A65F,0 24px 50px -36px rgba(154,107,18,.55)}
+.lp-price .pk-c.plus .lp-btn{background:#1E1412;color:#FFF6E6;border-color:#1E1412}
+.lp-price .sig{margin-top:4px}
+.lp-price .sig .lp-btn{border-radius:999px}
+.sig-m{margin:0 0 6px;padding-left:18px;display:grid;gap:4px;font-size:14px;color:var(--muted)}
 @media (max-width:820px){.lp-price h2{font-size:8.1vw}.lp-price .row{grid-template-columns:minmax(0,1fr)!important}.lp-price .pph{grid-column:1;grid-row:auto}.lp-price .row p{font-size:17px}.lp-price .row .act{grid-column:1;justify-items:stretch}.lp-price .row .act .lp-link{justify-self:start}}
 
 /* faq: large questions, answers beside */
@@ -2457,12 +2601,16 @@ const CONFIG = {
 };
 /* Price plans (Admin → Prices). Saved as CONFIG.PLANS in Firestore settings/site; the payment API reads the same list,
  * so the price paid is always the one set here. Before any plan is saved, Plus and Custom design are shown. */
-const PLAN_KINDS = { plus:"Plus: unlimited guests for one event", custom:"Custom design", service:"Other service (studio does it)" };
-const PLAN_KIND_SHORT = { plus:"Plus", custom:"Custom design", service:"Service" };
+const PLAN_KINDS = { plus:"Plus: unlimited guests for one event", custom:"Custom design", service:"Other service (studio does it)", signature:"Signature: top done-for-you service (Talk to us)" };
+const PLAN_KIND_SHORT = { plus:"Plus", custom:"Custom design", service:"Service", signature:"Signature" };
+/* The top tier. Shown as its own wide card on the pricing page with a "Talk to us" button (no online payment).
+   It is added to the plan list until an admin saves the list (SIG_SEEN), so deleting it in Admin → Prices sticks. */
+const SIG_PLAN = {id:"rajakeeya",kind:"signature",name:"Aradhanawa Rajakeeya",price:"Rs. 75,000",on:true,
+  details:"Your own web address for the invitation\nWe do it all: wording, guest list, sending and replies\nA card designed from scratch, only for you\nEvery function covered: poruwa, reception and homecoming\nYour own designer and a WhatsApp contact person\nRSVP list and seating plan managed for you\nPriority replies and express delivery"};
 function plans(){
-  if(Array.isArray(CONFIG.PLANS)) return CONFIG.PLANS;
+  if(Array.isArray(CONFIG.PLANS)) return CONFIG.SIG_SEEN||CONFIG.PLANS.some(p=>p&&p.kind==="signature") ? CONFIG.PLANS : [...CONFIG.PLANS,{...SIG_PLAN}];
   return [{id:"plus",kind:"plus",name:"Aradhanawa Plus",price:CONFIG.PRICE_PLUS,on:true,details:"Unlimited guest links for one event\nSee who is coming\nNo Aradhanawa name on the card"},
-    {id:"custom",kind:"custom",name:"Custom design",price:CONFIG.PRICE_CUSTOM,on:true,details:"Your photos, colours and wording\n2 rounds of changes\nReady within 48 hours"}];
+    {id:"custom",kind:"custom",name:"Custom design",price:CONFIG.PRICE_CUSTOM,on:true,details:"Your photos, colours and wording\n2 rounds of changes\nReady within 48 hours"},{...SIG_PLAN}];
 }
 const livePlans = () => plans().filter(p=>p&&p.on!==false&&p.price);
 const mainPlan = kind => livePlans().find(p=>p.kind===kind)||null;
@@ -3815,10 +3963,11 @@ function render(){
         <form class="gadd" id="gadd" data-ui>
           <input id="g-name" placeholder="Guest name, e.g. Saman Aiya" aria-label="Guest name" required>
           <input id="g-phone" placeholder="07X XXX XXXX" inputmode="tel" aria-label="Guest WhatsApp number">
+          <input id="g-heads" type="number" min="1" max="20" placeholder="People" inputmode="numeric" aria-label="How many people are invited (optional)" title="How many people are invited (optional)">
           <button class="btn primary" type="submit">Add guest</button>
         </form>
         <ul class="glist" data-ui>${S.guests.length?S.guests.map((g,i)=>`<li>
-          <div class="who"><b>${esc(g.name)}</b><span>${g.phone?prettyPhone(g.phone):"No number. Copy the link instead."}</span></div>
+          <div class="who"><b>${esc(g.name)}</b><span>${g.heads>1?`${g.heads} people · `:""}${g.phone?prettyPhone(g.phone):"No number. Copy the link instead."}</span></div>
           <div class="acts">
             <button class="iconbtn" data-gprev="${i}" title="Preview ${esc(g.name)}'s card" aria-label="Preview ${esc(g.name)}'s card">${I.eye}</button>
             <button class="iconbtn" data-glink="${i}" title="Copy personal link" aria-label="Copy ${esc(g.name)}'s link">${I.link}</button>
@@ -3846,7 +3995,7 @@ function render(){
     <div class="row"><p style="--d:80ms">One design and ${CONFIG.FREE_GUESTS} personal links cost nothing. Plus covers one event: unlimited guests, a list of who is coming and no Aradhanawa name on the card. A printed order for 200 guests usually runs past Rs. 40,000.</p>
       <figure class="pph" style="--d:80ms">${pic("card-flatlay","(max-width:820px) 92vw, 30vw","A printed maroon and gold wedding card with jasmine, betel leaves and a brass pahana","50% 50%")}<figcaption>The printed way: card, envelope and courier, for every guest.</figcaption></figure>
       <div class="act" style="--d:160ms">${mainPlan("plus")?`<button class="lp-btn" data-upgrade="plus">Get Plus</button>`:""}${mainPlan("custom")?`<button class="lp-link" data-upgrade="custom">Or a custom design, ${esc(mainPlan("custom").price)}</button>`:""}</div></div>
-    ${planCards()}
+    ${planCards()}${sigCard()}
   </section>
 `,
     faq:()=>`<section class="lp-ch lp-paper g lp-faq" id="faq" data-f="paper"><div class="t">
@@ -4001,10 +4150,10 @@ function bind(){
   $("#sendAll").onclick=sendInvite; $$(".glist a.wa").forEach(a=>a.onclick=sendInvite);
   $("#gadd").onsubmit=e=>{
     e.preventDefault();
-    const name=$("#g-name").value.trim(), phone=$("#g-phone").value.trim();
+    const name=$("#g-name").value.trim(), phone=$("#g-phone").value.trim(), heads=Math.max(0,Math.min(20,Math.round(+$("#g-heads").value)||0));
     if(!name) return;
     if(S.guests.length>=CONFIG.FREE_GUESTS&&!hasPlus(S.type)){ upsell(); return }
-    S.guests.push({name,phone}); save(); render(); toast(`${name} added`);
+    S.guests.push(heads>1?{name,phone,heads}:{name,phone}); save(); render(); toast(`${name} added`);
     document.getElementById("g-name").focus();
   };
   $$("[data-gdel]").forEach(b=>b.onclick=()=>{S.guests.splice(+b.dataset.gdel,1); save(); render()});
@@ -4073,15 +4222,30 @@ function refreshGuestLinks(){
     a.href=waLink(g.phone,waMessage(S.type,cur(),S.lang,g.name,inviteLink(g.name)));
   });
 }
+function sigCard(){
+  const p=mainPlan("signature"); if(!p) return "";
+  const lines=String(p.details||"").split(/\n+/).map(x=>x.trim()).filter(Boolean);
+  return `<article class="sig" style="--d:260ms"><div class="sig-l"><small>Signature service</small><h3>${esc(p.name)}</h3>
+    <p>Our royal, done-for-you service. Tell us about your day and we look after every card, link and reply.</p>
+    <b class="pp">${esc(p.price)} <span>one-time</span></b><button class="lp-btn" data-buy="${esc(p.id)}">Talk to us <span aria-hidden="true">→</span></button></div>
+    ${lines.length?`<ul>${lines.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}</article>`;
+}
 function planCards(){
-  const ps=livePlans(); if(!ps.length) return "";
-  return `<div class="plans" style="--d:200ms">${ps.map(p=>`<article class="plan"><small>${p.kind==="plus"?"Plan":p.kind==="custom"?"Design":"Service"}</small><h3>${esc(p.name)}</h3><b class="pp">${esc(p.price)}</b>
-    ${p.details?`<ul>${String(p.details).split(/\n+/).filter(x=>x.trim()).map(x=>`<li>${esc(x.trim())}</li>`).join("")}</ul>`:""}<button class="lp-btn" data-buy="${esc(p.id)}">Buy</button></article>`).join("")}</div>`;
+  const ps=livePlans().filter(p=>p.kind!=="signature"); if(!ps.length) return "";
+  const tag={plus:"Every guest gets their own link",custom:"Your card, made by our designer",service:"We do it for you"}, cta={plus:"Get Plus",custom:"Request this design",service:"Get started"};
+  return `<div class="plans pk" style="--d:200ms">${ps.map(p=>`<article class="plan pk-c ${esc(p.kind)}"><small>${p.kind==="plus"?"Package":p.kind==="custom"?"Design":"Service"}</small><h3>${esc(p.name)}</h3><p class="pk-t">${tag[p.kind]||""}</p>
+    <b class="pp">${esc(p.price)} <span>${p.kind==="plus"?"per event":"one-time"}</span></b>
+    ${p.details?`<ul>${String(p.details).split(/\n+/).filter(x=>x.trim()).map(x=>`<li>${esc(x.trim())}</li>`).join("")}</ul>`:"<ul></ul>"}<button class="lp-btn" data-buy="${esc(p.id)}">${cta[p.kind]||"Buy"} <span aria-hidden="true">→</span></button></article>`).join("")}</div>`;
 }
 function buyPlan(id){
   const p=planById(id); if(!p) return toast("This plan is not available any more");
   if(p.kind==="plus") return upsell(true,p);
   if(p.kind==="custom") return customReq("",p);
+  if(p.kind==="signature"){ const st=`Hi Aradhanawa! I'm interested in ${p.name} (${p.price}) for my ${TYPES[S.type].name.toLowerCase()}. Can we talk?`;
+    return modal(`<span class="eyebrow">Signature service · ${esc(p.price)}</span><h3>${esc(p.name)}</h3>
+    <p>Tell us your date and what you have in mind. A designer from our team will call you back on WhatsApp and plan everything with you.</p>
+    ${p.details?`<ul class="sig-m">${String(p.details).split(/\n+/).filter(x=>x.trim()).map(x=>`<li>${esc(x.trim())}</li>`).join("")}</ul>`:""}
+    <div class="row" style="justify-content:flex-end;margin-top:6px"><button class="btn" data-x>Not now</button><a class="btn wa" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,st)}">${I.wa} Talk to us on WhatsApp</a></div>`) }
   const txt=`Hi Aradhanawa! I'd like "${p.name}" (${p.price}) for my ${TYPES[S.type].name.toLowerCase()}.`;
   modal(`<span class="eyebrow">${esc(p.name)} · ${esc(p.price)}</span><h3>${esc(p.name)}</h3>
     ${p.details?`<p>${String(p.details).split(/\n+/).map(esc).join("<br>")}</p>`:""}
@@ -4304,12 +4468,14 @@ function guestDesign(type,d){
   const L=PREMIUM[type]||[], t=findDesign(type,d)||L[0];
   return t?{...t,_noribbon:1}:null;
 }
-function renderGuest(p,gallery){
+function renderGuest(p,gallery,seat){
   p.l=p.l||"en"; p.g=p.g||""; p.e=p.e||{};   // short links leave out defaults
   S.guestP=p;
   const type=TYPES[p.t]?p.t:"other";
   document.title = (p.e.title || [p.e.a,p.e.b].filter(Boolean).join(" & ") || "Invitation") + " · Aradhanawa";
   document.getElementById("app").innerHTML = `<main class="gwrap t-${type}">${siteHTML(type,p.e,p.l,p.g,guestDesign(type,p.d),(gallery||[]).map(src=>`<img src="${src}" alt="" loading="lazy">`))}</main>`; lxArm();
+  if(seat){ const st=document.querySelector(".gwrap .site"), rv=st&&st.querySelector('.s-sec[id$="-rsvp"]'), all=st?st.querySelectorAll(".s-sec"):[];
+    if(rv) rv.insertAdjacentHTML("beforebegin",guestSeatHTML(p,seat)); else if(all.length) all[all.length-1].insertAdjacentHTML("afterend",guestSeatHTML(p,seat)) }
   document.body.style.background = getComputedStyle(document.querySelector(".gwrap")).backgroundColor;
   initSites(); window.scrollTo(0,0);
   guestLoader(p,type,document.querySelector(".gwrap .card"));
@@ -4779,7 +4945,7 @@ function fbSyncInvite(){
     for(const k in ev){ const v=ev[k]; if((typeof v==="string"&&v.length<2000)||typeof v==="number"||typeof v==="boolean") e[k]=v }
     const dz=tplOf(type)&&PREMIUM[type][tplOf(type)-1];
     FBX.saveInvite({type,lang:S.lang,tpl:tplOf(type),design:(dz&&dz.site)||"",title:ev.title||"",names:[ev.a,ev.b].filter(Boolean).join(" & "),date:ev.date||"",venue:ev.venue||"",ev:e,
-      guests:S.guests.slice(0,500).map(g=>({name:String(g.name||"").slice(0,80)}))}).catch(er=>console.warn("[fb] invite",er));
+      guests:S.guests.slice(0,500).map(g=>(+g.heads>1?{name:String(g.name||"").slice(0,80),heads:Math.min(20,+g.heads)}:{name:String(g.name||"").slice(0,80)}))}).catch(er=>console.warn("[fb] invite",er));
   },1500);
 }
 /* Gallery photos for guest links. Photos live in this browser (S.photos); a copy goes to Firestore galleries/{uid_type}
@@ -5023,7 +5189,7 @@ function renderAccount(){
     ${needVerify?`<div class="box" style="border-left:3px solid var(--gold)"><h2>Verify your email to open the admin dashboard</h2><p style="margin:0 0 14px;color:var(--muted)">${esc(u.email)} is an admin email, but this login isn't verified yet. The quickest way is to log in with Google using the same Gmail. Or send yourself a verification link, tap it, then come back and tap “I've verified”.</p>
       <div class="row"><button class="btn primary" data-vgoogle>Log in with Google</button><button class="btn" data-vsend>Send verification email</button><button class="btn" data-vdone>I've verified</button></div></div>`:""}
     <div class="mh"><div><span class="eyebrow">My account</span><h1>Ayubowan, ${esc(u.name.split(" ")[0])}</h1><p>${esc(u.email)}${u.phone?` · ${esc(prettyPhone(u.phone))}`:""}</p></div>
-      <div class="row"><a class="btn primary" href="#create">Create invitation</a>${u.plan==="Free"?`<button class="btn" data-upgrade>Upgrade to Plus</button>`:""}</div></div>
+      <div class="row"><a class="btn primary" href="#create">Create invitation</a><a class="btn" href="#rsvp">Guest replies</a><a class="btn" href="#seating">Seating plan</a>${u.plan==="Free"?`<button class="btn" data-upgrade>Upgrade to Plus</button>`:""}</div></div>
     <div class="kpis">
       <div class="kpi"><small>Plan</small><b>${esc(u.plan)}</b><span>${u.plan==="Free"?`${CONFIG.FREE_GUESTS} guest links per event`:"Unlimited guests"}</span></div>
       <div class="kpi"><small>Guest links</small><b>${S.guests.length}</b><span>on this device</span></div>
@@ -5034,7 +5200,7 @@ function renderAccount(){
       ${mine.map(o=>`<tr><td><b>${esc(o.design)}</b><small>${esc((TYPES[o.type]||TYPES.other).name)}</small></td><td>${esc(o.amount)}${paidTag(o)}</td><td>${stBadge(o.status)}</td><td>${fdt(o.created)}</td></tr>`).join("")||`<tr><td colspan="4" class="empty">No orders yet. Pick a custom design from the editor and request it.</td></tr>`}
     </tbody></table></div></div>
     ${FB_ON()?`<div class="two">
-      <div class="box"><div class="bh"><h2>Guest replies</h2><span class="badge ok">${rsv.filter(r=>r.coming).reduce((a,r)=>a+(+r.count||0),0)} coming</span></div><div class="tblwrap"><table class="tbl"><thead><tr><th>Guest</th><th>Reply</th><th>Date</th></tr></thead><tbody>
+      <div class="box"><div class="bh"><h2>Guest replies</h2><span class="badge ok">${rsv.filter(r=>r.coming).reduce((a,r)=>a+(+r.count||0),0)} coming</span><a class="btn sm" href="#rsvp">Open the full list</a></div><div class="tblwrap"><table class="tbl"><thead><tr><th>Guest</th><th>Reply</th><th>Date</th></tr></thead><tbody>
         ${rsv.map(r=>`<tr><td><b>${esc(r.name)}</b><small>${esc(r.event)}</small>${r.msg?`<small>“${esc(r.msg)}”</small>`:""}</td><td>${r.coming?`<span class="badge ok">Coming · ${+r.count||1}</span>`:`<span class="badge new">Can't come</span>`}</td><td>${fdt(r.created)}</td></tr>`).join("")||`<tr><td colspan="3" class="empty">Replies from your guests appear here when they tap “Send reply” on your invitation.</td></tr>`}
       </tbody></table></div></div>
       <div class="box"><div class="bh"><h2>Saved invitations</h2></div><div class="tblwrap"><table class="tbl"><tbody>
@@ -5048,6 +5214,340 @@ function renderAccount(){
     document.querySelector("[data-vsend]").onclick=()=>FBX.sendVerify().then(()=>toast("Verification link sent. Check your Gmail (and Spam)."),fbFail);
     document.querySelector("[data-vdone]").onclick=()=>FBX.refresh().then(p=>{ if(p&&p.role==="admin"){ toast("Verified. Opening the dashboard"); location.hash="#admin" } else toast("Not verified yet. Tap the link in the email first.") },fbFail);
   }
+}
+
+/* ---------- guest replies (RSVP list) and seating plan ----------
+   #rsvp/<type>     Live replies for one function. Invited guests (invitations/{uid_type}.guests, or this device's list)
+                    are joined with rsvps by guest name; a guest with no reply yet is Pending.
+   #seating/<type>  Tables in a hall: pick a guest, tap a seat. The plan is kept in this browser and in Firestore
+                    seating/{uid_type}. "Show tables to guests" writes seats/{uid_type_key}, one doc per guest
+                    (key = hash of the guest's name), so each personal guest link can read its own table and nothing else. */
+const gKey = s => String(s||"").toLowerCase().replace(/\s+/g," ").trim();
+const gInit = s => (String(s||"").trim().split(/\s+/).filter(Boolean).map(w=>[...w][0]).join("").slice(0,2)||"?").toUpperCase();
+const HALL_W = 960;
+let SEAT_DRAG = false;
+const SEAT = {}, SEAT_REMOTE = {}, SEAT_UI = {type:"", sel:"", f:"todo", z:0, moved:0}, RSVP_UI = {f:"all", q:""};
+
+function guestEvents(){
+  const u=me()||{}, have=new Set();
+  DB.invitations().forEach(x=>{ if(x.uid===u.id) have.add(x.type) });
+  DB.rsvps().forEach(r=>{ if(r.ownerUid===u.id) have.add(r.type) });
+  Object.keys(TYPES).forEach(k=>{ if(S.edited[k]) have.add(k) });
+  if(!have.size) have.add(S.type);
+  return Object.keys(TYPES).filter(k=>have.has(k));
+}
+function demoRsvps(type){
+  const now=Date.now(), d=h=>new Date(now-h*36e5).toISOString();
+  return [["Kasun Perera",1,2,"Can't wait to see you both on the poruwa!"],["Chamari Dissanayake",1,3,"We'll be there with the kids."],["Nadeesha Silva",1,1,"So happy for you!"],
+    ["Ruwan Jayasinghe",0,0,"Sorry, we're abroad that week. Best wishes!"],["Dilani Fernando",1,2,""],["Saman Aiya",1,4,"Jayawewa!"]]
+    .map(([n,c,k,m],i)=>({id:"demo"+i,type,guest:n,name:n,coming:!!c,count:k,msg:m,created:d(i*7+2)}));
+}
+/* One row per invited guest (or per person who replied without a personal link). The latest reply wins. */
+function guestBook(type){
+  const u=me()||{}, inv=DB.invitations().find(x=>x.uid===u.id&&x.type===type);
+  const invited=inv&&Array.isArray(inv.guests)&&inv.guests.length ? inv.guests : (!inv&&(S.edited[type]||type===S.type)) ? S.guests : [];
+  const local=new Map((S.guests||[]).map(g=>[gKey(g.name),g]));
+  const rs=(FB_ON() ? DB.rsvps().filter(r=>r.ownerUid===u.id&&(r.type===type||r.inviteId===u.id+"_"+type)) : demoRsvps(type))
+    .slice().sort((a,b)=>String(a.created||"").localeCompare(String(b.created||"")));
+  const map=new Map(), rows=[];
+  invited.forEach(g=>{ const k=gKey(g.name); if(!k||map.has(k)) return; const l=local.get(k)||{};
+    const row={key:k,name:g.name,phone:g.phone||l.phone||"",invited:+(g.heads||l.heads)||0,status:"pending",heads:0,msg:"",at:"",ids:[]}; map.set(k,row); rows.push(row) });
+  rs.forEach(r=>{
+    const k=gKey(r.guest)||gKey(r.name); if(!k) return;
+    let row=map.get(k)||map.get(gKey(r.name));
+    if(!row){ row={key:k,name:r.guest||r.name,phone:"",invited:0,status:"pending",heads:0,msg:"",at:"",ids:[],open:!r.guest}; map.set(k,row); rows.push(row) }
+    row.status=r.coming?"yes":"no"; row.heads=r.coming?Math.max(1,+r.count||1):0; if(r.msg) row.msg=r.msg; row.at=r.created||row.at; row.ids.push(r.id);
+    if(r.name&&gKey(r.name)!==row.key) row.as=r.name;
+  });
+  return rows;
+}
+function bookStats(rows){
+  const yes=rows.filter(r=>r.status==="yes"), no=rows.filter(r=>r.status==="no"), pend=rows.filter(r=>r.status==="pending");
+  const people=yes.reduce((a,r)=>a+r.heads,0), maybe=pend.reduce((a,r)=>a+(r.invited||1),0);
+  return {yes,no,pend,people,maybe,rate:rows.length?Math.round((yes.length+no.length)/rows.length*100):0};
+}
+function dlCSV(name,rows){
+  const csv=rows.map(r=>r.map(c=>`"${String(c??"").replace(/"/g,'""')}"`).join(",")).join("\r\n");
+  const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob(["﻿"+csv],{type:"text/csv;charset=utf-8"})); a.download=name;
+  document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove() },800);
+}
+const GI = {
+  yes:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>`,
+  no:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>`,
+  wait:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`,
+  ppl:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.6a3.5 3.5 0 0 1 0 6.8M21.5 20a6.5 6.5 0 0 0-4-6"/></svg>`,
+  dl:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M4 20h16"/></svg>`,
+  round:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/></svg>`,
+  head:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="8" width="18" height="8" rx="2"/></svg>`,
+  auto:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8zM19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg>`,
+};
+const RSV_ST = {yes:["ok","Coming"],no:["new","Can't come"],pending:["warn","Pending"]};
+function gmHead(kind,type,evs,right){
+  return `<div class="mh"><div><span class="eyebrow">Guest management</span><h1>${kind==="rsvp"?"Guest replies":"Seating plan"}</h1>
+      <p>${kind==="rsvp"?"See who is coming as guests reply. Head counts and wishes, all in one place.":"Arrange the tables in your hall, then seat every family together."}</p></div>
+      <div class="row">${right||""}</div></div>
+    <nav class="gm-tabs" aria-label="Guest management"><a href="#rsvp/${type}" ${kind==="rsvp"?'aria-current="page"':""}>${GI.ppl} Replies</a><a href="#seating/${type}" ${kind==="seating"?'aria-current="page"':""}>${GI.round} Seating plan</a><a href="#account">My account</a></nav>
+    ${evs.length>1?`<div class="gm-ev" role="tablist" aria-label="Function">${evs.map(k=>`<a role="tab" href="#${kind}/${k}" aria-selected="${k===type}">${esc(TYPES[k].name)}</a>`).join("")}</div>`:""}
+    ${FB_ON()?"":`<div class="box demo gm-demo"><b>Sample replies</b>Firebase is not connected here, so these replies are examples. Real replies from your guests appear live once you're online.</div>`}`;
+}
+
+function renderRsvp(sub){
+  const u=me(); if(!u){ store.set("next","#rsvp"+(sub?"/"+sub:"")); location.replace("#login"); return }
+  const evs=guestEvents(), type=evs.includes(sub)?sub:evs[0];
+  const rows=guestBook(type), st=bookStats(rows), idx=seatIndex(seatPlan(type));
+  const cnt={all:rows.length,yes:st.yes.length,pending:st.pend.length,no:st.no.length};
+  const order={yes:0,pending:1,no:2};
+  rows.sort((a,b)=>order[a.status]-order[b.status]||String(b.at).localeCompare(String(a.at))||a.name.localeCompare(b.name));
+  const remind=r=>{ if(r.status!=="pending"||!r.phone||type!==S.type) return "";
+    const txt=S.lang==="si"?`ආයුබෝවන් ${r.name}, අපගේ ${TYPES[type].name} ආරාධනාවට ඔබගේ පිළිතුර කරුණාකර දන්වන්න: ${inviteLink(r.name)}`:`Hi ${r.name}, a gentle reminder to reply to our ${TYPES[type].name.toLowerCase()} invitation: ${inviteLink(r.name)}`;
+    return `<a class="btn wa sm" target="_blank" rel="noopener" href="${waLink(r.phone,txt)}">${I.wa} Remind</a>` };
+  shell(`<main class="acct gm"><div class="wrap">
+    ${gmHead("rsvp",type,evs,`<button class="btn" data-rcsv>${GI.dl} Download list</button><a class="btn primary" href="#seating/${type}">Seating plan</a>`)}
+    <div class="gm-kpis">
+      <div class="gk yes"><small><i>${GI.yes}</i>Coming</small><b>${st.people}</b><span>${st.people===1?"person":"people"} · ${st.yes.length} ${st.yes.length===1?"reply":"replies"}</span></div>
+      <div class="gk no"><small><i>${GI.no}</i>Can't come</small><b>${st.no.length}</b><span>${st.no.length===1?"reply":"replies"}</span></div>
+      <div class="gk wait"><small><i>${GI.wait}</i>Pending</small><b>${st.pend.length}</b><span>${st.rate}% have replied</span></div>
+      <div class="gk all"><small><i>${GI.ppl}</i>Invited</small><b>${rows.length}</b><span>up to ${st.people+st.maybe} people</span></div>
+    </div>
+    <div class="box gm-list">
+      <div class="gm-bar"><div class="gm-f" role="group" aria-label="Filter by reply">${[["all","All"],["yes","Coming"],["pending","Pending"],["no","Can't come"]].map(([k,n])=>`<button data-rf="${k}" aria-pressed="${RSVP_UI.f===k}">${n} <span>${cnt[k]}</span></button>`).join("")}</div>
+        <input type="search" id="rq" placeholder="Search guests" aria-label="Search guests" value="${esc(RSVP_UI.q)}"></div>
+      <div class="tblwrap"><table class="tbl gm-tbl"><thead><tr><th>Guest</th><th>Reply</th><th>People</th><th>Table</th><th>Message</th><th>Replied</th><th></th></tr></thead><tbody>
+      ${rows.map(r=>{ const s=idx.get(r.key);
+        return `<tr data-st="${r.status}" data-q="${esc([r.name,r.as,r.phone,r.msg].join(" ").toLowerCase())}">
+          <td class="gn"><b>${esc(r.name)}</b><small>${r.as?`Replied as ${esc(r.as)}`:r.phone?esc(prettyPhone(r.phone)):r.open?"Replied from the main link":""}</small></td>
+          <td data-l="Reply"><span class="badge ${RSV_ST[r.status][0]}">${RSV_ST[r.status][1]}</span></td>
+          <td data-l="People" class="num">${r.status==="yes"?`${r.heads}${r.invited?` / ${r.invited}`:""}`:r.status==="no"?"0":`– / ${r.invited||1}`}</td>
+          <td data-l="Table" ${s?"":'class="nil"'}>${s?`<a href="#seating/${type}">${esc(s.table)}</a>`:"–"}</td>
+          <td data-l="Message" class="gmsg${r.msg?"":" nil"}">${r.msg?`“${esc(r.msg)}”`:"–"}</td>
+          <td data-l="Replied" ${r.at?"":'class="nil"'}>${r.at?fdt(r.at):"–"}</td>
+          <td class="ga">${remind(r)}</td></tr>` }).join("")}
+      <tr class="gm-empty" ${rows.length?"hidden":""}><td colspan="7" class="empty">No guests yet. Add guests in the <a href="#create">invitation maker</a> and their replies appear here as they come in.</td></tr>
+      </tbody></table></div>
+    </div>
+  </div></main>`);
+  const tb=document.querySelector(".gm-tbl tbody"), q=document.getElementById("rq");
+  const apply=()=>{ let n=0; tb.querySelectorAll("tr[data-st]").forEach(tr=>{ const ok=(RSVP_UI.f==="all"||tr.dataset.st===RSVP_UI.f)&&(!RSVP_UI.q||tr.dataset.q.includes(RSVP_UI.q.toLowerCase())); tr.hidden=!ok; if(ok) n++ });
+    const e=tb.querySelector(".gm-empty"); if(rows.length){ e.hidden=!!n; e.firstElementChild.textContent="No guests match." } };
+  document.querySelectorAll("[data-rf]").forEach(b=>b.onclick=()=>{ RSVP_UI.f=b.dataset.rf; document.querySelectorAll("[data-rf]").forEach(x=>x.setAttribute("aria-pressed",x===b)); apply() });
+  q.oninput=()=>{ RSVP_UI.q=q.value.trim(); apply() };
+  apply();
+  document.querySelector("[data-rcsv]").onclick=()=>dlCSV(`${TYPES[type].name.toLowerCase()}-replies.csv`,[["Guest","Phone","Reply","People","Invited","Table","Seats","Message","Replied"],
+    ...rows.map(r=>{ const s=idx.get(r.key); return [r.name,r.phone,RSV_ST[r.status][1],r.status==="yes"?r.heads:r.status==="no"?0:"",r.invited||"",s?s.table:"",s?s.seats.join(" "):"",r.msg,r.at?fdt(r.at):""] })]);
+}
+
+/* ----- seating plan ----- */
+const seatKey = type => "seating:"+((me()||{}).id||"")+":"+type;
+function seatDefault(){
+  const t=(id,kind,name,seats,x,y)=>({id,kind,name,seats,x,y});
+  return {tables:[t("h","head","Head table",8,480,100),t("t1","round","Table 1",10,170,320),t("t2","round","Table 2",10,480,330),t("t3","round","Table 3",10,790,320),
+    t("t4","round","Table 4",10,170,580),t("t5","round","Table 5",10,480,590),t("t6","round","Table 6",10,790,580)],seats:{},names:{},upd:"",pubSig:""};
+}
+function seatPlan(type){
+  const k=seatKey(type); if(SEAT[k]) return SEAT[k];
+  let p=store.get(k,null); if(!p||!Array.isArray(p.tables)) p=seatDefault();
+  p.seats=p.seats||{}; p.names=p.names||{}; SEAT[k]=p;
+  if(FB_ON()&&window.FBX&&FBX.user&&FBX.loadSeating&&!SEAT_REMOTE[k]){ SEAT_REMOTE[k]=1;
+    FBX.loadSeating(type).then(d=>{ let r=null; try{ r=d&&d.plan?JSON.parse(d.plan):null }catch(e){}
+      if(!r||!Array.isArray(r.tables)||String(r.upd||"")<=String((SEAT[k]||{}).upd||"")) return;
+      r.seats=r.seats||{}; r.names=r.names||{}; SEAT[k]=r; store.set(k,r);
+      if(/^#seating/.test(location.hash)) seatPaint(); else if(/^#rsvp/.test(location.hash)) route();
+    }).catch(e=>console.warn("[fb] seating",e.code||e)) }
+  return p;
+}
+let seatT=0, seatWarned=false;
+function seatSave(type){
+  const k=seatKey(type), p=SEAT[k]; if(!p) return; p.upd=new Date().toISOString(); store.set(k,p);
+  if(!(FB_ON()&&window.FBX&&FBX.user&&FBX.saveSeating)) return;
+  clearTimeout(seatT); seatT=setTimeout(()=>FBX.saveSeating(type,JSON.stringify(p)).catch(e=>{ console.warn("[fb] seating",e.code||e);
+    if(!seatWarned){ seatWarned=true; toast(e.code==="permission-denied"?"Saved on this device. The server needs the new Firestore rules to keep it in your account.":fbErrText(e)) } }),1200);
+}
+function seatIndex(p){
+  const m=new Map(), tb=Object.fromEntries(p.tables.map(t=>[t.id,t]));
+  for(const [s,k] of Object.entries(p.seats||{})){ const [tid,i]=s.split(":"), t=tb[tid]; if(!t||+i>=t.seats) continue;
+    const e=m.get(k)||{tid,table:t.name,seats:[]}; if(e.tid!==tid&&!e.table.includes(t.name)){ e.table+=" & "+t.name } e.seats.push(+i+1); m.set(k,e) }
+  m.forEach(e=>e.seats.sort((a,b)=>a-b)); return m;
+}
+const seatSig = idx => JSON.stringify([...idx].map(([k,e])=>[k,e.table,e.seats.join(",")]).sort());
+function seatGuests(type){
+  return guestBook(type).filter(r=>r.status!=="no").map(r=>({key:r.key,name:r.name,status:r.status,n:r.status==="yes"?Math.max(1,r.heads):Math.max(1,r.invited||1)}));
+}
+/* Table size: a round table grows with its seats; seats sit on a ring around it. A head table has seats on both long sides. */
+function tbGeo(t){
+  if(t.kind==="head"){ const top=Math.ceil(t.seats/2), bot=t.seats-top, w=Math.max(150,top*46+18), h=64;
+    const pos=Array.from({length:t.seats},(_,i)=>{ const row=i<top?0:1, j=row?i-top:i, n=row?bot:top; return [-w/2+(j+.5)*w/n,row?h/2+22:-h/2-22] });
+    return {w,h,pos,hw:w/2+18,hh:h/2+40} }
+  const d=Math.max(92,Math.min(190,t.seats*11)), r=d/2+21;
+  const pos=Array.from({length:t.seats},(_,i)=>{ const a=-Math.PI/2+i*2*Math.PI/t.seats; return [Math.cos(a)*r,Math.sin(a)*r] });
+  return {w:d,h:d,pos,hw:r+18,hh:r+18};
+}
+function seatPlace(p,g,tid,start){
+  for(const s in p.seats) if(p.seats[s]===g.key) delete p.seats[s];
+  const t=p.tables.find(x=>x.id===tid); if(!t) return 0;
+  let n=0; for(let j=0;j<t.seats&&n<g.n;j++){ const s=tid+":"+((start+j)%t.seats); if(!p.seats[s]){ p.seats[s]=g.key; n++ } }
+  if(n) p.names[g.key]=g.name; return n;
+}
+function seatGuest(type,key){
+  const g=seatGuests(type).find(x=>x.key===key); if(g) return g;
+  const p=seatPlan(type); return {key,name:p.names[key]||key,status:"",n:Math.max(1,Object.values(p.seats).filter(k=>k===key).length)};
+}
+
+function renderSeating(sub){
+  const u=me(); if(!u){ store.set("next","#seating"+(sub?"/"+sub:"")); location.replace("#login"); return }
+  const evs=guestEvents(), type=evs.includes(sub)?sub:evs[0];
+  if(SEAT_UI.type!==type){ SEAT_UI.sel="" } SEAT_UI.type=type;
+  shell(`<main class="acct gm gm-s"><div class="wrap">
+    ${gmHead("seating",type,evs,`<a class="btn" href="#rsvp/${type}">Guest replies</a>`)}
+    <div id="gmSeat"></div>
+  </div></main>`);
+  const el=document.getElementById("gmSeat");
+  el.addEventListener("click",seatClick); el.addEventListener("pointerdown",seatDown);
+  seatPaint();
+}
+function seatPaint(){
+  const el=document.getElementById("gmSeat"); if(!el) return;
+  const type=SEAT_UI.type, p=seatPlan(type), gs=seatGuests(type), idx=seatIndex(p);
+  const wrap=el.querySelector(".hallwrap"), sx=wrap?wrap.scrollLeft:0, sy=wrap?wrap.scrollTop:0, wy=scrollY;
+  const keys=new Set(gs.map(g=>g.key)), total=p.tables.reduce((a,t)=>a+t.seats,0), need=gs.reduce((a,g)=>a+g.n,0);
+  const seated=[...idx].filter(([k])=>keys.has(k)).reduce((a,[,e])=>a+e.seats.length,0);
+  const todo=gs.filter(g=>!idx.has(g.key)), list=SEAT_UI.f==="all"?gs:todo, sel=SEAT_UI.sel, sg=sel?seatGuest(type,sel):null;
+  if(!SEAT_UI.z){ const w=el.clientWidth, av=w>900?w-308:w-4; SEAT_UI.z=Math.max(.6,Math.min(1,Math.floor(av/HALL_W*20)/20)) }
+  const z=SEAT_UI.z, H=Math.max(660,...p.tables.map(t=>t.y+tbGeo(t).hh+30));
+  const sig=seatSig(idx), pub=!FB_ON()?`<span class="badge">Guests see their table once you're online</span>`
+    : p.pubSig&&p.pubSig===sig?`<span class="badge ok">Guests can see their table</span><button class="lnk" data-shide>Hide from guests</button>`
+    : `<button class="btn primary sm" data-spub>${p.pubSig?"Update guests' tables":"Show tables to guests"}</button>`;
+  const tableHTML=t=>{ const g=tbGeo(t);
+    let used=0; const seats=g.pos.map(([x,y],i)=>{ const k=p.seats[t.id+":"+i]; if(k) used++;
+      const nm=k?(p.names[k]||k):"";
+      return `<button class="seat${k?" on":""}${k&&k===sel?" sel":""}" data-seat="${t.id}:${i}" style="left:${x.toFixed(1)}px;top:${y.toFixed(1)}px" title="${k?esc(nm):`Seat ${i+1}`}" aria-label="${esc(t.name)}, seat ${i+1}${k?`: ${esc(nm)}`:", empty"}">${k?esc(gInit(nm)):i+1}</button>` }).join("");
+    return `<div class="tb ${t.kind}" style="left:${t.x}px;top:${t.y}px"><button class="tb-body" data-tbody="${t.id}" style="width:${g.w}px;height:${g.h}px" aria-label="${esc(t.name)}: drag to move, tap to edit"><b>${esc(t.name)}</b><small>${used}/${t.seats}</small></button>${seats}</div>` };
+  el.innerHTML=`
+    <div class="gm-stat"><p><b>${p.tables.length}</b> tables · <b>${seated}/${need}</b> people seated · <b>${total}</b> seats</p><div class="row">${pub}</div></div>
+    <div class="gm-seat">
+      <aside class="sg-panel" aria-label="Guests">
+        <div class="sg-h"><b>Guests</b><span class="badge ${todo.length?"warn":"ok"}">${todo.length?`${todo.length} not seated`:"All seated"}</span></div>
+        <div class="gm-f sg-f" role="group" aria-label="Show"><button data-sgf="todo" aria-pressed="${SEAT_UI.f!=="all"}">Not seated <span>${todo.length}</span></button><button data-sgf="all" aria-pressed="${SEAT_UI.f==="all"}">All <span>${gs.length}</span></button></div>
+        <div class="sg-list">${list.map(g=>{ const s=idx.get(g.key), short=s&&s.seats.length<g.n;
+          return `<button class="sg" data-sg="${esc(g.key)}" aria-pressed="${sel===g.key}"><i>${esc(gInit(g.name))}</i><span><b>${esc(g.name)}</b><small>${g.n} ${g.n===1?"person":"people"} · ${g.status==="yes"?"Coming":"Pending"}</small></span><em class="${s?short?"short":"in":""}">${s?`${esc(s.table)}${short?` · ${s.seats.length}/${g.n}`:""}`:"Not seated"}</em></button>` }).join("")
+          ||`<p class="sg-none">${gs.length?"Everyone has a seat.":"No guests yet. Add guests in the <a href=\"#create\">invitation maker</a>."}</p>`}</div>
+      </aside>
+      <section class="hallbox">
+        <div class="gm-tools">
+          <button class="btn sm" data-sadd="round">${GI.round} Round table</button><button class="btn sm" data-sadd="head">${GI.head} Head table</button>
+          <button class="btn sm" data-sauto>${GI.auto} Auto-seat</button><button class="btn sm" data-scsv>${GI.dl} Download</button>
+          <span class="sp"></span><div class="zoom" role="group" aria-label="Zoom"><button data-sz="-1" aria-label="Zoom out">−</button><span>${Math.round(z*100)}%</span><button data-sz="1" aria-label="Zoom in">+</button></div>
+        </div>
+        <div class="gm-hint" role="status">${sg?`<span class="dot"></span><span>Tap a seat to place <b>${esc(sg.name)}</b>${sg.n>1?` (${sg.n} people)`:""}</span><span class="sp"></span>${idx.has(sg.key)?`<button class="lnk" data-sunseat>Remove from table</button>`:""}<button class="lnk" data-scancel>Cancel</button>`
+          :`<span>Pick a guest, then tap a seat. Drag a table to move it, tap it to rename.</span>`}</div>
+        <div class="hallwrap"><div class="hallsz" style="width:${HALL_W*z}px;height:${H*z}px"><div class="hall" style="width:${HALL_W}px;height:${H}px;transform:scale(${z})">${p.tables.map(tableHTML).join("")}</div></div></div>
+      </section>
+    </div>`;
+  const w2=el.querySelector(".hallwrap"); if(w2){ w2.scrollLeft=sx; w2.scrollTop=sy } if(scrollY!==wy) scrollTo(0,wy);
+}
+function seatDown(e){
+  const b=e.target.closest("[data-tbody]"); if(!b||(e.button&&e.button>0)) return;
+  const type=SEAT_UI.type, p=seatPlan(type), t=p.tables.find(x=>x.id===b.dataset.tbody); if(!t) return;
+  const box=b.parentNode, z=SEAT_UI.z, sx=e.clientX, sy=e.clientY, x0=t.x, y0=t.y, g=tbGeo(t); let moved=false;
+  try{ b.setPointerCapture(e.pointerId) }catch(er){}
+  const mv=ev=>{ const dx=(ev.clientX-sx)/z, dy=(ev.clientY-sy)/z; if(!moved&&Math.hypot(dx,dy)<6) return;
+    moved=true; SEAT_DRAG=true; box.classList.add("drag");
+    t.x=Math.max(g.hw,Math.min(HALL_W-g.hw,Math.round((x0+dx)/10)*10)); t.y=Math.max(g.hh,Math.round((y0+dy)/10)*10);
+    box.style.left=t.x+"px"; box.style.top=t.y+"px" };
+  const up=()=>{ b.removeEventListener("pointermove",mv); b.removeEventListener("pointerup",up); b.removeEventListener("pointercancel",up);
+    SEAT_DRAG=false; box.classList.remove("drag"); if(moved){ SEAT_UI.moved=Date.now(); seatSave(type); seatPaint() } };
+  b.addEventListener("pointermove",mv); b.addEventListener("pointerup",up); b.addEventListener("pointercancel",up);
+}
+function seatClick(e){
+  const type=SEAT_UI.type, p=seatPlan(type), T=e.target, done=()=>{ seatSave(type); seatPaint() };
+  const sg=T.closest("[data-sg]"); if(sg){ SEAT_UI.sel=SEAT_UI.sel===sg.dataset.sg?"":sg.dataset.sg; return seatPaint() }
+  const f=T.closest("[data-sgf]"); if(f){ SEAT_UI.f=f.dataset.sgf; return seatPaint() }
+  const s=T.closest("[data-seat]");
+  if(s){ const id=s.dataset.seat, [tid,i]=id.split(":"), occ=p.seats[id], t=p.tables.find(x=>x.id===tid);
+    if(SEAT_UI.sel){
+      if(occ===SEAT_UI.sel){ SEAT_UI.sel=""; return seatPaint() }
+      const g=seatGuest(type,SEAT_UI.sel), free=t.seats-Object.entries(p.seats).filter(([k,v])=>k.startsWith(tid+":")&&+k.split(":")[1]<t.seats&&v!==g.key).length;
+      if(!free) return toast(`${t.name} is full`);
+      const n=seatPlace(p,g,tid,+i); SEAT_UI.sel="";
+      toast(n<g.n?`Only ${n} of ${g.n} fit at ${t.name}. Tap another table for the rest.`:`${g.name} → ${t.name}`);
+      return done();
+    }
+    if(occ){ SEAT_UI.sel=occ; return seatPaint() }
+    return toast("Pick a guest from the list first, then tap a seat");
+  }
+  const tb=T.closest("[data-tbody]"); if(tb){ if(Date.now()-SEAT_UI.moved<400) return; return tableEdit(tb.dataset.tbody) }
+  if(T.closest("[data-scancel]")){ SEAT_UI.sel=""; return seatPaint() }
+  if(T.closest("[data-sunseat]")){ const k=SEAT_UI.sel; for(const x in p.seats) if(p.seats[x]===k) delete p.seats[x]; SEAT_UI.sel=""; return done() }
+  const ad=T.closest("[data-sadd]"); if(ad){ addTable(p,ad.dataset.sadd); return done() }
+  if(T.closest("[data-sauto]")){ const left=autoSeat(type,p); toast(left?`${left} ${left===1?"guest doesn't":"guests don't"} fit. Add another table or more seats.`:"Everyone has a seat"); return done() }
+  if(T.closest("[data-scsv]")){ const gs=new Map(seatGuests(type).map(g=>[g.key,g]));
+    return dlCSV(`${TYPES[type].name.toLowerCase()}-seating.csv`,[["Table","Seat","Guest","Reply"],...p.tables.flatMap(t=>Array.from({length:t.seats},(_,i)=>{ const k=p.seats[t.id+":"+i]; return [t.name,i+1,k?(p.names[k]||k):"",k&&gs.get(k)?(gs.get(k).status==="yes"?"Coming":"Pending"):""] }))]) }
+  const zb=T.closest("[data-sz]"); if(zb){ SEAT_UI.z=Math.max(.5,Math.min(1.4,Math.round((SEAT_UI.z+(+zb.dataset.sz)*.1)*10)/10)); return seatPaint() }
+  if(T.closest("[data-spub]")) return seatPublish(type,false,T.closest("[data-spub]"));
+  if(T.closest("[data-shide]")) return seatPublish(type,true,T.closest("[data-shide]"));
+}
+function addTable(p,kind){
+  const n=p.tables.filter(t=>t.kind==="round").length, id=kind+Date.now().toString(36);
+  const t={id,kind,name:kind==="head"?"Head table":`Table ${p.tables.filter(x=>x.kind==="round").reduce((a,x)=>Math.max(a,+(x.name.match(/\d+/)||[0])[0]),0)+1}`,seats:kind==="head"?8:10,x:170,y:320};
+  const g=tbGeo(t), cols=[170,480,790];
+  for(let r=0;r<40;r++){ const y=(kind==="head"?100:320)+r*260; const c=cols.find(x=>!p.tables.some(o=>Math.abs(o.x-x)<200&&Math.abs(o.y-y)<180)); if(c!=null){ t.x=c; t.y=y; break } }
+  p.tables.push(t); toast(`${t.name} added. Drag it where it stands in the hall.`); return n;
+}
+function autoSeat(type,p){
+  const idx=seatIndex(p), todo=seatGuests(type).filter(g=>!idx.has(g.key)).sort((a,b)=>(a.status==="yes"?0:1)-(b.status==="yes"?0:1)||b.n-a.n);
+  const tables=p.tables.filter(t=>t.kind!=="head"); let left=0;
+  for(const g of todo){
+    const t=tables.find(t=>Array.from({length:t.seats},(_,i)=>p.seats[t.id+":"+i]).filter(x=>!x).length>=g.n);
+    if(!t){ left++; continue }
+    const first=Array.from({length:t.seats},(_,i)=>i).find(i=>!p.seats[t.id+":"+i]);
+    seatPlace(p,g,t.id,first);
+  }
+  return left;
+}
+function tableEdit(tid){
+  const type=SEAT_UI.type, p=seatPlan(type), t=p.tables.find(x=>x.id===tid); if(!t) return;
+  modal(`<span class="eyebrow">${t.kind==="head"?"Head table":"Round table"}</span><h3>${esc(t.name)}</h3>
+    <form id="tbForm" class="gm-tf"><div class="af"><label for="tb-n">Name</label><input id="tb-n" value="${esc(t.name)}" maxlength="30" required></div>
+      <div class="af"><label for="tb-s">Seats</label><input id="tb-s" type="number" min="2" max="20" value="${t.seats}" inputmode="numeric"></div>
+      <div class="row gm-tfa"><button type="button" class="btn" data-tbdel>Delete table</button><button type="button" class="btn" data-tbclr>Clear seats</button><span class="sp"></span><button type="button" class="btn" data-x>Cancel</button><button class="btn primary" type="submit">Save</button></div></form>`);
+  const L=document.getElementById("layer"), close=()=>{ L.innerHTML=""; seatSave(type); seatPaint() };
+  const clear=()=>{ for(const k in p.seats) if(k.startsWith(tid+":")) delete p.seats[k] };
+  L.querySelector("#tbForm").onsubmit=e=>{ e.preventDefault(); t.name=L.querySelector("#tb-n").value.trim().slice(0,30)||t.name; t.seats=Math.max(2,Math.min(20,Math.round(+L.querySelector("#tb-s").value)||t.seats));
+    for(const k in p.seats){ const [a,i]=k.split(":"); if(a===tid&&+i>=t.seats) delete p.seats[k] } close() };
+  L.querySelector("[data-tbclr]").onclick=()=>{ clear(); close() };
+  L.querySelector("[data-tbdel]").onclick=()=>{ clear(); p.tables=p.tables.filter(x=>x.id!==tid); toast(`${t.name} deleted`); close() };
+}
+async function seatHash(name){
+  const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode("aradhanawa-seat:"+gKey(name)));
+  return [...new Uint8Array(b)].slice(0,10).map(x=>x.toString(16).padStart(2,"0")).join("");
+}
+async function seatPublish(type,hide,btn){
+  if(!FB_ON()) return toast("Guests can see their table once Firebase is connected.");
+  if(!fbNeed()||!FBX.user||!FBX.publishSeats) return;
+  const p=seatPlan(type), idx=seatIndex(p), entries={};
+  if(btn){ btn.disabled=true; btn.textContent=hide?"Hiding…":"Saving…" }
+  try{
+    if(!hide) for(const [k,e] of idx) entries[await seatHash(k)]={table:e.table,seats:e.seats.join(", ")};
+    await FBX.publishSeats(type,entries);
+    p.pubSig=hide?"":seatSig(idx); seatSave(type); seatPaint();
+    toast(hide?"Tables hidden from guests":"Done. Each guest now sees their table on their invitation.");
+  }catch(e){ console.warn("[fb] seats",e); toast(e.code==="permission-denied"?"The server needs the new Firestore rules before guests can see their tables.":fbErrText(e)); seatPaint() }
+}
+/* Guest link: read this guest's own table (seats/{owner_type_key}) over the public REST API. */
+const GUEST_SEAT={};
+function guestSeat(p){
+  const cfg=window.ARADHANA_FIREBASE&&window.ARADHANA_FIREBASE.config, t=TYPES[p.t]?p.t:"other";
+  if(!cfg||!p.o||!p.g||!/^[A-Za-z0-9]{1,128}$/.test(p.o)||!(window.crypto&&crypto.subtle)) return Promise.resolve(null);
+  const ck=p.o+"_"+t+"|"+gKey(p.g); if(GUEST_SEAT[ck]) return GUEST_SEAT[ck];
+  return GUEST_SEAT[ck]=seatHash(p.g).then(k=>{ const ctl=new AbortController(), tm=setTimeout(()=>ctl.abort(),3500);
+    return fetch(`https://firestore.googleapis.com/v1/projects/${encodeURIComponent(cfg.projectId)}/databases/(default)/documents/seats/${encodeURIComponent(p.o+"_"+t+"_"+k)}?key=${encodeURIComponent(cfg.apiKey)}`,{signal:ctl.signal})
+      .then(r=>r.ok?r.json():null).then(d=>d&&d.fields&&fsVal(d.fields.table)?{table:String(fsVal(d.fields.table)),seats:String(fsVal(d.fields.seats)||"")}:null).finally(()=>clearTimeout(tm)) }).catch(()=>null);
+}
+function guestSeatHTML(p,seat){
+  const si=p.l==="si", n=String(seat.seats||"").split(/,\s*/).filter(Boolean);
+  return `<section class="s-sec lx-plain gseat" id="gseat"><span class="s-eb">${si?"ඔබගේ මේසය":"Your table"}</span>
+    <div class="gseat-c"><small>${si?"ශාලාවේ ඔබට වෙන් කළ මේසය":"We have kept a place for you at"}</small><b class="s-h">${esc(seat.table)}</b>
+    ${n.length?`<span>${si?"ආසන":n.length>1?"Seats":"Seat"} ${esc(n.join(", "))}</span>`:""}</div>
+    <p class="s-p">${si?"ශාලාවට පැමිණි විට මෙම මේසය සොයා ගන්න.":"Please look for this table when you arrive at the hall."}</p></section>`;
 }
 
 /* ---------- admin ---------- */
@@ -5300,7 +5800,7 @@ async function deleteTrack(tr){
 
 /* Admin → Prices: add / edit a plan, and save the whole list (site + payment API read it from settings/site). */
 function savePlans(list,msg){
-  const c={PLANS:list}, p=list.find(x=>x.on!==false&&x.kind==="plus"), cu=list.find(x=>x.on!==false&&x.kind==="custom");
+  const c={PLANS:list,SIG_SEEN:true}, p=list.find(x=>x.on!==false&&x.kind==="plus"), cu=list.find(x=>x.on!==false&&x.kind==="custom");
   if(p) c.PRICE_PLUS=p.price; if(cu) c.PRICE_CUSTOM=cu.price;   // older pages and the SEO text still read these two
   store.set("config",{...store.get("config",{}),...c}); Object.assign(CONFIG,c);
   if(FB_ON()){ if(fbNeed()) FBX.savePlans(c).then(()=>toast(msg||"Prices saved"),er=>{ fbFail(er); route() }) } else toast(msg||"Prices saved");
@@ -5332,13 +5832,13 @@ function planForm(i){
 
 /* ---------- router ---------- */
 const SITE_PAGES={designs:1,create:1,pricing:1};
-const PAGES = { login:()=>renderAuth("login"), register:()=>renderAuth("register"), account:renderAccount, admin:renderAdmin,
+const PAGES = { login:()=>renderAuth("login"), register:()=>renderAuth("register"), account:renderAccount, admin:renderAdmin, rsvp:renderRsvp, seating:renderSeating,
   design:(sub,rest)=>{ S.page="design"; S.dt=sub; S.di=rest; render(); scrollTo(0,0) } };
 function route(){
   const h=location.hash||"";
-  if(h.startsWith("#i=")){ try{ const p=JSON.parse(unb64(h.slice(3))); if(p&&p.e){ Promise.all([guestGallery(p),guestSettings()]).then(([g])=>{ if(location.hash===h) renderGuest(p,g) }); return } }catch(e){} }
+  if(h.startsWith("#i=")){ try{ const p=JSON.parse(unb64(h.slice(3))); if(p&&p.e){ Promise.all([guestGallery(p),guestSettings(),guestSeat(p)]).then(([g,,st])=>{ if(location.hash===h) renderGuest(p,g,st) }); return } }catch(e){} }
   if(h.startsWith("#s=")){
-    Promise.all([loadShort(h.slice(3)),guestSettings()]).then(([p])=>p?guestGallery(p).then(g=>{ if(location.hash===h) renderGuest(p,g) }):(location.hash===h&&(history.replaceState(null,"","/"),route(),toast("This invitation link isn't available any more."))));
+    Promise.all([loadShort(h.slice(3)),guestSettings()]).then(([p])=>p?Promise.all([guestGallery(p),guestSeat(p)]).then(([g,st])=>{ if(location.hash===h) renderGuest(p,g,st) }):(location.hash===h&&(history.replaceState(null,"","/"),route(),toast("This invitation link isn't available any more."))));
     return }
   const [pg,sub,rest]=h.slice(1).split("/");
   if(PAGES[pg]){ PAGES[pg](sub,rest); return }
@@ -5366,8 +5866,8 @@ document.addEventListener("click",e=>{
   const cct=e.target.closest("[data-cctype]"); if(cct) customCardFlow(cct.dataset.cctype);
   const bp=e.target.closest("[data-buy]"); if(bp) buyPlan(bp.dataset.buy);
   if(e.target.closest("[data-logout]")){ e.preventDefault();
-    if(FB_ON()){ if(fbNeed()) FBX.signOut().then(()=>{ toast("Logged out"); if(/^#(admin|account|create)/.test(location.hash)) location.hash="" },fbFail); return }
-    store.set("session",null); toast("Logged out"); if(/^#(admin|account|create)/.test(location.hash)) location.hash=""; else render() }
+    if(FB_ON()){ if(fbNeed()) FBX.signOut().then(()=>{ toast("Logged out"); if(/^#(admin|account|create|rsvp|seating)/.test(location.hash)) location.hash="" },fbFail); return }
+    store.set("session",null); toast("Logged out"); if(/^#(admin|account|create|rsvp|seating)/.test(location.hash)) location.hash=""; else render() }
 });
 
 /* Firebase: live data changes re-render the admin / account pages; sign-in changes move between pages. */
@@ -5378,11 +5878,12 @@ function fbChanged(why){
   if(why==="reviews"){ rvFill(); if(!/^#admin\/reviews/.test(location.hash)) return }
   const h=location.hash||"", pg=h.slice(1).split("/")[0];
   if(isGuestHash(h)) return;
-  if(why==="auth"){ fbSyncGalleries(); if(["login","register","admin","account","create"].includes(pg)) route(); else render(); return }
+  if(why==="auth"){ fbSyncGalleries(); if(["login","register","admin","account","create","rsvp","seating"].includes(pg)) route(); else render(); return }
+  if(pg==="seating"){ if(!SEAT_DRAG&&!document.querySelector("#layer .modal")) seatPaint(); return }
   if(why==="orders"&&S.page==="create"){ const a=document.activeElement; if(!(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))){ const y=scrollY; render(); scrollTo(0,y) } return }
-  if(pg!=="admin"&&pg!=="account") return;
+  if(pg!=="admin"&&pg!=="account"&&pg!=="rsvp") return;
   const a=document.activeElement; if(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)&&a.closest(".adm,.acct")){ fbDirty=true; return }
-  clearTimeout(fbT); fbT=setTimeout(route,120);
+  clearTimeout(fbT); fbT=setTimeout(()=>{ const y=scrollY; route(); if(pg==="rsvp") scrollTo(0,y) },120);
 }
 document.addEventListener("focusout",()=>{ if(!fbDirty) return; setTimeout(()=>{ const a=document.activeElement; if(fbDirty&&!(a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName))){ fbDirty=false; route() } },200) });
 function fbStart(){

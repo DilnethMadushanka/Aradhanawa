@@ -14,6 +14,9 @@
  *   rsvps/{id}             inviteId, ownerUid, type, event, guest, name, coming, count, msg, created
  *   plus/{uid_type}        uid, type, orderId, updated   (Plus for one function; written by api/pay/* or an admin;
  *                          firestore.rules reads it to let that invitation hold more than FREE_GUESTS guests)
+ *   seating/{uid_type}     uid, type, plan (seating plan as JSON: tables, seats, names), updated   (owner only)
+ *   seats/{uid_type_key}   uid, type, table, seats, updated   (one per seated guest, key = hash of the guest's name;
+ *                          anyone may get one doc by id, so a guest link reads only its own table; only the owner can list)
  *   reviews/{id}           name, type, rating 1-5, msg, approved, created   (home page reviews; anyone may write one with
  *                          approved false, only approved ones are public, admins approve or delete)
  *   settings/site          config {FREE_GUESTS, STUDIO_WA, PRICE_PLUS, PRICE_CUSTOM, PLANS [{id, kind, name, price, details, on}], MUSIC, MUSIC_*,
@@ -242,6 +245,24 @@ export async function init(cfg, hooks = {}) {
     type: String(r.type || "").slice(0, 20), event: String(r.event || "").slice(0, 200), guest: String(r.guest || "").slice(0, 120),
     name: String(r.name || "").slice(0, 120), coming: !!r.coming, count: Math.max(0, Math.min(20, +r.count || 0)),
     msg: String(r.msg || "").slice(0, 1000), created: now() });
+  // Seating plan (seating/{uid_type}, owner only) and each guest's own table (seats/{uid_type_key}, public get, owner list).
+  FBX.loadSeating = async type => {
+    if (!FBX.user) return null;
+    const s = await F.getDoc(F.doc(db, "seating", `${FBX.user.uid}_${type}`));
+    return s.exists() ? s.data() : null;
+  };
+  FBX.saveSeating = (type, plan) => FBX.user
+    ? F.setDoc(F.doc(db, "seating", `${FBX.user.uid}_${type}`), { uid: FBX.user.uid, type, plan: String(plan).slice(0, 300000), updated: now() })
+    : Promise.resolve();
+  FBX.publishSeats = async (type, entries) => {
+    const u = FBX.user; if (!u) throw new Error("Not signed in");
+    const id = k => `${u.uid}_${type}_${k}`, keep = new Set(Object.keys(entries).map(id));
+    const old = await F.getDocs(F.query(F.collection(db, "seats"), F.where("uid", "==", u.uid), F.where("type", "==", type)));
+    const ops = old.docs.filter(d => !keep.has(d.id)).map(d => b => b.delete(d.ref));
+    for (const [k, v] of Object.entries(entries)) ops.push(b => b.set(F.doc(db, "seats", id(k)),
+      { uid: u.uid, type, table: String(v.table || "").slice(0, 40), seats: String(v.seats || "").slice(0, 60), updated: now() }));
+    for (let i = 0; i < ops.length; i += 400) { const b = F.writeBatch(db); ops.slice(i, i + 400).forEach(f => f(b)); await b.commit() }
+  };
   FBX.deleteRsvp = id => F.deleteDoc(F.doc(db, "rsvps", id));
   FBX.addReview = r => F.addDoc(F.collection(db, "reviews"), {
     name: String(r.name || "").trim().slice(0, 80), type: String(r.type || "").slice(0, 20),

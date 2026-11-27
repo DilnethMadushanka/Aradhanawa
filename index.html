@@ -4048,7 +4048,7 @@ function render(){
 
     <aside class="stage" aria-label="Live preview">
       <div class="table" id="cardSlot" data-ui></div>
-      <p class="pnote" id="premOwn" hidden>Your purchased design. Guest links use this design.</p><div id="premBar" hidden><p class="pnote">Free for ${CONFIG.FREE_GUESTS} guests. Buy this design to send it to every guest.</p><div class="row" style="margin-top:8px;justify-content:center"><button class="btn primary" id="buyPrem">Buy this design · <span id="premPrice"></span></button><button class="btn" id="reqPrem">Details</button></div></div>
+      <p class="pnote" id="premOwn" hidden>Your purchased design. Guest links use this design.</p><div id="premBar" hidden><p class="pnote">Free for ${CONFIG.FREE_GUESTS} guests. Buy this design to send it to every guest.</p><div class="row" style="margin-top:8px;justify-content:center"><button class="btn primary" id="buyPrem">Buy this design · <span id="premPrice"></span></button><button class="btn" id="buyPremBank" hidden>${PAY_IC_BANK}Bank transfer</button><button class="btn" id="reqPrem">Details</button></div></div>
       <div class="opk"><span>Opening screen</span><div class="seg" role="group" aria-label="Opening screen when a guest opens the link">${[["theme",({wedding:"Magul pahana",birthday:"Birthday cake",homecoming:"Door",dana:"Lotus",party:"Gift box",halloween:"Pumpkin",engagement:"Intro video"})[S.type]||"Classic"],["env","Envelope"],["seal","Wax seal"]].map(([k,n])=>`<button type="button" data-opener="${k}" aria-pressed="${S.opener===k}">${n}</button>`).join("")}</div></div>
       <div class="row">
         <button class="btn" id="preview">${I.eye} Preview as guest</button>
@@ -4232,6 +4232,7 @@ function bind(){
   $$("[data-tpl]").forEach(b=>b.onclick=()=>{ S.tpl[S.type]=+b.dataset.tpl; save(); $$("[data-tpl]").forEach(x=>x.setAttribute("aria-pressed",x===b)); syncOpener(); refreshGuestLinks(); refreshLive(); if(matchMedia("(max-width:920px)").matches){ const d=document.getElementById("h-det"), p=d&&d.closest(".panel"); if(p){ const hd=document.querySelector(".lp-nav,header.top"), off=(hd?hd.getBoundingClientRect().bottom:0)+8; scrollTo({top:p.getBoundingClientRect().top+scrollY-off,behavior:"smooth"}) } } });
   $("#reqPrem").onclick=()=>{ const p=curPrem(); p&&templateReq(p.n) };
   $("#buyPrem").onclick=e=>{ const p=curPrem(); p&&payNow("custom",p.n,e.currentTarget) };
+  { const bb=$("#buyPremBank"); if(bb){ bb.hidden=!bankInfo(); bb.onclick=e=>{ const p=curPrem(); p&&payNow("custom",p.n,e.currentTarget,undefined,"bank",($("#premPrice")||{}).textContent||"") } } }
   $$("[data-upgrade]").forEach(b=>b.onclick=()=>b.dataset.upgrade==="plus"?upsell(true):customReq(""));
   $$("[data-df]").forEach(b=>b.onclick=()=>{ $$("[data-df]").forEach(x=>x.setAttribute("aria-pressed",x===b)); $("#drow").innerHTML=designItems(b.dataset.df); $("#drow").classList.toggle("all",b.dataset.df!=="all"); const dm=$("#dmore"); if(dm) dm.hidden=b.dataset.df!=="all" });
   $("#drow").addEventListener("click",e=>{ const d=e.target.closest("[data-pick]"); if(!d) return; const [k,i]=d.dataset.pick.split(":"); location.hash=`#design/${k}/${i}` });
@@ -4271,7 +4272,7 @@ function customCardFlow(type){
       <li><b>Your photos, colours and wording:</b> in Sinhala, English or both.</li>
       <li><b>2 rounds of changes</b>, and the finished card within 48 hours.</li>
       <li><b>Every guest:</b> personal links for all your guests, the RSVP list, map and music, like every Aradhanawa card.</li></ul>
-    <div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><a class="btn wa" data-order="custom|${CUSTOM_CARD}" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,txt)}">${I.wa} Ask first</a>${p?`<button class="btn primary" data-pay="custom|${CUSTOM_CARD}|${esc(p.id)}">Pay ${esc(price)}</button>`:""}</div>
+    <div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><a class="btn wa" data-order="custom|${CUSTOM_CARD}" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,txt)}">${I.wa} Ask first</a>${p?`<button class="btn primary" data-pay="custom|${CUSTOM_CARD}|${esc(p.id)}">Pay ${esc(price)}</button>${bankBtn(`custom|${CUSTOM_CARD}|${esc(p.id)}`,esc(price))}`:""}</div>
     <p class="note">Pay securely through Dialog Genie, then send your photos on WhatsApp.</p>`);
 }
 function designItems(filter){
@@ -4342,7 +4343,7 @@ function buyPlan(id){
   const txt=`Hi Aradhanawa! I'd like "${p.name}" (${p.price}) for my ${TYPES[S.type].name.toLowerCase()}.`;
   modal(`<span class="eyebrow">${esc(p.name)} · ${esc(p.price)}</span><h3>${esc(p.name)}</h3>
     ${p.details?`<p>${String(p.details).split(/\n+/).map(esc).join("<br>")}</p>`:""}
-    <div class="row" style="justify-content:flex-end;margin-top:6px"><button class="btn" data-x>Cancel</button><a class="btn wa" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,txt)}">${I.wa} Ask first</a><button class="btn primary" data-pay="service||${esc(p.id)}">Pay ${esc(p.price)}</button></div>
+    <div class="row" style="justify-content:flex-end;margin-top:6px"><button class="btn" data-x>Cancel</button><a class="btn wa" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,txt)}">${I.wa} Ask first</a><button class="btn primary" data-pay="service||${esc(p.id)}">Pay ${esc(p.price)}</button>${bankBtn(`service||${esc(p.id)}`,esc(p.price))}</div>
     <p class="note">Secure payment through Dialog Genie. We'll contact you on WhatsApp after you pay.</p>`);
 }
 function upsell(direct,plan){
@@ -4353,7 +4354,7 @@ function upsell(direct,plan){
     return modal(`<span class="eyebrow">Free limit reached</span>
     <h3>You've shared with ${CONFIG.FREE_GUESTS} guests</h3>
     <p>The free plan covers ${CONFIG.FREE_GUESTS} personal links. Buy the ${esc(prem.n)} design for ${esc(tp)} to send it to everyone and see who's coming. It unlocks as soon as you pay.</p>
-    <div class="row" style="justify-content:flex-end;margin-top:6px"><button class="btn" data-x>Not now</button><button class="btn primary" data-pay="custom|${esc(prem.n)}|${esc(mc.id)}">Pay ${esc(tp)}</button></div>
+    <div class="row" style="justify-content:flex-end;margin-top:6px"><button class="btn" data-x>Not now</button><button class="btn primary" data-pay="custom|${esc(prem.n)}|${esc(mc.id)}">Pay ${esc(tp)}</button>${bankBtn(`custom|${esc(prem.n)}|${esc(mc.id)}`,esc(tp))}</div>
     <p class="note">${payNote()} Prefer to talk first? <a target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,ttxt)}">Ask us on WhatsApp</a>. You can still copy the main invite link and paste it into a WhatsApp group.</p>`);
   }
   const p=plan||mainPlan("plus"), price=p?p.price:CONFIG.PRICE_PLUS;
@@ -4361,7 +4362,7 @@ function upsell(direct,plan){
   modal(`<span class="eyebrow">${direct?"Aradhanawa Plus":"Free limit reached"}</span>
     <h3>${direct?"Unlimited guests for one event":"You've shared with 5 guests"}</h3>
     <p>${direct?"":"The free plan covers 5 personal links. "}Upgrade to ${esc(p?p.name:"Aradhanawa Plus")} for ${esc(price)} per event to send to everyone, see who's coming, and remove the Aradhanawa branding.</p>
-    <div class="row" style="justify-content:flex-end;margin-top:6px"><button class="btn" data-x>Not now</button>${p?`<button class="btn primary" data-pay="plus||${esc(p.id)}">Pay ${esc(price)}</button>`:""}</div>
+    <div class="row" style="justify-content:flex-end;margin-top:6px"><button class="btn" data-x>Not now</button>${p?`<button class="btn primary" data-pay="plus||${esc(p.id)}">Pay ${esc(price)}</button>${bankBtn(`plus||${esc(p.id)}`,esc(price))}`:""}</div>
     <p class="note">${payNote()} Prefer to talk first? <a target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,txt)}">Ask us on WhatsApp</a>. You can still copy the main invite link and paste it into a WhatsApp group.</p>`);
 }
 /* Buying a ready-made web design: pay, and it unlocks at once (every guest, no studio work, no WhatsApp step). */
@@ -4369,7 +4370,7 @@ function templateReq(name){
   const p=mainPlan("custom"), price=designPrice(name);
   modal(`<span class="eyebrow">${esc(TYPES[S.type].name)} design · ${esc(price)}</span><h3>${esc(name)}</h3>
     <p>Free for ${CONFIG.FREE_GUESTS} guests. Buy it to send your invitation to every guest and see who's coming. The design unlocks as soon as you pay, so you can carry on right away.</p>
-    <div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button>${p?`<button class="btn primary" data-pay="custom|${esc(name)}|${esc(p.id)}">Pay ${esc(price)}</button>`:""}</div>
+    <div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button>${p?`<button class="btn primary" data-pay="custom|${esc(name)}|${esc(p.id)}">Pay ${esc(price)}</button>${bankBtn(`custom|${esc(name)}|${esc(p.id)}`,esc(price))}`:""}</div>
     <p class="note">Secure payment through Dialog Genie.</p>`);
 }
 function customReq(name,plan){
@@ -5133,13 +5134,16 @@ function logOrder(kind,design){
 /* Online payment. The customer picks card (Dialog Genie, api/pay/create) or bank transfer with a slip (api/pay/bank).
    The server sets the price either way. Bank transfer shows only when Admin → Settings → Bank transfer has an account. */
 const bankInfo = () => { const b=CONFIG.BANK; return b&&typeof b==="object"&&b.name&&b.number ? b : null };
+/* "Bank transfer" button shown next to each Pay button once Admin → Settings → Bank transfer has an account. */
+const bankBtn = (pay,price) => bankInfo() ? `<button class="btn" data-bankpay="${pay}|${esc(price||"")}">${PAY_IC_BANK}Bank transfer</button>` : "";
+const PAY_IC_BANK = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" style="vertical-align:-3px;margin-right:6px"><path d="M3 9.5L12 4l9 5.5H3zM5 10v7M9.5 10v7M14.5 10v7M19 10v7M3 20h18"/></svg>`;
 const payNote = () => bankInfo() ? "Pay by card (secure Dialog Genie page) or by bank transfer." : "Secure payment through Dialog Genie.";
 const PAY_IC = {
   card:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="M2.5 9.5h19M6 15h4"/></svg>`,
   bank:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 9.5L12 4l9 5.5H3zM5 10v7M9.5 10v7M14.5 10v7M19 10v7M3 20h18"/></svg>`,
   up:`<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M7.5 8.5L12 4l4.5 4.5M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>`,
 };
-async function payNow(kind,design,btn,plan){
+async function payNow(kind,design,btn,plan,method,priceLabel){
   if(!FB_ON()||!window.FBX) return toast("Online payment needs the live site (Firebase connected).");
   if(!me()){
     store.set("next",location.hash||"#create");
@@ -5147,8 +5151,10 @@ async function payNow(kind,design,btn,plan){
       <div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><a class="btn" href="#register" data-x>Register</a><a class="btn primary" href="#login" data-x>Log in</a></div>`);
     return }
   const buy={kind,plan:plan||undefined,type:S.type,design:design||(kind==="plus"?"Aradhanawa Plus":"Custom design")};
-  const price=((btn&&/Rs\.?\s*[\d,]+(\.\d+)?/.exec(btn.textContent))||[""])[0];
-  if(!bankInfo()) return payCard(buy,btn);
+  const price=priceLabel||((btn&&/Rs\.?\s*[\d,]+(\.\d+)?/.exec(btn.textContent))||[""])[0];
+  if(method==="bank") return bankModal({buy,price});
+  // Pay buttons go straight to the card page; bank transfer has its own button next to them.
+  if(method!=="choose") return payCard(buy,btn);
   modal(`<span class="eyebrow">Choose how to pay</span><h3>${price?`Pay ${esc(price)}`:"How would you like to pay?"}</h3>
     <div class="paych">
       <button class="payopt" type="button" data-pm="card"><span class="pi">${PAY_IC.card}</span><span><b>Card payment</b><small>Visa, Mastercard or Genie on a secure Dialog page. Unlocks straight away.</small></span><span class="go" aria-hidden="true">›</span></button>
@@ -6071,6 +6077,7 @@ document.addEventListener("click",e=>{
   if(e.target.closest("#nvSheet a")||nd){ const sh=document.getElementById("nvSheet"), nm=document.querySelector(".nv-menu"); if(sh) sh.hidden=true; if(nm) nm.setAttribute("aria-expanded","false"); const nv=document.querySelector(".lp-nav"); if(nv) nv.classList.remove("open") }
   const o=e.target.closest("[data-order]"); if(o){ const [k,d]=o.dataset.order.split("|"); logOrder(k,d) }
   const pb=e.target.closest("[data-pay]"); if(pb){ const [k,d,pl]=pb.dataset.pay.split("|"); payNow(k,d,pb,pl) }
+  const bb=e.target.closest("[data-bankpay]"); if(bb){ const [k,d,pl,pr]=bb.dataset.bankpay.split("|"); payNow(k,d,bb,pl,"bank",pr) }
   if(e.target.closest("[data-ccflow]")) customCardFlow();
   const cct=e.target.closest("[data-cctype]"); if(cct) customCardFlow(cct.dataset.cctype);
   const bp=e.target.closest("[data-buy]"); if(bp) buyPlan(bp.dataset.buy);

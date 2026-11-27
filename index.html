@@ -2199,6 +2199,8 @@ body:has(.lp){background:#fff}
 .rv-card blockquote::before{content:"\201C";display:block;font:600 54px/.6 "Cormorant Garamond",Georgia,serif;color:#B3852B;margin-bottom:6px}
 .rv-card figcaption{margin-top:auto;display:flex;flex-direction:column;gap:2px;font-size:15px;color:#6E5D48}
 .rv-card figcaption b{color:#2A1E12;font-size:16px}
+.rv-ex{display:inline-block;font:700 11px/1 "Inter Tight",sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#8A6420;border:1px solid rgba(166,122,31,.5);padding:5px 8px;border-radius:999px}
+.rv-demo{margin:14px auto 0;font-size:14px;color:#6E5D48}
 .rv-empty{margin-inline:var(--m);text-align:center;padding:36px 20px;border:1px dashed rgba(166,122,31,.5);color:#6E5D48;font-size:17px;background:rgba(255,251,243,.6)}
 .rv-form{margin:clamp(40px,5vw,64px) auto 0;max-width:640px;text-align:left;padding:clamp(22px,3vw,34px);background:#FFFBF3;border:1px solid rgba(166,122,31,.45);display:grid;gap:16px}
 .rv-form h3{font-size:clamp(26px,2.6vw,34px);margin:0;text-align:center}
@@ -3402,16 +3404,24 @@ function lpNav(){
 /* Customer reviews & feedback (home page). Visitors write one; it shows after an admin approves it (Admin → Reviews). */
 const RV_STAR=`<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.4l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg>`;
 const rvStars=n=>`<span class="rv-stars" role="img" aria-label="${n} out of 5 stars">${[1,2,3,4,5].map(i=>RV_STAR.replace("<svg",`<svg class="${i<=n?"on":"off"}"`)).join("")}</span>`;
+/* Shown, labelled "Example", only until the first real review is approved. */
+const RV_EXAMPLES=[
+  {type:"wedding",rating:5,msg:"Our guests opened the card on WhatsApp and the RSVPs came straight to our phone. No printing, no courier."},
+  {type:"homecoming",rating:5,msg:"Each guest saw their own name on the card. The elders loved it, and the venue map saved a lot of phone calls."},
+  {type:"birthday",rating:5,msg:"Made the invitation in ten minutes on my phone and sent it to the whole class group the same evening."},
+  {type:"dana",rating:5,msg:"The Sinhala card looked beautiful and was easy for our relatives abroad to open."},
+  {type:"engagement",rating:4,msg:"Lovely animated designs. Choosing one was the hardest part."},
+  {type:"wedding",rating:5,msg:"The poruwa nekath, church and reception all fit on one card with their own times and venues."}];
 const rvList=()=>((window.FBX&&FBX.reviews)||[]).filter(r=>r.approved===true).sort((a,b)=>String(b.created||"").localeCompare(String(a.created||"")));
 function rvFill(){
   const L=document.getElementById("rvList"); if(!L) return;
-  const list=rvList(), sum=document.getElementById("rvSum");
-  if(sum){ if(list.length){ const avg=list.reduce((a,r)=>a+(+r.rating||0),0)/list.length; sum.hidden=false; sum.innerHTML=`<b>${avg.toFixed(1)}</b>${rvStars(Math.round(avg))}<span>from ${list.length} ${list.length===1?"review":"reviews"}</span>` } else sum.hidden=true }
+  const real=rvList(), demo=!real.length, list=demo?RV_EXAMPLES:real, sum=document.getElementById("rvSum");
+  if(sum){ if(!demo){ const avg=list.reduce((a,r)=>a+(+r.rating||0),0)/list.length; sum.hidden=false; sum.innerHTML=`<b>${avg.toFixed(1)}</b>${rvStars(Math.round(avg))}<span>from ${list.length} ${list.length===1?"review":"reviews"}</span>` } else sum.hidden=true }
   const card=(r,dup)=>`<figure class="rv-card"${dup?' aria-hidden="true"':""}>${rvStars(Math.max(1,Math.min(5,+r.rating||5)))}<blockquote>${esc(r.msg)}</blockquote>
-    <figcaption><b>${esc(r.name)}</b><span>${esc((TYPES[r.type]||{}).name||"Aradhanawa customer")}${r.created?" · "+esc(new Date(r.created).toLocaleDateString("en-GB",{month:"short",year:"numeric"})):""}</span></figcaption></figure>`;
-  if(!list.length){ L.innerHTML=`<p class="rv-empty">No reviews yet. Made an invitation with us? Be the first to tell other families how it went.</p>`; return }
+    <figcaption>${demo?`<b><span class="rv-ex">Example</span></b>`:`<b>${esc(r.name)}</b>`}<span>${esc((TYPES[r.type]||{}).name||"Aradhanawa customer")}${!demo&&r.created?" · "+esc(new Date(r.created).toLocaleDateString("en-GB",{month:"short",year:"numeric"})):""}</span></figcaption></figure>`;
   /* Two rows sliding sideways in opposite directions. Each row is its cards twice over, so moving it by half loops without a jump. */
   const rows=list.length<6?[list,[...list.slice(Math.ceil(list.length/2)),...list.slice(0,Math.ceil(list.length/2))]]:[list.filter((_,i)=>i%2===0),list.filter((_,i)=>i%2===1)];
+  const D=document.getElementById("rvDemo"); if(D) D.hidden=!demo; const SB=document.getElementById("rvSub"); if(SB) SB.hidden=demo;
   L.innerHTML=rows.map((row,k)=>{ let set=[...row]; while(set.length<5) set=set.concat(row);   // enough cards to fill a wide screen
     return `<div class="rv-row${k?" rev":""}" style="--t:${set.length*9}s">${set.map(r=>card(r)).join("")}${set.map(r=>card(r,1)).join("")}</div>` }).join("");
 }
@@ -3550,8 +3560,9 @@ function render(){
     hero:()=>lpHero(),
     reviews:()=>`<section class="lp-rev" id="reviews" data-f="paper">
     ${lpOrn()}<span class="lp-eb rv">Reviews &amp; feedback</span><h2 class="rv">What families <em>say about us</em></h2>
-    <p class="rv-sub rv" style="--d:80ms">Real words from couples and families who sent their invitations with Aradhanawa.</p>
+    <p class="rv-sub rv" id="rvSub" style="--d:80ms">Real words from couples and families who sent their invitations with Aradhanawa.</p>
     <div class="rv-sum" id="rvSum" hidden></div>
+    <p class="rv-demo" id="rvDemo" hidden>These are examples of what customers tell us. Real reviews appear here as families send them.</p>
     <div class="rv-list" id="rvList" aria-live="polite"></div>
     <form class="rv-form rv" id="rvForm" novalidate>
       <h3>Share your feedback</h3><p class="rv-note">Your review shows here after our team checks it.</p>
@@ -4953,6 +4964,12 @@ function renderAdmin(tab,arg){
     const all=FBD().reviews||[], wait=all.filter(r=>!r.approved);
     body=`<div class="mh"><div><span class="eyebrow">Admin</span><h1>Reviews</h1><p>Feedback sent from the home page. A review shows on the site only after you approve it.</p></div>
       <div class="kpis" style="grid-template-columns:repeat(3,minmax(110px,1fr));min-width:min(100%,420px)"><div class="kpi"><small>Waiting</small><b>${wait.length}</b></div><div class="kpi"><small>On the site</small><b>${all.length-wait.length}</b></div><div class="kpi"><small>Average</small><b>${all.length?(all.reduce((a,r)=>a+(+r.rating||0),0)/all.length).toFixed(1):"-"}</b></div></div></div>
+    ${fb?`<div class="box"><h2>Add feedback a customer sent you</h2><p class="sub" style="margin:-4px 0 14px;color:var(--muted)">Paste a real review a customer sent on WhatsApp, Facebook or Google, with their permission. It goes on the site straight away.</p>
+      <form id="rvaform" style="display:grid;gap:10px"><div class="tbar"><input name="name" maxlength="80" placeholder="Customer name" aria-label="Customer name" required>
+        <select name="type" aria-label="Function">${Object.entries(TYPES).map(([k,t])=>`<option value="${k}">${t.name}</option>`).join("")}</select>
+        <select name="rating" aria-label="Rating">${[5,4,3,2,1].map(n=>`<option value="${n}">${n} stars</option>`).join("")}</select></div>
+        <textarea name="msg" maxlength="600" rows="3" placeholder="What they said" aria-label="Review" required style="width:100%;box-sizing:border-box"></textarea>
+        <div><button class="btn primary" type="submit">Add to site</button></div></form></div>`:""}
     <div class="box"><div class="tblwrap"><table class="tbl"><thead><tr><th>Customer</th><th>Rating</th><th>Review</th><th>Status</th><th>Date</th><th></th></tr></thead><tbody>
       ${[...wait,...all.filter(r=>r.approved)].map(r=>`<tr><td><b>${esc(r.name)}</b><small>${esc(typeName(r.type))}</small></td><td>${"★".repeat(+r.rating||0)}${"☆".repeat(5-(+r.rating||0))}</td>
         <td class="wrap">${esc(r.msg)}</td><td>${r.approved?`<span class="badge ok">On site</span>`:`<span class="badge new">Waiting</span>`}</td><td>${fdt(r.created)}</td>
@@ -5067,6 +5084,10 @@ function renderAdmin(tab,arg){
     if(fb){ if(fbNeed()) FBX.saveSettings(c).then(()=>toast("Settings saved for every visitor"),fbFail) } else toast("Settings saved") };
   const mup=document.getElementById("mup");
   if(mup) mup.onchange=()=>{ const f=mup.files[0]; mup.value=""; if(f) uploadTrack(f,document.getElementById("mupst")) };
+  const rvaf=document.getElementById("rvaform");
+  if(rvaf) rvaf.onsubmit=e=>{ e.preventDefault(); const el=rvaf.elements, name=el.name.value.trim(), msg=el.msg.value.trim();
+    if(!name||!msg) return toast("Add the customer's name and what they said");
+    if(fbNeed()) FBX.addReview({name,msg,rating:+el.rating.value,type:el.type.value,approved:true}).then(()=>{ rvaf.reset(); toast("Review added to the site") },fbFail) };
   const af2=document.getElementById("aform2");
   if(af2) af2.onsubmit=e=>{ e.preventDefault(); const em=af2.elements.em.value.trim().toLowerCase(); if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) return toast("Enter a valid email"); if(fbNeed()) FBX.setAdmin(em,true).then(()=>toast(`${em} added. They log in with Google to open the dashboard.`),fbFail) };
 }

@@ -963,7 +963,7 @@ nav.top a{font-weight:600}
 .af .pw input{padding-right:70px}
 .af .pw button{position:absolute;right:6px;top:50%;transform:translateY(-50%);border:0;background:none;color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;cursor:pointer;padding:8px}
 .aform .err{color:#B3261E;font-size:13.5px;font-weight:600;margin:0;min-height:1.2em}
-.aform .btn.primary{width:100%;padding:15px}
+.aform .btn.primary{width:100%;padding:15px;font-size:15px}
 .aform .alt{text-align:center;color:var(--muted);font-size:14px;margin:0}
 .aform .alt a,.aform .lk{font-weight:700;color:var(--accent);background:none;border:0;cursor:pointer;font-size:13.5px;padding:0}
 .aform .hint{font-size:12.5px;color:var(--muted);background:var(--sunk);padding:10px 12px;border-left:2px solid var(--gold);margin:0}
@@ -1003,7 +1003,8 @@ nav.top a{font-weight:600}
 .kpi span{font-size:13px;color:var(--muted)}
 .box{background:var(--surface);border:1px solid var(--line);padding:20px;min-width:0}
 .box h2{font-size:21px;margin-bottom:12px}
-.box .bh{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.box .bh{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.box .bh h2+.badge{margin-right:auto}
 .box .bh h2{margin:0}
 .tblwrap{overflow-x:auto;margin:0 -4px}
 .tbl{width:100%;border-collapse:collapse;font-size:14px}
@@ -1011,7 +1012,7 @@ nav.top a{font-weight:600}
 .tbl td{padding:12px 10px;border-bottom:1px solid var(--line);vertical-align:middle;white-space:nowrap}
 .tbl td b{font-weight:700}
 .tbl td small{display:block;color:var(--muted);font-size:12.5px}
-.tbl td.empty{text-align:center;color:var(--muted);padding:28px}
+.tbl td.empty{text-align:center;color:var(--muted);padding:28px;white-space:normal;min-width:220px}
 .tbl .acts{display:flex;gap:6px;justify-content:flex-end;flex-wrap:nowrap}
 .tbl select{border:1px solid var(--line-2);background:var(--surface);padding:7px 8px;border-radius:var(--r);font-size:13px;font-weight:600}
 .badge{display:inline-block;padding:3px 9px;font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;border-radius:999px;background:var(--sunk);color:var(--muted);white-space:nowrap}
@@ -1710,7 +1711,7 @@ nav.top a{font-weight:600}
 .lp-des .flt button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 .lp-des .flt button[aria-pressed="true"]{background:var(--l-paper-ink);border-color:var(--l-paper-ink);color:#FBF3E4;font-weight:600}
 .lp-tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-.lp-tile{display:grid;background:none;border:0;padding:0;text-align:left;cursor:pointer;font:inherit;color:inherit}
+.lp-tile{display:grid;grid-template-rows:1fr auto;background:none;border:0;padding:0;text-align:left;cursor:pointer;font:inherit;color:inherit}
 .lp-tile .pv{background:var(--l-tone);padding:18px;display:grid;place-items:center;transition:background .2s}
 .lp-tile .pv .card{box-shadow:none;transition:transform .3s}
 .lp-tile:hover .pv .card{transform:translateY(-4px)}
@@ -1759,7 +1760,7 @@ nav.top a{font-weight:600}
 .lp-price{display:grid;grid-template-columns:minmax(0,1fr);align-content:center;gap:64px}
 .lp-price h2{font-size:clamp(48px,8.4vw,136px);line-height:.98;letter-spacing:-.045em}
 .lp-price .pb{background:var(--l-accent);color:var(--l-accent-ink);padding:0 .15em;display:inline-block;line-height:1}
-.lp-price .row{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,3fr) minmax(0,3fr);gap:24px;align-items:end}
+.lp-price .row{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,3fr) minmax(0,3fr);gap:24px;align-items:center}
 .lp-price .row p{font-size:20px;max-width:46ch;line-height:1.45}
 .lp-price .row .act{grid-column:3;display:grid;gap:14px;justify-items:end}
 .lp-price .pph{margin:0;grid-column:2;grid-row:1;display:grid;gap:10px;font-size:var(--s-small);color:var(--l-muted)}
@@ -1852,9 +1853,14 @@ nav.top a{font-weight:600}
 .lp-faq .t{display:grid;row-gap:clamp(56px,6vw,88px)}
 .lp-faq .r{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:24px;align-items:baseline}
 .lp-faq .r h2,.lp-faq .r h3{grid-column:1/7;font-size:clamp(26px,2.6vw,40px);font-weight:500;line-height:1.1;letter-spacing:-.025em}
-.lp-faq .r h2{color:var(--l-paper-soft)}
+.lp-faq .r.hd{align-items:end;padding-top:clamp(12px,2vw,24px)}
+.lp-faq .r.hd>div{grid-column:1/8}
+.lp-faq .r.hd h2{font-size:clamp(32px,4.6vw,56px);line-height:1.05}
+.lp-faq .r h2{color:var(--l-paper-ink);font-weight:700}
+.lp-faq .r.hd p{color:var(--l-paper-soft)}
+.lp-faq .r.hd a{color:#8A6420;text-decoration:underline;text-underline-offset:.2em}
 .lp-faq .r p{grid-column:8/13;font-size:18px;line-height:1.55;max-width:40ch}
-@media (max-width:820px){.lp-faq .r{grid-template-columns:1fr;row-gap:12px}.lp-faq .r h2,.lp-faq .r h3{grid-column:1;font-size:24px}.lp-faq .r p{grid-column:1;font-size:17px}.lp-faq .t{row-gap:56px}}
+@media (max-width:820px){.lp-faq .r{grid-template-columns:1fr;row-gap:12px}.lp-faq .r.hd>div{grid-column:1}.lp-faq .r h2,.lp-faq .r h3{grid-column:1;font-size:24px}.lp-faq .r p{grid-column:1;font-size:17px}.lp-faq .t{row-gap:56px}}
 
 /* cta: question at both edges */
 .lp-cta{display:grid;grid-template-rows:auto 1fr auto;justify-items:center;text-align:center;padding:32px var(--m) 24px}
@@ -2007,11 +2013,12 @@ nav.top a{font-weight:600}
 .lp-ch.lp-paper,.lp-ch.lp-dark,.lp-dark,.lp-bands,.lp-cta{background:transparent;color:#2A1E12;position:relative}
 .lp-main > section + section::before{content:"";display:block;height:30px;margin:0 var(--m);background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='30'%3E%3Cpath d='M0 2H36M0 28.5H36' stroke='%238A6420' stroke-width='.9'/%3E%3Cpath d='M1 27C4 19 11 12 18 8C25 12 32 19 35 27Z' fill='%23EBD29A' fill-opacity='.55' stroke='%238A6420' stroke-width='.9'/%3E%3Cpath d='M18 16L20 20L18 24L16 20Z' fill='%238A6420'/%3E%3C/svg%3E") repeat-x center;opacity:.75}
 .lp-main > section.lp-hero + section::before{display:none}
-.lp-phead{padding:clamp(48px,7vw,96px) var(--m) clamp(36px,5vw,64px);text-align:center;position:relative;border-bottom:1px solid rgba(166,122,31,.35)}
+.lp-phead{padding:clamp(48px,7vw,96px) calc(var(--m) + 18px) clamp(36px,5vw,64px);text-align:center;position:relative;border-bottom:1px solid rgba(166,122,31,.35)}
 .lp-phead::after{content:"";position:absolute;inset:12px;border:1px solid rgba(138,100,32,.35);pointer-events:none}
 .lp-phead h1{font-size:clamp(40px,6.4vw,92px);letter-spacing:-.04em;line-height:1}
 .lp-phead p{max-width:56ch;margin:18px auto 0;font-size:var(--s-lead);line-height:1.4;color:#6E5D48}
 .lp-feat .head{align-items:end}
+.lp-feat>.lp-orn{margin:0 0 18px;max-width:180px;justify-content:flex-start}.lp-feat>.lp-orn i:first-child{display:none}
 .lp-feat h2,.lp-des h2{font-size:clamp(34px,4.6vw,64px)}
 .lp-des .head p,.lp-feat .head p{color:#6E5D48}
 .lp-tile{border:1px solid rgba(166,122,31,.28);background:#FFFBF3;transition:transform .25s,box-shadow .25s}
@@ -2140,6 +2147,7 @@ button.lp-hghost{background:none;border:0;border-bottom:1.5px solid rgba(122,84,
 .lp-tiles:not(.all) .lp-tile:nth-child(n+13){display:none}
 .lp [id]{scroll-margin-top:76px}
 body:has(.lp){background:#fff}
+body:has(.lp-shellnav){background:var(--paper)}
 .lp ~ .ctabar{border-top:0;background:#1A0B10;color:#fff;font-family:"Inter Tight",sans-serif}
 .lp ~ .ctabar .p small{font-size:13px;letter-spacing:0;text-transform:none;color:#C9BBBF}
 .lp ~ .ctabar .p b{font-family:"Inter Tight",sans-serif;font-weight:600;color:#fff}
@@ -2623,6 +2631,7 @@ input:not(.site *),select:not(.site *),textarea:not(.site *){font-family:var(--t
 .lp-cta2 .lp-orn{margin-bottom:18px}
 .lp-cta2 h2{font-size:clamp(40px,6vw,84px);line-height:1.02;letter-spacing:-.045em;color:#2A1E12;margin:0}
 .lp-cta2 h2 em{color:transparent;background:linear-gradient(100deg,#8A6420 0%,#C9993A 35%,#E9C46E 50%,#C9993A 65%,#8A6420 100%) 0 0/240% 100%;-webkit-background-clip:text;background-clip:text;animation:lpshine 7s linear infinite;padding-right:.04em}
+.lp-cta2 .ct2-sub{margin:18px 0 0}
 .ct2-sub{margin:18px 0 0;max-width:40ch;font-size:clamp(17px,1.2vw,19px);line-height:1.6;color:#6E5D48}
 .ct2-grid{margin-top:clamp(36px,4vw,56px);width:min(1080px,100%);display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(18px,2.4vw,32px)}
 .ct2-card{display:grid;grid-template-rows:auto 1fr;padding:0;border:1px solid rgba(166,122,31,.32);border-radius:24px;overflow:hidden;background:#FFFDF8;text-align:left;cursor:pointer;color:#2A1E12;font:inherit;
@@ -4071,7 +4080,7 @@ function render(){
   </section>
 `,
     faq:()=>`<section class="lp-ch lp-paper g lp-faq" id="faq" data-f="paper"><div class="t">
-    <div class="r"><h2>Questions</h2></div>
+    <div class="r hd"><div><span class="lp-eb">FAQs</span><h2>All your doubts, <em>cleared</em></h2></div><p>Quick answers to what families ask us most. Still not sure? <a href="${waLink(CONFIG.STUDIO_WA,"Hi Aradhanawa! I have a question about invitations.")}" target="_blank" rel="noopener">Ask us on WhatsApp</a>.</p></div>
     ${[["Is it really free?",`Yes. Every function has one free design, and you can send personal links to ${CONFIG.FREE_GUESTS} guests with the message written for you. You pay only for more guests (${CONFIG.PRICE_PLUS} per event) or a custom design.`],
       ["Can each guest's name be on the card?","Yes. Add a guest and their link opens with Dear Nimal Uncle, or their own name, on the card."],
       ["Can I write it in Sinhala?","Yes. Switch to සිංහල and the card, the invitation website and the WhatsApp message all change. Singlish and English work too."],
@@ -4117,7 +4126,7 @@ function render(){
       <figure class="rl-ph rv"><img src="img/guest-ivory-960.webp" srcset="img/guest-ivory-960.webp 960w, img/guest-ivory-1600.webp 1600w" sizes="(max-width:900px) 92vw, 52vw" width="1600" height="1074" loading="lazy" decoding="async" alt="A guest at a wedding holding a phone that shows an Aradhanawa invitation"></figure>
       <div class="rl-txt rv" style="--d:120ms">${lpOrn()}<span class="lp-eb">What your guests see</span><h2>A real invitation, <em>opened in WhatsApp</em></h2>
         <p>Each guest taps their link and the card opens with their own name, the nekath, the venue map and a reply form. No app, no printing, no courier.</p>
-        <ul><li><b>Their name</b> on the card</li><li><b>One tap</b> to the venue</li><li><b>Replies</b> straight to your WhatsApp</li></ul>
+        <ul><li><span><b>Their name</b> on the card</span></li><li><span><b>One tap</b> to the venue</span></li><li><span><b>Replies</b> straight to your WhatsApp</span></li></ul>
         <a class="lp-hghost" href="#designs">See the card designs</a></div></section>`,
     gm:()=>lpGM(),
     phead:()=>`<section class="lp-phead" data-f="paper">${lpOrn()}<span class="lp-eb">${LP_PH[PG][0]}</span><h1>${LP_PH[PG][1]}</h1><p>${LP_PH[PG][2]}</p></section>`,

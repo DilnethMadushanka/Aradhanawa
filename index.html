@@ -3018,7 +3018,7 @@ function tidyMap(raw){
 }
 function inviteLink(guest){
   const e={}; for(const [k,v] of Object.entries(cur()||{})) if(v!==""&&v!=null) e[k]=k==="map"?tidyMap(v):v;   // leave out empty fields: shorter links
-  const payload = {t:S.type, e}; if(S.lang==="si") payload.l="si"; if(guest) payload.g=guest; if(S.opener==="env"||S.opener==="seal") payload.x=S.opener; const cp=curPrem(); if(cp&&cp.site) payload.d=cp.site; if(FB_ON()&&window.FBX&&FBX.user) payload.o=FBX.user.uid;
+  const payload = {t:S.type, e}; if(S.lang==="si") payload.l="si"; if(guest) payload.g=guest; { const x=openerX(); if(x) payload.x=x; } const cp=curPrem(); if(cp&&cp.site) payload.d=cp.site; if(FB_ON()&&window.FBX&&FBX.user) payload.o=FBX.user.uid;
   const json=JSON.stringify(payload);
   return shortLink(json) || (CONFIG.SITE + "#i=" + b64(json));
 }
@@ -3568,7 +3568,7 @@ function render(){
         <div class="phead"><div><span class="eyebrow">Step 2</span><h2 id="h-tpl">Choose a design</h2><p class="sub">Tap a design to preview it with your details. Every design is free, and the one you pick is what your guests see. Want your own photos and colours? Our team can customise it.</p></div></div>
         <div class="tpls" data-ui>
           <button class="tpl" data-tpl="0" ${hasTh(S.type)?"hidden":""} aria-pressed="${!tplOf(S.type)}"><div class="sw t-${S.type}" style="background:var(--c-bg)">${T.art()}</div><div class="nm">${T.tpl}<span class="pill free">Free</span></div></button>
-          ${PREMIUM[S.type].map((t,i)=>{ const own=ownsDesign(S.type,t); return `<button class="tpl ${own?"owned":""}" data-tpl="${i+1}" ${tplOff().includes(offKey(S.type,t))&&!own?"hidden":""} aria-pressed="${tplOf(S.type)===i+1}"><div class="sw t-${S.type}" style="${tplVars(t)}background:${t.bg}">${t.img?pic(t.img,"160px",t.n,t.pos):premArt(S.type,t,ev)}</div><div class="nm">${esc(t.n)}${own?`<span class="pill free">Yours</span>`:`<span class="pill free">${esc(setPrice(t.n)||"Free")}</span>`}</div></button>` }).join("")}
+          ${PREMIUM[S.type].map((t,i)=>{ const own=ownsDesign(S.type,t); return `<button class="tpl ${own?"owned":""}" data-tpl="${i+1}" ${tplOff().includes(offKey(S.type,t))&&!own?"hidden":""} aria-pressed="${tplOf(S.type)===i+1}"><div class="sw t-${S.type}" style="${tplVars(t)}background:${t.bg}">${isVideoDesign(t)?`<img src="${LX_TH[t.site].video}-poster-480.webp" alt="${esc(t.n)}" loading="lazy" decoding="async">`:t.img?pic(t.img,"160px",t.n,t.pos):premArt(S.type,t,ev)}</div><div class="nm">${esc(t.n)}${own?`<span class="pill free">Yours</span>`:`<span class="pill free">${esc(setPrice(t.n)||"Free")}</span>`}</div></button>` }).join("")}
         </div>
       </section>
 
@@ -3729,6 +3729,12 @@ function hasPlus(type){
     && ((FB_ON()&&o.uid===u.id) || (!!em&&String(o.email||"").toLowerCase()===em)));
 }
 const curPrem = () => { const i=tplOf(S.type); return i ? PREMIUM[S.type][i-1] || PREMIUM[S.type][0] || null : null };
+/* intro video designs (Palm Drive, Cathedral Vows, Sunset Vows) always open with their own video, never the envelope or wax seal */
+const isVideoDesign = t => !!(t&&t.site&&LX_TH[t.site]&&LX_TH[t.site].video);
+const openerX = () => !isVideoDesign(curPrem())&&(S.opener==="env"||S.opener==="seal") ? S.opener : undefined;
+function syncOpener(){ const vid=isVideoDesign(curPrem()); document.querySelectorAll("[data-opener]").forEach(b=>{ const k=b.dataset.opener;
+  if(k!=="theme"){ b.hidden=vid; b.setAttribute("aria-pressed",!vid&&S.opener===k); return }
+  if(!b.dataset.lbl) b.dataset.lbl=b.textContent; b.textContent=vid?"Intro video":b.dataset.lbl; b.setAttribute("aria-pressed",vid||S.opener==="theme") }) }
 function refreshLive(){
   if(!document.getElementById("cardSlot")) return;
   const ev=cur(), lang=S.lang;
@@ -3753,7 +3759,7 @@ function refreshShareLinks(){
 function bind(){
   const $=s=>document.querySelector(s)||document.createElement("div"), $$=s=>document.querySelectorAll(s);
   $$("[data-type]").forEach(b=>b.onclick=()=>{S.type=b.dataset.type; save(); render(); document.getElementById("h-type").scrollIntoView({block:"nearest"})});
-  $$("[data-opener]").forEach(b=>b.onclick=()=>{S.opener=b.dataset.opener; save(); $$("[data-opener]").forEach(x=>x.setAttribute("aria-pressed",x===b)); refreshGuestLinks(); guestPreview(S.guests[0]&&S.guests[0].name)});
+  syncOpener(); $$("[data-opener]").forEach(b=>b.onclick=()=>{S.opener=b.dataset.opener; save(); $$("[data-opener]").forEach(x=>x.setAttribute("aria-pressed",x===b)); refreshGuestLinks(); guestPreview(S.guests[0]&&S.guests[0].name)});
   $$("[data-lang]").forEach(b=>b.onclick=()=>{S.lang=b.dataset.lang; save(); $$("[data-lang]").forEach(x=>x.setAttribute("aria-pressed",x===b)); refreshLive(); refreshGuestLinks()});
   $("#evform").addEventListener("change",e=>{   // when the host leaves the map box, show the short map link they'll send
     if(e.target.name!=="map") return; const t=tidyMap(e.target.value); if(t===e.target.value) return;
@@ -3780,7 +3786,7 @@ function bind(){
   $$("[data-gdel]").forEach(b=>b.onclick=()=>{S.guests.splice(+b.dataset.gdel,1); save(); render()});
   $$("[data-glink]").forEach(b=>b.onclick=async()=>copy(await copyInvite(S.guests[+b.dataset.glink].name)));
   $$("[data-gprev]").forEach(b=>b.onclick=()=>guestPreview(S.guests[+b.dataset.gprev].name));
-  $$("[data-tpl]").forEach(b=>b.onclick=()=>{ S.tpl[S.type]=+b.dataset.tpl; save(); $$("[data-tpl]").forEach(x=>x.setAttribute("aria-pressed",x===b)); refreshLive(); if(matchMedia("(max-width:920px)").matches){ const d=document.getElementById("h-det"), p=d&&d.closest(".panel"); if(p){ const hd=document.querySelector(".lp-nav,header.top"), off=(hd?hd.getBoundingClientRect().bottom:0)+8; scrollTo({top:p.getBoundingClientRect().top+scrollY-off,behavior:"smooth"}) } } });
+  $$("[data-tpl]").forEach(b=>b.onclick=()=>{ S.tpl[S.type]=+b.dataset.tpl; save(); $$("[data-tpl]").forEach(x=>x.setAttribute("aria-pressed",x===b)); syncOpener(); refreshGuestLinks(); refreshLive(); if(matchMedia("(max-width:920px)").matches){ const d=document.getElementById("h-det"), p=d&&d.closest(".panel"); if(p){ const hd=document.querySelector(".lp-nav,header.top"), off=(hd?hd.getBoundingClientRect().bottom:0)+8; scrollTo({top:p.getBoundingClientRect().top+scrollY-off,behavior:"smooth"}) } } });
   $("#reqPrem").onclick=()=>{ const p=curPrem(); p&&templateReq(p.n) };
   $("#buyPrem").onclick=e=>{ const p=curPrem(); p&&payNow("custom",p.n,e.currentTarget) };
   $$("[data-upgrade]").forEach(b=>b.onclick=()=>b.dataset.upgrade==="plus"?upsell(true):customReq(""));
@@ -3907,7 +3913,7 @@ function guestPreview(guest){
   const lang=S.lang==="si"?"si":"en";
   modal(`${phoneHTML(siteHTML(S.type,cur(),lang,guest,curPrem(),galleryFor(S.type)))}<button class="btn" data-x>Close preview</button>`); lxArm();
   const m=document.querySelector(".modal"); m.classList.add("phonebox"); initSites(m);
-  const cp=curPrem(); guestLoader({l:lang,g:guest,e:cur(),d:cp&&cp.site,x:S.opener==="env"||S.opener==="seal"?S.opener:undefined},S.type,m.querySelector(".card"));
+  const cp=curPrem(); guestLoader({l:lang,g:guest,e:cur(),d:cp&&cp.site,x:openerX()},S.type,m.querySelector(".card"));
 }
 
 
@@ -4464,9 +4470,10 @@ function guestVideoLoader(p,type){
   return el;
 }
 function guestLoader(p,type,card){
+  if(p.d&&LX_TH[p.d]&&LX_TH[p.d].video) return guestVideoLoader(p,type); /* intro video cards (Palm Drive, Cathedral Vows, Sunset Vows) only ever get their video opener, even on links made with Envelope or Wax seal */
   if(p.x==="env") return guestEnvLoader(p,type,card);
   if(p.x==="seal") return guestSealLoader(p,type,card);
-  if((p.d&&LX_TH[p.d]&&LX_TH[p.d].video)||(type==="engagement"&&!p.d)) return guestVideoLoader(p,type); /* the intro video cards (Palm Drive, Cathedral Vows, Sunset Vows) open with their own video; other designs get their own opener */
+  if(type==="engagement"&&!p.d) return guestVideoLoader(p,type); /* the intro video cards (Palm Drive, Cathedral Vows, Sunset Vows) open with their own video; other designs get their own opener */
   const si=p.l==="si", cs=card?getComputedStyle(card):null, v=k=>cs&&cs.getPropertyValue(k).trim();
   const ini=p.e.a&&p.e.b?`${p.e.a[0]}${p.e.b[0]}`:((p.e.title||p.e.a||"A")[0]);
   const C=GL_COPY[type]||GL_COPY.other, cp=si?C.si:C.en;

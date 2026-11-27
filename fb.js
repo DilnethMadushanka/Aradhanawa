@@ -8,6 +8,8 @@
  *   admins/{email}         email, added, by           (who may open the admin dashboard)
  *   orders/{id}            kind, design, type, name, email, phone, amount, status, created, uid
  *                          + paid orders (written only by api/pay/*): amountCents, currency, paid, paidAt, payRef, payState, method
+ *                          + bank transfer (method "bank", api/pay/bank + verify): slipKey, slipType, slipName, slipAt, payTo,
+ *                            rejectNote, verifiedBy, verifiedAt; status "Awaiting verification" / "Slip rejected"
  *   invitations/{uid_type} uid, ownerName, ownerEmail, type, lang, tpl, title, names, date, venue, ev, guests, guestCount, updated
  *   galleries/{uid_type}   uid, type, photos [Cloudflare R2 https URLs, or data:image/jpeg URLs when R2 is off], updated   (public read: guest links show these)
  *   links/{code}           uid, p (guest link details as JSON), created   (short guest links aradhanawa.com/i/{code}; public get)
@@ -19,7 +21,7 @@
  *                          anyone may get one doc by id, so a guest link reads only its own table; only the owner can list)
  *   reviews/{id}           name, type, rating 1-5, msg, approved, created   (home page reviews; anyone may write one with
  *                          approved false, only approved ones are public, admins approve or delete)
- *   settings/site          config {FREE_GUESTS, STUDIO_WA, PRICE_PLUS, PRICE_CUSTOM, PLANS [{id, kind, name, price, details, on}], MUSIC, MUSIC_*,
+ *   settings/site          config {FREE_GUESTS, STUDIO_WA, BANK {bank, branch, name, number, note} (bank transfer account), PRICE_PLUS, PRICE_CUSTOM, PLANS [{id, kind, name, price, details, on}], MUSIC, MUSIC_*,
  *                          MUSIC_LIBRARY [{name, url, added}] (MP3s in Cloudflare R2), DESIGN_MUSIC {design name: url}}, tplOff []
  */
 const V = "10.12.2";

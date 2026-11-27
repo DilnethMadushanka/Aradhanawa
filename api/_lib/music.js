@@ -1,34 +1,12 @@
 /* Card music uploads to Cloudflare R2 (api/music/upload, api/music/delete). Admins only. */
 import crypto from "node:crypto";
-import fs from "node:fs";
-import { db } from "./firebase.js";
-import { userFromRequest, fail } from "./pay.js";
+import { fail } from "./pay.js";
 import { r2Config, putObject, deleteObject, publicUrl, keyFromUrl } from "./r2.js";
+import { adminFromRequest as adminCheck } from "./admin.js";
 
 export const MAX_BYTES = 15 * 1024 * 1024;   // a 4-5 minute MP3 at 192 kbps is about 7 MB
 
-/* Owner emails: adminEmails in firebase-config.js (the same list the dashboard uses) plus ADMIN_EMAILS in .env (comma separated).
- * Admins added from Admin → Settings → Admins live in Firestore admins/{email}. */
-let owners = null;
-function ownerEmails() {
-  if (owners) return owners;
-  let txt = "";
-  try { txt = fs.readFileSync(new URL("../../firebase-config.js", import.meta.url), "utf8") } catch {}
-  const m = /adminEmails\s*:\s*\[([^\]]*)\]/.exec(txt);
-  const fromFile = m ? [...m[1].matchAll(/["']([^"']+)["']/g)].map(x => x[1]) : [];
-  const fromEnv = String(process.env.ADMIN_EMAILS || "").split(",");
-  return owners = [...fromFile, ...fromEnv].map(e => e.trim().toLowerCase()).filter(Boolean);
-}
-
-export async function adminFromRequest(req) {
-  const user = await userFromRequest(req);
-  const em = String(user.email || "").toLowerCase();
-  if (em && user.email_verified !== false) {
-    if (ownerEmails().includes(em)) return user;
-    try { if ((await db().doc(`admins/${em}`).get()).exists) return user } catch (e) { console.warn("[music] admins", e.message) }
-  }
-  throw fail(403, "Only admins can change the card music.");
-}
+export const adminFromRequest = req => adminCheck(req, "Only admins can change the card music.");
 
 /* MP3: an ID3 tag, or straight away an MPEG audio frame (11 sync bits). */
 export const isMp3 = b => b.length > 3 && (b.slice(0, 3).toString("latin1") === "ID3" || (b[0] === 0xff && (b[1] & 0xe0) === 0xe0));

@@ -6,7 +6,7 @@ export const SITE = () => (process.env.SITE_URL || "https://www.aradhanawa.com")
 export const TYPES = ["wedding", "engagement", "homecoming", "birthday", "party", "halloween", "dana", "other"];
 const DEFAULT_PRICE = { plus: "Rs. 990", custom: "Rs. 4,900" };
 export const KINDS = ["plus", "custom", "service"];   // what a plan unlocks: unlimited guests, a custom design, or a service the studio fulfils
-export const ST = { AWAIT: "Awaiting payment", FAILED: "Payment failed" };
+export const ST = { AWAIT: "Awaiting payment", FAILED: "Payment failed", VERIFY: "Awaiting verification", REJECTED: "Slip rejected" };
 /* The "Customize card" tile: our designer makes a card from scratch. Its price is CUSTOM_CARD_PRICE (default below),
  * or a DESIGN_PRICES entry with this name. Any other design name bought with the main Custom design plan is a ready-made
  * web template: it is recorded as kind "template", finished at once, and needs nothing from the studio. */
@@ -64,7 +64,8 @@ export async function userFromRequest(req) {
   try { return await auth().verifyIdToken(tok) } catch (e) { throw fail(401, "Your login expired. Please log in again.") }
 }
 
-export async function startCheckout(user, body) {
+/* The order for one purchase, priced on the server. Shared by card payment (Genie) and bank transfer. */
+export async function draftOrder(user, body, method) {
   body = body || {};
   if (!body.plan && !KINDS.includes(body.kind)) throw fail(400, "Unknown product.");
   const plan = await planFor({ plan: body.plan, kind: body.kind, design: str(body.design, 120) });
@@ -76,14 +77,19 @@ export async function startCheckout(user, body) {
   const kind = plan.kind === "custom" && plan.main && design !== plan.name && design !== CUSTOM_CARD ? "template" : plan.kind;
 
   const prof = (await db().doc(`users/${user.uid}`).get()).data() || {};
-  const ref = db().collection("orders").doc();
-  const order = {
+  return {
     kind, design, type, planId: plan.id, planName: plan.name,
     name: str(prof.name || user.name || "", 160), email: str(prof.email || user.email || "", 160).toLowerCase(), phone: str(prof.phone || "", 40),
-    amount: label, amountCents: cents, currency: CURRENCY, status: ST.AWAIT, paid: false, method: "genie",
+    amount: label, amountCents: cents, currency: CURRENCY, status: ST.AWAIT, paid: false, method,
     created: now(), uid: user.uid,
   };
+}
+
+export async function startCheckout(user, body) {
+  const order = await draftOrder(user, body, "genie");
+  const ref = db().collection("orders").doc();
   await ref.set(order);
+  const cents = order.amountCents;
 
   const site = SITE();
   let tx;
@@ -107,6 +113,24 @@ export async function startCheckout(user, body) {
   return { orderId: ref.id, url };
 }
 
+/* Records a confirmed payment (Genie, or a bank slip an admin approved) and unlocks what was bought. */
+export async function markPaid(ref, o, extra = {}) {
+  const upd = {
+    ...extra, paid: true, paidAt: now(), updated: now(),
+    // Plus and a ready-made template are ready at once. A custom design or a service still needs the studio, so the admin marks it Done later.
+    status: o.kind === "plus" || o.kind === "template" ? "Done" : "In progress",
+  };
+  await ref.update(upd);
+  // Lets firestore.rules accept more than the free number of guests on this function's invitation.
+  // Buying a template (a custom design) unlocks every guest too, the same as Plus.
+  if ((o.kind === "plus" || o.kind === "custom" || o.kind === "template") && o.uid) {
+    const type = o.type || "other";
+    await db().doc(`plus/${o.uid}_${type}`).set({ uid: o.uid, type, orderId: ref.id, updated: now() })
+      .catch(e => console.error("[pay] plus doc", ref.id, e));
+  }
+  return { ...o, ...upd };
+}
+
 /* Ask Genie for the real state of this order's transaction and record it.
  * Only the server-stored transaction id is trusted, so a forged redirect or webhook can't mark an order paid. */
 export async function settle(orderId) {
@@ -125,20 +149,8 @@ export async function settle(orderId) {
   const localOk = !tx.localId || String(tx.localId) === ref.id;
 
   if (PAID_STATES.includes(state) && amountOk && currencyOk && localOk) {
-    const upd = {
-      paid: true, paidAt: now(), payState: state, updated: now(),
-      // Plus and a ready-made template are ready at once. A custom design or a service still needs the studio, so the admin marks it Done later.
-      status: o.kind === "plus" || o.kind === "template" ? "Done" : "In progress",
-    };
-    await ref.update(upd);
-    // Lets firestore.rules accept more than the free number of guests on this function's invitation.
-    // Buying a template (a custom design) unlocks every guest too, the same as Plus.
-    if ((o.kind === "plus" || o.kind === "custom" || o.kind === "template") && o.uid) {
-      const type = o.type || "other";
-      await db().doc(`plus/${o.uid}_${type}`).set({ uid: o.uid, type, orderId: ref.id, updated: now() })
-        .catch(e => console.error("[pay] plus doc", ref.id, e));
-    }
-    return { result: "paid", order: { ...o, ...upd } };
+    const order = await markPaid(ref, o, { payState: state });
+    return { result: "paid", order };
   }
   if (PAID_STATES.includes(state)) {
     await ref.update({ payState: state, payError: `Mismatch: amount ${tx.amount} ${tx.currency}, localId ${tx.localId}`, updated: now() });

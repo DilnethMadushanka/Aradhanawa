@@ -6,7 +6,8 @@
  *   R2_BUCKET             bucket name, e.g. aradhanawa-photos
  *   R2_PUBLIC_URL         public address of the bucket, e.g. https://pub-xxxx.r2.dev or https://media.aradhanawa.com
  * Photos are stored at gallery/{uid}/{type}/{random}.{ext}, card music (Admin → Settings → Music library) at music/{name}-{random}.mp3.
- * Guests load both straight from R2_PUBLIC_URL. */
+ * Guests load both straight from R2_PUBLIC_URL. Bank transfer slips go to slips/{uid}/{order}-{random}.{ext}; the site never links
+ * their public address, admins see them through api/pay/slip. */
 import crypto from "node:crypto";
 
 const env = k => String(process.env[k] || "").trim();
@@ -50,6 +51,14 @@ async function send(c, method, key, body, headers, ms = 15000) {
 export const putObject = (c, key, body, type, ms) =>
   send(c, "PUT", key, body, { "content-type": type, "cache-control": "public, max-age=31536000, immutable" }, ms);
 export const deleteObject = (c, key) => send(c, "DELETE", key);
+/* Reads one object back (bank slips are served to the admin through api/pay/slip, not from the public address). */
+export async function getObject(c, key, ms = 15000) {
+  const { url, init } = signedRequest(c, "GET", key);
+  const r = await fetch(url, { ...init, signal: AbortSignal.timeout(ms) });
+  if (r.status === 404) return null;
+  if (!r.ok) { const t = await r.text().catch(() => ""); throw Object.assign(new Error(`R2 GET failed: ${r.status} ${t.slice(0, 300)}`), { status: 502 }) }
+  return { body: Buffer.from(await r.arrayBuffer()), type: r.headers.get("content-type") || "application/octet-stream" };
+}
 export const publicUrl = (c, key) => `${c.publicUrl}/${encKey(key)}`;
 /* The object key for a public URL of ours, or "" when the URL is not from this bucket. */
 export const keyFromUrl = (c, url) => typeof url === "string" && url.startsWith(c.publicUrl + "/") ? decodeURIComponent(url.slice(c.publicUrl.length + 1)) : "";

@@ -178,6 +178,33 @@ footer.foot{border-top:1px solid var(--line);padding-block:22px;color:var(--mute
 .modal{background:var(--surface);border-radius:16px;max-width:460px;width:100%;padding:22px;display:grid;gap:12px;border:1px solid var(--line)}
 .modal h3{font-size:24px}
 .modal p{margin:0;color:var(--muted)}
+/* pay: card or bank transfer */
+.paych{display:grid;gap:10px}
+.payopt{display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:12px;align-items:center;text-align:left;border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:14px;cursor:pointer;transition:border-color .15s,background .15s;width:100%;color:var(--ink)}
+.payopt:hover,.payopt:focus-visible{border-color:var(--gold);background:#FFFDF8}
+.payopt .pi{width:44px;height:44px;border-radius:10px;background:var(--sunk);display:grid;place-items:center;color:var(--accent)}
+.payopt .pi svg{width:22px;height:22px}
+.payopt b{display:block;font-size:15.5px}.payopt small{display:block;color:var(--muted);font-size:12.5px;line-height:1.4;margin-top:2px}
+.payopt .go{color:var(--gold);font-size:20px;line-height:1}
+.bankd{margin:0;border:1px solid var(--line);border-radius:12px;background:var(--paper);padding:4px 14px}
+.bankd>div{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-top:1px dashed var(--line)}
+.bankd>div:first-child{border-top:0}
+.bankd dt{color:var(--muted);font-size:12.5px;flex:none}
+.bankd dd{margin:0;text-align:right;font-weight:600;display:flex;align-items:center;gap:8px;justify-content:flex-end;flex-wrap:wrap;min-width:0;overflow-wrap:anywhere}
+.bankd dd b{font-size:16px;letter-spacing:.03em;font-variant-numeric:tabular-nums}
+.slipdrop{display:grid;justify-items:center;gap:4px;text-align:center;border:1.5px dashed var(--line-2);border-radius:12px;padding:18px 14px;cursor:pointer;background:#FFFDF8;color:var(--ink)}
+.slipdrop:hover,.slipdrop:focus-within{border-color:var(--gold)}
+.slipdrop .sd-ic{color:var(--accent)}.slipdrop small{color:var(--muted);font-size:12.5px}
+.slipdrop img{max-height:150px;max-width:100%;border-radius:8px;border:1px solid var(--line)}
+.slipdrop[data-has="1"]{border-style:solid;border-color:var(--gold)}
+.slipview{border:1px solid var(--line);border-radius:12px;background:var(--sunk);min-height:120px;display:grid;place-items:center;overflow:hidden}
+.slipview img{width:100%;max-height:46vh;object-fit:contain;display:block;background:#fff}
+.slipq{border-left:3px solid var(--gold)}
+.slist{display:grid;gap:8px}
+.sitem{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--paper)}
+.sitem b{display:block}.sitem small{display:block;color:var(--muted);font-size:12.5px}
+.sitem .btn{flex:none}
+.adm .side .cnt{margin-left:auto;background:var(--gold);color:#fff;border-radius:999px;font-size:11px;font-weight:800;padding:1px 7px}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:999px;font-size:14px;font-weight:600;z-index:60;box-shadow:0 6px 20px rgba(0,0,0,.2)}
 
 
@@ -4327,7 +4354,7 @@ function upsell(direct,plan){
     <h3>You've shared with ${CONFIG.FREE_GUESTS} guests</h3>
     <p>The free plan covers ${CONFIG.FREE_GUESTS} personal links. Buy the ${esc(prem.n)} design for ${esc(tp)} to send it to everyone and see who's coming. It unlocks as soon as you pay.</p>
     <div class="row" style="justify-content:flex-end;margin-top:6px"><button class="btn" data-x>Not now</button><button class="btn primary" data-pay="custom|${esc(prem.n)}|${esc(mc.id)}">Pay ${esc(tp)}</button></div>
-    <p class="note">Secure payment through Dialog Genie. Prefer to talk first? <a target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,ttxt)}">Ask us on WhatsApp</a>. You can still copy the main invite link and paste it into a WhatsApp group.</p>`);
+    <p class="note">${payNote()} Prefer to talk first? <a target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,ttxt)}">Ask us on WhatsApp</a>. You can still copy the main invite link and paste it into a WhatsApp group.</p>`);
   }
   const p=plan||mainPlan("plus"), price=p?p.price:CONFIG.PRICE_PLUS;
   const txt=`Hi Aradhanawa! I'd like Aradhanawa Plus for my ${TYPES[S.type].name.toLowerCase()} invitation (${cur().date||""}).`;
@@ -4335,7 +4362,7 @@ function upsell(direct,plan){
     <h3>${direct?"Unlimited guests for one event":"You've shared with 5 guests"}</h3>
     <p>${direct?"":"The free plan covers 5 personal links. "}Upgrade to ${esc(p?p.name:"Aradhanawa Plus")} for ${esc(price)} per event to send to everyone, see who's coming, and remove the Aradhanawa branding.</p>
     <div class="row" style="justify-content:flex-end;margin-top:6px"><button class="btn" data-x>Not now</button>${p?`<button class="btn primary" data-pay="plus||${esc(p.id)}">Pay ${esc(price)}</button>`:""}</div>
-    <p class="note">Secure payment through Dialog Genie. Prefer to talk first? <a target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,txt)}">Ask us on WhatsApp</a>. You can still copy the main invite link and paste it into a WhatsApp group.</p>`);
+    <p class="note">${payNote()} Prefer to talk first? <a target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,txt)}">Ask us on WhatsApp</a>. You can still copy the main invite link and paste it into a WhatsApp group.</p>`);
 }
 /* Buying a ready-made web design: pay, and it unlocks at once (every guest, no studio work, no WhatsApp step). */
 function templateReq(name){
@@ -5103,7 +5130,15 @@ function logOrder(kind,design){
   if(FB_ON()){ if(window.FBX) FBX.addOrder(o).catch(er=>console.warn("[fb] order",er)); return }
   const os=DB.orders(); os.unshift(o); DB.setOrders(os);
 }
-/* Online payment (Dialog Genie). The server (api/pay/create) sets the price and holds the Genie key. */
+/* Online payment. The customer picks card (Dialog Genie, api/pay/create) or bank transfer with a slip (api/pay/bank).
+   The server sets the price either way. Bank transfer shows only when Admin → Settings → Bank transfer has an account. */
+const bankInfo = () => { const b=CONFIG.BANK; return b&&typeof b==="object"&&b.name&&b.number ? b : null };
+const payNote = () => bankInfo() ? "Pay by card (secure Dialog Genie page) or by bank transfer." : "Secure payment through Dialog Genie.";
+const PAY_IC = {
+  card:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="M2.5 9.5h19M6 15h4"/></svg>`,
+  bank:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3 9.5L12 4l9 5.5H3zM5 10v7M9.5 10v7M14.5 10v7M19 10v7M3 20h18"/></svg>`,
+  up:`<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4M7.5 8.5L12 4l4.5 4.5M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>`,
+};
 async function payNow(kind,design,btn,plan){
   if(!FB_ON()||!window.FBX) return toast("Online payment needs the live site (Firebase connected).");
   if(!me()){
@@ -5111,15 +5146,105 @@ async function payNow(kind,design,btn,plan){
     modal(`<span class="eyebrow">Log in to buy</span><h3>Please log in first</h3><p>Your purchase is saved to your account, so you need to log in or create a free account before paying. You'll come back here after logging in.</p>
       <div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><a class="btn" href="#register" data-x>Register</a><a class="btn primary" href="#login" data-x>Log in</a></div>`);
     return }
-  const lbl=btn&&btn.textContent; if(btn){ btn.disabled=true; btn.textContent="Opening payment…" }
+  const buy={kind,plan:plan||undefined,type:S.type,design:design||(kind==="plus"?"Aradhanawa Plus":"Custom design")};
+  const price=((btn&&/Rs\.?\s*[\d,]+(\.\d+)?/.exec(btn.textContent))||[""])[0];
+  if(!bankInfo()) return payCard(buy,btn);
+  modal(`<span class="eyebrow">Choose how to pay</span><h3>${price?`Pay ${esc(price)}`:"How would you like to pay?"}</h3>
+    <div class="paych">
+      <button class="payopt" type="button" data-pm="card"><span class="pi">${PAY_IC.card}</span><span><b>Card payment</b><small>Visa, Mastercard or Genie on a secure Dialog page. Unlocks straight away.</small></span><span class="go" aria-hidden="true">›</span></button>
+      <button class="payopt" type="button" data-pm="bank"><span class="pi">${PAY_IC.bank}</span><span><b>Bank transfer</b><small>Transfer to our account and upload the slip. We check it and unlock your card, usually within a few hours.</small></span><span class="go" aria-hidden="true">›</span></button>
+    </div>
+    <div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button></div>`);
+  const L=document.getElementById("layer");
+  L.querySelector('[data-pm="card"]').onclick=e=>payCard(buy,e.currentTarget);
+  L.querySelector('[data-pm="bank"]').onclick=()=>bankModal({buy,price});
+}
+async function payCard(buy,btn){
+  const lbl=btn&&btn.innerHTML; if(btn){ btn.disabled=true; if(!btn.classList.contains("payopt")) btn.textContent="Opening payment…"; else btn.querySelector("b").textContent="Opening payment…" }
   try{
     const tok=await FBX.idToken();
-    const r=await fetch("/api/pay/create",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+tok},
-      body:JSON.stringify({kind,plan:plan||undefined,type:S.type,design:design||(kind==="plus"?"Aradhanawa Plus":"Custom design")})});
+    const r=await fetch("/api/pay/create",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+tok},body:JSON.stringify(buy)});
     const j=await r.json().catch(()=>({}));
     if(!r.ok||!j.url) throw new Error(j.error||"Payment could not start. Please try again.");
     location.href=j.url;
-  }catch(er){ toast(er.message||"Payment could not start"); if(btn){ btn.disabled=false; btn.textContent=lbl } }
+  }catch(er){ toast(er.message||"Payment could not start"); if(btn){ btn.disabled=false; btn.innerHTML=lbl } }
+}
+/* Bank transfer: account details, then the slip. {buy, price} for a new order, or {order} to send a new slip for a rejected one. */
+function bankModal({buy,price,order}){
+  const b=bankInfo(); if(!b) return toast("Bank transfer is not available right now. Please pay by card.");
+  const amt=order?order.amount:price;
+  modal(`<span class="eyebrow">Bank transfer</span><h3>${amt?`Transfer ${esc(amt)}`:"Pay by bank transfer"}</h3>
+    ${order&&order.rejectNote?`<p><b style="color:#9A2B2B">Your last slip was not accepted:</b> ${esc(order.rejectNote)}</p>`:`<p>Send the exact amount to this account from your bank app, ATM or a bank branch. Then upload the slip here.</p>`}
+    <dl class="bankd">
+      ${b.bank?`<div><dt>Bank</dt><dd>${esc(b.bank)}${b.branch?` · ${esc(b.branch)}`:""}</dd></div>`:""}
+      <div><dt>Account name</dt><dd>${esc(b.name)}</dd></div>
+      <div><dt>Account number</dt><dd><b id="bkno">${esc(b.number)}</b><button class="btn sm" type="button" data-bcopy>${I.copy} Copy</button></dd></div>
+      ${amt?`<div><dt>Amount</dt><dd><b>${esc(amt)}</b></dd></div>`:""}
+      <div><dt>Reference</dt><dd>${esc((me()&&me().name)||"Your name")}</dd></div>
+    </dl>
+    ${b.note?`<p class="note">${esc(b.note)}</p>`:""}
+    <label class="slipdrop" id="slipdrop"><input type="file" id="slipf" accept="image/*,application/pdf" hidden><span class="sd-ic">${PAY_IC.up}</span><b>Upload payment slip</b><small>Photo, screenshot or PDF of the slip</small></label>
+    <div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><button class="btn primary" id="slipgo" disabled>Send slip</button></div>
+    <p class="note">Your card unlocks once we have checked the slip. You can follow it in My account → My orders.</p>`);
+  const L=document.getElementById("layer"), f=L.querySelector("#slipf"), drop=L.querySelector("#slipdrop"), go=L.querySelector("#slipgo");
+  L.querySelector("[data-bcopy]").onclick=e=>{ e.preventDefault(); copy(b.number,L.querySelector("#bkno")) };
+  let file=null;
+  f.onchange=()=>{ file=f.files[0]||null; if(!file) return;
+    if(!/^image\/|^application\/pdf$/.test(file.type)){ file=null; return toast("Choose a photo or PDF of the slip") }
+    if(file.type==="application/pdf"&&file.size>3*1024*1024){ file=null; return toast("That PDF is too large (3 MB at most). Send a screenshot instead.") }
+    drop.dataset.has="1";
+    drop.innerHTML=(file.type.startsWith("image/")?`<img alt="Your slip" src="${URL.createObjectURL(file)}">`:`<span class="sd-ic">${PAY_IC.up}</span>`)+`<b>${esc(file.name.slice(0,60))}</b><small>Tap to choose a different file</small>`;
+    drop.appendChild(f); go.disabled=false };
+  go.onclick=async()=>{
+    if(!file) return; go.disabled=true; go.textContent="Sending…";
+    try{
+      const raw=await new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(r.result); r.onerror=()=>rej(new Error("Could not read that file")); r.readAsDataURL(file) });
+      const slip=file.type==="application/pdf"?raw:await reshrink(raw,1600,.85);
+      const r=await fetch("/api/pay/bank",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+await FBX.idToken()},
+        body:JSON.stringify(order?{order:order.id,slip,fileName:file.name}:{...buy,slip,fileName:file.name})});
+      const j=await r.json().catch(()=>({}));
+      if(!r.ok||!j.orderId) throw new Error(j.error||(r.status===413?"That slip is too large. Try a screenshot instead.":"The slip could not be sent. Please try again."));
+      const ref=j.orderId.slice(-6).toUpperCase();
+      modal(`<span class="eyebrow">Slip received</span><h3>Thank you! We're checking it</h3><p>Order <b>${esc(ref)}</b> is waiting for verification. We'll match your slip with our bank account and unlock your card, usually within a few hours. You'll see it change to Done in My orders.</p>
+        <div class="row" style="justify-content:flex-end"><a class="btn wa" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,`Hi Aradhanawa! I paid by bank transfer and uploaded the slip (order ${ref}).`)}">${I.wa} Tell us</a><a class="btn primary" href="#account" data-x>My orders</a></div>`);
+    }catch(er){ toast(er.message||"The slip could not be sent"); go.disabled=false; go.textContent="Send slip" }
+  };
+}
+/* Admin: look at one bank slip and approve (unlocks the card, api/pay/verify) or reject it with a reason. */
+async function slipReview(id){
+  const o=DB.orders().find(x=>x.id===id); if(!o) return toast("Order not found");
+  const can=!o.paid&&(o.status==="Awaiting verification"||o.status==="Slip rejected");
+  modal(`<span class="eyebrow">Bank slip · ${esc(id.slice(-6).toUpperCase())}</span><h3>${esc(o.amount)} from ${esc(o.name||"customer")}</h3>
+    <p>${esc(o.design)} · ${esc((TYPES[o.type]||TYPES.other).name)}${o.payTo?` · to ${esc(o.payTo)}`:""}<br>Slip sent ${fdt(o.slipAt||o.created)}${o.paid?` · <b style="color:#1E6A42">Approved${o.verifiedBy?" by "+esc(o.verifiedBy):""}</b>`:""}</p>
+    <div class="slipview" id="slipv"><small style="color:var(--muted)">Loading slip…</small></div>
+    ${o.status==="Slip rejected"&&o.rejectNote?`<p class="note">Rejected: ${esc(o.rejectNote)}</p>`:""}
+    ${can?`<div class="af" id="rjbox" hidden><label for="rjnote">Reason (the customer sees this)</label><input id="rjnote" maxlength="300" value="We could not find this payment in our account."></div>
+    <div class="row" style="justify-content:flex-end"><button class="btn" data-x>Close</button><button class="btn" id="slipno">Reject</button><button class="btn primary" id="slipok">Approve and unlock</button></div>
+    <p class="note">Approve only after you see the money in the bank account. Approving marks the order Paid and unlocks the card, the same as a card payment.</p>`
+    :`<div class="row" style="justify-content:flex-end"><button class="btn" data-x>Close</button></div>`}`);
+  const L=document.getElementById("layer"), v=L.querySelector("#slipv");
+  try{
+    const r=await fetch("/api/pay/slip?order="+encodeURIComponent(id),{headers:{Authorization:"Bearer "+await FBX.idToken()}});
+    if(!r.ok){ const j=await r.json().catch(()=>({})); throw new Error(j.error||"Could not load the slip") }
+    const blob=await r.blob(), url=URL.createObjectURL(blob);
+    v.innerHTML=blob.type==="application/pdf"
+      ?`<div style="padding:22px;text-align:center;display:grid;gap:10px;justify-items:center"><b>PDF slip</b><a class="btn sm primary" href="${url}" target="_blank" rel="noopener">Open the PDF</a></div>`
+      :`<a href="${url}" target="_blank" rel="noopener" title="Open full size"><img alt="Payment slip" src="${url}"></a>`;
+  }catch(er){ v.innerHTML=`<small style="color:#9A2B2B;padding:16px">${esc(er.message)}</small>` }
+  if(!can) return;
+  const send=async(approve,btn)=>{
+    btn.disabled=true; const t=btn.textContent; btn.textContent=approve?"Approving…":"Rejecting…";
+    try{
+      const r=await fetch("/api/pay/verify",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+await FBX.idToken()},
+        body:JSON.stringify({order:id,approve,note:approve?"":(L.querySelector("#rjnote").value||"").trim()})});
+      const j=await r.json().catch(()=>({}));
+      if(!r.ok) throw new Error(j.error||"Could not save. Please try again.");
+      L.innerHTML=""; toast(approve?`Approved. ${o.name||"The customer"}'s card is unlocked.`:"Slip rejected. The customer can send a new one.");
+    }catch(er){ toast(er.message); btn.disabled=false; btn.textContent=t }
+  };
+  const ok=L.querySelector("#slipok"), no=L.querySelector("#slipno"), rj=L.querySelector("#rjbox");
+  ok.onclick=()=>send(true,ok);
+  no.onclick=()=>{ if(rj.hidden){ rj.hidden=false; no.textContent="Send rejection"; L.querySelector("#rjnote").focus(); return } send(false,no) };
 }
 /* Back from Genie: /?pay=ok|pending|failed&kind=…&order=…#account */
 const PAY_BACK = (()=>{ try{ const q=new URLSearchParams(location.search); const p=q.get("pay"); if(!p) return null;
@@ -5263,7 +5388,7 @@ function renderAccount(){
       <div class="kpi"><small>Orders</small><b>${mine.length}</b><span>${mine.filter(o=>o.status!=="Done").length} open</span></div>
     </div>
     <div class="box"><div class="bh"><h2>My orders</h2></div><div class="tblwrap"><table class="tbl"><thead><tr><th>Design</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead><tbody>
-      ${mine.map(o=>`<tr><td><b>${esc(o.design)}</b><small>${esc((TYPES[o.type]||TYPES.other).name)}</small></td><td>${esc(o.amount)}${paidTag(o)}</td><td>${stBadge(o.status)}</td><td>${fdt(o.created)}</td></tr>`).join("")||`<tr><td colspan="4" class="empty">No orders yet. Pick a custom design from the editor and request it.</td></tr>`}
+      ${mine.map(o=>`<tr><td><b>${esc(o.design)}</b><small>${esc((TYPES[o.type]||TYPES.other).name)}</small></td><td>${esc(o.amount)}${paidTag(o)}${o.method==="bank"?`<small>Bank transfer</small>`:""}</td><td>${stBadge(o.status)}${o.status==="Awaiting verification"?`<small>We're checking your slip</small>`:""}${o.status==="Slip rejected"?`${o.rejectNote?`<small>${esc(o.rejectNote)}</small>`:""}<button class="btn sm" style="margin-top:6px" data-reslip="${esc(o.id)}">Upload new slip</button>`:""}</td><td>${fdt(o.created)}</td></tr>`).join("")||`<tr><td colspan="4" class="empty">No orders yet. Pick a custom design from the editor and request it.</td></tr>`}
     </tbody></table></div></div>
     ${FB_ON()?`<div class="two">
       <div class="box"><div class="bh"><h2>Guest replies</h2><span class="badge ok">${rsv.filter(r=>r.coming).reduce((a,r)=>a+(+r.count||0),0)} coming</span><a class="btn sm" href="#rsvp">Open the full list</a></div><div class="tblwrap"><table class="tbl"><thead><tr><th>Guest</th><th>Reply</th><th>Date</th></tr></thead><tbody>
@@ -5275,6 +5400,7 @@ function renderAccount(){
     </div>`:""}
   </div></main>`);
   const up=document.querySelector("[data-upgrade]"); if(up) up.onclick=()=>upsell(true);
+  document.querySelectorAll("[data-reslip]").forEach(b=>b.onclick=()=>{ const o=mine.find(x=>x.id===b.dataset.reslip); if(o) bankModal({order:o}) });
   if(needVerify){
     document.querySelector("[data-vgoogle]").onclick=()=>FBX.signInGoogle().catch(fbFail);
     document.querySelector("[data-vsend]").onclick=()=>FBX.sendVerify().then(()=>toast("Verification link sent. Check your Gmail (and Spam)."),fbFail);
@@ -5629,8 +5755,9 @@ const AI = {
   star:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.8-4.5 4.2 1.2 6.1L12 16.8l-5.5 2.9 1.2-6.1-4.5-4.2 6.1-.8z"/></svg>`,
 };
 const fdt = s => { try{ return new Date(s).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}) }catch(e){ return "" } };
-const stBadge = s => `<span class="badge ${s==="Done"?"ok":s==="In progress"||s==="Awaiting payment"?"warn":s==="New"?"new":""}">${esc(s)}</span>`;
+const stBadge = s => `<span class="badge ${s==="Done"?"ok":s==="In progress"||s==="Awaiting payment"||s==="Awaiting verification"?"warn":s==="New"||s==="Slip rejected"?"new":""}">${esc(s)}</span>`;
 const paidTag = o => o.paid?` <span class="badge ok">Paid</span>`:"";
+const ORDER_STATUSES = ["New","Awaiting payment","Awaiting verification","Slip rejected","In progress","Done","Payment failed","Cancelled"];
 const rsNum = s => +String(s||"").replace(/[^\d]/g,"")||0;
 const rs = n => "Rs. "+n.toLocaleString("en-LK");
 
@@ -5638,22 +5765,26 @@ function renderAdmin(tab,arg){
   const u=me();
   if(!u){ store.set("next","#admin"+(tab?"/"+tab:"")); location.replace("#login"); return }
   if(u.role!=="admin"){ store.set("next",""); location.replace("#account"); toast("That page is for admins only"); return }
-  const TABS=[["overview",AI.chart,"Overview"],["users",AI.users,"Users"],["orders",AI.bag,"Orders"],["invitations",AI.mail,"Invitations"],["rsvps",AI.check,"RSVPs"],["reviews",AI.star,"Reviews"],["templates",AI.grid,"Templates"],["prices",AI.bag,"Prices"],["prompts",AI.grid,"Image prompts"],["settings",AI.gear,"Settings"]];
+  const TABS=[["overview",AI.chart,"Overview"],["users",AI.users,"Users"],["orders",AI.bag,"Orders"+(DB.orders().some(o=>o.method==="bank"&&o.status==="Awaiting verification")?`<span class="cnt">${DB.orders().filter(o=>o.method==="bank"&&o.status==="Awaiting verification").length}</span>`:"")],["invitations",AI.mail,"Invitations"],["rsvps",AI.check,"RSVPs"],["reviews",AI.star,"Reviews"],["templates",AI.grid,"Templates"],["prices",AI.bag,"Prices"],["prompts",AI.grid,"Image prompts"],["settings",AI.gear,"Settings"]];
   tab = TABS.some(t=>t[0]===tab) ? tab : "overview";
   const users=DB.users(), orders=DB.orders(), off=tplOff(), invs=DB.invitations(), rsvps=DB.rsvps(), fb=FB_ON();
   const typeName=t=>(TYPES[t]||TYPES.other).name, coming=list=>list.filter(r=>r.coming).reduce((a,r)=>a+(+r.count||0),0);
   const demo=fb?"":`<div class="box demo"><b>Demo mode</b>Firebase is not connected yet, so this data lives only in this browser. Add your Firebase config to firebase-config.js to see real users, orders, invitations and RSVPs here.</div>`;
-  const open=orders.filter(o=>o.status==="New"||o.status==="In progress");
+  const open=orders.filter(o=>o.status==="New"||o.status==="In progress"||o.status==="Awaiting verification");
+  const slipq=orders.filter(o=>o.method==="bank"&&o.status==="Awaiting verification");
+  const slipBox=slipq.length?`<div class="box slipq"><div class="bh"><h2>${slipq.length} bank slip${slipq.length>1?"s":""} to check</h2>${tab==="orders"?"":`<a href="#admin/orders">Open orders</a>`}</div><p class="sub" style="margin:-4px 0 12px;color:var(--muted)">Check that the money is in the bank account, then approve to unlock the customer's card.</p>
+    <div class="slist">${slipq.map(o=>`<div class="sitem"><div><b>${esc(o.name)} · ${esc(o.amount)}</b><small>${esc(o.design)} · ${esc((TYPES[o.type]||TYPES.other).name)} · ${fdt(o.slipAt||o.created)}</small></div><button class="btn sm primary" data-slip="${esc(o.id)}">Check slip</button></div>`).join("")}</div></div>`:"";
   const week=Date.now()-7*864e5;
   const orderHead=edit=>`<thead><tr><th>Customer</th><th>Design</th><th>Amount</th><th>Status</th><th>Date</th>${edit?"<th></th>":""}</tr></thead>`;
   const orderRows=(list,edit)=>list.map(o=>`<tr><td><b>${esc(o.name)}</b>${o.sample?` <span class="badge">Sample</span>`:""}<small>${esc(o.email||prettyPhone(o.phone)||"")}</small></td>
-    <td>${esc(o.design)}<small>${esc((TYPES[o.type]||TYPES.other).name)} · ${esc(o.planName&&o.planName!==o.design?o.planName:o.kind==="plus"?"Plan":o.kind==="service"?"Service":o.kind==="template"?"Template":"Custom")}</small></td><td>${esc(o.amount)}${paidTag(o)}</td>
-    <td>${edit?`<select data-ostatus="${o.id}" aria-label="Order status">${["New","Awaiting payment","In progress","Done","Payment failed","Cancelled"].map(s=>`<option ${s===o.status?"selected":""}>${s}</option>`).join("")}</select>`:stBadge(o.status)}</td>
-    <td>${fdt(o.created)}</td>${edit?`<td><div class="acts">${o.phone?`<a class="btn sm" target="_blank" rel="noopener" href="${waLink(o.phone,`Hi ${o.name}, this is Aradhanawa about your "${o.design}" order.`)}">${I.wa} Chat</a>`:""}</div></td>`:""}</tr>`).join("")
+    <td>${esc(o.design)}<small>${esc((TYPES[o.type]||TYPES.other).name)} · ${esc(o.planName&&o.planName!==o.design?o.planName:o.kind==="plus"?"Plan":o.kind==="service"?"Service":o.kind==="template"?"Template":"Custom")}</small></td><td>${esc(o.amount)}${paidTag(o)}${o.method==="bank"?`<small>Bank transfer</small>`:""}</td>
+    <td>${edit?`<select data-ostatus="${o.id}" aria-label="Order status">${ORDER_STATUSES.map(s=>`<option ${s===o.status?"selected":""}>${s}</option>`).join("")}</select>`:stBadge(o.status)}</td>
+    <td>${fdt(o.created)}</td>${edit?`<td><div class="acts">${o.slipKey?`<button class="btn sm${o.status==="Awaiting verification"?" primary":""}" data-slip="${esc(o.id)}">${o.status==="Awaiting verification"?"Check slip":"View slip"}</button>`:""}${o.phone?`<a class="btn sm" target="_blank" rel="noopener" href="${waLink(o.phone,`Hi ${o.name}, this is Aradhanawa about your "${o.design}" order.`)}">${I.wa} Chat</a>`:""}</div></td>`:""}</tr>`).join("")
     || `<tr><td colspan="6" class="empty">No orders yet.</td></tr>`;
   let body="";
   if(tab==="overview"){
     body=`<div class="mh"><div><span class="eyebrow">Admin</span><h1>Overview</h1><p>How Aradhanawa is doing today.</p></div></div>
+    ${slipBox}
     <div class="kpis">
       <div class="kpi"><small>Users</small><b>${users.length}</b><span>${users.filter(x=>new Date(x.created)>week).length} new this week</span></div>
       <div class="kpi"><small>Plus customers</small><b>${users.filter(x=>x.plan==="Plus").length}</b><span>${CONFIG.PRICE_PLUS} per event</span></div>
@@ -5684,7 +5815,8 @@ function renderAdmin(tab,arg){
   }
   if(tab==="orders"){
     body=`<div class="mh"><div><span class="eyebrow">Admin</span><h1>Orders</h1><p>Custom designs and Plus upgrades requested from the site.</p></div></div>
-    <div class="box"><div class="tbar" style="margin-bottom:12px"><select id="ofilter" aria-label="Filter by status"><option value="">All statuses</option>${["New","Awaiting payment","In progress","Done","Payment failed","Cancelled"].map(s=>`<option>${s}</option>`).join("")}</select></div>
+    ${slipBox}
+    <div class="box"><div class="tbar" style="margin-bottom:12px"><select id="ofilter" aria-label="Filter by status"><option value="">All statuses</option>${ORDER_STATUSES.map(s=>`<option>${s}</option>`).join("")}</select></div>
     <div class="tblwrap"><table class="tbl" id="otbl">${orderHead(true)}<tbody>${orderRows(orders,true)}</tbody></table></div></div>`;
   }
   if(tab==="invitations"){
@@ -5754,6 +5886,10 @@ function renderAdmin(tab,arg){
       ${Object.entries(MUSIC_KEY).map(([t,k])=>`<div class="af"><label for="s-${k}">Music: ${esc(TYPES[t].name)}</label>${musicSelect(`id="s-${k}" name="${k}"`,CONFIG[k]||"","No music")}</div>`).join("")}
       <div class="af" style="grid-column:1/-1"><small>Background music for each function. Upload your own MP3s in the Music library below. One design can have its own track in <a href="#admin/templates">Admin → Templates</a>.</small></div>
     </div><div class="row" style="margin-top:18px"><button class="btn primary" type="submit">Save settings</button></div></form>
+    <form class="box" id="bform"><h2>Bank transfer</h2><p class="sub" style="margin:-4px 0 14px;color:var(--muted)">When an account name and number are filled in, customers can choose bank transfer instead of card and upload their slip. You check slips in Admin → Orders. Leave the number empty to offer card payment only.</p><div class="sform">
+      ${[["bank","Bank","e.g. Bank of Ceylon"],["branch","Branch","e.g. Kandy"],["name","Account name","Name on the account"],["number","Account number",""]].map(([k,l,ph])=>`<div class="af"><label for="b-${k}">${l}</label><input id="b-${k}" name="${k}" value="${esc((CONFIG.BANK||{})[k]||"")}" placeholder="${esc(ph)}" maxlength="${k==="name"?120:80}"></div>`).join("")}
+      <div class="af" style="grid-column:1/-1"><label for="b-note">Note for customers (optional)</label><input id="b-note" name="note" value="${esc((CONFIG.BANK||{}).note||"")}" maxlength="300" placeholder="e.g. Please use your phone number as the reference"></div>
+    </div><div class="row" style="margin-top:18px"><button class="btn primary" type="submit">Save bank details</button>${bankInfo()?`<span class="badge ok">Bank transfer is on</span>`:`<span class="badge">Bank transfer is off</span>`}</div></form>
     ${fb?`<div class="box"><div class="bh"><h2>Music library</h2><label class="btn sm primary" style="cursor:pointer">Upload MP3<input type="file" id="mup" accept="audio/mpeg,.mp3" hidden></label></div>
       <p class="sub" style="margin:-4px 0 14px;color:var(--muted)" id="mupst">MP3 files up to 15 MB, saved in your Cloudflare R2 bucket. After uploading, pick the track for a function above, or for one design in Admin → Templates.</p>
       <div class="tblwrap"><table class="tbl"><tbody>
@@ -5820,12 +5956,19 @@ function renderAdmin(tab,arg){
     if(b.dataset.mdel){ const tr=musicLib()[+b.dataset.mdel]; if(!tr) return; const uses=musicUses(tr.url);
       modal(`<span class="eyebrow">Delete music</span><h3>Delete ${esc(tr.name)}?</h3><p>The MP3 is removed from Cloudflare R2.${uses.length?` It is used by ${esc(uses.join(", "))}: a function then has no music until you pick another track, and a design plays its function's music.`:""} Cards already shared play the new music next time they open.</p><div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><button class="btn primary" id="cdel">Delete</button></div>`);
       document.getElementById("cdel").onclick=()=>{ document.getElementById("layer").innerHTML=""; if(fbNeed()) deleteTrack(tr) } }
+    if(b.dataset.slip&&fbNeed()) slipReview(b.dataset.slip);
     if(b.dataset.prompt){ copy(PROMPTS[+b.dataset.prompt].p, document.getElementById("pr-"+b.dataset.prompt)) }
     if(b.hasAttribute("data-clearsample")){ DB.setUsers(DB.users().filter(x=>!x.sample)); DB.setOrders(DB.orders().filter(x=>!x.sample)); toast("Sample data removed"); re() }
   });
   const sf=document.getElementById("sform");
   if(sf) sf.onsubmit=e=>{ e.preventDefault(); const c={}; for(const k of ["FREE_GUESTS","STUDIO_WA",...Object.values(MUSIC_KEY)]){ const v=sf.elements[k].value.trim(); if(k.startsWith("MUSIC")){ c[k]=v; const a=document.getElementById("lxAudio"); if(a) a.remove(); continue } if(v) c[k]=k==="FREE_GUESTS"?Math.max(1,+v||5):k==="STUDIO_WA"?intlPhone(v):v } store.set("config",{...store.get("config",{}),...c}); Object.assign(CONFIG,c);
     if(fb){ if(fbNeed()) FBX.saveSettings(c).then(()=>toast("Settings saved for every visitor"),fbFail) } else toast("Settings saved") };
+  const bf=document.getElementById("bform");
+  if(bf) bf.onsubmit=e=>{ e.preventDefault(); const B={}; for(const k of ["bank","branch","name","number","note"]) B[k]=bf.elements[k].value.trim().slice(0,k==="note"?300:k==="name"?120:80);
+    if(!!B.name!==!!B.number) return toast("Fill in both the account name and number, or leave both empty");
+    CONFIG.BANK=B; store.set("config",{...store.get("config",{}),BANK:B});
+    const msg=B.number?"Bank details saved. Customers can now pay by bank transfer.":"Bank transfer turned off";
+    if(fb){ if(fbNeed()) FBX.saveSettings({BANK:B}).then(()=>{ toast(msg); re() },fbFail) } else { toast(msg); re() } };
   const mup=document.getElementById("mup");
   if(mup) mup.onchange=()=>{ const f=mup.files[0]; mup.value=""; if(f) uploadTrack(f,document.getElementById("mupst")) };
   const af2=document.getElementById("aform2");

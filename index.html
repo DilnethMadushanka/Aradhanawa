@@ -3860,13 +3860,13 @@ function render(){
   </div></section>
 `,
     cta:()=>{ const card=(k,img,t,si,d)=>`<button class="ct2-card" type="button" data-ctapick="${k}">
-        <span class="ct2-ph"><img src="img/${img}-960.webp" srcset="img/${img}-480.webp 480w, img/${img}-960.webp 960w" sizes="(max-width:700px) 92vw, 520px" width="960" height="1192" loading="lazy" decoding="async" alt=""></span>
+        <span class="ct2-ph"><img src="img/${img}-960.webp" srcset="img/${img}-480.webp 480w, img/${img}-960.webp 960w, img/${img}-1440.webp 1440w" sizes="(max-width:700px) 92vw, 520px" width="960" height="720" loading="lazy" decoding="async" alt=""></span>
         <span class="ct2-bd"><span class="ct2-tx"><b>${t}</b><small lang="si">${si}</small><span>${d}</span></span><span class="ct2-go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span></button>`;
       return `<section class="lp-cta2" data-f="paper">
     ${lpOrn()}<span class="lp-eb">Start your invitation</span>
     <h2>Whose day is <em>next?</em></h2>
     <p class="ct2-sub">Pick one to open the invitation maker. Nothing to install, nothing to pay until you need more.</p>
-    <div class="ct2-grid">${card("wedding","poruwa-couple","A wedding","විවාහ මංගල්‍යය","Poruwa, church or reception, with the nekath on the card.")}${card("","birthday-table","Another function","වෙනත් උත්සවයක්","Homecoming, engagement, birthday, dana, party or anything else.")}</div>
+    <div class="ct2-grid">${card("wedding","cta-wedding","A wedding","විවාහ මංගල්‍යය","Poruwa, church or reception, with the nekath on the card.")}${card("","cta-function","Another function","වෙනත් උත්සවයක්","Homecoming, engagement, birthday, dana, party or anything else.")}</div>
   </section>
 `},
     foot:()=>{ const wa=waLink(CONFIG.STUDIO_WA,"Hi Aradhanawa! I have a question about invitations."), num="+"+CONFIG.STUDIO_WA.replace(/^(\d{2})(\d{2})(\d{3})(\d+)$/,"$1 $2 $3 $4");

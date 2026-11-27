@@ -1775,6 +1775,46 @@ nav.top a{font-weight:600}
 .lp-price .pk-c.plus .lp-btn{background:#1E1412;color:#FFF6E6;border-color:#1E1412}
 .lp-price .sig{margin-top:4px}
 .lp-price .sig .lp-btn{border-radius:999px}
+.lp-gm{max-width:1280px;margin:0 auto;padding:clamp(56px,7vw,110px) var(--m);display:grid;gap:clamp(28px,4vw,48px)}
+.lp-gm .gm-hd{display:grid;gap:12px;justify-items:center;text-align:center;max-width:720px;margin:0 auto}
+.lp-gm .gm-hd h2{font-size:clamp(34px,4.6vw,60px);line-height:1.05;margin:0}
+.lp-gm .gm-hd p{margin:0;color:#6E5D48;font-size:clamp(16px,1.2vw,18px);max-width:56ch}
+.gm-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(18px,3vw,36px)}
+.gm-card{display:grid;gap:22px;align-content:start;margin:0}
+.lp .gm-card h3,.gm-card h3{font:500 clamp(18px,1.5vw,22px)/1.5 var(--t-body);letter-spacing:-.01em;color:#7B6A54;margin:0}
+.lp .gm-card h3 b,.gm-card h3 b{font-family:var(--t-head);font-weight:700;color:#1E1412;letter-spacing:-.03em}
+.gmm{border-radius:28px;padding:18px;background:linear-gradient(160deg,#F8EADF,#F3E9D6);box-shadow:inset 0 0 0 1px rgba(154,107,18,.18);min-height:100%;font-family:var(--t-body);color:#1E1412}
+.gmm-k{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.gmm-k div{background:#fff;border-radius:16px;padding:12px;display:grid;gap:2px;box-shadow:0 10px 24px -20px rgba(60,40,10,.5)}
+.gmm-k small{font:700 9.5px/1 var(--t-head);letter-spacing:.14em;text-transform:uppercase;color:#7B6A54}
+.gmm-k b{font:700 26px/1.1 var(--t-head);letter-spacing:-.03em}
+.gmm-k span{font-size:11.5px;color:#7B6A54}
+.gmm-tabs{display:inline-flex;gap:4px;background:rgba(255,255,255,.6);border-radius:999px;padding:4px;margin:14px 0 10px;font-size:13px;font-weight:600;color:#7B6A54}
+.gmm-tabs span{padding:6px 12px;border-radius:999px}.gmm-tabs .on{background:#fff;color:#1E1412;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.gmm ul{list-style:none;margin:0;padding:0;background:#fff;border-radius:16px;overflow:hidden}
+.gmm li{display:grid;grid-template-columns:minmax(0,1fr) auto 44px;gap:10px;align-items:center;padding:11px 14px;border-bottom:1px solid #F0E7D8;font-size:13px}
+.gmm li:last-child{border:0}
+.gmm li b{display:block;font-weight:600;font-size:13.5px}
+.gmm li small{display:block;color:#8B7B66;font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gmm li em{font-style:normal;font-size:11px;font-weight:700;padding:3px 9px;border-radius:999px}
+.gmm li em.ok{background:#E2F1E7;color:#1E6A42}.gmm li em.wait{background:#FBEFD7;color:#865610}
+.gmm li i{font-style:normal;font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+.gmm-sh{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.gmm-sh small{font:700 10px var(--t-head);letter-spacing:.16em;text-transform:uppercase;color:#9A6B12}
+.gmm-sh b{font:700 15px var(--t-head);letter-spacing:-.02em}
+.gmm-hall{position:relative;height:300px;border-radius:16px;background-color:#FBF6EC;background-image:linear-gradient(rgba(154,107,18,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(154,107,18,.09) 1px,transparent 1px);background-size:20px 20px;box-shadow:inset 0 0 0 1px rgba(154,107,18,.15);overflow:hidden}
+.gmm-t{position:absolute;width:0;height:0}
+.gmm-t>b{position:absolute;left:0;top:0;transform:translate(-50%,-50%);width:50px;height:50px;border-radius:50%;background:#fff;border:1.5px solid rgba(154,107,18,.4);display:grid;place-items:center;font:700 9.5px var(--t-head)}
+.gmm-t i,.gmm-head i{position:absolute;left:0;top:0;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;background:#fff;border:1.2px solid rgba(154,107,18,.4);display:grid;place-items:center;font:600 8px/1 var(--t-body);font-style:normal;color:#8C7A62}
+.gmm-t i.on,.gmm-head i.on{background:#7A2332;border-color:#7A2332;color:#FFF4E4;font-weight:700}
+.gmm-head{position:absolute;transform:translate(-50%,-50%);width:130px;height:40px;border-radius:10px;background:#FFFCF5;border:1.5px solid rgba(154,107,18,.4);display:grid;place-items:center;font:700 10px var(--t-head)}
+.gmm-head b{font:inherit}
+.gmm-head i{top:-14px;margin-top:-10px}
+.gmm-tip{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);background:#fff;border-radius:999px;padding:7px 14px;font-size:12px;white-space:nowrap;box-shadow:0 10px 24px -14px rgba(60,40,10,.5);display:flex;gap:6px;align-items:center}
+.gmm-tip::before{content:"";width:7px;height:7px;border-radius:50%;background:#7A2332}
+.lp-gm .gm-act{display:flex;gap:18px;justify-content:center;align-items:center;flex-wrap:wrap}
+@media (max-width:860px){.gm-cards{grid-template-columns:minmax(0,1fr)}.gmm-hall{height:280px}}
+@media (max-width:420px){.gmm{padding:12px;border-radius:22px}.gmm-k{gap:6px}.gmm-k div{padding:9px}.gmm-k b{font-size:22px}.gmm li{grid-template-columns:minmax(0,1fr) auto 36px;padding:10px}.gmm-tip{font-size:11px}}
 .sig-m{margin:0 0 6px;padding-left:18px;display:grid;gap:4px;font-size:14px;color:var(--muted)}
 @media (max-width:820px){.lp-price h2{font-size:8.1vw}.lp-price .row{grid-template-columns:minmax(0,1fr)!important}.lp-price .pph{grid-column:1;grid-row:auto}.lp-price .row p{font-size:17px}.lp-price .row .act{grid-column:1;justify-items:stretch}.lp-price .row .act .lp-link{justify-self:start}}
 
@@ -4047,13 +4087,14 @@ function render(){
         <p>Each guest taps their link and the card opens with their own name, the nekath, the venue map and a reply form. No app, no printing, no courier.</p>
         <ul><li><b>Their name</b> on the card</li><li><b>One tap</b> to the venue</li><li><b>Replies</b> straight to your WhatsApp</li></ul>
         <a class="lp-hghost" href="#designs">See the card designs</a></div></section>`,
+    gm:()=>lpGM(),
     phead:()=>`<section class="lp-phead" data-f="paper">${lpOrn()}<span class="lp-eb">${LP_PH[PG][0]}</span><h1>${LP_PH[PG][1]}</h1><p>${LP_PH[PG][2]}</p></section>`,
     detail:()=>lpDetail(),
     steps:()=>`<section class="lp-steps g" id="how" data-f="paper">${lpOrn()}<span class="lp-eb">How it works</span><h2>Four steps, <em>ten minutes</em></h2>
       ${lpHow()}
       <div class="st-go">${lpNakath()}</div></section>`
   };
-  const ORDER={home:["hero","feat","steps","real","reviews","bands","cta","foot"],designs:["phead","des","cta","foot"],design:["detail","foot"],create:["phead","make","foot"],pricing:["phead","price","faq","cta","foot"]}[PG]||["hero","foot"];
+  const ORDER={home:["hero","feat","steps","real","gm","reviews","bands","cta","foot"],designs:["phead","des","cta","foot"],design:["detail","foot"],create:["phead","make","foot"],pricing:["phead","price","faq","cta","foot"]}[PG]||["hero","foot"];
   document.getElementById("app").innerHTML = `<div class="lp pg-${PG}">${lpNav()}<main class="lp-main">${ORDER.map(k=>SEC[k]()).join("")}</main></div>`;
   document.body.dataset.pg=PG;
   document.body.classList.remove("has-bar");
@@ -4229,6 +4270,29 @@ function sigCard(){
     <p>Our royal, done-for-you service. Tell us about your day and we look after every card, link and reply.</p>
     <b class="pp">${esc(p.price)} <span>one-time</span></b><button class="lp-btn" data-buy="${esc(p.id)}">Talk to us <span aria-hidden="true">→</span></button></div>
     ${lines.length?`<ul>${lines.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}</article>`;
+}
+/* Home: guest replies + seating plan, drawn in HTML so it stays sharp and matches the real pages (#rsvp, #seating). */
+function lpGM(){
+  const row=(n,st,c,h,m)=>`<li><span><b>${n}</b><small>${m}</small></span><em class="${st}">${c}</em><i>${h}</i></li>`;
+  const ring=(cx,cy,n,on,lbl)=>{ const r=34; return `<div class="gmm-t" style="left:${cx}%;top:${cy}%"><b>${lbl}</b>${Array.from({length:n},(_,i)=>{ const a=-Math.PI/2+i*2*Math.PI/n; return `<i class="${on[i]?"on":""}" style="transform:translate(${(Math.cos(a)*r).toFixed(1)}px,${(Math.sin(a)*r).toFixed(1)}px)">${on[i]||i+1}</i>` }).join("")}</div>` };
+  return `<section class="lp-gm" id="guest-tools" data-f="paper">
+    <div class="gm-hd rv">${lpOrn()}<span class="lp-eb">For the couple</span><h2>Know who is coming. <em>Seat every family.</em></h2>
+      <p>Every reply lands in one live list, and a simple seating plan puts each guest at their table. Guests then see their own table on their invitation.</p></div>
+    <div class="gm-cards">
+      <article class="gm-card rv" style="--d:80ms"><div class="gmm gmm-r" aria-hidden="true">
+        <div class="gmm-k"><div><small>Coming</small><b>21</b><span>of 32 invited</span></div><div><small>Can't come</small><b>1</b><span>reply</span></div><div><small>Pending</small><b>4</b><span>69% replied</span></div></div>
+        <div class="gmm-tabs"><span class="on">Wedding</span><span>Homecoming</span></div>
+        <ul>${row("Kasun Perera","ok","Coming","2 / 2","Can't wait to see you both!")}${row("Chamari Dissanayake","ok","Coming","3 / 3","We'll be there with the kids.")}${row("Nadeesha Silva","ok","Coming","1 / 1","So happy for you!")}${row("Harshi Gunawardena","wait","Pending","– / 2","Reminder sent on WhatsApp")}</ul></div>
+        <h3><b>Live RSVP.</b> See who is coming as guests reply. Head counts and their wishes, all in one place.</h3></article>
+      <article class="gm-card rv" style="--d:160ms"><div class="gmm gmm-s" aria-hidden="true">
+        <div class="gmm-sh"><small>Seating plan</small><b>6 tables · 18/32 seated</b></div>
+        <div class="gmm-hall"><div class="gmm-head" style="left:50%;top:15%"><b>Head table</b>${["KT","KT","","",].map((x,i)=>`<i class="${x?"on":""}" style="left:${12+i*25}%">${x||i+1}</i>`).join("")}</div>
+          ${ring(20,52,8,["MP","MP","MP","","","","",""],"Table 1")}${ring(50,62,8,["CD","CD","CD","","","","",""],"Table 2")}${ring(80,52,8,["AM","AM","","","","","","AM"],"Table 3")}
+          <span class="gmm-tip">Tap a seat to place <b>Nadeesha Silva</b></span></div></div>
+        <h3><b>Table arrangement.</b> Drag tables around the hall, seat every family together, and let guests find their table on the invitation.</h3></article>
+    </div>
+    <div class="gm-act rv"><a class="lp-btn" href="#rsvp">Open my guest list</a><a class="lp-hghost" href="#pricing">See packages</a></div>
+  </section>`;
 }
 function planCards(){
   const ps=livePlans().filter(p=>p.kind!=="signature"); if(!ps.length) return "";

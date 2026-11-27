@@ -246,7 +246,7 @@ export async function init(cfg, hooks = {}) {
   FBX.addReview = r => F.addDoc(F.collection(db, "reviews"), {
     name: String(r.name || "").trim().slice(0, 80), type: String(r.type || "").slice(0, 20),
     rating: Math.max(1, Math.min(5, Math.round(+r.rating || 5))), msg: String(r.msg || "").trim().slice(0, 600),
-    approved: false, created: now() });
+    approved: !!r.approved && !!(FBX.profile && FBX.profile.role === "admin"), created: now() });
   FBX.setReviewApproved = (id, on) => F.updateDoc(F.doc(db, "reviews", id), { approved: !!on });
   FBX.deleteReview = id => F.deleteDoc(F.doc(db, "reviews", id));
 

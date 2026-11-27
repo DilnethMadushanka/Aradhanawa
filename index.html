@@ -1519,23 +1519,6 @@ nav.top a{font-weight:600}
 .lp-ch h2{font-size:var(--s-head)}
 
 /* showcase: headline you can type */
-.lp-try{padding-block:clamp(72px,8vw,120px)!important;display:grid;grid-template-columns:minmax(0,1fr);align-content:center;gap:48px}
-.lp-try .tryh{font-size:var(--s-lead);letter-spacing:-.02em;font-weight:600;margin-bottom:-32px}
-.lp-try .line{display:flex;align-items:center;gap:0;border-bottom:0}
-.lp-try input{flex:1;min-width:0;border:0;background:none;padding:0;font:600 clamp(48px,8vw,132px)/1.05 "Inter Tight","Noto Sans Sinhala",sans-serif;letter-spacing:-.045em;color:var(--l-paper-ink);caret-color:var(--l-maroon);outline:none}
-.lp-try input:focus-visible{box-shadow:0 .08em 0 0 var(--l-accent)}
-.lp-try .grid{display:grid;grid-template-columns:minmax(0,560px) minmax(0,1fr);gap:clamp(24px,5vw,80px);align-items:start}
-.lp-try .ans{display:grid;gap:16px;font-size:var(--s-body)}
-.lp-try .ans .kind{font-size:var(--s-lead);font-weight:600;letter-spacing:-.02em}
-.lp-try .ans .kind span{color:var(--l-paper-soft);font-weight:500}
-.lp-try .msg{background:#E7F7DE;color:#10261A;padding:16px 18px;white-space:pre-wrap;font-size:16px;line-height:1.5;max-height:300px;overflow:auto;border-radius:2px 14px 14px 14px}
-.lp-try .msg b{font-weight:700}
-.lp-try .cardwrap{justify-self:end;width:min(340px,100%)}
-.lp-try .ex{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:center;font-size:17px}
-.lp-try .ex button{background:none;border:0;padding:6px 0;font:inherit;color:var(--l-paper-ink);text-decoration:underline;text-underline-offset:.25em;cursor:pointer}
-.lp-try .ex button:hover{color:var(--l-maroon)}
-.lp-try .go{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
-@media (max-width:820px){.lp-try input{font-size:11vw}.lp-try .grid{grid-template-columns:minmax(0,1fr)}.lp-try .cardwrap{justify-self:center;width:min(300px,86%)}.lp-try .ex{gap:10px}.lp-try .ex button{background:var(--l-tone);padding:0 14px;min-height:44px;text-decoration:none}}
 
 /* how: drag through the stages */
 .lp-how{display:grid;grid-template-columns:1fr 1fr;min-height:88svh;position:relative}
@@ -2195,13 +2178,41 @@ body:has(.lp){background:#fff}
 .rl-txt li::before{content:"";flex:none;width:9px;height:9px;background:#B3852B;transform:rotate(45deg)}
 .rl-txt li b{color:#2A1E12}
 @media (max-width:900px){.lp-real{grid-template-columns:1fr}.rl-ph{padding:7px}}
-/* try */
-.lp-try .tryh{font:italic 600 clamp(22px,2.4vw,30px)/1.1 "Cormorant Garamond",serif;color:#8A6420;letter-spacing:0}
-.lp-try input{font:600 clamp(52px,8.4vw,140px)/1.05 "Cormorant Garamond","Noto Serif Sinhala",Georgia,serif;letter-spacing:-.02em}
-.lp-try .ans .kind{font-family:"Cormorant Garamond","Noto Serif Sinhala",serif;font-size:26px}
-.lp-try .msg{border:1px solid rgba(60,120,60,.18);box-shadow:0 16px 30px -24px rgba(30,70,30,.6)}
-.lp-try .cardwrap .card{box-shadow:0 34px 60px -30px rgba(90,55,15,.65)}
-@media (max-width:820px){.lp-try input{font-size:13vw}}
+/* reviews & feedback */
+.lp-rev{max-width:1280px;margin:0 auto;padding:clamp(56px,7vw,110px) var(--m);text-align:center}
+.lp-rev h2{font-size:clamp(38px,5vw,70px);line-height:1.02}
+.lp-rev .rv-sub{margin:16px auto 0;font-size:18px;line-height:1.55;color:#6E5D48;max-width:52ch}
+.rv-sum{display:inline-flex;align-items:center;gap:12px;margin-top:22px;font-size:16px;color:#4A3B2A}
+.rv-sum b{font:600 34px/1 "Cormorant Garamond",Georgia,serif;color:#2A1E12}
+.rv-stars{display:inline-flex;gap:2px;color:#B3852B;line-height:0}.rv-stars svg{width:18px;height:18px}.rv-stars .off{color:rgba(166,122,31,.28)}
+.rv-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:22px;margin-top:clamp(32px,4vw,52px);text-align:left}
+.rv-card{position:relative;margin:0;padding:28px 26px 22px;background:#FFFBF3;border:1px solid rgba(166,122,31,.45);box-shadow:0 30px 50px -36px rgba(90,55,15,.6);display:flex;flex-direction:column;gap:14px}
+.rv-card::after{content:"";position:absolute;inset:5px;border:1px solid rgba(166,122,31,.25);pointer-events:none}
+.rv-card blockquote{margin:0;font:500 21px/1.4 "Cormorant Garamond","Noto Serif Sinhala",Georgia,serif;color:#2A1E12;white-space:pre-line;overflow-wrap:anywhere}
+.rv-card blockquote::before{content:"\201C";display:block;font:600 54px/.6 "Cormorant Garamond",Georgia,serif;color:#B3852B;margin-bottom:6px}
+.rv-card figcaption{margin-top:auto;display:flex;flex-direction:column;gap:2px;font-size:15px;color:#6E5D48}
+.rv-card figcaption b{color:#2A1E12;font-size:16px}
+.rv-empty{grid-column:1/-1;text-align:center;padding:36px 20px;border:1px dashed rgba(166,122,31,.5);color:#6E5D48;font-size:17px;background:rgba(255,251,243,.6)}
+.rv-more{margin-top:24px}
+.rv-form{margin:clamp(40px,5vw,64px) auto 0;max-width:640px;text-align:left;padding:clamp(22px,3vw,34px);background:#FFFBF3;border:1px solid rgba(166,122,31,.45);display:grid;gap:16px}
+.rv-form h3{font-size:clamp(26px,2.6vw,34px);margin:0;text-align:center}
+.rv-form .rv-note{margin:-8px 0 0;text-align:center;color:#6E5D48;font-size:15px}
+.rv-form label{display:grid;gap:6px;font-size:14px;font-weight:600;color:#4A3B2A}
+.rv-form input,.rv-form select,.rv-form textarea{font:16px/1.4 "Inter Tight","Noto Sans Sinhala",sans-serif;color:#2A1E12;background:#fff;border:1px solid rgba(166,122,31,.45);border-radius:10px;padding:12px 14px;min-height:48px;width:100%;box-sizing:border-box}
+.rv-form textarea{min-height:120px;resize:vertical}
+.rv-form input:focus-visible,.rv-form select:focus-visible,.rv-form textarea:focus-visible{outline:2px solid #B3852B;outline-offset:1px}
+.rv-form .rv-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.rv-form fieldset{border:0;margin:0;padding:0;display:grid;gap:6px}
+.rv-form legend{font-size:14px;font-weight:600;color:#4A3B2A;padding:0;margin-bottom:6px}
+.rv-rate{display:flex;flex-direction:row-reverse;justify-content:flex-end;gap:4px}
+.rv-rate input{position:absolute;opacity:0;width:1px;height:1px}
+.rv-rate label{cursor:pointer;color:rgba(166,122,31,.3);line-height:0;padding:4px}
+.rv-rate label svg{width:30px;height:30px}
+.rv-rate input:checked~label,.rv-rate label:hover,.rv-rate label:hover~label{color:#B3852B}
+.rv-rate input:focus-visible+label{outline:2px solid #B3852B;border-radius:6px}
+.rv-form .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.rv-form .lp-btn{justify-self:center}
+@media (max-width:640px){.rv-form .rv-row{grid-template-columns:1fr}.rv-card blockquote{font-size:19px}}
 /* features with live phone */
 .lp-bands{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,380px);gap:clamp(24px,4vw,64px);align-items:start;padding:clamp(40px,5vw,72px) var(--m)}
 .bd-list{border-top:1px solid rgba(166,122,31,.35)}
@@ -3382,28 +3393,35 @@ function lpNav(){
     <div class="nv-sheet" id="nvSheet" hidden>${nvSheet(u,PG)}</div>
   </header>`;
 }
-const LP_EX = ["Kasun & Tharushi","Senuli turns 5","Perera family dana","Batch reunion party"];
-function lpParse(t){
-  t=String(t||"").trim(); let m;
-  if((m=t.match(/^(.+?)\s*(?:&|\+|and|saha|සහ)\s*(.+?)\s+(?:engagement|engaged)$/i))) return {type:"engagement",ev:{a:m[1].trim(),b:m[2].trim()}};
-  if((m=t.match(/^(.+?)\s*(?:&|\+|and|saha|සහ)\s*(.+)$/i))) return {type:"wedding",ev:{a:m[1].trim(),b:m[2].trim()}};
-  if((m=t.match(/^(.+?)\s+turns?\s+(\d{1,3})/i))) return {type:"birthday",ev:{a:m[1].trim(),age:m[2]}};
-  if((m=t.match(/^(.*?)\s*(?:dana|daana|දානය|pinkama)/i))){ const h=(m[1]||"").trim().replace(/^the\s+/i,""); return {type:"dana",ev:{a:h?"The "+h.replace(/^./,c=>c.toUpperCase()):"",title:"Sanghika Dana"}} }
-  if(/engage|ගිවිස/i.test(t)) return {type:"engagement",ev:{a:"Kasun",b:"Tharushi"}};
-  if(/hall?owe+n|pumpkin|spooky|හැලොවීන්/i.test(t)) return {type:"halloween",ev:{title:t.replace(/^./,c=>c.toUpperCase()),a:""}};
-  if(/party|reunion|night|bash|get.?together/i.test(t)) return {type:"party",ev:{title:t.replace(/^./,c=>c.toUpperCase()),a:""}};
-  if(/homecoming/i.test(t)) return {type:"homecoming",ev:{a:"Kasun",b:"Tharushi"}};
-  return {type:"other",ev:{title:t||"Family Function"}};
+/* Customer reviews & feedback (home page). Visitors write one; it shows after an admin approves it (Admin → Reviews). */
+const RV_STAR=`<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.4l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg>`;
+const rvStars=n=>`<span class="rv-stars" role="img" aria-label="${n} out of 5 stars">${[1,2,3,4,5].map(i=>RV_STAR.replace("<svg",`<svg class="${i<=n?"on":"off"}"`)).join("")}</span>`;
+const rvList=()=>((window.FBX&&FBX.reviews)||[]).filter(r=>r.approved===true).sort((a,b)=>String(b.created||"").localeCompare(String(a.created||"")));
+let rvShow=6;
+function rvFill(){
+  const L=document.getElementById("rvList"); if(!L) return;
+  const list=rvList(), sum=document.getElementById("rvSum");
+  if(sum){ if(list.length){ const avg=list.reduce((a,r)=>a+(+r.rating||0),0)/list.length; sum.hidden=false; sum.innerHTML=`<b>${avg.toFixed(1)}</b>${rvStars(Math.round(avg))}<span>from ${list.length} ${list.length===1?"review":"reviews"}</span>` } else sum.hidden=true }
+  L.innerHTML=list.slice(0,rvShow).map(r=>`<figure class="rv-card">${rvStars(Math.max(1,Math.min(5,+r.rating||5)))}<blockquote>${esc(r.msg)}</blockquote>
+    <figcaption><b>${esc(r.name)}</b><span>${esc((TYPES[r.type]||{}).name||"Aradhanawa customer")}${r.created?" · "+esc(new Date(r.created).toLocaleDateString("en-GB",{month:"short",year:"numeric"})):""}</span></figcaption></figure>`).join("")
+    || `<p class="rv-empty">No reviews yet. Made an invitation with us? Be the first to tell other families how it went.</p>`;
+  const M=document.getElementById("rvMore"); if(M) M.hidden=list.length<=rvShow;
 }
-function lpTry(){
-  const inp=document.getElementById("tryIn"); if(!inp) return;
-  const r=lpParse(inp.value), T=TYPES[r.type], ev={...T.sample,...r.ev};
-  const lang=S.lang==="si"?"si":S.lang;
-  document.getElementById("tryKind").innerHTML=`${T.name} <span>· ${esc(T.si)}</span>`;
-  document.getElementById("tryMsg").innerHTML=waHTML(waMessage(r.type,ev,lang,"Nimal Uncle","https://aradhanawa.com/…"));
-  const pr=(PREMIUM[r.type]||[]).find(t=>/-card$/.test(t.img||"")); /* show a themed design, not the plain card */
-  document.getElementById("tryCard").innerHTML=cardHTML(r.type,ev,lang==="si"?"si":"en","Nimal Uncle",pr?{...pr,_noribbon:1}:null);
-  inp.dataset.type=r.type; inp._ev=r.ev;
+function rvBind(){
+  const F=document.getElementById("rvForm"); if(!F) return;
+  rvFill();
+  const M=document.getElementById("rvMore"); if(M) M.onclick=()=>{ rvShow+=6; rvFill() };
+  F.onsubmit=e=>{ e.preventDefault();
+    const el=F.elements, name=el.name.value.trim(), msg=el.msg.value.trim(), rating=+((F.querySelector('input[name="rating"]:checked')||{}).value||0);
+    if(el.website.value) return;                       // spam bots fill the hidden field
+    if(!name) return toast("Please add your name"), el.name.focus();
+    if(!rating) return toast("Please pick a star rating");
+    if(msg.length<10) return toast("Please write a few words about your experience"), el.msg.focus();
+    if(!FB_ON()||!window.FBX||!FBX.addReview) return toast("Reviews can't be saved right now. Please message us on WhatsApp.");
+    const last=+store.get("rvSent",0); if(Date.now()-last<10*60e3) return toast("Thank you! We already have your review.");
+    const btn=F.querySelector("button[type=submit]"); btn.disabled=true;
+    FBX.addReview({name,msg,rating,type:el.type.value}).then(()=>{ store.set("rvSent",Date.now()); F.reset(); toast("Thank you! Your review will appear here once our team checks it.") },e=>{ console.warn("[reviews]",e); toast("Couldn't send your review. Please try again.") }).finally(()=>{ btn.disabled=false });
+  };
 }
 const LP_STAGES=[
   ["Pick","First, pick the function."],
@@ -3522,15 +3540,21 @@ function render(){
   document.documentElement.classList.add("js");
   const SEC={
     hero:()=>lpHero(),
-    try:()=>`<section class="lp-ch lp-paper g lp-try" data-f="paper" id="try">
-    <h2 class="tryh rv"><label for="tryIn">Try it with your names</label></h2>
-    <div class="line rv" data-ui><input id="tryIn" value="Kasun &amp; Tharushi" autocomplete="off" spellcheck="false" aria-describedby="tryHelp"></div>
-    <div class="grid">
-      <div class="ans rv" style="--d:80ms"><p class="kind" id="tryKind"></p><div class="msg" id="tryMsg" data-ui aria-live="polite"></div>
-        <div class="go"><button class="lp-btn dark" id="tryGo">Make this invitation</button><span id="tryHelp">Type two names, or try one of these:</span></div>
-        <div class="ex">${LP_EX.map(x=>`<button type="button" data-ex="${esc(x)}">${esc(x)}</button>`).join("")}</div></div>
-      <div class="cardwrap rv" style="--d:160ms" id="tryCard" data-ui></div>
-    </div>
+    reviews:()=>`<section class="lp-rev" id="reviews" data-f="paper">
+    ${lpOrn()}<span class="lp-eb rv">Reviews &amp; feedback</span><h2 class="rv">What families <em>say about us</em></h2>
+    <p class="rv-sub rv" style="--d:80ms">Real words from couples and families who sent their invitations with Aradhanawa.</p>
+    <div class="rv-sum" id="rvSum" hidden></div>
+    <div class="rv-list" id="rvList" aria-live="polite"></div>
+    <button type="button" class="lp-hghost rv-more" id="rvMore" hidden style="background:none;border-left:0;border-right:0;border-top:0;cursor:pointer;font:inherit;font-weight:600">Show more reviews</button>
+    <form class="rv-form rv" id="rvForm" novalidate>
+      <h3>Share your feedback</h3><p class="rv-note">Your review shows here after our team checks it.</p>
+      <div class="rv-row"><label>Your name<input name="name" maxlength="80" autocomplete="name" required placeholder="Kasun & Tharushi"></label>
+        <label>Function<select name="type">${Object.entries(TYPES).map(([k,t])=>`<option value="${k}">${t.name}</option>`).join("")}</select></label></div>
+      <fieldset><legend>Your rating</legend><div class="rv-rate">${[5,4,3,2,1].map(n=>`<input type="radio" name="rating" id="rvr${n}" value="${n}"><label for="rvr${n}" title="${n} star${n>1?"s":""}"><span class="sr">${n} star${n>1?"s":""}</span>${RV_STAR}</label>`).join("")}</div></fieldset>
+      <label>Your review<textarea name="msg" maxlength="600" required placeholder="How did your guests like the invitation?"></textarea></label>
+      <label class="hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>
+      <button class="lp-btn dark" type="submit">Send review</button>
+    </form>
   </section>
 `,
     how:()=>`<section class="lp-how" id="how" data-f="dark">
@@ -3678,7 +3702,7 @@ function render(){
       ${lpHow()}
       <div class="st-go">${lpNakath()}</div></section>`
   };
-  const ORDER={home:["hero","feat","steps","real","try","bands","cta","foot"],designs:["phead","des","cta","foot"],design:["detail","foot"],create:["phead","make","foot"],pricing:["phead","price","faq","cta","foot"]}[PG]||["hero","foot"];
+  const ORDER={home:["hero","feat","steps","real","reviews","bands","cta","foot"],designs:["phead","des","cta","foot"],design:["detail","foot"],create:["phead","make","foot"],pricing:["phead","price","faq","cta","foot"]}[PG]||["hero","foot"];
   document.getElementById("app").innerHTML = `<div class="lp pg-${PG}">${lpNav()}<main class="lp-main">${ORDER.map(k=>SEC[k]()).join("")}</main></div>`;
   document.body.dataset.pg=PG;
   document.body.classList.remove("has-bar");
@@ -3686,9 +3710,7 @@ function render(){
 }
 function lpBind(){
   const $=s=>document.querySelector(s);
-  const inp=$("#tryIn"); if(inp){ lpTry(); inp.addEventListener("input",lpTry);
-  document.querySelectorAll("[data-ex]").forEach(b=>b.onclick=()=>{ inp.value=b.dataset.ex; lpTry(); inp.focus() });
-  $("#tryGo").onclick=()=>{ const t=inp.dataset.type; S.type=t; S.ev[t]={...TYPES[t].sample,...S.ev[t],...inp._ev}; S.edited[t]=true; S.tpl[t]=hasTh(t)?1:0; save(); location.hash="#create" }; }
+  rvBind();
   const R=$("#howR"); const set=i=>{ i=+i; R.value=i; R.setAttribute("aria-valuetext",LP_STAGES[i][0]); R.parentElement.style.setProperty("--p",(i/3*100)+"%");
     const H=$("#howH"), F=$("#howF"); H.style.opacity=F.style.opacity=0; setTimeout(()=>{ H.textContent=LP_STAGES[i][1]; F.innerHTML=lpFrag(i); H.style.opacity=F.style.opacity=1 },200);
     document.querySelectorAll("[data-st]").forEach(b=>b.setAttribute("aria-current",String(+b.dataset.st===i))) };
@@ -4532,7 +4554,7 @@ const PROMPTS = [
    With a config in firebase-config.js: Firebase Auth (Google + email) and Firestore (fb.js).
    Without one: demo mode, everything is kept in this browser's localStorage. */
 function FB_ON(){ return !!(window.ARADHANA_FIREBASE && window.ARADHANA_FIREBASE.config) }
-const FBD = () => (window.FBX && FBX.data) || {users:[],orders:[],invitations:[],rsvps:[],admins:[]};
+const FBD = () => (window.FBX && FBX.data) || {users:[],orders:[],invitations:[],rsvps:[],admins:[],reviews:[]};
 const DB = {
   users(){ return FB_ON() ? FBD().users.map(u=>{ const adm=!!(window.FBX&&FBX.isAdminEmail(u.email)); return {...u,role:adm?"admin":"user",plan:adm?"Staff":(u.plan||"Free"),created:u.created||""} }) : store.get("users",[]) },
   setUsers(v){ store.set("users",v) },
@@ -4836,6 +4858,7 @@ const AI = {
   out:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4M10 17l5-5-5-5M15 12H3"/></svg>`,
   mail:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14"/><path d="M3 6l9 7 9-7"/></svg>`,
   check:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12.5l5 5L20 6.5"/></svg>`,
+  star:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.8-4.5 4.2 1.2 6.1L12 16.8l-5.5 2.9 1.2-6.1-4.5-4.2 6.1-.8z"/></svg>`,
 };
 const fdt = s => { try{ return new Date(s).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"}) }catch(e){ return "" } };
 const stBadge = s => `<span class="badge ${s==="Done"?"ok":s==="In progress"||s==="Awaiting payment"?"warn":s==="New"?"new":""}">${esc(s)}</span>`;
@@ -4847,7 +4870,7 @@ function renderAdmin(tab,arg){
   const u=me();
   if(!u){ store.set("next","#admin"+(tab?"/"+tab:"")); location.replace("#login"); return }
   if(u.role!=="admin"){ store.set("next",""); location.replace("#account"); toast("That page is for admins only"); return }
-  const TABS=[["overview",AI.chart,"Overview"],["users",AI.users,"Users"],["orders",AI.bag,"Orders"],["invitations",AI.mail,"Invitations"],["rsvps",AI.check,"RSVPs"],["templates",AI.grid,"Templates"],["prices",AI.bag,"Prices"],["prompts",AI.grid,"Image prompts"],["settings",AI.gear,"Settings"]];
+  const TABS=[["overview",AI.chart,"Overview"],["users",AI.users,"Users"],["orders",AI.bag,"Orders"],["invitations",AI.mail,"Invitations"],["rsvps",AI.check,"RSVPs"],["reviews",AI.star,"Reviews"],["templates",AI.grid,"Templates"],["prices",AI.bag,"Prices"],["prompts",AI.grid,"Image prompts"],["settings",AI.gear,"Settings"]];
   tab = TABS.some(t=>t[0]===tab) ? tab : "overview";
   const users=DB.users(), orders=DB.orders(), off=tplOff(), invs=DB.invitations(), rsvps=DB.rsvps(), fb=FB_ON();
   const typeName=t=>(TYPES[t]||TYPES.other).name, coming=list=>list.filter(r=>r.coming).reduce((a,r)=>a+(+r.count||0),0);
@@ -4917,6 +4940,17 @@ function renderAdmin(tab,arg){
         <td><b>${esc(r.event||typeName(r.type))}</b><small>${esc(typeName(r.type))}</small></td>
         <td>${r.coming?`<span class="badge ok">Coming · ${+r.count||1}</span>`:`<span class="badge new">Can't come</span>`}</td>
         <td class="wrap">${esc(r.msg||"")}</td><td>${fdt(r.created)}</td><td><div class="acts"><button class="btn sm" data-rdel="${esc(r.id)}">Delete</button></div></td></tr>`).join("")||`<tr><td colspan="6" class="empty">${fb?"No replies yet.":"RSVPs are saved once Firebase is connected."}</td></tr>`}
+    </tbody></table></div></div>`;
+  }
+  if(tab==="reviews"){
+    const all=FBD().reviews||[], wait=all.filter(r=>!r.approved);
+    body=`<div class="mh"><div><span class="eyebrow">Admin</span><h1>Reviews</h1><p>Feedback sent from the home page. A review shows on the site only after you approve it.</p></div>
+      <div class="kpis" style="grid-template-columns:repeat(3,minmax(110px,1fr));min-width:min(100%,420px)"><div class="kpi"><small>Waiting</small><b>${wait.length}</b></div><div class="kpi"><small>On the site</small><b>${all.length-wait.length}</b></div><div class="kpi"><small>Average</small><b>${all.length?(all.reduce((a,r)=>a+(+r.rating||0),0)/all.length).toFixed(1):"-"}</b></div></div></div>
+    <div class="box"><div class="tblwrap"><table class="tbl"><thead><tr><th>Customer</th><th>Rating</th><th>Review</th><th>Status</th><th>Date</th><th></th></tr></thead><tbody>
+      ${[...wait,...all.filter(r=>r.approved)].map(r=>`<tr><td><b>${esc(r.name)}</b><small>${esc(typeName(r.type))}</small></td><td>${"★".repeat(+r.rating||0)}${"☆".repeat(5-(+r.rating||0))}</td>
+        <td class="wrap">${esc(r.msg)}</td><td>${r.approved?`<span class="badge ok">On site</span>`:`<span class="badge new">Waiting</span>`}</td><td>${fdt(r.created)}</td>
+        <td><div class="acts"><button class="btn sm ${r.approved?"":"primary"}" data-rvok="${esc(r.id)}" data-on="${r.approved?0:1}">${r.approved?"Hide":"Approve"}</button><button class="btn sm" data-rvdel="${esc(r.id)}">Delete</button></div></td></tr>`).join("")
+        ||`<tr><td colspan="6" class="empty">${fb?"No reviews yet. They appear here when someone sends feedback from the home page.":"Reviews are saved once Firebase is connected."}</td></tr>`}
     </tbody></table></div></div>`;
   }
   if(tab==="templates"){
@@ -5002,6 +5036,9 @@ function renderAdmin(tab,arg){
     if(b.dataset.idel&&fbNeed()){ const id=b.dataset.idel; modal(`<span class="eyebrow">Delete invitation</span><h3>Delete this invitation?</h3><p>The customer's saved copy in their account is removed. Guest links already sent keep working.</p><div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><button class="btn primary" id="cdel">Delete</button></div>`);
       document.getElementById("cdel").onclick=()=>{ document.getElementById("layer").innerHTML=""; FBX.deleteInvite(id).then(()=>toast("Invitation deleted"),fbFail) } }
     if(b.dataset.rdel&&fbNeed()){ FBX.deleteRsvp(b.dataset.rdel).then(()=>toast("Reply deleted"),fbFail) }
+    if(b.dataset.rvok&&fbNeed()){ const on=b.dataset.on==="1"; FBX.setReviewApproved(b.dataset.rvok,on).then(()=>toast(on?"Review is now on the site":"Review hidden from the site"),fbFail) }
+    if(b.dataset.rvdel&&fbNeed()){ const id=b.dataset.rvdel; modal(`<span class="eyebrow">Delete review</span><h3>Delete this review?</h3><p>It is removed for good. To take it off the site for now, use Hide instead.</p><div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><button class="btn primary" id="cdel">Delete</button></div>`);
+      document.getElementById("cdel").onclick=()=>{ document.getElementById("layer").innerHTML=""; FBX.deleteReview(id).then(()=>toast("Review deleted"),fbFail) } }
     if(b.dataset.udel){ const x=DB.users().find(y=>y.id===b.dataset.udel); if(!x) return;
       modal(`<span class="eyebrow">Delete user</span><h3>Delete ${esc(x.name)}?</h3><p>This removes the account from this browser. Their orders stay in the list.</p><div class="row" style="justify-content:flex-end"><button class="btn" data-x>Cancel</button><button class="btn primary" id="cdel">Delete</button></div>`);
       document.getElementById("cdel").onclick=()=>{ document.getElementById("layer").innerHTML=""; if(fb){ if(fbNeed()) FBX.deleteUser(x.id).then(()=>toast("User profile deleted. Remove their sign-in in Firebase → Authentication too."),fbFail); return } DB.setUsers(DB.users().filter(y=>y.id!==x.id)); toast("User deleted"); re() } }
@@ -5136,6 +5173,7 @@ let fbT=0, fbDirty=false;
 function fbApplySettings(){ const st=(window.FBX&&FBX.settings)||{}; if(st.config){ store.set("config",st.config); Object.assign(CONFIG,st.config) } if(Array.isArray(st.tplOff)) store.set("tplOff",st.tplOff) }
 function fbChanged(why){
   if(why==="settings"){ fbApplySettings(); lxRefresh(); return }
+  if(why==="reviews"){ rvFill(); if(!/^#admin\/reviews/.test(location.hash)) return }
   const h=location.hash||"", pg=h.slice(1).split("/")[0];
   if(isGuestHash(h)) return;
   if(why==="auth"){ fbSyncGalleries(); if(["login","register","admin","account","create"].includes(pg)) route(); else render(); return }

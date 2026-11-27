@@ -14,6 +14,8 @@
  *   rsvps/{id}             inviteId, ownerUid, type, event, guest, name, coming, count, msg, created
  *   plus/{uid_type}        uid, type, orderId, updated   (Plus for one function; written by api/pay/* or an admin;
  *                          firestore.rules reads it to let that invitation hold more than FREE_GUESTS guests)
+ *   reviews/{id}           name, type, rating 1-5, msg, approved, created   (home page reviews; anyone may write one with
+ *                          approved false, only approved ones are public, admins approve or delete)
  *   settings/site          config {FREE_GUESTS, STUDIO_WA, PRICE_PLUS, PRICE_CUSTOM, PLANS [{id, kind, name, price, details, on}], MUSIC, MUSIC_*,
  *                          MUSIC_LIBRARY [{name, url, added}] (MP3s in Cloudflare R2), DESIGN_MUSIC {design name: url}}, tplOff []
  */
@@ -37,8 +39,9 @@ export async function init(cfg, hooks = {}) {
     on: true,
     user: null,
     profile: null,
-    data: { users: [], orders: [], invitations: [], rsvps: [], admins: [], plus: [] },
+    data: { users: [], orders: [], invitations: [], rsvps: [], admins: [], plus: [], reviews: [] },
     settings: null,
+    reviews: [],   // approved reviews, public (home page)
   };
 
   /* ---------- live listeners ---------- */
@@ -50,6 +53,10 @@ export async function init(cfg, hooks = {}) {
 
   // Site settings are public: prices, WhatsApp number and hidden templates apply to every visitor.
   F.onSnapshot(F.doc(db, "settings", "site"), s => { FBX.settings = s.exists() ? s.data() : {}; changed("settings") }, e => console.warn("[fb] settings", e.code || e));
+
+  // Approved customer reviews are public: the home page shows them to every visitor.
+  F.onSnapshot(F.query(F.collection(db, "reviews"), F.where("approved", "==", true)),
+    s => { FBX.reviews = s.docs.map(d => ({ id: d.id, ...d.data() })); changed("reviews") }, e => console.warn("[fb] reviews", e.code || e));
 
   async function isAdmin(u) {
     const em = (u.email || "").toLowerCase();
@@ -86,6 +93,7 @@ export async function init(cfg, hooks = {}) {
       listen("rsvps", F.collection(db, "rsvps"));
       listen("admins", F.collection(db, "admins"));
       listen("plus", F.collection(db, "plus"));
+      listen("reviews", F.collection(db, "reviews"));
     } else {
       listen("orders", F.query(F.collection(db, "orders"), F.where("uid", "==", u.uid)));
       listen("invitations", F.query(F.collection(db, "invitations"), F.where("uid", "==", u.uid)));
@@ -99,7 +107,7 @@ export async function init(cfg, hooks = {}) {
     A.onAuthStateChanged(auth, async u => {
       FBX.user = u;
       FBX.profile = u ? await loadProfile(u) : null;
-      FBX.data = { users: [], orders: [], invitations: [], rsvps: [], admins: [], plus: [] };
+      FBX.data = { users: [], orders: [], invitations: [], rsvps: [], admins: [], plus: [], reviews: [] };
       if (u) startListeners(u, FBX.profile.role === "admin"); else stop();
       if (first) { first = false; res(FBX) } else changed("auth");
     });
@@ -235,6 +243,12 @@ export async function init(cfg, hooks = {}) {
     name: String(r.name || "").slice(0, 120), coming: !!r.coming, count: Math.max(0, Math.min(20, +r.count || 0)),
     msg: String(r.msg || "").slice(0, 1000), created: now() });
   FBX.deleteRsvp = id => F.deleteDoc(F.doc(db, "rsvps", id));
+  FBX.addReview = r => F.addDoc(F.collection(db, "reviews"), {
+    name: String(r.name || "").trim().slice(0, 80), type: String(r.type || "").slice(0, 20),
+    rating: Math.max(1, Math.min(5, Math.round(+r.rating || 5))), msg: String(r.msg || "").trim().slice(0, 600),
+    approved: false, created: now() });
+  FBX.setReviewApproved = (id, on) => F.updateDoc(F.doc(db, "reviews", id), { approved: !!on });
+  FBX.deleteReview = id => F.deleteDoc(F.doc(db, "reviews", id));
 
   window.FBX = FBX;
   return ready;

@@ -2185,15 +2185,21 @@ body:has(.lp){background:#fff}
 .rv-sum{display:inline-flex;align-items:center;gap:12px;margin-top:22px;font-size:16px;color:#4A3B2A}
 .rv-sum b{font:600 34px/1 "Cormorant Garamond",Georgia,serif;color:#2A1E12}
 .rv-stars{display:inline-flex;gap:2px;color:#B3852B;line-height:0}.rv-stars svg{width:18px;height:18px}.rv-stars .off{color:rgba(166,122,31,.28)}
-.rv-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:22px;margin-top:clamp(32px,4vw,52px);text-align:left}
+.rv-list{margin:clamp(32px,4vw,52px) calc(-1*var(--m)) 0;display:grid;gap:20px;text-align:left;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.rv-row{display:flex;gap:20px;width:max-content;animation:rv-slide var(--t,60s) linear infinite;padding-block:4px 24px}
+.rv-row.rev{animation-direction:reverse}
+.rv-list:hover .rv-row,.rv-list:focus-within .rv-row,.rv-list.hold .rv-row{animation-play-state:paused}
+.rv-row .rv-card{flex:none;width:min(78vw,360px)}
+.rv-row .rv-card blockquote{display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden}
+@keyframes rv-slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.rv-list{overflow-x:auto;-webkit-mask-image:none;mask-image:none;padding-inline:var(--m)}.rv-row{animation:none}.rv-row [aria-hidden]{display:none}}
 .rv-card{position:relative;margin:0;padding:28px 26px 22px;background:#FFFBF3;border:1px solid rgba(166,122,31,.45);box-shadow:0 30px 50px -36px rgba(90,55,15,.6);display:flex;flex-direction:column;gap:14px}
 .rv-card::after{content:"";position:absolute;inset:5px;border:1px solid rgba(166,122,31,.25);pointer-events:none}
 .rv-card blockquote{margin:0;font:500 21px/1.4 "Cormorant Garamond","Noto Serif Sinhala",Georgia,serif;color:#2A1E12;white-space:pre-line;overflow-wrap:anywhere}
 .rv-card blockquote::before{content:"\201C";display:block;font:600 54px/.6 "Cormorant Garamond",Georgia,serif;color:#B3852B;margin-bottom:6px}
 .rv-card figcaption{margin-top:auto;display:flex;flex-direction:column;gap:2px;font-size:15px;color:#6E5D48}
 .rv-card figcaption b{color:#2A1E12;font-size:16px}
-.rv-empty{grid-column:1/-1;text-align:center;padding:36px 20px;border:1px dashed rgba(166,122,31,.5);color:#6E5D48;font-size:17px;background:rgba(255,251,243,.6)}
-.rv-more{margin-top:24px}
+.rv-empty{margin-inline:var(--m);text-align:center;padding:36px 20px;border:1px dashed rgba(166,122,31,.5);color:#6E5D48;font-size:17px;background:rgba(255,251,243,.6)}
 .rv-form{margin:clamp(40px,5vw,64px) auto 0;max-width:640px;text-align:left;padding:clamp(22px,3vw,34px);background:#FFFBF3;border:1px solid rgba(166,122,31,.45);display:grid;gap:16px}
 .rv-form h3{font-size:clamp(26px,2.6vw,34px);margin:0;text-align:center}
 .rv-form .rv-note{margin:-8px 0 0;text-align:center;color:#6E5D48;font-size:15px}
@@ -3397,20 +3403,22 @@ function lpNav(){
 const RV_STAR=`<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.6l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.4l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg>`;
 const rvStars=n=>`<span class="rv-stars" role="img" aria-label="${n} out of 5 stars">${[1,2,3,4,5].map(i=>RV_STAR.replace("<svg",`<svg class="${i<=n?"on":"off"}"`)).join("")}</span>`;
 const rvList=()=>((window.FBX&&FBX.reviews)||[]).filter(r=>r.approved===true).sort((a,b)=>String(b.created||"").localeCompare(String(a.created||"")));
-let rvShow=6;
 function rvFill(){
   const L=document.getElementById("rvList"); if(!L) return;
   const list=rvList(), sum=document.getElementById("rvSum");
   if(sum){ if(list.length){ const avg=list.reduce((a,r)=>a+(+r.rating||0),0)/list.length; sum.hidden=false; sum.innerHTML=`<b>${avg.toFixed(1)}</b>${rvStars(Math.round(avg))}<span>from ${list.length} ${list.length===1?"review":"reviews"}</span>` } else sum.hidden=true }
-  L.innerHTML=list.slice(0,rvShow).map(r=>`<figure class="rv-card">${rvStars(Math.max(1,Math.min(5,+r.rating||5)))}<blockquote>${esc(r.msg)}</blockquote>
-    <figcaption><b>${esc(r.name)}</b><span>${esc((TYPES[r.type]||{}).name||"Aradhanawa customer")}${r.created?" · "+esc(new Date(r.created).toLocaleDateString("en-GB",{month:"short",year:"numeric"})):""}</span></figcaption></figure>`).join("")
-    || `<p class="rv-empty">No reviews yet. Made an invitation with us? Be the first to tell other families how it went.</p>`;
-  const M=document.getElementById("rvMore"); if(M) M.hidden=list.length<=rvShow;
+  const card=(r,dup)=>`<figure class="rv-card"${dup?' aria-hidden="true"':""}>${rvStars(Math.max(1,Math.min(5,+r.rating||5)))}<blockquote>${esc(r.msg)}</blockquote>
+    <figcaption><b>${esc(r.name)}</b><span>${esc((TYPES[r.type]||{}).name||"Aradhanawa customer")}${r.created?" · "+esc(new Date(r.created).toLocaleDateString("en-GB",{month:"short",year:"numeric"})):""}</span></figcaption></figure>`;
+  if(!list.length){ L.innerHTML=`<p class="rv-empty">No reviews yet. Made an invitation with us? Be the first to tell other families how it went.</p>`; return }
+  /* Two rows sliding sideways in opposite directions. Each row is its cards twice over, so moving it by half loops without a jump. */
+  const rows=list.length<6?[list,[...list.slice(Math.ceil(list.length/2)),...list.slice(0,Math.ceil(list.length/2))]]:[list.filter((_,i)=>i%2===0),list.filter((_,i)=>i%2===1)];
+  L.innerHTML=rows.map((row,k)=>{ let set=[...row]; while(set.length<5) set=set.concat(row);   // enough cards to fill a wide screen
+    return `<div class="rv-row${k?" rev":""}" style="--t:${set.length*9}s">${set.map(r=>card(r)).join("")}${set.map(r=>card(r,1)).join("")}</div>` }).join("");
 }
 function rvBind(){
   const F=document.getElementById("rvForm"); if(!F) return;
   rvFill();
-  const M=document.getElementById("rvMore"); if(M) M.onclick=()=>{ rvShow+=6; rvFill() };
+  const L=document.getElementById("rvList"); if(L){ L.addEventListener("touchstart",()=>L.classList.add("hold"),{passive:true}); L.addEventListener("touchend",()=>setTimeout(()=>L.classList.remove("hold"),1500),{passive:true}) }
   F.onsubmit=e=>{ e.preventDefault();
     const el=F.elements, name=el.name.value.trim(), msg=el.msg.value.trim(), rating=+((F.querySelector('input[name="rating"]:checked')||{}).value||0);
     if(el.website.value) return;                       // spam bots fill the hidden field
@@ -3545,7 +3553,6 @@ function render(){
     <p class="rv-sub rv" style="--d:80ms">Real words from couples and families who sent their invitations with Aradhanawa.</p>
     <div class="rv-sum" id="rvSum" hidden></div>
     <div class="rv-list" id="rvList" aria-live="polite"></div>
-    <button type="button" class="lp-hghost rv-more" id="rvMore" hidden style="background:none;border-left:0;border-right:0;border-top:0;cursor:pointer;font:inherit;font-weight:600">Show more reviews</button>
     <form class="rv-form rv" id="rvForm" novalidate>
       <h3>Share your feedback</h3><p class="rv-note">Your review shows here after our team checks it.</p>
       <div class="rv-row"><label>Your name<input name="name" maxlength="80" autocomplete="name" required placeholder="Kasun & Tharushi"></label>

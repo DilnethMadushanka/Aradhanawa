@@ -2377,6 +2377,31 @@ input:not(.site *),select:not(.site *),textarea:not(.site *){font-family:var(--t
   .ft-links{gap:24px 16px}
   .ft-bar{padding-bottom:150px;font-size:13px}
 }
+/* ===== Make-an-invitation button v3: royal scroll (mj2-) ===== */
+.lp-mj.mj2{width:38em;height:15.4em;filter:drop-shadow(0 1.2em 1.2em rgba(110,70,20,.18))}
+.mj2-art{position:absolute;left:0;top:0;width:38em;height:14em;overflow:visible}
+.mj2-glow{animation:mj2glow 3.6s ease-in-out infinite alternate}
+.mj2-tas{transform-box:fill-box;transform-origin:50% 0;animation:mjtas 2.8s ease-in-out infinite alternate}
+.mj2-art > g:last-of-type .mj2-tas{animation-delay:-1.4s}
+.mj2-btn{position:absolute;left:50%;top:9.2em;transform:translateX(-50%);display:flex;align-items:center;gap:1em;min-width:27em;height:5.4em;padding:0 .7em 0 1.5em;white-space:nowrap;border-radius:3em;overflow:hidden;
+  background:linear-gradient(180deg,#FFFEF9 0%,#FFF7E2 45%,#F6E4B6 80%,#EBCF8C 100%);
+  box-shadow:inset 0 0 0 .14em #CFA556,inset 0 0 0 .32em #FFFBEF,inset 0 0 0 .42em rgba(201,153,58,.45),0 .4em 0 #C29447,0 1em 1.8em -.5em rgba(120,80,20,.5);transition:box-shadow .3s,transform .2s}
+.mj2-ic{flex:none;width:2.4em;height:2.4em;color:#6E1414}
+.mj2-dv{flex:none;width:1px;height:2.8em;background:linear-gradient(180deg,transparent,#B88A2E,transparent)}
+.mj2-tx{flex:1;display:grid;gap:.15em;text-align:left}
+.mj2-tx b{font:700 2.4em/1 "Cormorant Garamond","Noto Serif Sinhala",Georgia,serif;letter-spacing:.005em;color:#4A0F0F}
+.mj2-tx small{font:600 1.15em/1.1 "Noto Sans Sinhala",sans-serif;color:#8A6420;letter-spacing:0}
+.mj2-go{flex:none;display:grid;place-items:center;width:3.6em;height:3.6em;margin-left:.6em;border-radius:50%;color:#FFF3D6;background:radial-gradient(circle at 35% 30%,#A8302A,#6E1414 60%,#4A0B0B);box-shadow:inset 0 .12em 0 rgba(255,200,180,.35),0 .2em .4em rgba(70,10,10,.35);transition:transform .25s}
+.mj2-go svg{width:1.7em;height:1.7em}
+.mj2-sh{position:absolute;inset:0;pointer-events:none;border-radius:inherit;overflow:hidden}
+.mj2-sh::before{content:"";position:absolute;top:0;bottom:0;width:26%;left:-40%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.75),transparent);animation:mjshine 4.2s ease-in-out infinite}
+.lp-mj.mj2:hover{transform:translateY(-.4em)}
+.lp-mj.mj2:hover .mj2-btn{box-shadow:inset 0 0 0 .14em #CFA556,inset 0 0 0 .32em #FFFBEF,inset 0 0 0 .42em rgba(201,153,58,.45),0 .4em 0 #C29447,0 0 2.2em rgba(255,210,110,.9)}
+.lp-mj.mj2:hover .mj2-go{transform:translateX(.25em)}
+.lp-mj.mj2:active .mj2-btn{transform:translateX(-50%) translateY(.3em);box-shadow:inset 0 0 0 .14em #CFA556,inset 0 0 0 .32em #FFFBEF,inset 0 0 0 .42em rgba(201,153,58,.45),0 .1em 0 #C29447,0 .3em .6em rgba(120,80,20,.35)}
+@media (max-width:700px){.lp-mj.mj2.md,.lp-mj.mj2.lg{--u:min(9.4px,calc((100vw - 32px) / 38))}}
+@keyframes mj2glow{from{opacity:.55}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){.mj2-glow,.mj2-tas,.mj2-sh::before{animation:none}}
 </style>
 </head><body>
 <link rel="stylesheet" href="loader.css"><div id="aw-loader" role="status" aria-live="polite" aria-label="Aradhanawa loading"><div class="aw-ld-frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="aw-ld-box"><svg class="aw-ld-lotus" viewBox="0 0 120 84" aria-hidden="true"><defs><linearGradient id="aw-ld-gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBF1DC"/><stop offset=".55" stop-color="#EBD3A0"/><stop offset="1" stop-color="#C9A25E"/></linearGradient><radialGradient id="aw-ld-halo"><stop offset="0" stop-color="#F3DFB2" stop-opacity=".9"/><stop offset="1" stop-color="#F3DFB2" stop-opacity="0"/></radialGradient></defs><circle class="aw-ld-glow" cx="60" cy="46" r="40"/><circle class="aw-ld-dot" cx="38" cy="14" r="1.3"/><circle class="aw-ld-dot" cx="84" cy="10" r="1"/><circle class="aw-ld-dot" cx="96" cy="26" r="1.2"/><ellipse class="aw-ld-water" cx="60" cy="65.8" rx="49.7" ry="6.8"/><path class="aw-ld-p l2" d="M60 64C39.1 66.2 19.5 53 10.3 31C22.6 28.8 34.5 31.4 42.4 37.6Z"/><path class="aw-ld-p r2" d="M60 64C80.9 66.2 100.5 53 109.7 31C97.4 28.8 85.5 31.4 77.6 37.6Z"/><path class="aw-ld-p l1" d="M60 64C41.5 59.6 28.8 38.5 31 12.1C42.4 16 52.1 24 57.4 33.2Z"/><path class="aw-ld-p r1" d="M60 64C78.5 59.6 91.2 38.5 89 12.1C77.6 16 67.9 24 62.6 33.2Z"/><path class="aw-ld-p c" d="M60 64C45 50.8 43.3 24.4 60 4.6C76.7 24.4 75 50.8 60 64Z"/></svg><p class="aw-ld-name">Aradhanawa</p><div class="aw-ld-si" lang="si">ආරාධනාව</div><div class="aw-ld-rule" aria-hidden="true"><span></span><b></b><span></span></div><div class="aw-ld-tag">Digital invitations</div></div><div class="aw-ld-bar" aria-hidden="true"><i></i></div></div><script src="loader.js" defer></script>
@@ -3422,10 +3447,31 @@ function lpOrn(){ return `<div class="lp-orn" aria-hidden="true"><i></i><svg vie
 function lpNakath(size,o={}){
   const tag=o.tag||"a", si=o.si||"ආරාධනාවක් සාදන්න", en=o.en||"Make an invitation", at=o.attrs||(tag==="a"?'href="#create"':'type="button"');
   if(size==="sm") return `<${tag} class="lp-mj sm" ${at}><span class="mj-roll"><i class="cap l"></i><i class="cap r"></i><b>${si}</b><span class="mj-shine"></span></span></${tag}>`;
-  const sun=`<span class="mj-sun"><i class="rays"></i><i class="face"></i></span>`;
-  return `<${tag} class="lp-mj ${size||"md"}" ${at} aria-label="${esc(en)}"><span class="mj-roll"><i class="cap l"></i><i class="cap r"></i><i class="tas l"></i><i class="tas r"></i><span class="mj-shine"></span></span>
-    <span class="mj-dia l">${sun}</span><span class="mj-dia r">${sun}</span>
-    <span class="mj-plate"><b>${si}</b><small>${en}</small></span><span class="mj-posts"></span><span class="mj-base"></span></${tag}>`;
+  const end=(x,f)=>`<g transform="translate(${x} 0) scale(${f} 1)">
+      <g class="mj2-tas"><path d="M24 62V100" stroke="url(#mj2Gd)" stroke-width="1.6"/><circle cx="24" cy="102" r="4.4" fill="url(#mj2Gd)"/><path d="M19.5 106h9l3 28c-4.4 2.6-10.6 2.6-15 0z" fill="url(#mj2Ts)"/><path d="M21 108v24M24 108v25M27 108v24" stroke="#B48A44" stroke-width=".6" opacity=".7"/><rect x="19" y="105" width="10" height="3" rx="1.2" fill="url(#mj2Gd)"/></g>
+      <circle cx="11" cy="55" r="4.4" fill="url(#mj2G)"/><path d="M14 55c0-6 5-10 11-10s9 5 9 10-3 10-9 10-11-4-11-10z" fill="url(#mj2G)"/><rect x="32" y="49" width="12" height="12" rx="2" fill="url(#mj2G)"/><path d="M33 51h10M33 59h10" stroke="#8A6420" stroke-width=".8" opacity=".6"/>
+      <ellipse cx="48" cy="55" rx="5" ry="33" fill="url(#mj2G)"/><ellipse cx="48" cy="55" rx="2.2" ry="31" fill="#FFF4C8" opacity=".55"/></g>`;
+  return `<${tag} class="lp-mj mj2 ${size||"md"}" ${at} aria-label="${esc(en)}">
+    <svg class="mj2-art" viewBox="0 0 380 140" aria-hidden="true"><defs>
+      <linearGradient id="mj2G" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7A5410"/><stop offset=".25" stop-color="#E9C25A"/><stop offset=".42" stop-color="#FFF2BE"/><stop offset=".62" stop-color="#D9A73F"/><stop offset="1" stop-color="#7A5410"/></linearGradient>
+      <linearGradient id="mj2Gd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F7DE92"/><stop offset=".5" stop-color="#C9993A"/><stop offset="1" stop-color="#8A6420"/></linearGradient>
+      <linearGradient id="mj2Ts" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#D8BF86"/><stop offset=".45" stop-color="#FBF0D2"/><stop offset="1" stop-color="#C7A868"/></linearGradient>
+      <linearGradient id="mj2P" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D9BC7E"/><stop offset=".18" stop-color="#F6E8C6"/><stop offset=".42" stop-color="#FFFCF2"/><stop offset=".75" stop-color="#F1DFB2"/><stop offset="1" stop-color="#B8925A"/></linearGradient>
+      <linearGradient id="mj2M" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3E0A0A"/><stop offset=".3" stop-color="#8A1E1A"/><stop offset=".55" stop-color="#7A1816"/><stop offset="1" stop-color="#3A0909"/></linearGradient>
+      <linearGradient id="mj2L" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F3D27A"/><stop offset=".55" stop-color="#C9993A"/><stop offset="1" stop-color="#9A6E1C"/></linearGradient>
+      <pattern id="mj2K" width="9" height="9" patternUnits="userSpaceOnUse"><path d="M4.5 1 8 4.5 4.5 8 1 4.5z" fill="none" stroke="#E2B85A" stroke-width=".9" opacity=".8"/><circle cx="4.5" cy="4.5" r=".9" fill="#E2B85A" opacity=".8"/></pattern>
+      <radialGradient id="mj2Gl"><stop offset="0" stop-color="#FFE7A8" stop-opacity=".75"/><stop offset="1" stop-color="#FFE7A8" stop-opacity="0"/></radialGradient></defs>
+      <ellipse class="mj2-glow" cx="190" cy="55" rx="185" ry="64" fill="url(#mj2Gl)"/>
+      <rect x="52" y="21" width="276" height="68" rx="5" fill="url(#mj2P)"/>
+      <path d="M100 27h180M100 83h180" stroke="#D9BC7E" stroke-width=".8" opacity=".55"/>
+      <g opacity=".28" fill="none" stroke="#C9993A" stroke-width=".7"><path d="M104 36c14 0 18 10 30 10M104 74c14 0 18-10 30-10M276 36c-14 0-18 10-30 10M276 74c-14 0-18-10-30-10"/><circle cx="104" cy="36" r="1.6"/><circle cx="104" cy="74" r="1.6"/><circle cx="276" cy="36" r="1.6"/><circle cx="276" cy="74" r="1.6"/></g>
+      <rect x="57" y="21" width="36" height="68" fill="url(#mj2M)"/><rect x="57" y="21" width="36" height="68" fill="url(#mj2K)"/>
+      <rect x="287" y="21" width="36" height="68" fill="url(#mj2M)"/><rect x="287" y="21" width="36" height="68" fill="url(#mj2K)"/>
+      <path d="M57 21v68M93 21v68M287 21v68M323 21v68" stroke="#E9C25A" stroke-width="1.4"/><path d="M60 21v68M90 21v68M290 21v68M320 21v68" stroke="#E9C25A" stroke-width=".5" opacity=".7"/>
+      <rect x="52" y="21" width="276" height="68" rx="5" fill="none" stroke="#9A6E1C" stroke-width=".8" opacity=".5"/>
+      <g class="mj2-lotus" transform="translate(190 66)"><path d="M0 0C-7-8-8-22 0-34 8-22 7-8 0 0z" fill="url(#mj2L)"/><path d="M-2 0C-12-4-19-15-18-27-9-22-3-13-2 0zM2 0C12-4 19-15 18-27 9-22 3-13 2 0z" fill="url(#mj2L)"/><path d="M-4 1C-17 1-27-6-31-16-20-15-10-9-4 1zM4 1C17 1 27-6 31-16 20-15 10-9 4 1z" fill="url(#mj2L)"/><path d="M-26 4C-14 8 14 8 26 4" stroke="url(#mj2L)" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M0-30V-6M-14-22-4-4M14-22 4-4" stroke="#FFF2BE" stroke-width=".7" opacity=".6"/></g>
+      ${end(0,1)}${end(380,-1)}</svg>
+    <span class="mj2-btn"><svg class="mj2-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M17.6 3.6a2 2 0 0 1 2.8 2.8L12 14.8l-3.6.8.8-3.6z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg><i class="mj2-dv"></i><span class="mj2-tx"><b>${en}</b><small lang="si">${si}</small></span><span class="mj2-go" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="mj2-sh"></span></span></${tag}>`;
 }
 function lpDetail(){
   const k=TYPES[S.dt]?S.dt:"wedding", i=+S.di||0, T=TYPES[k], t=i?PREMIUM[k][i-1]:null, ev=T.sample;

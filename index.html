@@ -2207,7 +2207,7 @@ body:has(.lp){background:#fff}
 .rv-form input,.rv-form select,.rv-form textarea{font:16px/1.4 "Inter Tight","Noto Sans Sinhala",sans-serif;color:#2A1E12;background:#fff;border:1px solid rgba(166,122,31,.45);border-radius:10px;padding:12px 14px;min-height:48px;width:100%;box-sizing:border-box}
 .rv-form textarea{min-height:120px;resize:vertical}
 .rv-form input:focus-visible,.rv-form select:focus-visible,.rv-form textarea:focus-visible{outline:2px solid #B3852B;outline-offset:1px}
-.rv-form .rv-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.rv-form .rv-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .rv-form fieldset{border:0;margin:0;padding:0;display:grid;gap:6px}
 .rv-form legend{font-size:14px;font-weight:600;color:#4A3B2A;padding:0;margin-bottom:6px}
 .rv-rate{display:flex;flex-direction:row-reverse;justify-content:flex-end;gap:4px}
@@ -2218,7 +2218,7 @@ body:has(.lp){background:#fff}
 .rv-rate input:focus-visible+label{outline:2px solid #B3852B;border-radius:6px}
 .rv-form .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
 .rv-form .lp-btn{justify-self:center}
-@media (max-width:640px){.rv-form .rv-row{grid-template-columns:1fr}.rv-card blockquote{font-size:19px}}
+@media (max-width:640px){.rv-form .rv-pair{grid-template-columns:1fr}.rv-card blockquote{font-size:19px}}
 /* features with live phone */
 .lp-bands{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,380px);gap:clamp(24px,4vw,64px);align-items:start;padding:clamp(40px,5vw,72px) var(--m)}
 .bd-list{border-top:1px solid rgba(166,122,31,.35)}
@@ -2345,6 +2345,37 @@ input:not(.site *),select:not(.site *),textarea:not(.site *){font-family:var(--t
   .lp-foot .big{font-size:20px}
   .hx-txt h1{font-size:clamp(40px,11.2vw,56px)}
   .lp-feat h2,.lp-des h2,.lp-steps h2,.lp-real h2,.lp-rev h2,.lp-faq h2,.lp-price h2{font-size:clamp(32px,9vw,42px)}
+}
+/* ===== Footer v2 (ft-): brand + WhatsApp card, grouped link columns, slim bottom bar, lotus line art kept ===== */
+.lp-foot.ft{display:block;padding:clamp(48px,6vw,80px) var(--m) 0;background:#2A1E12 url("img/lotus-line-2000.webp") center bottom/min(1400px,100%) auto no-repeat;color:#F7E3B0;font-family:var(--t-body)}
+.ft-in{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:clamp(36px,6vw,96px);align-items:start}
+.ft-brand{display:grid;justify-items:start;gap:14px}
+.ft .lp-foot-logo{height:40px;width:auto;margin:0}
+.ft-tag{margin:0;max-width:34ch;font-size:16px;line-height:1.55;color:rgba(247,227,176,.78)}
+.ft-tag [lang="si"]{display:block;margin-top:4px;font:600 15px/1.5 "Noto Sans Sinhala",sans-serif;color:#EBD29A}
+.ft-wa{margin-top:8px;display:flex;align-items:center;gap:14px;width:100%;max-width:340px;padding:12px 16px 12px 12px;border-radius:18px;text-decoration:none;color:#2A1E12;background:linear-gradient(180deg,#F3DDA8,#C9993A);box-shadow:0 14px 34px -18px rgba(233,196,110,.75),inset 0 1px 0 rgba(255,255,255,.5);transition:transform .15s,filter .2s}
+.lp-foot .ft-wa{color:#2A1E12}
+.ft-wa:hover{filter:brightness(1.06)}.ft-wa:active{transform:scale(.98)}
+.ft-wa .ic{flex:none;width:44px;height:44px;border-radius:12px;background:#2A1E12 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23F3DDA8' d='M12 2.5a9.5 9.5 0 0 0-8.2 14.3L2.5 21.5l4.8-1.3A9.5 9.5 0 1 0 12 2.5zm0 1.7a7.8 7.8 0 1 1-4.1 14.4l-.3-.2-2.8.8.8-2.7-.2-.3A7.8 7.8 0 0 1 12 4.2zm-3.2 3.7c-.2 0-.5 0-.7.3-.3.3-1 .9-1 2.3s1 2.7 1.2 2.9c.1.2 2 3.1 4.9 4.3 2.4 1 2.9.8 3.4.7.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.4l-1.9-.9c-.3-.1-.5-.1-.7.1l-.9 1.1c-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.4-.8-.8-1.4-1.7-1.6-2-.2-.3 0-.4.1-.6l.4-.5.3-.5v-.5l-.9-2.1c-.2-.5-.4-.5-.6-.5h-.5z'/%3E%3C/svg%3E") center/24px no-repeat}
+.ft-wa .tx{display:grid;gap:2px;min-width:0;flex:1}
+.ft-wa small{font:600 12px/1.2 var(--t-head);letter-spacing:.06em;text-transform:uppercase;opacity:.75}
+.ft-wa b{font:700 20px/1.1 var(--t-head);letter-spacing:-.02em;white-space:nowrap}
+.ft-wa .ar{font:700 20px/1 var(--t-head)}
+.ft-note{margin:0;font-size:14px;color:rgba(247,227,176,.6)}
+.ft-links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px 24px}
+.ft-links div{display:grid;align-content:start;gap:2px}
+.ft-links h4{margin:0 0 8px;font:700 12px/1.2 var(--t-head);letter-spacing:.16em;text-transform:uppercase;color:#C9993A}
+.lp-foot .ft-links a{display:block;padding:7px 0;font-size:15.5px;line-height:1.3;color:rgba(247,227,176,.86);text-decoration:none}
+.lp-foot .ft-links a:hover{color:#fff;text-decoration:underline;text-underline-offset:.2em}
+.ft-bar{max-width:1180px;margin:clamp(40px,5vw,64px) auto 0;padding:20px 0 calc(min(1400px,100vw)*.3);border-top:1px solid rgba(235,210,154,.18);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;font-size:14px;color:rgba(247,227,176,.6)}
+.lp-foot .ft-top{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 16px;border:1px solid rgba(235,210,154,.3);border-radius:999px;color:#F7E3B0;text-decoration:none;font:600 14px/1 var(--t-head)}
+.lp-foot .ft-top:hover{background:rgba(235,210,154,.1)}
+@media (max-width:900px){.ft-in{grid-template-columns:1fr}.ft-links{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:700px){
+  .lp-foot.ft{background-image:url("img/lotus-line-1000.webp");background-size:180% auto;padding-bottom:0}
+  .ft-wa{max-width:none}
+  .ft-links{gap:24px 16px}
+  .ft-bar{padding-bottom:150px;font-size:13px}
 }
 </style>
 </head><body>
@@ -3626,7 +3657,7 @@ function render(){
     <div class="rv-list" id="rvList" aria-live="polite"></div>
     <form class="rv-form rv" id="rvForm" novalidate>
       <h3>Share your feedback</h3><p class="rv-note">Your review shows here after our team checks it.</p>
-      <div class="rv-row"><label>Your name<input name="name" maxlength="80" autocomplete="name" required placeholder="Kasun & Tharushi"></label>
+      <div class="rv-pair"><label>Your name<input name="name" maxlength="80" autocomplete="name" required placeholder="Kasun & Tharushi"></label>
         <label>Function<select name="type">${Object.entries(TYPES).map(([k,t])=>`<option value="${k}">${t.name}</option>`).join("")}</select></label></div>
       <fieldset><legend>Your rating</legend><div class="rv-rate">${[5,4,3,2,1].map(n=>`<input type="radio" name="rating" id="rvr${n}" value="${n}"><label for="rvr${n}" title="${n} star${n>1?"s":""}"><span class="sr">${n} star${n>1?"s":""}</span>${RV_STAR}</label>`).join("")}</div></fieldset>
       <label>Your review<textarea name="msg" maxlength="600" required placeholder="How did your guests like the invitation?"></textarea></label>
@@ -3757,13 +3788,25 @@ function render(){
     <div class="mid"><div class="ch"><button class="lp-btn" data-ctapick="wedding">A wedding</button><span class="or">or</span><button class="lp-btn" data-ctapick="">Another function</button></div><p>Both open the invitation maker. Nothing to install, nothing to pay until you need more.</p></div>
   </section>
 `,
-    foot:()=>`<footer class="lp-foot" data-f="accent">
-    <div class="top"><div><img class="lp-foot-logo" src="/img/logo/aradhanawa-logo-light.svg" alt="Aradhanawa" width="167" height="33"><b lang="si">ආරාධනාව</b><span>Digital invitations made in Sri Lanka, sent on WhatsApp.</span><span>We answer on WhatsApp the same day.</span></div><a href="#" data-top>Back to top</a></div>
-    <span></span>
-    <a class="big" aria-label="Chat with us on WhatsApp" target="_blank" rel="noopener" href="${waLink(CONFIG.STUDIO_WA,"Hi Aradhanawa! I have a question about invitations.")}">+${CONFIG.STUDIO_WA.replace(/^(\d{2})(\d{2})(\d{3})(\d+)$/,"$1 $2 $3 $4")}</a>
-    <div class="meta"><nav aria-label="Footer"><a href="#login">Log in</a><a href="#register">Register</a><a href="#pricing">Pricing &amp; questions</a><a href="#designs">Designs</a><a href="#create">Create</a><a href="/wedding-invitations">Wedding invitations</a><a href="/homecoming-invitations">Homecoming</a><a href="/engagement-invitations">Engagement</a><a href="/birthday-invitations">Birthday</a><a href="/party-invitations">Party</a><a href="/dana-invitations">Dana</a><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/refunds">Refunds</a></nav><span>Designs drawn and photographed for Aradhanawa</span><span>Colombo, ${new Date().getFullYear()}</span></div>
+    foot:()=>{ const wa=waLink(CONFIG.STUDIO_WA,"Hi Aradhanawa! I have a question about invitations."), num="+"+CONFIG.STUDIO_WA.replace(/^(\d{2})(\d{2})(\d{3})(\d+)$/,"$1 $2 $3 $4");
+      return `<footer class="lp-foot ft" data-f="accent">
+    <div class="ft-in">
+      <div class="ft-brand">
+        <img class="lp-foot-logo" src="/img/logo/aradhanawa-logo-light.svg" alt="Aradhanawa" width="167" height="33">
+        <p class="ft-tag">Digital invitations made in Sri Lanka, sent on WhatsApp. <span lang="si">ආරාධනාව</span></p>
+        <a class="ft-wa" target="_blank" rel="noopener" href="${wa}" aria-label="Chat with us on WhatsApp, ${num}"><span class="ic" aria-hidden="true"></span><span class="tx"><small>Chat on WhatsApp</small><b>${num}</b></span><span class="ar" aria-hidden="true">→</span></a>
+        <p class="ft-note">We answer the same day.</p>
+      </div>
+      <nav class="ft-links" aria-label="Footer">
+        <div><h4>Make</h4><a href="#designs">Designs</a><a href="#create">Create an invitation</a><a href="#pricing">Pricing &amp; questions</a></div>
+        <div><h4>Invitations</h4><a href="/wedding-invitations">Wedding</a><a href="/homecoming-invitations">Homecoming</a><a href="/engagement-invitations">Engagement</a><a href="/birthday-invitations">Birthday</a><a href="/party-invitations">Party</a><a href="/dana-invitations">Dana</a></div>
+        <div><h4>Account</h4><a href="#login">Log in</a><a href="#register">Register</a></div>
+        <div><h4>Legal</h4><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/refunds">Refunds</a></div>
+      </nav>
+    </div>
+    <div class="ft-bar"><span>© ${new Date().getFullYear()} Aradhanawa · Colombo</span><a href="#" data-top class="ft-top">Back to top <span aria-hidden="true">↑</span></a></div>
   </footer>
-`,
+`},
     feat:()=>`<section class="lp-ch lp-paper g lp-des lp-feat" id="featured" data-f="paper">
       ${lpOrn()}<div class="head"><div><span class="lp-eb">Card templates</span><h2>Pick a card, <em>make it yours</em></h2><p>Every function has a free design. Custom designs are drawn for you by our team.</p></div>
       <a class="lp-hghost" href="#designs">See all ${(designItems().match(/data-pick=/g)||[]).length} designs →</a></div>

@@ -121,6 +121,29 @@ service cloud.firestore {
       allow update, delete: if isAdmin();
     }
 
+    // Seating plan for one function (doc id = uid_type). Only the owner reads and writes it.
+    match /seating/{id} {
+      allow get: if isAdmin() || (signedIn() && id.matches('^' + request.auth.uid + '_[a-z]+$'));
+      allow list: if isAdmin();
+      allow create, update: if signedIn() && request.resource.data.uid == request.auth.uid
+        && id == request.auth.uid + "_" + request.resource.data.type
+        && request.resource.data.keys().hasOnly(["uid", "type", "plan", "updated"])
+        && isStr(request.resource.data.plan, 300000);
+      allow delete: if isAdmin() || (signedIn() && id.matches('^' + request.auth.uid + '_[a-z]+$'));
+    }
+
+    // Each seated guest's table (doc id = uid_type_key, key = hash of the guest's name). A guest link gets only its
+    // own doc by id; nobody can list them but the owner (to tidy up old ones) and admins.
+    match /seats/{id} {
+      allow get: if true;
+      allow list: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
+      allow create, update: if signedIn() && request.resource.data.uid == request.auth.uid
+        && id.matches('^' + request.auth.uid + '_' + request.resource.data.type + '_[0-9a-f]{20}$')
+        && request.resource.data.keys().hasOnly(["uid", "type", "table", "seats", "updated"])
+        && isStr(request.resource.data.type, 20) && isStr(request.resource.data.table, 40) && isStr(request.resource.data.seats, 60);
+      allow delete: if isAdmin() || (signedIn() && resource.data.uid == request.auth.uid);
+    }
+
     // Guest replies from the invitation website. Guests don't sign in.
     match /rsvps/{id} {
       allow read: if isAdmin() || (signedIn() && resource.data.ownerUid == request.auth.uid);

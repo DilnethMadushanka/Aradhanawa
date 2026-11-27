@@ -10,7 +10,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@400..800&family=Noto+Sans+Sinhala:wght@400..800&family=Noto+Serif+Sinhala:wght@500..900&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Pinyon+Script&family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@400..800&family=Noto+Sans+Sinhala:wght@400..800&family=Noto+Serif+Sinhala:wght@500..900&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Pinyon+Script&family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500&display=swap">
 <style>
 /* Layout: an atelier table in daylight. Jasmine-ivory paper, champagne-gold hairlines and corner marks, deep jade ink.
    A deliberate single light look (the user asked for light colours), so every colour is set explicitly here. */
@@ -2275,6 +2275,77 @@ body:has(.lp){background:#fff}
 .lp-foot .meta{position:relative;padding-top:22px;border-top:1px solid rgba(235,210,154,.22)}
 .lp-foot .meta,.lp-foot .meta a{color:rgba(247,227,176,.82)}
 @media (max-width:700px){.lp-foot{background-image:url("img/lotus-line-1000.webp");background-size:200% auto;padding-bottom:190px}.lp-foot .big{font-size:22px}}
+/* ===== Type v5: one modern sans voice for the site chrome =====
+   Headings: Inter Tight, heavy and tightly tracked. Body: Inter. Accent words stay upright and take the brand gold.
+   Card designs (.card, .site, the guest envelope .gload, the hero tablet card) keep their own serif/script fonts:
+   the old --f-* values are restored on those containers so nothing inside an invitation changes. */
+:root{
+  --t-head:"Inter Tight","Noto Sans Sinhala",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --t-body:"Inter","Noto Sans Sinhala",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --t-gold:#9A6B12;
+  --f-display:var(--t-head);
+  --f-body:var(--t-body);
+}
+.card,.site,.gload,.hx-card,.bd-in,.receipt{
+  --f-display:"Playfair Display","Noto Serif Sinhala",Georgia,serif;
+  --f-body:"Plus Jakarta Sans","Noto Sans Sinhala",system-ui,-apple-system,"Segoe UI",sans-serif}
+.card,.receipt{font-family:var(--f-body)}
+.lp .card,.lp .hx-card{font-family:"Inter Tight","Noto Sans Sinhala",system-ui,sans-serif}
+.hw-scr .card{font-family:"Inter Tight",system-ui,sans-serif}
+body{font-family:var(--t-body);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility}
+
+/* app pages (login, register, create, account, admin) */
+h1:not(.site *,.card *),h2:not(.site *,.card *),h3:not(.site *,.card *){font-family:var(--t-head);font-weight:700;letter-spacing:-.035em;line-height:1.06}
+h1 em:not(.site *,.card *),h2 em:not(.site *,.card *),h3 em:not(.site *,.card *){font-family:inherit;font-style:normal;font-weight:inherit;color:var(--t-gold)}
+.apage .aside .q b,.adm .side .who b,.kpi b,.price{font-family:var(--t-head);font-weight:700;letter-spacing:-.03em}
+.btn:not(.site *,.card *){font-family:var(--t-head);font-weight:700;letter-spacing:-.01em;text-transform:none}
+.eyebrow:not(.site *,.card *){font-family:var(--t-head);font-weight:700}
+input:not(.site *),select:not(.site *),textarea:not(.site *){font-family:var(--t-body)}
+
+/* landing + designs + pricing + design detail */
+.lp{font-family:var(--t-body)}
+.lp p{line-height:1.6}
+.lp h1,.lp h2,.lp h3,.lp-phead h1,.lp-detail h1,.dt-info h1{font-family:var(--t-head);font-weight:700;letter-spacing:-.04em;line-height:1.04;font-style:normal}
+.lp h1 em,.lp h2 em,.lp h3 em,.hw-cap h3 em{font-family:inherit;font-style:normal;font-weight:inherit;letter-spacing:inherit;font-size:1em;color:var(--t-gold)}
+.lp-feat h2,.lp-des h2,.lp-steps h2,.lp-real h2,.lp-rev h2,.lp-faq h2,.lp-price h2{font-size:clamp(34px,4.6vw,60px);line-height:1.05}
+.lp-phead h1{font-weight:700;letter-spacing:-.04em;font-size:clamp(40px,5.4vw,72px)}
+.lp-eb{font-family:var(--t-head);font-weight:700;letter-spacing:.14em}
+.lp-btn,.lp .lp-btn{font-family:var(--t-head);font-weight:700;letter-spacing:-.015em}
+
+/* hero */
+.hx-txt h1{font:700 clamp(42px,5vw,76px)/1.03 var(--t-head);letter-spacing:-.04em;max-width:13ch}
+.lp .hx-txt h1 em{font-weight:700;font-style:normal;padding-right:.02em}
+.hx-txt .sub{font:400 clamp(17px,1.1vw + 12px,20px)/1.6 var(--t-body);letter-spacing:-.006em;text-transform:none;color:#6E5D48;max-width:36ch}
+.hx-txt .note{font:500 14px/1.4 var(--t-body);letter-spacing:0;color:#7B6A54}
+
+/* gallery tiles, steps, phone demo */
+.lp-tile .strip b{font:700 17px/1.15 var(--t-head);letter-spacing:-.025em}
+.hw-h b{font:700 18px/1.1 var(--t-head);letter-spacing:-.03em}
+.hw-prev b{font:700 20px/1.05 var(--t-head);letter-spacing:-.03em}
+.hw-t .no{font:700 26px/1 var(--t-head);letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.hw-cap h3{letter-spacing:-.035em}
+
+/* feature bands, FAQ, plans */
+.lp-bands h3{font-weight:700;letter-spacing:-.035em;line-height:1.1}
+.lp-faq h3,.lp-price h3,.plan h3{font-weight:700;letter-spacing:-.03em}
+.lp-price h2 .pb{font-family:var(--t-head);font-weight:800;letter-spacing:-.04em}
+
+/* reviews */
+.rv-sum b{font:800 34px/1 var(--t-head);letter-spacing:-.04em}
+.rv-card blockquote{font:500 18px/1.55 var(--t-body);letter-spacing:-.01em}
+.rv-card blockquote::before{font:800 56px/.7 var(--t-head)}
+.rv-form input,.rv-form select,.rv-form textarea{font-family:var(--t-body)}
+
+/* closing CTA + footer */
+.lp-cta h2 span{font-family:var(--t-head);font-weight:800;letter-spacing:-.045em;line-height:.98;font-size:clamp(60px,9vw,136px)}
+.lp-cta h2 .q2{font-style:normal}
+.lp-foot .big{font:700 clamp(20px,2.2vw,28px)/1 var(--t-head);letter-spacing:-.02em}
+@media (max-width:700px){
+  .lp-cta h2 span{font-size:16.5vw}
+  .lp-foot .big{font-size:20px}
+  .hx-txt h1{font-size:clamp(40px,11.2vw,56px)}
+  .lp-feat h2,.lp-des h2,.lp-steps h2,.lp-real h2,.lp-rev h2,.lp-faq h2,.lp-price h2{font-size:clamp(32px,9vw,42px)}
+}
 </style>
 </head><body>
 <link rel="stylesheet" href="loader.css"><div id="aw-loader" role="status" aria-live="polite" aria-label="Aradhanawa loading"><div class="aw-ld-frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div><div class="aw-ld-box"><svg class="aw-ld-lotus" viewBox="0 0 120 84" aria-hidden="true"><defs><linearGradient id="aw-ld-gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBF1DC"/><stop offset=".55" stop-color="#EBD3A0"/><stop offset="1" stop-color="#C9A25E"/></linearGradient><radialGradient id="aw-ld-halo"><stop offset="0" stop-color="#F3DFB2" stop-opacity=".9"/><stop offset="1" stop-color="#F3DFB2" stop-opacity="0"/></radialGradient></defs><circle class="aw-ld-glow" cx="60" cy="46" r="40"/><circle class="aw-ld-dot" cx="38" cy="14" r="1.3"/><circle class="aw-ld-dot" cx="84" cy="10" r="1"/><circle class="aw-ld-dot" cx="96" cy="26" r="1.2"/><ellipse class="aw-ld-water" cx="60" cy="65.8" rx="49.7" ry="6.8"/><path class="aw-ld-p l2" d="M60 64C39.1 66.2 19.5 53 10.3 31C22.6 28.8 34.5 31.4 42.4 37.6Z"/><path class="aw-ld-p r2" d="M60 64C80.9 66.2 100.5 53 109.7 31C97.4 28.8 85.5 31.4 77.6 37.6Z"/><path class="aw-ld-p l1" d="M60 64C41.5 59.6 28.8 38.5 31 12.1C42.4 16 52.1 24 57.4 33.2Z"/><path class="aw-ld-p r1" d="M60 64C78.5 59.6 91.2 38.5 89 12.1C77.6 16 67.9 24 62.6 33.2Z"/><path class="aw-ld-p c" d="M60 64C45 50.8 43.3 24.4 60 4.6C76.7 24.4 75 50.8 60 64Z"/></svg><p class="aw-ld-name">Aradhanawa</p><div class="aw-ld-si" lang="si">ආරාධනාව</div><div class="aw-ld-rule" aria-hidden="true"><span></span><b></b><span></span></div><div class="aw-ld-tag">Digital invitations</div></div><div class="aw-ld-bar" aria-hidden="true"><i></i></div></div><script src="loader.js" defer></script>
